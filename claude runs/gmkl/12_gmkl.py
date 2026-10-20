@@ -256,6 +256,7 @@ def leaf_as_kernels(meta, pixels, scales, device) -> np.ndarray:
     path = CACHE_DIR / f"gmkl_leaf_as_tc{TC:g}.npy"
     if path.exists():
         return np.load(path)
+    # numpy mean, not torch: numpy's pairwise float32 sum; one-off, the result is cached.
     leaf_mean = np.stack([pixels[int(s):int(s) + int(n)].mean(0) for s, n in zip(meta.px_start, meta.n_px)])
     out = []
     for sc in scales:
@@ -322,7 +323,8 @@ def kernel_spread(Ks) -> dict:
     out = {}
     for name, K in zip(KERNEL_NAMES, Ks):
         off = K[~np.eye(len(K), dtype=bool)]
-        # numpy, not torch: torch.quantile caps the input size (the pixel unit has 16M values).
+        # numpy, not torch: keeps the reported 4-decimal percentiles exactly (torch.quantile on
+        # float32 can round the interpolation differently).
         out[name] = np.percentile(off, [5, 50, 95]).round(4).tolist()
     return out
 
@@ -475,8 +477,9 @@ def run_pixel_fold(fold, meta, cls, scales, eap, penalties, args, device):
         C, cv = choose_c(Kc, y, owner, None, args.inner_folds, fold, args.jobs)
         svc = SVC(kernel="precomputed", C=C, probability=True, random_state=fold).fit(Kc, y)
         # Pixel -> leaf: sum each leaf's pixel probabilities (mean, for ROC AUC) and count its
-        # pixels' SVM votes (majority, for the decision). The probabilities' argmax is not used
-        # for decisions because Platt scaling ignores the class balance (see the file docstring).
+        # pixels' SVM votes (majority, for the decision). The decision is the SVM's own vote: LIBSVM
+        # fits the Platt probabilities with a separate internal CV, so their argmax can disagree
+        # with predict() (see the file docstring).
         sums, votes, t0 = np.zeros((len(test_idx), len(CLASSES))), np.zeros((len(test_idx), len(CLASSES))), time.time()
         for s in range(0, len(test_px), args.chunk):
             px = test_px[s:s + args.chunk]
@@ -564,7 +567,7 @@ def write_reports(meta, P, pred, records, folds, units, penalties, args, log: lo
                               extra_md=fold_markdown(records[(unit, pen)]),
                               extra_json={"gmkl": records[(unit, pen)], "kernel_names": KERNEL_NAMES},
                               pred=pred[(unit, pen)], decision_note=DECISION_NOTE[unit],
-                              folder=RESULTS / "quick" if args.quick else RESULTS)
+                              folder=RESULTS / "quick" if args.quick else RESULTS, log=log)
             log.info("\n" + md)
 
 

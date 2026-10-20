@@ -236,8 +236,8 @@ def gaussian_sandwich(A: sp.csr_matrix, B: sp.csr_matrix, means: np.ndarray, sig
     """
     # Why the sandwich: Eq. 5 is a weighted double sum over two neighbourhoods. Stacking the
     # weights of all targets into sparse A and B turns every pair at once into A K B^T, with K
-    # the Gaussian kernel between superpixel means. K is built in column blocks of `block`
-    # superpixels so it never has to be held in memory whole.
+    # the Gaussian kernel between superpixel means. K is built in blocks of `block` rows (A's
+    # superpixels) so it never has to be held in memory whole.
     ca, cb = np.unique(A.indices), np.unique(B.indices)
     Ma = torch.from_numpy(means[ca]).float().to(device)
     Mb = torch.from_numpy(means[cb]).float().to(device)

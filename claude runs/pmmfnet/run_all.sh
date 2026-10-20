@@ -3,6 +3,9 @@
 #   ./run_all.sh smoke    smoke test of every experiment (tiny, fold 0) -> runs/smoke/<exp>/
 #   ./run_all.sh          all experiments, 5 folds each -> runs/<exp>/, then runs/comparison.md
 # Resumable: finished experiments are skipped and finished folds are reloaded.
+# controlled.py and compare.py log to stdout only; the redirects below are what keep their logs
+# (runs/smoke/<exp>.log, runs/<exp>/log.txt appended across resumes, runs/compare.log).
+# The smoke loop shows the last two [smoke] lines of each log: the checks and the output check.
 set -e
 cd "$(dirname "$0")"
 PY=../../.venv/bin/python

@@ -18,7 +18,13 @@ Sci. Rep. 15:29288 (2025), applied to the 998 leaves (4 classes: healthy / red b
 | `REPORT.md` | which configuration is best (S1), how consistent the differences are, what to try next |
 
 Shared code is in `../shared/` because the other pipelines use it too: `common.py` (folds, labels),
-`torch_common.py`, `four_class.py` (4-class metrics and report) and the data cache `../shared/cache/`.
+`torch_common.py`, `four_class.py` (4-class metrics and report), `logs.py` (the logger every script
+reports progress through) and the data cache `../shared/cache/`.
+
+Logging: the training and evaluation functions never print; they take a logger. `run_experiment.py`
+writes every message to the terminal and appends it to the run's `log.txt` (plus the traceback if a
+run fails). `controlled.py` and `compare.py` log to the terminal only; `run_all.sh` redirects that
+into `runs/<exp>/log.txt`, `runs/smoke/<exp>.log` and `runs/compare.log`.
 `pmmfnet.py` and `11_pmmfnet.py` are covered by `runs/original/checksums.sha256` and are kept unchanged.
 
 ## Running
