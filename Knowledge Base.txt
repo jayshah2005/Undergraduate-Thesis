@@ -1,0 +1,34 @@
+﻿Data Distribution
+
+
+	Red Blotch
+	Leafroll
+	Healthy
+	Baco ()
+	135 (54.4%)
+	107 (43.1%)
+	59 (23.8%)
+	Cab Franc
+	241 (96.4%)
+	1 (0.4%)
+	9 (3.6%)
+	Chardonnay
+	88 (35.2%)
+	122 (48.8%)
+	90 (36%)
+	Vidal
+	169 (67.7%)
+	25 (10%)
+	68 (27.2%)
+	
+
+Approaches
+Topics for approaches stem from this article: 
+Machine Learning and Deep Learning Techniques for Spectral Spatial Classification of Hyperspectral Images: A Comprehensive Survey
+Traditional Machine Learning Classification Techniques
+Kernel Learning-Based Classification Techniques:
+Papers:
+Progressive multi-scale multi-attention fusion for hyperspectral image classification | Scientific Reports
+Full article: A novel graph-based multiple kernel learning framework for hyperspectral image classification
+Deep Learning:
+Not enough data…

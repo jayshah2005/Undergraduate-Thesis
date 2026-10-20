@@ -1,0 +1,617 @@
+{
+  "n_leaves": 998,
+  "raw": {
+    "variance_share": {
+      "variety": 0.5590846852282897,
+      "class (pooled over varieties)": 0.10781961351418762,
+      "class within variety": 0.0019580561454382553,
+      "row within variety": 0.08280772718543651,
+      "variety x row cells": 0.6418924124137264
+    },
+    "pca_all": [
+      {
+        "pc": 1,
+        "explained": 0.9658201648728743,
+        "eta2 variety": 0.5601966145931687,
+        "eta2 class within variety": 0.0017618428915712155,
+        "corr with brightness": 0.9963075049114277
+      },
+      {
+        "pc": 2,
+        "explained": 0.025200237724849146,
+        "eta2 variety": 0.6443426972492797,
+        "eta2 class within variety": 0.005393006154402275,
+        "corr with brightness": 0.0850534556938069
+      },
+      {
+        "pc": 3,
+        "explained": 0.005470301647074017,
+        "eta2 variety": 0.1488896523044429,
+        "eta2 class within variety": 0.01825335447535833,
+        "corr with brightness": -0.00038873830575707126
+      },
+      {
+        "pc": 4,
+        "explained": 0.0022092027031546603,
+        "eta2 variety": 0.404545298076278,
+        "eta2 class within variety": 0.002110927640832257,
+        "corr with brightness": -0.0066492178647147935
+      },
+      {
+        "pc": 5,
+        "explained": 0.0006402220041122501,
+        "eta2 variety": 0.11959842122437737,
+        "eta2 class within variety": 0.009564034184384779,
+        "corr with brightness": 0.009551521574560911
+      },
+      {
+        "pc": 6,
+        "explained": 0.00032474034396219684,
+        "eta2 variety": 0.005537541890917898,
+        "eta2 class within variety": 0.01635888411784981,
+        "corr with brightness": 0.0009992294001357792
+      },
+      {
+        "pc": 7,
+        "explained": 0.00011512773310252293,
+        "eta2 variety": 0.021712985296309013,
+        "eta2 class within variety": 0.019558223387817413,
+        "corr with brightness": 7.224956859491699e-05
+      },
+      {
+        "pc": 8,
+        "explained": 7.395189886433046e-05,
+        "eta2 variety": 0.05173192495446533,
+        "eta2 class within variety": 0.006198294855493089,
+        "corr with brightness": -0.0007117039753273019
+      },
+      {
+        "pc": 9,
+        "explained": 3.106969094788708e-05,
+        "eta2 variety": 0.04207467709435489,
+        "eta2 class within variety": 0.009473424337149072,
+        "corr with brightness": 0.00039757260505564736
+      },
+      {
+        "pc": 10,
+        "explained": 2.1302253483381356e-05,
+        "eta2 variety": 0.10260527184862794,
+        "eta2 class within variety": 0.01092436338683303,
+        "corr with brightness": -2.1598383701669303e-05
+      }
+    ],
+    "silhouette_all_pc1-5": {
+      "variety": 0.10384237588413724,
+      "class": -0.07599862113939153
+    },
+    "within": {
+      "Baco": {
+        "class (4)": {
+          "R2": 0.0038020759134801017,
+          "p (permuted within rows)": 0.848,
+          "R2 by chance": 0.011154488371690195
+        },
+        "healthy vs any disease": {
+          "R2": 0.001312507604028415,
+          "p (permuted within rows)": 0.659,
+          "R2 by chance": 0.004003697396940043
+        },
+        "RB label": {
+          "R2": 0.0018846555456155346,
+          "p (permuted within rows)": 0.51,
+          "R2 by chance": 0.0038559946079627827
+        },
+        "LR label": {
+          "R2": 0.0008700186177762764,
+          "p (permuted within rows)": 0.714,
+          "R2 by chance": 0.0038603831603092127
+        },
+        "row": {
+          "R2": 0.08570892810170368,
+          "p (free permutation)": 0.001,
+          "R2 by chance": 0.01625771443226677
+        },
+        "pca": [
+          {
+            "pc": 1,
+            "explained": 0.9236429433750979,
+            "eta2 class": 0.0025469394337260236,
+            "eta2 row": 0.0787131014955859
+          },
+          {
+            "pc": 2,
+            "explained": 0.0554884656678589,
+            "eta2 class": 0.02366395275926963,
+            "eta2 row": 0.15107908860364125
+          },
+          {
+            "pc": 3,
+            "explained": 0.014281954257248224,
+            "eta2 class": 0.005640660196932194,
+            "eta2 row": 0.22076852914934345
+          },
+          {
+            "pc": 4,
+            "explained": 0.003214344476521668,
+            "eta2 class": 0.008182601760264398,
+            "eta2 row": 0.38366222283992396
+          },
+          {
+            "pc": 5,
+            "explained": 0.0018842326715183236,
+            "eta2 class": 0.0016456832788251476,
+            "eta2 row": 0.0773737273412391
+          },
+          {
+            "pc": 6,
+            "explained": 0.0004806320010476707,
+            "eta2 class": 0.02955201974485122,
+            "eta2 row": 0.05598538114984608
+          },
+          {
+            "pc": 7,
+            "explained": 0.00021373987253074482,
+            "eta2 class": 0.0016103469936515893,
+            "eta2 row": 0.0626208949374465
+          },
+          {
+            "pc": 8,
+            "explained": 0.00014488570767708523,
+            "eta2 class": 0.01679255707368069,
+            "eta2 row": 0.21165876559228614
+          },
+          {
+            "pc": 9,
+            "explained": 9.640528489222783e-05,
+            "eta2 class": 0.006522018633198309,
+            "eta2 row": 0.025157054814062926
+          },
+          {
+            "pc": 10,
+            "explained": 7.489505598944564e-05,
+            "eta2 class": 0.014245481019275901,
+            "eta2 row": 0.05331542736063939
+          }
+        ],
+        "silhouette_pc1-5": {
+          "class": -0.03909126231162752,
+          "row": -0.10759262899054965
+        },
+        "auc_loro_within_rows": {
+          "healthy vs any disease": 0.4733235438081253,
+          "RB label": 0.520079654829074,
+          "LR label": 0.5062522329403358
+        }
+      },
+      "Chardonnay": {
+        "class (4)": {
+          "R2": 0.00722722755163278,
+          "p (permuted within rows)": 0.64,
+          "R2 by chance": 0.012797081681651112
+        },
+        "healthy vs any disease": {
+          "R2": 0.002621416750382121,
+          "p (permuted within rows)": 0.444,
+          "R2 by chance": 0.003929455225092091
+        },
+        "RB label": {
+          "R2": 0.0011546312416494692,
+          "p (permuted within rows)": 0.604,
+          "R2 by chance": 0.004292087848684854
+        },
+        "LR label": {
+          "R2": 0.005735444788216666,
+          "p (permuted within rows)": 0.261,
+          "R2 by chance": 0.004356918059683746
+        },
+        "row": {
+          "R2": 0.0558429515460899,
+          "p (free permutation)": 0.007,
+          "R2 by chance": 0.016208646256360402
+        },
+        "pca": [
+          {
+            "pc": 1,
+            "explained": 0.9816303287048541,
+            "eta2 class": 0.006348406216432355,
+            "eta2 row": 0.055579115890472784
+          },
+          {
+            "pc": 2,
+            "explained": 0.01330306232810601,
+            "eta2 class": 0.06303726902616179,
+            "eta2 row": 0.08676492554509703
+          },
+          {
+            "pc": 3,
+            "explained": 0.0031615253360835244,
+            "eta2 class": 0.03821401398611005,
+            "eta2 row": 0.015174400127860421
+          },
+          {
+            "pc": 4,
+            "explained": 0.001074444717099366,
+            "eta2 class": 0.025688461831161222,
+            "eta2 row": 0.03220647546322237
+          },
+          {
+            "pc": 5,
+            "explained": 0.00042170976143522985,
+            "eta2 class": 0.0064577701283275515,
+            "eta2 row": 0.04468480349920679
+          },
+          {
+            "pc": 6,
+            "explained": 0.00016287124308123017,
+            "eta2 class": 0.0088664971724873,
+            "eta2 row": 0.04265951034458479
+          },
+          {
+            "pc": 7,
+            "explained": 8.925761707595016e-05,
+            "eta2 class": 0.013025911438960378,
+            "eta2 row": 0.1371145505188213
+          },
+          {
+            "pc": 8,
+            "explained": 4.131621090108171e-05,
+            "eta2 class": 0.013111599167508863,
+            "eta2 row": 0.07269075985986918
+          },
+          {
+            "pc": 9,
+            "explained": 2.2097901545891213e-05,
+            "eta2 class": 0.031834736070205275,
+            "eta2 row": 0.07022214239615047
+          },
+          {
+            "pc": 10,
+            "explained": 2.0939490663973997e-05,
+            "eta2 class": 0.019991920622672344,
+            "eta2 row": 0.02608473312802202
+          }
+        ],
+        "silhouette_pc1-5": {
+          "class": -0.04420406444316029,
+          "row": -0.10250166318076658
+        },
+        "auc_loro_within_rows": {
+          "healthy vs any disease": 0.5512727272727272,
+          "RB label": 0.5805493689680772,
+          "LR label": 0.5269784172661871
+        }
+      }
+    },
+    "variety_loro_balanced_accuracy": 0.9329032258064516
+  },
+  "snv": {
+    "variance_share": {
+      "variety": 0.5099274866605364,
+      "class (pooled over varieties)": 0.050806206009180635,
+      "class within variety": 0.011178926247645408,
+      "row within variety": 0.08327368096570625,
+      "variety x row cells": 0.5932011676262421
+    },
+    "pca_all": [
+      {
+        "pc": 1,
+        "explained": 0.4787861111150823,
+        "eta2 variety": 0.5857343913520382,
+        "eta2 class within variety": 0.014952275005714912,
+        "corr with brightness": 0.16544719884495213
+      },
+      {
+        "pc": 2,
+        "explained": 0.34169777070856683,
+        "eta2 variety": 0.513909056698453,
+        "eta2 class within variety": 0.008902567746577555,
+        "corr with brightness": 0.4355400552516312
+      },
+      {
+        "pc": 3,
+        "explained": 0.1307797225429431,
+        "eta2 variety": 0.3767638445727814,
+        "eta2 class within variety": 0.0033884002881093785,
+        "corr with brightness": -0.048636068032719464
+      },
+      {
+        "pc": 4,
+        "explained": 0.021437757138903824,
+        "eta2 variety": 0.08367475800061916,
+        "eta2 class within variety": 0.01052268680179005,
+        "corr with brightness": -0.2943115930280646
+      },
+      {
+        "pc": 5,
+        "explained": 0.01028830835068244,
+        "eta2 variety": 0.12044755457485012,
+        "eta2 class within variety": 0.013161397763251962,
+        "corr with brightness": -0.43149044410013665
+      },
+      {
+        "pc": 6,
+        "explained": 0.006053640851731583,
+        "eta2 variety": 0.151514081293869,
+        "eta2 class within variety": 0.00425596909265802,
+        "corr with brightness": -0.01776830510788563
+      },
+      {
+        "pc": 7,
+        "explained": 0.002997136729897913,
+        "eta2 variety": 0.03375830029214543,
+        "eta2 class within variety": 0.011628570510158916,
+        "corr with brightness": 0.1899595582626587
+      },
+      {
+        "pc": 8,
+        "explained": 0.0020807962423085853,
+        "eta2 variety": 0.1915584680607327,
+        "eta2 class within variety": 0.012716507352737183,
+        "corr with brightness": -0.4413289322994346
+      },
+      {
+        "pc": 9,
+        "explained": 0.001036715520299564,
+        "eta2 variety": 0.0922650123188527,
+        "eta2 class within variety": 0.01906912054130832,
+        "corr with brightness": 0.13181844356043276
+      },
+      {
+        "pc": 10,
+        "explained": 0.0007074226722457147,
+        "eta2 variety": 0.004366878701032561,
+        "eta2 class within variety": 0.010457234863457154,
+        "corr with brightness": -0.16940550944640567
+      }
+    ],
+    "silhouette_all_pc1-5": {
+      "variety": 0.23020065750551708,
+      "class": -0.01484418030869159
+    },
+    "within": {
+      "Baco": {
+        "class (4)": {
+          "R2": 0.017970025875998424,
+          "p (permuted within rows)": 0.273,
+          "R2 by chance": 0.014560812637318888
+        },
+        "healthy vs any disease": {
+          "R2": 0.011858232130017387,
+          "p (permuted within rows)": 0.223,
+          "R2 by chance": 0.008371589508435797
+        },
+        "RB label": {
+          "R2": 0.011504990022204543,
+          "p (permuted within rows)": 0.084,
+          "R2 by chance": 0.004633187697240808
+        },
+        "LR label": {
+          "R2": 0.0015055493727100379,
+          "p (permuted within rows)": 0.75,
+          "R2 by chance": 0.004513693250833629
+        },
+        "row": {
+          "R2": 0.24624305489877116,
+          "p (free permutation)": 0.001,
+          "R2 by chance": 0.015736867093915582
+        },
+        "pca": [
+          {
+            "pc": 1,
+            "explained": 0.6770197079026404,
+            "eta2 class": 0.023612276337519143,
+            "eta2 row": 0.25606739710109794
+          },
+          {
+            "pc": 2,
+            "explained": 0.22005377272473714,
+            "eta2 class": 0.002905317068651792,
+            "eta2 row": 0.20492550489709466
+          },
+          {
+            "pc": 3,
+            "explained": 0.06937698644419817,
+            "eta2 class": 0.012072513493377589,
+            "eta2 row": 0.3728973795348917
+          },
+          {
+            "pc": 4,
+            "explained": 0.011121619907001095,
+            "eta2 class": 0.021191622276284405,
+            "eta2 row": 0.06463670454583026
+          },
+          {
+            "pc": 5,
+            "explained": 0.006426833000257501,
+            "eta2 class": 0.004864503514550054,
+            "eta2 row": 0.048632588368521114
+          },
+          {
+            "pc": 6,
+            "explained": 0.0028772662622253567,
+            "eta2 class": 0.013426000827164218,
+            "eta2 row": 0.15892887517481144
+          },
+          {
+            "pc": 7,
+            "explained": 0.002028643055683223,
+            "eta2 class": 0.014374440025914457,
+            "eta2 row": 0.0413085113270543
+          },
+          {
+            "pc": 8,
+            "explained": 0.0014508141499694745,
+            "eta2 class": 0.013657527497906687,
+            "eta2 row": 0.05926089094620415
+          },
+          {
+            "pc": 9,
+            "explained": 0.0010325574551028542,
+            "eta2 class": 0.011308332704698505,
+            "eta2 row": 0.005200873400292655
+          },
+          {
+            "pc": 10,
+            "explained": 0.0009661906445099834,
+            "eta2 class": 0.03992434923389254,
+            "eta2 row": 0.022124837132581645
+          }
+        ],
+        "silhouette_pc1-5": {
+          "class": -0.04539668425038396,
+          "row": -0.035859206861319014
+        },
+        "auc_loro_within_rows": {
+          "healthy vs any disease": 0.5159079784630446,
+          "RB label": 0.482243611018918,
+          "LR label": 0.4844587352625938
+        }
+      },
+      "Chardonnay": {
+        "class (4)": {
+          "R2": 0.07457187415306725,
+          "p (permuted within rows)": 0.001,
+          "R2 by chance": 0.014538860143572398
+        },
+        "healthy vs any disease": {
+          "R2": 0.031029431801961615,
+          "p (permuted within rows)": 0.003,
+          "R2 by chance": 0.004873649960314502
+        },
+        "RB label": {
+          "R2": 0.06934657668748115,
+          "p (permuted within rows)": 0.001,
+          "R2 by chance": 0.006563550286559334
+        },
+        "LR label": {
+          "R2": 0.009026134432330447,
+          "p (permuted within rows)": 0.117,
+          "R2 by chance": 0.004368684925662688
+        },
+        "row": {
+          "R2": 0.06315953006644656,
+          "p (free permutation)": 0.001,
+          "R2 by chance": 0.015659352154792822
+        },
+        "pca": [
+          {
+            "pc": 1,
+            "explained": 0.6902889464449071,
+            "eta2 class": 0.10499058496720802,
+            "eta2 row": 0.08079636743228871
+          },
+          {
+            "pc": 2,
+            "explained": 0.21897590930896385,
+            "eta2 class": 0.0036991241799934982,
+            "eta2 row": 0.019504757928780637
+          },
+          {
+            "pc": 3,
+            "explained": 0.050138655149574066,
+            "eta2 class": 0.014826053193913056,
+            "eta2 row": 0.022073656179036054
+          },
+          {
+            "pc": 4,
+            "explained": 0.016857688755308905,
+            "eta2 class": 0.011714293522705057,
+            "eta2 row": 0.011392965392909685
+          },
+          {
+            "pc": 5,
+            "explained": 0.009203690795143434,
+            "eta2 class": 0.007471211816779843,
+            "eta2 row": 0.08913952195298716
+          },
+          {
+            "pc": 6,
+            "explained": 0.0041385189891072005,
+            "eta2 class": 0.006549578099079806,
+            "eta2 row": 0.062544325429373
+          },
+          {
+            "pc": 7,
+            "explained": 0.0019806082643939312,
+            "eta2 class": 0.04271545526840576,
+            "eta2 row": 0.13724133540525013
+          },
+          {
+            "pc": 8,
+            "explained": 0.0017643245799158398,
+            "eta2 class": 0.019758394945355237,
+            "eta2 row": 0.01039839943804454
+          },
+          {
+            "pc": 9,
+            "explained": 0.0011875789530439902,
+            "eta2 class": 0.03509449538225641,
+            "eta2 row": 0.05648829296871334
+          },
+          {
+            "pc": 10,
+            "explained": 0.0009413749296483583,
+            "eta2 class": 0.024014846162291627,
+            "eta2 row": 0.0613026783940856
+          }
+        ],
+        "silhouette_pc1-5": {
+          "class": -0.06874658594032058,
+          "row": -0.08310124258264669
+        },
+        "auc_loro_within_rows": {
+          "healthy vs any disease": 0.5923636363636363,
+          "RB label": 0.5697847067557535,
+          "LR label": 0.46223021582733814
+        }
+      }
+    },
+    "variety_loro_balanced_accuracy": 0.936758064516129
+  },
+  "effect_size_peaks": {
+    "Baco: healthy vs RB only": {
+      "max |d|": 0.22176390362591847,
+      "at nm": 402.9556579589844
+    },
+    "Baco: healthy vs LR only": {
+      "max |d|": 0.15508642809251727,
+      "at nm": 402.9556579589844
+    },
+    "Baco: healthy vs any disease": {
+      "max |d|": 0.18057665247340757,
+      "at nm": 402.9556579589844
+    },
+    "Chardonnay: healthy vs RB only": {
+      "max |d|": 0.37723570593117794,
+      "at nm": 707.38916015625
+    },
+    "Chardonnay: healthy vs LR only": {
+      "max |d|": 0.24112547838817644,
+      "at nm": 707.38916015625
+    },
+    "Chardonnay: healthy vs any disease": {
+      "max |d|": 0.35634630408697904,
+      "at nm": 707.38916015625
+    },
+    "variety: Baco vs Chardonnay": {
+      "max |d|": 4.510400441200633,
+      "at nm": 400.0
+    },
+    "variety: Baco vs Vidal": {
+      "max |d|": 4.829244369081033,
+      "at nm": 400.0
+    },
+    "variety: Chardonnay vs Vidal": {
+      "max |d|": 2.0456625960082917,
+      "at nm": 787.192138671875
+    },
+    "variety: Cab Franc vs Vidal": {
+      "max |d|": 0.7315954162378636,
+      "at nm": 553.694580078125
+    }
+  },
+  "glint_pixel_share": {
+    "mean": 0.2059664187682139,
+    "max": 0.9640916607606899
+  }
+}

@@ -1,0 +1,34 @@
+======================================================================
+
+A. Label prevalence per variety (this is the shortcut a model can learn)
+            red_blotch  leafroll3  any_disease
+variety                                       
+Baco              0.54       0.43         0.76
+Cab Franc         0.96       0.00         0.96
+Chardonnay        0.35       0.49         0.64
+Vidal             0.68       0.10         0.73
+
+B. Do neighbouring vines share labels?  AUC of 'mean label of the 2 nearest vines in the same row' as a predictor (0.5 = no clustering)
+   red_blotch  neighbour-label AUC within variety = 0.577
+   leafroll3   neighbour-label AUC within variety = 0.717
+
+C. Logistic regression on mean spectra: row-grouped CV (ours) vs LEAKY random CV
+   red_blotch  row-grouped     pooled AUC 0.740   within-variety AUC 0.527
+   red_blotch  random (leaky)  pooled AUC 0.748   within-variety AUC 0.525
+   leafroll3   row-grouped     pooled AUC 0.670   within-variety AUC 0.491
+   leafroll3   random (leaky)  pooled AUC 0.663   within-variety AUC 0.480
+
+D. Trivial properties as single predictors, within-variety AUC (0.5 = useless; <0.5 means higher value -> LESS disease)
+   leaf pixel count (area)        red_blotch 0.477   leafroll3 0.516
+   mean brightness (all bands)    red_blotch 0.508   leafroll3 0.524
+   mean NIR/red ratio             red_blotch 0.476   leafroll3 0.487
+
+E. Best single wavelengths (within-variety univariate AUC; figure saved)
+   red_blotch  top bands: 707nm (AUC 0.536), 710nm (AUC 0.536), 704nm (AUC 0.536), 557nm (AUC 0.535), 563nm (AUC 0.535)
+   leafroll3   top bands: 536nm (AUC 0.531), 542nm (AUC 0.530), 539nm (AUC 0.530), 545nm (AUC 0.530), 533nm (AUC 0.530)
+
+F. Logistic regression TRAINED AND TESTED INSIDE one variety (5-fold by row), mean spectra, AUC
+   red_blotch  Baco 0.542   Cab Franc n/a (too few of one class)   Chardonnay 0.609   Vidal 0.596
+   leafroll3   Baco 0.469   Cab Franc -   Chardonnay 0.523   Vidal 0.479
+
+======================================================================

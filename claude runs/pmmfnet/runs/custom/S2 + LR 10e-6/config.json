@@ -1,0 +1,64 @@
+{
+  "name": "S2 + LR 10e-6",
+  "description": "S2 with lr = 3 x 10e-6 = 3e-5 (3x the paper's 1e-5)",
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "seed": 0,
+  "deterministic": false,
+  "data": {
+    "scaler": "train"
+  },
+  "model": {
+    "channels": 32,
+    "p_kernels": [
+      7,
+      7,
+      4,
+      3,
+      3,
+      3
+    ],
+    "i_kernels": [
+      7,
+      5,
+      4,
+      3,
+      3,
+      3
+    ],
+    "d_kernels": [
+      5,
+      5,
+      5,
+      5,
+      4,
+      3
+    ]
+  },
+  "training": {
+    "objective": "patch",
+    "shuffle": true,
+    "lr": 3e-06,
+    "weight_decay": 0.0,
+    "batch_size": 256,
+    "samples_per_class": 100000,
+    "leaves_per_class": 2,
+    "patches_per_leaf": 32
+  },
+  "early_stopping": {
+    "metric": "balanced_accuracy",
+    "patience": 5,
+    "max_epochs": 50,
+    "min_delta": 0.0
+  },
+  "evaluation": {
+    "shuffle": true,
+    "val_patches_per_leaf": 256,
+    "test_patches_per_leaf": 0
+  }
+}

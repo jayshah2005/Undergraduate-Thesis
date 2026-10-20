@@ -1,0 +1,168 @@
+{
+  "best_epoch": 14,
+  "stopped_epoch": 19,
+  "best_val_balanced_accuracy": 0.4379059478197409,
+  "val_loss_at_best": 1.3762786388397217,
+  "restore_check": {
+    "val_loss": 1.3762786388397217,
+    "val_balanced_accuracy": 0.4379059478197409,
+    "matches": true
+  },
+  "optimizer_steps_per_epoch": 1562,
+  "patch_inputs_per_epoch": 399872,
+  "train_seconds": 941.4,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.2175550863776408,
+      "val_loss": 1.3171874284744263,
+      "val_balanced_accuracy": 0.35271848202882683,
+      "seconds": 49.6
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.1372174252010643,
+      "val_loss": 1.304476022720337,
+      "val_balanced_accuracy": 0.3717022441160372,
+      "seconds": 99.2
+    },
+    {
+      "epoch": 3,
+      "train_loss": 1.1074998687079864,
+      "val_loss": 1.3097196817398071,
+      "val_balanced_accuracy": 0.39196314541142124,
+      "seconds": 148.7
+    },
+    {
+      "epoch": 4,
+      "train_loss": 1.0772847311139564,
+      "val_loss": 1.2760893106460571,
+      "val_balanced_accuracy": 0.41921182266009854,
+      "seconds": 198.2
+    },
+    {
+      "epoch": 5,
+      "train_loss": 1.0542519700054018,
+      "val_loss": 1.3512935638427734,
+      "val_balanced_accuracy": 0.37479018427294297,
+      "seconds": 247.8
+    },
+    {
+      "epoch": 6,
+      "train_loss": 1.0347418986575705,
+      "val_loss": 1.3707923889160156,
+      "val_balanced_accuracy": 0.3607234081372013,
+      "seconds": 297.3
+    },
+    {
+      "epoch": 7,
+      "train_loss": 1.0162507471140765,
+      "val_loss": 1.3537670373916626,
+      "val_balanced_accuracy": 0.38321246122970265,
+      "seconds": 346.9
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.9985565693521927,
+      "val_loss": 1.3446412086486816,
+      "val_balanced_accuracy": 0.4226943076081007,
+      "seconds": 396.4
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.9803275329355394,
+      "val_loss": 1.380936622619629,
+      "val_balanced_accuracy": 0.36802134646962237,
+      "seconds": 445.9
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.9673821404099312,
+      "val_loss": 1.3425819873809814,
+      "val_balanced_accuracy": 0.4079479109651523,
+      "seconds": 495.5
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.9542443425646207,
+      "val_loss": 1.3857802152633667,
+      "val_balanced_accuracy": 0.42650976099251964,
+      "seconds": 545.0
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.9412955895886683,
+      "val_loss": 1.4564008712768555,
+      "val_balanced_accuracy": 0.3802134646962233,
+      "seconds": 594.5
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.9288908388184219,
+      "val_loss": 1.4976222515106201,
+      "val_balanced_accuracy": 0.34681399379675243,
+      "seconds": 644.1
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.9245510907240317,
+      "val_loss": 1.3762786388397217,
+      "val_balanced_accuracy": 0.4379059478197409,
+      "seconds": 693.6
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.9076162184399008,
+      "val_loss": 1.5121134519577026,
+      "val_balanced_accuracy": 0.4093778507571611,
+      "seconds": 743.2
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.8996181903209027,
+      "val_loss": 1.4372351169586182,
+      "val_balanced_accuracy": 0.43257161101988684,
+      "seconds": 792.7
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.8936351038582346,
+      "val_loss": 1.5838497877120972,
+      "val_balanced_accuracy": 0.382877212187557,
+      "seconds": 842.3
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.88098418056278,
+      "val_loss": 1.4897878170013428,
+      "val_balanced_accuracy": 0.36131864623243937,
+      "seconds": 891.8
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.870575771746959,
+      "val_loss": 1.517160415649414,
+      "val_balanced_accuracy": 0.36625843824119686,
+      "seconds": 941.4
+    }
+  ],
+  "test_fold": 4,
+  "validation_fold": 0,
+  "n_train_leaves": 598,
+  "n_validation_leaves": 200,
+  "n_test_leaves": 200,
+  "test_patches": 1276577,
+  "test_seconds": 51.9,
+  "scaler": {
+    "fitted_on": "train",
+    "n_leaves": 598,
+    "min": 0.008311460725963116,
+    "max": 1.6282051801681519
+  },
+  "seeds": {
+    "torch_numpy_python": 4,
+    "validation_patch_subset": 1,
+    "eval_permutations": null
+  },
+  "test_balanced_accuracy": 0.4528130399246821
+}

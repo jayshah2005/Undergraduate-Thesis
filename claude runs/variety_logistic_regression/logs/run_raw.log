@@ -1,0 +1,34 @@
+# Variety prediction with logistic regression (raw spectra)
+
+Leaf mean spectrum -> standardise -> multinomial logistic regression, C chosen inside each training split. 5 row folds; every leaf predicted by the model that never saw its row.
+
+**Balanced accuracy: 0.920** (95% CI 0.904-0.936; chance 0.25). Macro-F1: 0.920.
+
+Confusion matrix (rows = true variety, columns = predicted):
+
+| true \ predicted | Baco | Cab Franc | Chardonnay | Vidal | total |
+|---|---|---|---|---|---|
+| **Baco** | 238 | 0 | 1 | 9 | 248 |
+| **Cab Franc** | 0 | 208 | 8 | 34 | 250 |
+| **Chardonnay** | 1 | 7 | 235 | 7 | 250 |
+| **Vidal** | 0 | 11 | 2 | 237 | 250 |
+
+| variety | precision | recall | F1 | n | ROC AUC (one vs rest) |
+|---|---|---|---|---|---|
+| Baco | 0.996 | 0.960 | 0.977 | 248 | 0.997 |
+| Cab Franc | 0.920 | 0.832 | 0.874 | 250 | 0.988 |
+| Chardonnay | 0.955 | 0.940 | 0.948 | 250 | 0.993 |
+| Vidal | 0.826 | 0.948 | 0.883 | 250 | 0.983 |
+
+## Per fold (held-out row)
+
+| test row | chosen C | test leaves | balanced accuracy |
+|---|---|---|---|
+| R1 | 0.1 | 200 | 0.820 |
+| R2 | 0.1 | 200 | 0.875 |
+| R3 | 100 | 198 | 0.990 |
+| R4 | 100 | 200 | 0.965 |
+| R5 | 100 | 200 | 0.950 |
+
+Caveat: 'variety' also carries anything acquired together with it (imaging day, lighting, leaf handling), so a high score shows the spectra separate the varieties, not that cultivar biology alone is the cause.
+

@@ -1,0 +1,53 @@
+  50/998 leaves  (4s)
+  100/998 leaves  (7s)
+  150/998 leaves  (11s)
+  200/998 leaves  (15s)
+  250/998 leaves  (18s)
+  300/998 leaves  (20s)
+  350/998 leaves  (21s)
+  400/998 leaves  (23s)
+  450/998 leaves  (24s)
+  500/998 leaves  (25s)
+  550/998 leaves  (27s)
+  600/998 leaves  (29s)
+  650/998 leaves  (30s)
+  700/998 leaves  (32s)
+  750/998 leaves  (34s)
+  800/998 leaves  (36s)
+  850/998 leaves  (38s)
+  900/998 leaves  (40s)
+  950/998 leaves  (42s)
+  998/998 leaves  (45s)
+
+=== sanity checks ===
+leaves: 998   leaf pixels in total: 7,696,538
+pixels per leaf: min 1021, median 6737, max 23608
+pixels that were zero in SOME but not ALL bands: 0 (0 means the 'nonzero = leaf' rule is clean)
+NaN values replaced by 0: 0
+leaves larger than 128px (shrunk to fit): 252
+
+positives per FOLD (rows = fold, so every fold holds all 4 varieties):
+      red_blotch  leafroll3  any_disease
+fold                                    
+0            143         63          171
+1            127         64          163
+2            127         56          159
+3            120         28          134
+4            116         44          145
+
+healthy / total per variety:
+variety
+Baco          59 / 248
+Cab Franc      9 / 250
+Chardonnay    90 / 250
+Vidal         68 / 250
+dtype: str
+
+leafroll positives per (variety, fold) - a 0 here means that fold has no positive for that variety:
+fold         0   1   2   3   4
+variety                       
+Baco        29  27  20  10  21
+Chardonnay  27  31  33  10  21
+Vidal        7   6   2   8   2
+
+Done in 49s. Cache in /home/jay/Desktop/CODE/Classification/experiments/cache

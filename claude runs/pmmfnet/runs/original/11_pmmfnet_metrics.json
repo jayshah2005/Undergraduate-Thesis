@@ -1,0 +1,775 @@
+{
+  "config": {
+    "lr": 1e-05,
+    "batch": 256,
+    "K per class": 100000,
+    "max epochs": 50,
+    "patience": 5,
+    "channels": 32,
+    "bands": "204 zero-filled to 208",
+    "folds": "0,1,2,3,4"
+  },
+  "classes": [
+    "healthy",
+    "red_blotch_only",
+    "leafroll_only",
+    "both"
+  ],
+  "metrics": {
+    "four_class": {
+      "n": 998,
+      "class_counts": {
+        "healthy": 226,
+        "red_blotch_only": 517,
+        "leafroll_only": 139,
+        "both": 116
+      },
+      "confusion": [
+        [
+          44,
+          64,
+          81,
+          37
+        ],
+        [
+          98,
+          304,
+          51,
+          64
+        ],
+        [
+          32,
+          11,
+          72,
+          24
+        ],
+        [
+          18,
+          13,
+          51,
+          34
+        ]
+      ],
+      "balanced_accuracy": 0.39844676555432157,
+      "auc_ovr": {
+        "healthy": {
+          "pooled": 0.5394160667614287,
+          "within_variety": 0.4958126144988223
+        },
+        "red_blotch_only": {
+          "pooled": 0.8003233109616088,
+          "within_variety": 0.5336801387221556
+        },
+        "leafroll_only": {
+          "pooled": 0.7285282367819365,
+          "within_variety": 0.5157769398690216
+        },
+        "both": {
+          "pooled": 0.6650735006646337,
+          "within_variety": 0.5115401686640035
+        }
+      },
+      "auc_ovr_mean": {
+        "pooled": 0.683335278792402,
+        "within_variety": 0.5142024654385007
+      }
+    },
+    "per_disease": {
+      "red_blotch": {
+        "n": 998,
+        "positives": 633,
+        "confusion": {
+          "tn": 229,
+          "fp": 136,
+          "fn": 218,
+          "tp": 415
+        },
+        "balanced_accuracy": 0.6415027375619469,
+        "auc_pooled": 0.7088835508234327,
+        "auc_within_variety": 0.5580839685971101
+      },
+      "leafroll3": {
+        "n": 748,
+        "positives": 254,
+        "confusion": {
+          "tn": 269,
+          "fp": 225,
+          "fn": 73,
+          "tp": 181
+        },
+        "balanced_accuracy": 0.628566419076158,
+        "auc_pooled": 0.6496620867735663,
+        "auc_within_variety": 0.48741007194244607
+      },
+      "any_disease": {
+        "n": 998,
+        "positives": 772,
+        "confusion": {
+          "tn": 44,
+          "fp": 182,
+          "fn": 148,
+          "tp": 624
+        },
+        "balanced_accuracy": 0.5014902104635701,
+        "auc_pooled": 0.5394160667614287,
+        "auc_within_variety": 0.4958126144988223
+      }
+    },
+    "per_variety": {
+      "Baco": {
+        "four_class": {
+          "n": 248,
+          "class_counts": {
+            "healthy": 59,
+            "red_blotch_only": 82,
+            "leafroll_only": 54,
+            "both": 53
+          },
+          "confusion": [
+            [
+              2,
+              1,
+              33,
+              23
+            ],
+            [
+              17,
+              1,
+              31,
+              33
+            ],
+            [
+              14,
+              0,
+              27,
+              13
+            ],
+            [
+              7,
+              1,
+              22,
+              23
+            ]
+          ],
+          "balanced_accuracy": 0.24501392279672718,
+          "auc_ovr": {
+            "healthy": {
+              "pooled": 0.3721639314859654,
+              "within_variety": 0.4008810572687225
+            },
+            "red_blotch_only": {
+              "pooled": 0.5351160740523068,
+              "within_variety": 0.5517368810051737
+            },
+            "leafroll_only": {
+              "pooled": 0.488545246277205,
+              "within_variety": 0.5276953511374877
+            },
+            "both": {
+              "pooled": 0.5096274794388002,
+              "within_variety": 0.5322819122720552
+            }
+          },
+          "auc_ovr_mean": {
+            "pooled": 0.4763631828135694,
+            "within_variety": 0.5031488004208597
+          }
+        },
+        "per_disease": {
+          "red_blotch": {
+            "n": 248,
+            "positives": 135,
+            "confusion": {
+              "tn": 76,
+              "fp": 37,
+              "fn": 77,
+              "tp": 58
+            },
+            "balanced_accuracy": 0.5510980006555228,
+            "auc_pooled": 0.5378564405113078,
+            "auc_within_variety": 0.5380019913707268
+          },
+          "leafroll3": {
+            "n": 248,
+            "positives": 107,
+            "confusion": {
+              "tn": 21,
+              "fp": 120,
+              "fn": 22,
+              "tp": 85
+            },
+            "balanced_accuracy": 0.47166434678862595,
+            "auc_pooled": 0.4208921588122224,
+            "auc_within_variety": 0.4512325830653805
+          },
+          "any_disease": {
+            "n": 248,
+            "positives": 189,
+            "confusion": {
+              "tn": 2,
+              "fp": 57,
+              "fn": 38,
+              "tp": 151
+            },
+            "balanced_accuracy": 0.41642005201327237,
+            "auc_pooled": 0.3721639314859654,
+            "auc_within_variety": 0.4008810572687225
+          }
+        }
+      },
+      "Cab Franc": {
+        "four_class": {
+          "n": 250,
+          "class_counts": {
+            "healthy": 9,
+            "red_blotch_only": 240,
+            "leafroll_only": 0,
+            "both": 1
+          },
+          "confusion": [
+            [
+              2,
+              6,
+              1,
+              0
+            ],
+            [
+              55,
+              178,
+              6,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ]
+          ],
+          "balanced_accuracy": 0.3212962962962963,
+          "auc_ovr": {
+            "healthy": {
+              "pooled": 0.5195942830797603,
+              "within_variety": 0.6589327146171694
+            },
+            "red_blotch_only": {
+              "pooled": 0.4775,
+              "within_variety": 0.6008403361344538
+            },
+            "leafroll_only": {
+              "pooled": NaN,
+              "within_variety": NaN
+            },
+            "both": {
+              "pooled": 0.14056224899598393,
+              "within_variety": 0.22448979591836735
+            }
+          },
+          "auc_ovr_mean": {
+            "pooled": 0.379218844025248,
+            "within_variety": 0.4947542822233302
+          }
+        },
+        "per_disease": {
+          "red_blotch": {
+            "n": 250,
+            "positives": 241,
+            "confusion": {
+              "tn": 3,
+              "fp": 6,
+              "fn": 61,
+              "tp": 180
+            },
+            "balanced_accuracy": 0.5401106500691563,
+            "auc_pooled": 0.49930843706777317,
+            "auc_within_variety": 0.617169373549884
+          },
+          "any_disease": {
+            "n": 250,
+            "positives": 241,
+            "confusion": {
+              "tn": 2,
+              "fp": 7,
+              "fn": 55,
+              "tp": 186
+            },
+            "balanced_accuracy": 0.49700322729368374,
+            "auc_pooled": 0.5195942830797603,
+            "auc_within_variety": 0.6589327146171694
+          }
+        }
+      },
+      "Chardonnay": {
+        "four_class": {
+          "n": 250,
+          "class_counts": {
+            "healthy": 90,
+            "red_blotch_only": 38,
+            "leafroll_only": 72,
+            "both": 50
+          },
+          "confusion": [
+            [
+              32,
+              0,
+              47,
+              11
+            ],
+            [
+              12,
+              0,
+              14,
+              12
+            ],
+            [
+              16,
+              0,
+              45,
+              11
+            ],
+            [
+              7,
+              3,
+              29,
+              11
+            ]
+          ],
+          "balanced_accuracy": 0.3001388888888889,
+          "auc_ovr": {
+            "healthy": {
+              "pooled": 0.5695138888888889,
+              "within_variety": 0.5316363636363637
+            },
+            "red_blotch_only": {
+              "pooled": 0.5633068520357497,
+              "within_variety": 0.5596816976127321
+            },
+            "leafroll_only": {
+              "pooled": 0.5429151061173533,
+              "within_variety": 0.5182572614107884
+            },
+            "both": {
+              "pooled": 0.496,
+              "within_variety": 0.49142550911039656
+            }
+          },
+          "auc_ovr_mean": {
+            "pooled": 0.542933961760498,
+            "within_variety": 0.5252502079425702
+          }
+        },
+        "per_disease": {
+          "red_blotch": {
+            "n": 250,
+            "positives": 88,
+            "confusion": {
+              "tn": 140,
+              "fp": 22,
+              "fn": 62,
+              "tp": 26
+            },
+            "balanced_accuracy": 0.5798260381593715,
+            "auc_pooled": 0.6070426487093153,
+            "auc_within_variety": 0.6020786933927246
+          },
+          "leafroll3": {
+            "n": 250,
+            "positives": 122,
+            "confusion": {
+              "tn": 44,
+              "fp": 84,
+              "fn": 26,
+              "tp": 96
+            },
+            "balanced_accuracy": 0.5653176229508197,
+            "auc_pooled": 0.5377177254098361,
+            "auc_within_variety": 0.5061151079136691
+          },
+          "any_disease": {
+            "n": 250,
+            "positives": 160,
+            "confusion": {
+              "tn": 32,
+              "fp": 58,
+              "fn": 35,
+              "tp": 125
+            },
+            "balanced_accuracy": 0.5684027777777778,
+            "auc_pooled": 0.5695138888888889,
+            "auc_within_variety": 0.5316363636363637
+          }
+        }
+      },
+      "Vidal": {
+        "four_class": {
+          "n": 250,
+          "class_counts": {
+            "healthy": 68,
+            "red_blotch_only": 157,
+            "leafroll_only": 13,
+            "both": 12
+          },
+          "confusion": [
+            [
+              8,
+              57,
+              0,
+              3
+            ],
+            [
+              14,
+              125,
+              0,
+              18
+            ],
+            [
+              2,
+              11,
+              0,
+              0
+            ],
+            [
+              4,
+              8,
+              0,
+              0
+            ]
+          ],
+          "balanced_accuracy": 0.22845635069314352,
+          "auc_ovr": {
+            "healthy": {
+              "pooled": 0.5482385261797027,
+              "within_variety": 0.5062034739454094
+            },
+            "red_blotch_only": {
+              "pooled": 0.5314704472296418,
+              "within_variety": 0.49091556822230137
+            },
+            "leafroll_only": {
+              "pooled": 0.49756572541382665,
+              "within_variety": 0.46622734761120266
+            },
+            "both": {
+              "pooled": 0.5,
+              "within_variety": 0.5284697508896797
+            }
+          },
+          "auc_ovr_mean": {
+            "pooled": 0.5193186747057927,
+            "within_variety": 0.4979540351671483
+          }
+        },
+        "per_disease": {
+          "red_blotch": {
+            "n": 250,
+            "positives": 169,
+            "confusion": {
+              "tn": 10,
+              "fp": 71,
+              "fn": 18,
+              "tp": 151
+            },
+            "balanced_accuracy": 0.5084739571919059,
+            "auc_pooled": 0.5623493315801008,
+            "auc_within_variety": 0.5265937382119955
+          },
+          "leafroll3": {
+            "n": 250,
+            "positives": 25,
+            "confusion": {
+              "tn": 204,
+              "fp": 21,
+              "fn": 25,
+              "tp": 0
+            },
+            "balanced_accuracy": 0.4533333333333333,
+            "auc_pooled": 0.4935111111111111,
+            "auc_within_variety": 0.5324794144556267
+          },
+          "any_disease": {
+            "n": 250,
+            "positives": 182,
+            "confusion": {
+              "tn": 8,
+              "fp": 60,
+              "fn": 20,
+              "tp": 162
+            },
+            "balanced_accuracy": 0.5038784744667097,
+            "auc_pooled": 0.5482385261797027,
+            "auc_within_variety": 0.5062034739454094
+          }
+        }
+      }
+    }
+  },
+  "early_stopping": {
+    "0": {
+      "val_fold": 1,
+      "best_epoch": 1,
+      "stopped_epoch": 6,
+      "best_val_loss": 1.4071837663650513,
+      "val_balanced_accuracy_at_best": 0.31344818844818845,
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 1.1244409148427497,
+          "val_loss": 1.4071837663650513,
+          "val_balanced_accuracy": 0.31344818844818845
+        },
+        {
+          "epoch": 2,
+          "train_loss": 1.017790067821703,
+          "val_loss": 1.4342477321624756,
+          "val_balanced_accuracy": 0.34248127998128
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.9562343543683979,
+          "val_loss": 1.428882360458374,
+          "val_balanced_accuracy": 0.3534012909012909
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.9100586406400049,
+          "val_loss": 1.5127683877944946,
+          "val_balanced_accuracy": 0.346997971997972
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.8759419420464548,
+          "val_loss": 1.5149941444396973,
+          "val_balanced_accuracy": 0.31489118989118986
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.844420761518686,
+          "val_loss": 1.5915780067443848,
+          "val_balanced_accuracy": 0.3362437112437113
+        }
+      ]
+    },
+    "1": {
+      "val_fold": 2,
+      "best_epoch": 1,
+      "stopped_epoch": 6,
+      "best_val_loss": 1.2101428508758545,
+      "val_balanced_accuracy_at_best": 0.3958644510828977,
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 1.1897150056768167,
+          "val_loss": 1.2101428508758545,
+          "val_balanced_accuracy": 0.3958644510828977
+        },
+        {
+          "epoch": 2,
+          "train_loss": 1.0722449152478792,
+          "val_loss": 1.2255598306655884,
+          "val_balanced_accuracy": 0.3888629574309186
+        },
+        {
+          "epoch": 3,
+          "train_loss": 1.0099588118197824,
+          "val_loss": 1.2371159791946411,
+          "val_balanced_accuracy": 0.3852377396066717
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.960358721040733,
+          "val_loss": 1.2513551712036133,
+          "val_balanced_accuracy": 0.36690160567587754
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.9234555839118518,
+          "val_loss": 1.276300072669983,
+          "val_balanced_accuracy": 0.4224837409758527
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.8921861245598591,
+          "val_loss": 1.2570674419403076,
+          "val_balanced_accuracy": 0.39315331715210355
+        }
+      ]
+    },
+    "2": {
+      "val_fold": 3,
+      "best_epoch": 1,
+      "stopped_epoch": 6,
+      "best_val_loss": 1.3466702699661255,
+      "val_balanced_accuracy_at_best": 0.381544556072858,
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 1.1587668991577305,
+          "val_loss": 1.3466702699661255,
+          "val_balanced_accuracy": 0.381544556072858
+        },
+        {
+          "epoch": 2,
+          "train_loss": 1.0432228938260244,
+          "val_loss": 1.3888964653015137,
+          "val_balanced_accuracy": 0.3951135342644776
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.9801126985635403,
+          "val_loss": 1.4048430919647217,
+          "val_balanced_accuracy": 0.4091827983337417
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.9360676666533291,
+          "val_loss": 1.5553737878799438,
+          "val_balanced_accuracy": 0.28848117291513514
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.9011789241307219,
+          "val_loss": 1.4608690738677979,
+          "val_balanced_accuracy": 0.392479375969942
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.8712991282210307,
+          "val_loss": 1.5763063430786133,
+          "val_balanced_accuracy": 0.3188965122927387
+        }
+      ]
+    },
+    "3": {
+      "val_fold": 4,
+      "best_epoch": 2,
+      "stopped_epoch": 7,
+      "best_val_loss": 1.1460665464401245,
+      "val_balanced_accuracy_at_best": 0.5010428629069804,
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 1.161740663262244,
+          "val_loss": 1.212593913078308,
+          "val_balanced_accuracy": 0.41514841139286346
+        },
+        {
+          "epoch": 2,
+          "train_loss": 1.0576913518575943,
+          "val_loss": 1.1460665464401245,
+          "val_balanced_accuracy": 0.5010428629069804
+        },
+        {
+          "epoch": 3,
+          "train_loss": 1.001159355368718,
+          "val_loss": 1.1919338703155518,
+          "val_balanced_accuracy": 0.41975956216311283
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.959076748309459,
+          "val_loss": 1.1679545640945435,
+          "val_balanced_accuracy": 0.4926115025295633
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.9274825756742158,
+          "val_loss": 1.1683969497680664,
+          "val_balanced_accuracy": 0.43495090888399185
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.8998903086487676,
+          "val_loss": 1.1774811744689941,
+          "val_balanced_accuracy": 0.43689593097240753
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.87646562525008,
+          "val_loss": 1.178391695022583,
+          "val_balanced_accuracy": 0.5039681554362333
+        }
+      ]
+    },
+    "4": {
+      "val_fold": 0,
+      "best_epoch": 6,
+      "stopped_epoch": 11,
+      "best_val_loss": 1.2523998022079468,
+      "val_balanced_accuracy_at_best": 0.48898695493523076,
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 1.1712428445852674,
+          "val_loss": 1.2712228298187256,
+          "val_balanced_accuracy": 0.4248540412333516
+        },
+        {
+          "epoch": 2,
+          "train_loss": 1.064178662171895,
+          "val_loss": 1.2977614402770996,
+          "val_balanced_accuracy": 0.40896049990877575
+        },
+        {
+          "epoch": 3,
+          "train_loss": 1.0078318812019846,
+          "val_loss": 1.3297404050827026,
+          "val_balanced_accuracy": 0.38122605363984674
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.971923984425016,
+          "val_loss": 1.3137073516845703,
+          "val_balanced_accuracy": 0.42249361430395915
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.9430883507722471,
+          "val_loss": 1.3413925170898438,
+          "val_balanced_accuracy": 0.4115809158912607
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.9167605508762804,
+          "val_loss": 1.2523998022079468,
+          "val_balanced_accuracy": 0.48898695493523076
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.8964367816451264,
+          "val_loss": 1.3513365983963013,
+          "val_balanced_accuracy": 0.3899288451012589
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.8748297111325625,
+          "val_loss": 1.333929419517517,
+          "val_balanced_accuracy": 0.4882571611019887
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.8568439556908211,
+          "val_loss": 1.3586939573287964,
+          "val_balanced_accuracy": 0.4156791643860609
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.8388944618527929,
+          "val_loss": 1.3650712966918945,
+          "val_balanced_accuracy": 0.4171820835613939
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.8217862528509123,
+          "val_loss": 1.4150023460388184,
+          "val_balanced_accuracy": 0.4078087940156906
+        }
+      ]
+    }
+  }
+}

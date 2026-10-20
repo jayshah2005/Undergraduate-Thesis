@@ -1,0 +1,29 @@
+# Core scientific stack (H5 / spectra analysis)
+numpy>=1.26
+pandas>=2.1
+h5py>=3.10
+matplotlib>=3.8
+Pillow>=10.0           # decode preview_png blobs
+scikit-learn>=1.4
+pyarrow>=14.0          # parquet cache (mean_spectra.parquet)
+
+# Deep learning (CPU). For CUDA, see install note below.
+torch>=2.2
+torchvision>=0.17
+
+# Notebook / kernel
+ipykernel>=6.29
+jupyter>=1.0
+tqdm>=4.66
+
+# Optional but useful for H5 / array inspection
+seaborn>=0.13
+
+# Added for experiments/07_foundation_models.py (DOFA + DINOv2 transformers).
+# scipy is already pulled in by scikit-learn (used for Savitzky-Golay filtering).
+timm>=1.0
+
+# Added for claude runs/experiments/12_gmkl.py (graph-based multiple kernel learning):
+# attribute-profile filters (max-tree) and the DBSCAN superpixel loop.
+scikit-image>=0.24
+numba>=0.60

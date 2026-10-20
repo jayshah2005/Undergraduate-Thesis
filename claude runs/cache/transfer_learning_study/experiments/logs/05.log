@@ -1,0 +1,31 @@
+   [05_attention_mil f0] epoch   1/40  train loss 0.6805  (3s)
+   [05_attention_mil f0] epoch  10/40  train loss 0.6038  (26s)
+   [05_attention_mil f0] epoch  20/40  train loss 0.5883  (53s)
+   [05_attention_mil f0] epoch  30/40  train loss 0.5811  (79s)
+   [05_attention_mil f0] epoch  40/40  train loss 0.5717  (107s)
+[05_attention_mil] fold 0: n=200  AUC red_blotch=0.728  leafroll=0.636
+   [05_attention_mil f1] epoch   1/40  train loss 0.6692  (3s)
+   [05_attention_mil f1] epoch  10/40  train loss 0.5967  (27s)
+   [05_attention_mil f1] epoch  20/40  train loss 0.5866  (53s)
+   [05_attention_mil f1] epoch  30/40  train loss 0.5765  (78s)
+   [05_attention_mil f1] epoch  40/40  train loss 0.5766  (106s)
+[05_attention_mil] fold 1: n=200  AUC red_blotch=0.739  leafroll=0.712
+   [05_attention_mil f2] epoch   1/40  train loss 0.6667  (2s)
+   [05_attention_mil f2] epoch  10/40  train loss 0.6102  (26s)
+   [05_attention_mil f2] epoch  20/40  train loss 0.5946  (54s)
+   [05_attention_mil f2] epoch  30/40  train loss 0.5908  (82s)
+   [05_attention_mil f2] epoch  40/40  train loss 0.5839  (112s)
+[05_attention_mil] fold 2: n=198  AUC red_blotch=0.847  leafroll=0.733
+   [05_attention_mil f3] epoch   1/40  train loss 0.6147  (3s)
+   [05_attention_mil f3] epoch  10/40  train loss 0.5343  (30s)
+   [05_attention_mil f3] epoch  20/40  train loss 0.5229  (61s)
+   [05_attention_mil f3] epoch  30/40  train loss 0.5140  (91s)
+   [05_attention_mil f3] epoch  40/40  train loss 0.5135  (121s)
+[05_attention_mil] fold 3: n=200  AUC red_blotch=0.718  leafroll=0.580
+   [05_attention_mil f4] epoch   1/40  train loss 0.6397  (3s)
+   [05_attention_mil f4] epoch  10/40  train loss 0.5773  (32s)
+   [05_attention_mil f4] epoch  20/40  train loss 0.5698  (63s)
+   [05_attention_mil f4] epoch  30/40  train loss 0.5557  (91s)
+   [05_attention_mil f4] epoch  40/40  train loss 0.5597  (121s)
+[05_attention_mil] fold 4: n=200  AUC red_blotch=0.804  leafroll=0.712
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/05_attention_mil_oof.csv  (998 leaves)

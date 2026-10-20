@@ -1,0 +1,91 @@
+{
+  "best_epoch": 3,
+  "stopped_epoch": 8,
+  "best_val_balanced_accuracy": 0.45996306527204445,
+  "val_loss_at_best": 1.2418127059936523,
+  "restore_check": {
+    "val_loss": 1.2418127059936523,
+    "val_balanced_accuracy": 0.45996306527204445,
+    "matches": true
+  },
+  "optimizer_steps_per_epoch": 1562,
+  "patch_inputs_per_epoch": 399872,
+  "train_seconds": 396.4,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.2043963443301857,
+      "val_loss": 1.269325613975525,
+      "val_balanced_accuracy": 0.38463639467395017,
+      "seconds": 49.6
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.127595361765765,
+      "val_loss": 1.3218765258789062,
+      "val_balanced_accuracy": 0.35655306910001344,
+      "seconds": 99.2
+    },
+    {
+      "epoch": 3,
+      "train_loss": 1.0914539527648848,
+      "val_loss": 1.2418127059936523,
+      "val_balanced_accuracy": 0.45996306527204445,
+      "seconds": 148.8
+    },
+    {
+      "epoch": 4,
+      "train_loss": 1.0647135208266645,
+      "val_loss": 1.2614755630493164,
+      "val_balanced_accuracy": 0.40326256763607393,
+      "seconds": 198.3
+    },
+    {
+      "epoch": 5,
+      "train_loss": 1.0411829441671334,
+      "val_loss": 1.2879623174667358,
+      "val_balanced_accuracy": 0.4514929079114808,
+      "seconds": 247.8
+    },
+    {
+      "epoch": 6,
+      "train_loss": 1.020446933643766,
+      "val_loss": 1.3190946578979492,
+      "val_balanced_accuracy": 0.4384514313500316,
+      "seconds": 297.4
+    },
+    {
+      "epoch": 7,
+      "train_loss": 1.0053542133482714,
+      "val_loss": 1.370722770690918,
+      "val_balanced_accuracy": 0.3763550492980332,
+      "seconds": 346.9
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.9880737617287532,
+      "val_loss": 1.3486440181732178,
+      "val_balanced_accuracy": 0.41984491552603537,
+      "seconds": 396.4
+    }
+  ],
+  "test_fold": 3,
+  "validation_fold": 4,
+  "n_train_leaves": 598,
+  "n_validation_leaves": 200,
+  "n_test_leaves": 200,
+  "test_patches": 1364574,
+  "test_seconds": 55.5,
+  "scaler": {
+    "fitted_on": "train",
+    "n_leaves": 598,
+    "min": 0.007275667041540146,
+    "max": 2.8843536376953125
+  },
+  "seeds": {
+    "torch_numpy_python": 3,
+    "validation_patch_subset": 1,
+    "eval_permutations": null
+  },
+  "test_balanced_accuracy": 0.36468798497100385
+}

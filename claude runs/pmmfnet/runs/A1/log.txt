@@ -1,0 +1,138 @@
+/home/jay/Desktop/CODE/Classification/claude runs/pmmfnet/11_pmmfnet.py:146: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)
+  out[s:s + chunk] = torch.from_numpy(np.ascontiguousarray(px[s:s + chunk])).to(device)
+A1: original configuration, balanced-accuracy checkpoint selection  {'scaler': 'train+val', 'train_shuffle': True, 'eval_shuffle': False, 'objective': 'patch', 'what': 'original configuration, balanced-accuracy checkpoint selection'}
+fold 0: 598 train / 200 validation (fold 1) / 200 test leaves; scaler on train+val (798 leaves) [0.0077, 1.6282]
+   [A1 f0] epoch   1  train loss 1.1242  val loss 1.4034  val bal.acc 0.329  *best*  (51s)
+   [A1 f0] epoch   2  train loss 1.0161  val loss 1.4442  val bal.acc 0.342  *best*  (100s)
+   [A1 f0] epoch   3  train loss 0.9552  val loss 1.4288  val bal.acc 0.362  *best*  (150s)
+   [A1 f0] epoch   4  train loss 0.9089  val loss 1.4942  val bal.acc 0.357  (no gain 1/5)  (199s)
+   [A1 f0] epoch   5  train loss 0.8752  val loss 1.5002  val bal.acc 0.362  (no gain 2/5)  (249s)
+   [A1 f0] epoch   6  train loss 0.8436  val loss 1.5649  val bal.acc 0.349  (no gain 3/5)  (298s)
+   [A1 f0] epoch   7  train loss 0.8179  val loss 1.5360  val bal.acc 0.303  (no gain 4/5)  (347s)
+   [A1 f0] epoch   8  train loss 0.7957  val loss 1.5658  val bal.acc 0.282  (no gain 5/5)  (397s)
+   [A1 f0] restored epoch 3 (val bal.acc 0.362, val loss 1.4288); stopped after epoch 8
+[A1] fold 0: test 4-class bal.acc 0.345 (best epoch 3, 6.6 min training)
+fold 1: 600 train / 198 validation (fold 2) / 200 test leaves; scaler on train+val (798 leaves) [0.0073, 2.8844]
+   [A1 f1] epoch   1  train loss 1.1901  val loss 1.2088  val bal.acc 0.416  *best*  (50s)
+   [A1 f1] epoch   2  train loss 1.0714  val loss 1.2306  val bal.acc 0.400  (no gain 1/5)  (99s)
+   [A1 f1] epoch   3  train loss 1.0086  val loss 1.2383  val bal.acc 0.388  (no gain 2/5)  (149s)
+   [A1 f1] epoch   4  train loss 0.9591  val loss 1.2652  val bal.acc 0.377  (no gain 3/5)  (198s)
+   [A1 f1] epoch   5  train loss 0.9218  val loss 1.2643  val bal.acc 0.409  (no gain 4/5)  (248s)
+   [A1 f1] epoch   6  train loss 0.8899  val loss 1.2470  val bal.acc 0.410  (no gain 5/5)  (297s)
+   [A1 f1] restored epoch 1 (val bal.acc 0.416, val loss 1.2088); stopped after epoch 6
+[A1] fold 1: test 4-class bal.acc 0.374 (best epoch 1, 5.0 min training)
+fold 2: 600 train / 200 validation (fold 3) / 198 test leaves; scaler on train+val (800 leaves) [0.0073, 2.8844]
+   [A1 f2] epoch   1  train loss 1.1591  val loss 1.5084  val bal.acc 0.293  *best*  (50s)
+   [A1 f2] epoch   2  train loss 1.0442  val loss 1.3812  val bal.acc 0.356  *best*  (99s)
+   [A1 f2] epoch   3  train loss 0.9816  val loss 1.3492  val bal.acc 0.399  *best*  (149s)
+   [A1 f2] epoch   4  train loss 0.9374  val loss 1.3635  val bal.acc 0.399  (no gain 1/5)  (198s)
+   [A1 f2] epoch   5  train loss 0.9023  val loss 1.4162  val bal.acc 0.381  (no gain 2/5)  (248s)
+   [A1 f2] epoch   6  train loss 0.8724  val loss 1.4504  val bal.acc 0.416  *best*  (297s)
+   [A1 f2] epoch   7  train loss 0.8475  val loss 1.5732  val bal.acc 0.380  (no gain 1/5)  (347s)
+   [A1 f2] epoch   8  train loss 0.8243  val loss 1.4713  val bal.acc 0.378  (no gain 2/5)  (397s)
+   [A1 f2] epoch   9  train loss 0.8044  val loss 1.5076  val bal.acc 0.358  (no gain 3/5)  (446s)
+   [A1 f2] epoch  10  train loss 0.7888  val loss 1.5893  val bal.acc 0.342  (no gain 4/5)  (496s)
+   [A1 f2] epoch  11  train loss 0.7751  val loss 1.4438  val bal.acc 0.372  (no gain 5/5)  (545s)
+   [A1 f2] restored epoch 6 (val bal.acc 0.416, val loss 1.4504); stopped after epoch 11
+[A1] fold 2: test 4-class bal.acc 0.465 (best epoch 6, 9.1 min training)
+fold 3: 598 train / 200 validation (fold 4) / 200 test leaves; scaler on train+val (798 leaves) [0.0073, 2.8844]
+   [A1 f3] epoch   1  train loss 1.1616  val loss 1.2050  val bal.acc 0.425  *best*  (50s)
+   [A1 f3] epoch   2  train loss 1.0576  val loss 1.1447  val bal.acc 0.515  *best*  (99s)
+   [A1 f3] epoch   3  train loss 1.0008  val loss 1.1874  val bal.acc 0.422  (no gain 1/5)  (149s)
+   [A1 f3] epoch   4  train loss 0.9586  val loss 1.1635  val bal.acc 0.494  (no gain 2/5)  (198s)
+   [A1 f3] epoch   5  train loss 0.9274  val loss 1.1352  val bal.acc 0.436  (no gain 3/5)  (248s)
+   [A1 f3] epoch   6  train loss 0.9000  val loss 1.1679  val bal.acc 0.422  (no gain 4/5)  (298s)
+   [A1 f3] epoch   7  train loss 0.8771  val loss 1.1668  val bal.acc 0.491  (no gain 5/5)  (347s)
+   [A1 f3] restored epoch 2 (val bal.acc 0.515, val loss 1.1447); stopped after epoch 7
+[A1] fold 3: test 4-class bal.acc 0.355 (best epoch 2, 5.8 min training)
+fold 4: 598 train / 200 validation (fold 0) / 200 test leaves; scaler on train+val (798 leaves) [0.0073, 2.8844]
+   [A1 f4] epoch   1  train loss 1.1714  val loss 1.2698  val bal.acc 0.405  *best*  (50s)
+   [A1 f4] epoch   2  train loss 1.0644  val loss 1.4035  val bal.acc 0.378  (no gain 1/5)  (99s)
+   [A1 f4] epoch   3  train loss 1.0077  val loss 1.2785  val bal.acc 0.453  *best*  (149s)
+   [A1 f4] epoch   4  train loss 0.9708  val loss 1.3156  val bal.acc 0.424  (no gain 1/5)  (198s)
+   [A1 f4] epoch   5  train loss 0.9407  val loss 1.3331  val bal.acc 0.424  (no gain 2/5)  (248s)
+   [A1 f4] epoch   6  train loss 0.9146  val loss 1.2834  val bal.acc 0.433  (no gain 3/5)  (297s)
+   [A1 f4] epoch   7  train loss 0.8942  val loss 1.3315  val bal.acc 0.444  (no gain 4/5)  (347s)
+   [A1 f4] epoch   8  train loss 0.8730  val loss 1.3251  val bal.acc 0.485  *best*  (396s)
+   [A1 f4] epoch   9  train loss 0.8569  val loss 1.3147  val bal.acc 0.478  (no gain 1/5)  (446s)
+   [A1 f4] epoch  10  train loss 0.8395  val loss 1.3287  val bal.acc 0.452  (no gain 2/5)  (496s)
+   [A1 f4] epoch  11  train loss 0.8236  val loss 1.3596  val bal.acc 0.481  (no gain 3/5)  (545s)
+   [A1 f4] epoch  12  train loss 0.8109  val loss 1.3895  val bal.acc 0.430  (no gain 4/5)  (595s)
+   [A1 f4] epoch  13  train loss 0.7957  val loss 1.3245  val bal.acc 0.474  (no gain 5/5)  (644s)
+   [A1 f4] restored epoch 8 (val bal.acc 0.485, val loss 1.3251); stopped after epoch 13
+[A1] fold 4: test 4-class bal.acc 0.441 (best epoch 8, 10.7 min training)
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/pmmfnet/runs/A1/A1_oof.csv, _metrics.md and _metrics.json
+
+# PMMFNet controlled experiment A1 - original configuration, balanced-accuracy checkpoint selection
+
+Settings: experiment=A1, scaler=train+val, train_shuffle=True, eval_shuffle=False, objective=patch, lr=1e-05, batch=256, K per class=100000, max epochs=50, patience=5, val patches per leaf=256, channels=32, bands=204 zero-filled to 208, checkpoint=max val bal.acc, ties -> min val loss, folds=0,1,2,3,4
+
+Every leaf is predicted by the model of the fold that held out its row. Decisions = the most probable of the 4 classes. 'Within-variety' AUC compares leaves only with leaves of the same variety and fold (0.5 = chance); pooled AUC can be inflated by recognising the variety. Leafroll excludes Cab Franc (1 positive leaf).
+
+## 4 classes
+
+Balanced accuracy: **0.413** (chance = 0.25)
+
+Confusion matrix (rows = true class, columns = predicted class):
+
+| true \ predicted | healthy | RB only | LR only | both | total |
+|---|---|---|---|---|---|
+| **healthy** | 39 | 64 | 94 | 29 | 226 |
+| **RB only** | 70 | 337 | 54 | 56 | 517 |
+| **LR only** | 22 | 12 | 73 | 32 | 139 |
+| **both** | 15 | 19 | 47 | 35 | 116 |
+
+Macro-F1: **0.385**
+
+| class | precision | recall | F1 | n |
+|---|---|---|---|---|
+| healthy | 0.267 | 0.173 | 0.210 | 226 |
+| RB only | 0.780 | 0.652 | 0.710 | 517 |
+| LR only | 0.272 | 0.525 | 0.359 | 139 |
+| both | 0.230 | 0.302 | 0.261 | 116 |
+
+| class (one vs rest) | n | ROC AUC pooled | ROC AUC within-variety |
+|---|---|---|---|
+| healthy | 226 | 0.569 | 0.491 |
+| RB only | 517 | 0.805 | 0.523 |
+| LR only | 139 | 0.744 | 0.536 |
+| both | 116 | 0.672 | 0.498 |
+| **mean** | | 0.698 | 0.512 |
+
+## Per disease (derived from the 4-class output)
+
+| target | n (pos) | TN | FP | FN | TP | balanced acc. | ROC AUC pooled | ROC AUC within-variety |
+|---|---|---|---|---|---|---|---|---|
+| red_blotch | 998 (633) | 228 | 137 | 186 | 447 | 0.665 | 0.726 | 0.558 |
+| leafroll3 | 748 (254) | 269 | 225 | 67 | 187 | 0.640 | 0.666 | 0.482 |
+| any_disease | 998 (772) | 39 | 187 | 107 | 665 | 0.517 | 0.569 | 0.491 |
+
+## Per variety
+
+AUC here = within the variety, compared within folds. n/a = only one class present.
+
+| variety | n | 4-class bal. acc. | mean OvR AUC | RB bal. acc. | RB AUC | LR bal. acc. | LR AUC | any-disease bal. acc. | any-disease AUC |
+|---|---|---|---|---|---|---|---|---|---|
+| Baco | 248 | 0.276 | 0.512 | 0.595 | 0.536 | 0.471 | 0.484 | 0.490 | 0.460 |
+| Cab Franc | 250 | 0.356 | 0.519 | 0.592 | 0.580 | n/a | n/a | 0.549 | 0.606 |
+| Chardonnay | 250 | 0.275 | 0.517 | 0.564 | 0.610 | 0.540 | 0.462 | 0.526 | 0.476 |
+| Vidal | 250 | 0.245 | 0.496 | 0.515 | 0.527 | 0.480 | 0.525 | 0.521 | 0.513 |
+
+4-class confusion matrices per variety (rows = true, columns = predicted: healthy / RB only / LR only / both):
+
+- **Baco**: healthy -> [10, 0, 31, 18]; RB only -> [13, 3, 30, 36]; LR only -> [14, 0, 26, 14]; both -> [9, 3, 19, 22]
+- **Cab Franc**: healthy -> [2, 6, 1, 0]; RB only -> [30, 203, 6, 1]; LR only -> [0, 0, 0, 0]; both -> [0, 1, 0, 0]
+- **Chardonnay**: healthy -> [17, 0, 62, 11]; RB only -> [10, 0, 18, 10]; LR only -> [7, 0, 47, 18]; both -> [5, 4, 28, 13]
+- **Vidal**: healthy -> [10, 58, 0, 0]; RB only -> [17, 131, 0, 9]; LR only -> [1, 12, 0, 0]; both -> [1, 11, 0, 0]
+
+## Per fold
+
+| test fold | val fold | scaler [min, max] | best epoch | stopped | best val bal. acc. | val loss at best | test bal. acc. | train min |
+|---|---|---|---|---|---|---|---|---|
+| 0 | 1 | [0.0077, 1.6282] | 3 | 8 | 0.362 | 1.4288 | 0.345 | 6.6 |
+| 1 | 2 | [0.0073, 2.8844] | 1 | 6 | 0.416 | 1.2088 | 0.374 | 5.0 |
+| 2 | 3 | [0.0073, 2.8844] | 6 | 11 | 0.416 | 1.4504 | 0.465 | 9.1 |
+| 3 | 4 | [0.0073, 2.8844] | 2 | 7 | 0.515 | 1.1447 | 0.355 | 5.8 |
+| 4 | 0 | [0.0073, 2.8844] | 8 | 13 | 0.485 | 1.3251 | 0.441 | 10.7 |
+
+A1: total 41.9 min

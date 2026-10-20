@@ -1,0 +1,8 @@
+# Example: the best configuration of the controlled experiments (REPORT.md) - A2 without
+# the spatial shuffle. Settings not listed come from DEFAULTS in run_experiment.py; lr is pinned
+# here so the example still reproduces S1 if you change the default lr there.
+description = "A2 without spatial shuffle (= controlled S1)"
+
+[training]
+shuffle = false
+lr = 1e-5

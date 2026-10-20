@@ -1,0 +1,11 @@
+# S2 (shuffle in training + the fixed shuffle at validation/test) with a higher learning rate.
+# Settings not listed come from DEFAULTS in run_experiment.py (= controlled experiment A2).
+name = "S2 + LR 10e-4"                      # output folder: runs/custom/S2 + LR 10e-4/
+description = "S2 with lr = 3 x 10^-4 = 3e-4 (30x the paper's 1e-5)"
+
+[training]
+shuffle = true                              # spatial shuffle while training (the default; S2 keeps it)
+lr = 3e-4                                   # 3 x 10^-4 (TOML needs the number itself, not a formula)
+
+[evaluation]
+shuffle = true                              # what makes it S2: fixed per-patch shuffle at validation and test

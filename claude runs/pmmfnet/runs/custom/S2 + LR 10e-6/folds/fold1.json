@@ -1,0 +1,84 @@
+{
+  "best_epoch": 2,
+  "stopped_epoch": 7,
+  "best_val_balanced_accuracy": 0.4624506005725666,
+  "val_loss_at_best": 1.1840996742248535,
+  "restore_check": {
+    "val_loss": 1.1840996742248535,
+    "val_balanced_accuracy": 0.4624506005725666,
+    "matches": true
+  },
+  "optimizer_steps_per_epoch": 1562,
+  "patch_inputs_per_epoch": 399872,
+  "train_seconds": 356.9,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.261078935884483,
+      "val_loss": 1.1777501106262207,
+      "val_balanced_accuracy": 0.4251443085636047,
+      "seconds": 50.9
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.1674576489476634,
+      "val_loss": 1.1840996742248535,
+      "val_balanced_accuracy": 0.4624506005725666,
+      "seconds": 100.9
+    },
+    {
+      "epoch": 3,
+      "train_loss": 1.127046123509523,
+      "val_loss": 1.1937153339385986,
+      "val_balanced_accuracy": 0.40898836196166294,
+      "seconds": 152.8
+    },
+    {
+      "epoch": 4,
+      "train_loss": 1.097318407515405,
+      "val_loss": 1.199110746383667,
+      "val_balanced_accuracy": 0.4022513691809808,
+      "seconds": 203.7
+    },
+    {
+      "epoch": 5,
+      "train_loss": 1.0728340881582106,
+      "val_loss": 1.2019656896591187,
+      "val_balanced_accuracy": 0.4106414924072691,
+      "seconds": 254.5
+    },
+    {
+      "epoch": 6,
+      "train_loss": 1.0510991642325545,
+      "val_loss": 1.1961934566497803,
+      "val_balanced_accuracy": 0.39159742967388594,
+      "seconds": 305.4
+    },
+    {
+      "epoch": 7,
+      "train_loss": 1.0326053555887884,
+      "val_loss": 1.2270087003707886,
+      "val_balanced_accuracy": 0.42810243963156586,
+      "seconds": 356.9
+    }
+  ],
+  "test_fold": 1,
+  "validation_fold": 2,
+  "n_train_leaves": 600,
+  "n_validation_leaves": 198,
+  "n_test_leaves": 200,
+  "test_patches": 1337850,
+  "test_seconds": 55.1,
+  "scaler": {
+    "fitted_on": "train",
+    "n_leaves": 600,
+    "min": 0.007275667041540146,
+    "max": 2.8843536376953125
+  },
+  "seeds": {
+    "torch_numpy_python": 1,
+    "validation_patch_subset": 1,
+    "eval_permutations": 12345
+  },
+  "test_balanced_accuracy": 0.39624770874770876
+}

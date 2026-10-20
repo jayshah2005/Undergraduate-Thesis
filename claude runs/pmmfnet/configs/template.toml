@@ -1,0 +1,48 @@
+# PMMFNet run config - every setting with its default.
+# Copy this file, change what you want, delete the rest. Missing settings come from DEFAULTS in
+# run_experiment.py; as shipped those equal the values below, which reproduce controlled experiment
+# A2 (the paper's training with plan.md's protocol).
+#
+#   ../../.venv/bin/python -u run_experiment.py configs/my_run.toml --smoke   # ~1 min check first
+#   ../../.venv/bin/python -u run_experiment.py configs/my_run.toml           # 5 folds, ~40 min
+#
+# Not configurable: data, 4 classes, the 5 row folds (validation = row (k+1) mod 5), 5x5 patches,
+# 204 bands zero-filled to 208, Adam, bf16. The patch size is built into 11_pmmfnet.py and the
+# fixed evaluation-shuffle cache, so changing it means changing that pipeline, not a setting here.
+
+name = ""                     # output folder runs/custom/<name>; empty = this file's name
+description = ""              # free text, shown in the report and the summary
+folds = [0, 1, 2, 3, 4]       # test folds to run; e.g. [0] for a quick look (not comparable to 5 folds)
+seed = 0                      # fold k trains with seed + k; 0 = the seeds of the controlled experiments
+deterministic = false         # true = deterministic GPU kernels: slower, reruns closer to identical
+
+[data]
+scaler = "train"              # global min/max fitted on "train" leaves, or "train+val" (the original)
+
+[model]
+channels = 32                 # width of every conv layer
+p_kernels = [7, 7, 4, 3, 3, 3]  # P (NAM) branch conv kernel sizes; more/fewer entries = deeper/shallower
+i_kernels = [7, 5, 4, 3, 3, 3]  # I (CBAM) branch, every conv followed by CBAM
+d_kernels = [5, 5, 5, 5, 4, 3]  # D (GAM) branch
+
+[training]
+objective = "patch"           # "patch" = cross-entropy per patch; "leaf" = leaf-level MIL loss (L2)
+shuffle = true                # the paper's spatial shuffle of the 24 neighbours (false = S1)
+lr = 1e-5                     # Adam, constant
+weight_decay = 0.0            # Adam's L2 penalty
+batch_size = 256              # patch inputs per optimizer step
+samples_per_class = 100000    # patch inputs per class per epoch (an epoch = 4 x this)
+leaves_per_class = 2          # objective = "leaf" only: leaves per class in each step
+patches_per_leaf = 32         # objective = "leaf" only: patches per leaf; 4 x leaves x patches = batch_size
+
+[early_stopping]
+metric = "balanced_accuracy"  # checkpoint + stopping on leaf-level validation balanced accuracy
+                              # (exact ties -> lower val loss); or "loss" (the original pipeline)
+patience = 5                  # epochs without improvement of the metric
+max_epochs = 50
+min_delta = 0.0               # improvement needed to count (the original used 1e-4 with "loss")
+
+[evaluation]
+shuffle = false               # fixed per-patch neighbour shuffle at validation and test (S2)
+val_patches_per_leaf = 256    # fixed random subset per validation leaf (same every epoch); 0 = all
+test_patches_per_leaf = 0     # 0 = every interior patch of the test leaf

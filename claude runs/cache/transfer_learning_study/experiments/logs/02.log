@@ -1,0 +1,101 @@
+[Parallel(n_jobs=7)]: Using backend LokyBackend with 7 concurrent workers.
+[Parallel(n_jobs=7)]: Done   4 tasks      | elapsed:    0.6s
+[Parallel(n_jobs=7)]: Done  67 out of  80 | elapsed:   26.4s remaining:    5.1s
+[Parallel(n_jobs=7)]: Done  80 out of  80 | elapsed:  1.8min finished
+all fits finished in 109s
+[02_logreg__mean_raw] fold 0: n=200  AUC red_blotch=0.687  leafroll=0.649
+[02_logreg__mean_raw] fold 1: n=200  AUC red_blotch=0.707  leafroll=0.696
+[02_logreg__mean_raw] fold 2: n=198  AUC red_blotch=0.821  leafroll=0.704
+[02_logreg__mean_raw] fold 3: n=200  AUC red_blotch=0.684  leafroll=0.610
+[02_logreg__mean_raw] fold 4: n=200  AUC red_blotch=0.789  leafroll=0.690
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_logreg__mean_raw_oof.csv  (998 leaves)
+[02_svm__mean_raw] fold 0: n=200  AUC red_blotch=0.742  leafroll=0.684
+[02_svm__mean_raw] fold 1: n=200  AUC red_blotch=0.671  leafroll=0.707
+[02_svm__mean_raw] fold 2: n=198  AUC red_blotch=0.798  leafroll=0.683
+[02_svm__mean_raw] fold 3: n=200  AUC red_blotch=0.671  leafroll=0.545
+[02_svm__mean_raw] fold 4: n=200  AUC red_blotch=0.750  leafroll=0.721
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_svm__mean_raw_oof.csv  (998 leaves)
+[02_plsda__mean_raw] fold 0: n=200  AUC red_blotch=0.676  leafroll=0.691
+[02_plsda__mean_raw] fold 1: n=200  AUC red_blotch=0.711  leafroll=0.729
+[02_plsda__mean_raw] fold 2: n=198  AUC red_blotch=0.831  leafroll=0.727
+[02_plsda__mean_raw] fold 3: n=200  AUC red_blotch=0.696  leafroll=0.516
+[02_plsda__mean_raw] fold 4: n=200  AUC red_blotch=0.782  leafroll=0.726
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_plsda__mean_raw_oof.csv  (998 leaves)
+[02_hgb__mean_raw] fold 0: n=200  AUC red_blotch=0.700  leafroll=0.628
+[02_hgb__mean_raw] fold 1: n=200  AUC red_blotch=0.688  leafroll=0.676
+[02_hgb__mean_raw] fold 2: n=198  AUC red_blotch=0.776  leafroll=0.687
+[02_hgb__mean_raw] fold 3: n=200  AUC red_blotch=0.685  leafroll=0.494
+[02_hgb__mean_raw] fold 4: n=200  AUC red_blotch=0.740  leafroll=0.656
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_hgb__mean_raw_oof.csv  (998 leaves)
+[02_logreg__mean_snv] fold 0: n=200  AUC red_blotch=0.685  leafroll=0.646
+[02_logreg__mean_snv] fold 1: n=200  AUC red_blotch=0.722  leafroll=0.725
+[02_logreg__mean_snv] fold 2: n=198  AUC red_blotch=0.839  leafroll=0.724
+[02_logreg__mean_snv] fold 3: n=200  AUC red_blotch=0.700  leafroll=0.488
+[02_logreg__mean_snv] fold 4: n=200  AUC red_blotch=0.763  leafroll=0.715
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_logreg__mean_snv_oof.csv  (998 leaves)
+[02_svm__mean_snv] fold 0: n=200  AUC red_blotch=0.732  leafroll=0.623
+[02_svm__mean_snv] fold 1: n=200  AUC red_blotch=0.721  leafroll=0.669
+[02_svm__mean_snv] fold 2: n=198  AUC red_blotch=0.807  leafroll=0.725
+[02_svm__mean_snv] fold 3: n=200  AUC red_blotch=0.716  leafroll=0.555
+[02_svm__mean_snv] fold 4: n=200  AUC red_blotch=0.723  leafroll=0.616
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_svm__mean_snv_oof.csv  (998 leaves)
+[02_plsda__mean_snv] fold 0: n=200  AUC red_blotch=0.679  leafroll=0.670
+[02_plsda__mean_snv] fold 1: n=200  AUC red_blotch=0.704  leafroll=0.719
+[02_plsda__mean_snv] fold 2: n=198  AUC red_blotch=0.827  leafroll=0.748
+[02_plsda__mean_snv] fold 3: n=200  AUC red_blotch=0.691  leafroll=0.469
+[02_plsda__mean_snv] fold 4: n=200  AUC red_blotch=0.760  leafroll=0.739
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_plsda__mean_snv_oof.csv  (998 leaves)
+[02_hgb__mean_snv] fold 0: n=200  AUC red_blotch=0.709  leafroll=0.588
+[02_hgb__mean_snv] fold 1: n=200  AUC red_blotch=0.729  leafroll=0.685
+[02_hgb__mean_snv] fold 2: n=198  AUC red_blotch=0.760  leafroll=0.715
+[02_hgb__mean_snv] fold 3: n=200  AUC red_blotch=0.667  leafroll=0.532
+[02_hgb__mean_snv] fold 4: n=200  AUC red_blotch=0.744  leafroll=0.607
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_hgb__mean_snv_oof.csv  (998 leaves)
+[02_logreg__mean_deriv] fold 0: n=200  AUC red_blotch=0.687  leafroll=0.608
+[02_logreg__mean_deriv] fold 1: n=200  AUC red_blotch=0.728  leafroll=0.728
+[02_logreg__mean_deriv] fold 2: n=198  AUC red_blotch=0.840  leafroll=0.675
+[02_logreg__mean_deriv] fold 3: n=200  AUC red_blotch=0.706  leafroll=0.496
+[02_logreg__mean_deriv] fold 4: n=200  AUC red_blotch=0.735  leafroll=0.678
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_logreg__mean_deriv_oof.csv  (998 leaves)
+[02_svm__mean_deriv] fold 0: n=200  AUC red_blotch=0.738  leafroll=0.644
+[02_svm__mean_deriv] fold 1: n=200  AUC red_blotch=0.709  leafroll=0.694
+[02_svm__mean_deriv] fold 2: n=198  AUC red_blotch=0.816  leafroll=0.719
+[02_svm__mean_deriv] fold 3: n=200  AUC red_blotch=0.712  leafroll=0.557
+[02_svm__mean_deriv] fold 4: n=200  AUC red_blotch=0.783  leafroll=0.697
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_svm__mean_deriv_oof.csv  (998 leaves)
+[02_plsda__mean_deriv] fold 0: n=200  AUC red_blotch=0.695  leafroll=0.624
+[02_plsda__mean_deriv] fold 1: n=200  AUC red_blotch=0.725  leafroll=0.700
+[02_plsda__mean_deriv] fold 2: n=198  AUC red_blotch=0.835  leafroll=0.673
+[02_plsda__mean_deriv] fold 3: n=200  AUC red_blotch=0.696  leafroll=0.498
+[02_plsda__mean_deriv] fold 4: n=200  AUC red_blotch=0.695  leafroll=0.675
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_plsda__mean_deriv_oof.csv  (998 leaves)
+[02_hgb__mean_deriv] fold 0: n=200  AUC red_blotch=0.686  leafroll=0.577
+[02_hgb__mean_deriv] fold 1: n=200  AUC red_blotch=0.713  leafroll=0.723
+[02_hgb__mean_deriv] fold 2: n=198  AUC red_blotch=0.783  leafroll=0.746
+[02_hgb__mean_deriv] fold 3: n=200  AUC red_blotch=0.716  leafroll=0.514
+[02_hgb__mean_deriv] fold 4: n=200  AUC red_blotch=0.763  leafroll=0.713
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_hgb__mean_deriv_oof.csv  (998 leaves)
+[02_logreg__stats_raw] fold 0: n=200  AUC red_blotch=0.697  leafroll=0.683
+[02_logreg__stats_raw] fold 1: n=200  AUC red_blotch=0.751  leafroll=0.699
+[02_logreg__stats_raw] fold 2: n=198  AUC red_blotch=0.789  leafroll=0.685
+[02_logreg__stats_raw] fold 3: n=200  AUC red_blotch=0.681  leafroll=0.499
+[02_logreg__stats_raw] fold 4: n=200  AUC red_blotch=0.829  leafroll=0.655
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_logreg__stats_raw_oof.csv  (998 leaves)
+[02_svm__stats_raw] fold 0: n=200  AUC red_blotch=0.719  leafroll=0.685
+[02_svm__stats_raw] fold 1: n=200  AUC red_blotch=0.695  leafroll=0.725
+[02_svm__stats_raw] fold 2: n=198  AUC red_blotch=0.809  leafroll=0.727
+[02_svm__stats_raw] fold 3: n=200  AUC red_blotch=0.697  leafroll=0.475
+[02_svm__stats_raw] fold 4: n=200  AUC red_blotch=0.806  leafroll=0.675
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_svm__stats_raw_oof.csv  (998 leaves)
+[02_plsda__stats_raw] fold 0: n=200  AUC red_blotch=0.701  leafroll=0.666
+[02_plsda__stats_raw] fold 1: n=200  AUC red_blotch=0.725  leafroll=0.694
+[02_plsda__stats_raw] fold 2: n=198  AUC red_blotch=0.781  leafroll=0.657
+[02_plsda__stats_raw] fold 3: n=200  AUC red_blotch=0.681  leafroll=0.484
+[02_plsda__stats_raw] fold 4: n=200  AUC red_blotch=0.802  leafroll=0.617
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_plsda__stats_raw_oof.csv  (998 leaves)
+[02_hgb__stats_raw] fold 0: n=200  AUC red_blotch=0.722  leafroll=0.672
+[02_hgb__stats_raw] fold 1: n=200  AUC red_blotch=0.743  leafroll=0.731
+[02_hgb__stats_raw] fold 2: n=198  AUC red_blotch=0.780  leafroll=0.696
+[02_hgb__stats_raw] fold 3: n=200  AUC red_blotch=0.671  leafroll=0.483
+[02_hgb__stats_raw] fold 4: n=200  AUC red_blotch=0.795  leafroll=0.647
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/02_hgb__stats_raw_oof.csv  (998 leaves)

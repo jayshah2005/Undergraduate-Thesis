@@ -1,0 +1,6 @@
+[01_variety_prior] fold 0: n=200  AUC red_blotch=0.718  leafroll=0.682
+[01_variety_prior] fold 1: n=200  AUC red_blotch=0.740  leafroll=0.727
+[01_variety_prior] fold 2: n=198  AUC red_blotch=0.822  leafroll=0.797
+[01_variety_prior] fold 3: n=200  AUC red_blotch=0.729  leafroll=0.529
+[01_variety_prior] fold 4: n=200  AUC red_blotch=0.823  leafroll=0.704
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/01_variety_prior_oof.csv  (998 leaves)

@@ -1,0 +1,53 @@
+device: cuda
+   [04_pixel_mlp f0] epoch   1/15  train loss 0.6388  (1s)
+   [04_pixel_mlp f0] epoch   5/15  train loss 0.6156  (5s)
+   [04_pixel_mlp f0] epoch  10/15  train loss 0.6039  (9s)
+   [04_pixel_mlp f0] epoch  15/15  train loss 0.5975  (14s)
+[04_pixel_mlp] fold 0: n=200  AUC red_blotch=0.738  leafroll=0.647
+   [04_pixel_mlp f1] epoch   1/15  train loss 0.6366  (1s)
+   [04_pixel_mlp f1] epoch   5/15  train loss 0.6115  (5s)
+   [04_pixel_mlp f1] epoch  10/15  train loss 0.6008  (9s)
+   [04_pixel_mlp f1] epoch  15/15  train loss 0.5949  (14s)
+[04_pixel_mlp] fold 1: n=200  AUC red_blotch=0.709  leafroll=0.719
+   [04_pixel_mlp f2] epoch   1/15  train loss 0.6474  (1s)
+   [04_pixel_mlp f2] epoch   5/15  train loss 0.6225  (5s)
+   [04_pixel_mlp f2] epoch  10/15  train loss 0.6133  (9s)
+   [04_pixel_mlp f2] epoch  15/15  train loss 0.6084  (14s)
+[04_pixel_mlp] fold 2: n=198  AUC red_blotch=0.845  leafroll=0.741
+   [04_pixel_mlp f3] epoch   1/15  train loss 0.5821  (1s)
+   [04_pixel_mlp f3] epoch   5/15  train loss 0.5576  (5s)
+   [04_pixel_mlp f3] epoch  10/15  train loss 0.5475  (9s)
+   [04_pixel_mlp f3] epoch  15/15  train loss 0.5418  (14s)
+[04_pixel_mlp] fold 3: n=200  AUC red_blotch=0.735  leafroll=0.554
+   [04_pixel_mlp f4] epoch   1/15  train loss 0.6130  (1s)
+   [04_pixel_mlp f4] epoch   5/15  train loss 0.5915  (5s)
+   [04_pixel_mlp f4] epoch  10/15  train loss 0.5834  (9s)
+   [04_pixel_mlp f4] epoch  15/15  train loss 0.5777  (14s)
+[04_pixel_mlp] fold 4: n=200  AUC red_blotch=0.813  leafroll=0.711
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/04_pixel_mlp_oof.csv  (998 leaves)
+   [04_pixel_cnn1d f0] epoch   1/15  train loss 0.6303  (1s)
+   [04_pixel_cnn1d f0] epoch   5/15  train loss 0.5995  (5s)
+   [04_pixel_cnn1d f0] epoch  10/15  train loss 0.5908  (10s)
+   [04_pixel_cnn1d f0] epoch  15/15  train loss 0.5878  (15s)
+[04_pixel_cnn1d] fold 0: n=200  AUC red_blotch=0.737  leafroll=0.656
+   [04_pixel_cnn1d f1] epoch   1/15  train loss 0.6256  (1s)
+   [04_pixel_cnn1d f1] epoch   5/15  train loss 0.5961  (5s)
+   [04_pixel_cnn1d f1] epoch  10/15  train loss 0.5858  (10s)
+   [04_pixel_cnn1d f1] epoch  15/15  train loss 0.5835  (15s)
+[04_pixel_cnn1d] fold 1: n=200  AUC red_blotch=0.715  leafroll=0.716
+   [04_pixel_cnn1d f2] epoch   1/15  train loss 0.6361  (1s)
+   [04_pixel_cnn1d f2] epoch   5/15  train loss 0.6072  (5s)
+   [04_pixel_cnn1d f2] epoch  10/15  train loss 0.5983  (10s)
+   [04_pixel_cnn1d f2] epoch  15/15  train loss 0.5935  (15s)
+[04_pixel_cnn1d] fold 2: n=198  AUC red_blotch=0.849  leafroll=0.718
+   [04_pixel_cnn1d f3] epoch   1/15  train loss 0.5724  (1s)
+   [04_pixel_cnn1d f3] epoch   5/15  train loss 0.5428  (5s)
+   [04_pixel_cnn1d f3] epoch  10/15  train loss 0.5346  (10s)
+   [04_pixel_cnn1d f3] epoch  15/15  train loss 0.5300  (15s)
+[04_pixel_cnn1d] fold 3: n=200  AUC red_blotch=0.741  leafroll=0.546
+   [04_pixel_cnn1d f4] epoch   1/15  train loss 0.6039  (1s)
+   [04_pixel_cnn1d f4] epoch   5/15  train loss 0.5784  (5s)
+   [04_pixel_cnn1d f4] epoch  10/15  train loss 0.5701  (10s)
+   [04_pixel_cnn1d f4] epoch  15/15  train loss 0.5667  (15s)
+[04_pixel_cnn1d] fold 4: n=200  AUC red_blotch=0.813  leafroll=0.740
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/04_pixel_cnn1d_oof.csv  (998 leaves)

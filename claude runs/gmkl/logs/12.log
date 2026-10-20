@@ -1,0 +1,351 @@
+data, superpixels and leaf AS kernels ready (1s); r0 per scale: 2.8, 3.5, 4.1, 4.6, 5.1
+fold 0: attribute profiles (30s)
+/home/jay/Desktop/CODE/Classification/claude runs/experiments/gmkl.py:205: UserWarning: Sparse invariant checks are implicitly disabled. Memory errors (e.g. SEGFAULT) will occur when operating on a sparse tensor which violates the invariants, but checks incur performance overhead. To silence this warning, explicitly opt in or out. See `torch.sparse.check_sparse_tensor_invariants.__doc__` for guidance.  (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/Context.cpp:848.)
+  return torch.sparse_csr_tensor(torch.from_numpy(m.indptr).long(), torch.from_numpy(m.indices).long(),
+
+
+  [pixel] kernel spread p5/p50/p95: AS 105px s0.5 0.00/0.00/0.59; AS 105px s1.0 0.00/0.12/0.86; AS 70px s0.5 0.00/0.00/0.59; AS 70px s1.0 0.00/0.11/0.87; AS 53px s0.5 0.00/0.00/0.60; AS 53px s1.0 0.00/0.11/0.87; AS 42px s0.5 0.00/0.00/0.60; AS 42px s1.0 0.00/0.11/0.87; AS 35px s0.5 0.00/0.00/0.60; AS 35px s1.0 0.00/0.10/0.87; EAP 0.09/0.48/0.91
+  [pixel] BDR: {'iterations': 300, 'final_change': 0.0004070176511670742, 'converged': False, 'seconds': 35.7}
+  [pixel/pair] C=100  eta=[0.0, 0.23, 0.0, 0.22, 0.0, 0.18, 0.0, 0.16, 0.0, 0.2, 0.0]  predicted classes (prob argmax) [24, 97, 26, 53], (SVM decision) [35, 90, 24, 51]  test bal.acc (SVM decision) 0.399
+  [pixel/full] C=100  eta=[0.0, 0.23, 0.0, 0.22, 0.0, 0.18, 0.0, 0.16, 0.0, 0.21, 0.0]  predicted classes (prob argmax) [24, 97, 26, 53], (SVM decision) [35, 90, 24, 51]  test bal.acc (SVM decision) 0.399
+  [pixel] done in 321s
+
+
+  [leaf] kernel spread p5/p50/p95: AS 105px s0.5 0.00/0.01/0.60; AS 105px s1.0 0.00/0.19/0.86; AS 70px s0.5 0.00/0.01/0.62; AS 70px s1.0 0.00/0.19/0.87; AS 53px s0.5 0.00/0.00/0.63; AS 53px s1.0 0.00/0.18/0.88; AS 42px s0.5 0.00/0.00/0.64; AS 42px s1.0 0.00/0.18/0.88; AS 35px s0.5 0.00/0.00/0.65; AS 35px s1.0 0.00/0.18/0.89; EAP 0.17/0.60/0.95
+  [leaf] BDR: {'iterations': 300, 'final_change': 0.00011780835412287388, 'converged': False, 'seconds': 35.8}
+  [leaf/pair] C=100  eta=[0.0, 0.3, 0.0, 0.25, 0.08, 0.02, 0.0, 0.15, 0.2, 0.0, 0.0]  predicted classes (prob argmax) [69, 131, 0, 0], (SVM decision) [73, 67, 18, 42]  test bal.acc (SVM decision) 0.352
+  [leaf/full] C=100  eta=[0.0, 0.3, 0.0, 0.26, 0.08, 0.02, 0.0, 0.15, 0.19, 0.0, 0.0]  predicted classes (prob argmax) [69, 131, 0, 0], (SVM decision) [73, 67, 18, 42]  test bal.acc (SVM decision) 0.352
+  [leaf] done in 38s
+fold 1: attribute profiles (35s)
+
+
+  [pixel] kernel spread p5/p50/p95: AS 105px s0.5 0.00/0.00/0.59; AS 105px s1.0 0.00/0.11/0.86; AS 70px s0.5 0.00/0.00/0.59; AS 70px s1.0 0.00/0.11/0.87; AS 53px s0.5 0.00/0.00/0.60; AS 53px s1.0 0.00/0.10/0.87; AS 42px s0.5 0.00/0.00/0.60; AS 42px s1.0 0.00/0.10/0.87; AS 35px s0.5 0.00/0.00/0.60; AS 35px s1.0 0.00/0.10/0.88; EAP 0.09/0.48/0.91
+  [pixel] BDR: {'iterations': 300, 'final_change': 0.00044670937032142977, 'converged': False, 'seconds': 35.0}
+  [pixel/pair] C=100  eta=[0.0, 0.26, 0.0, 0.16, 0.0, 0.15, 0.0, 0.22, 0.0, 0.2, 0.0]  predicted classes (prob argmax) [21, 92, 51, 36], (SVM decision) [26, 89, 52, 33]  test bal.acc (SVM decision) 0.438
+  [pixel/full] C=100  eta=[0.0, 0.26, 0.0, 0.16, 0.0, 0.15, 0.0, 0.22, 0.0, 0.2, 0.0]  predicted classes (prob argmax) [21, 92, 51, 36], (SVM decision) [26, 89, 52, 33]  test bal.acc (SVM decision) 0.438
+  [pixel] done in 316s
+
+
+  [leaf] kernel spread p5/p50/p95: AS 105px s0.5 0.00/0.01/0.60; AS 105px s1.0 0.00/0.19/0.86; AS 70px s0.5 0.00/0.01/0.62; AS 70px s1.0 0.00/0.19/0.87; AS 53px s0.5 0.00/0.01/0.63; AS 53px s1.0 0.00/0.19/0.88; AS 42px s0.5 0.00/0.00/0.64; AS 42px s1.0 0.00/0.18/0.88; AS 35px s0.5 0.00/0.00/0.65; AS 35px s1.0 0.00/0.18/0.89; EAP 0.17/0.61/0.95
+  [leaf] BDR: {'iterations': 300, 'final_change': 0.00012902539483433673, 'converged': False, 'seconds': 59.5}
+  [leaf/pair] C=100  eta=[0.0, 0.44, 0.0, 0.26, 0.13, 0.0, 0.0, 0.08, 0.06, 0.02, 0.0]  predicted classes (prob argmax) [47, 153, 0, 0], (SVM decision) [36, 81, 47, 36]  test bal.acc (SVM decision) 0.398
+  [leaf/full] C=100  eta=[0.0, 0.44, 0.0, 0.27, 0.13, 0.0, 0.0, 0.08, 0.06, 0.02, 0.0]  predicted classes (prob argmax) [47, 153, 0, 0], (SVM decision) [36, 81, 47, 36]  test bal.acc (SVM decision) 0.398
+  [leaf] done in 62s
+fold 2: attribute profiles (33s)
+
+
+  [pixel] kernel spread p5/p50/p95: AS 105px s0.5 0.00/0.00/0.60; AS 105px s1.0 0.00/0.12/0.87; AS 70px s0.5 0.00/0.00/0.61; AS 70px s1.0 0.00/0.11/0.88; AS 53px s0.5 0.00/0.00/0.62; AS 53px s1.0 0.00/0.11/0.88; AS 42px s0.5 0.00/0.00/0.62; AS 42px s1.0 0.00/0.11/0.88; AS 35px s0.5 0.00/0.00/0.62; AS 35px s1.0 0.00/0.11/0.88; EAP 0.09/0.48/0.91
+  [pixel] BDR: {'iterations': 300, 'final_change': 0.0004777272645825059, 'converged': False, 'seconds': 61.7}
+  [pixel/pair] C=100  eta=[0.0, 0.24, 0.0, 0.2, 0.0, 0.19, 0.0, 0.18, 0.0, 0.19, 0.0]  predicted classes (prob argmax) [25, 96, 44, 33], (SVM decision) [42, 93, 38, 25]  test bal.acc (SVM decision) 0.415
+  [pixel/full] C=100  eta=[0.0, 0.24, 0.0, 0.2, 0.0, 0.19, 0.0, 0.18, 0.0, 0.19, 0.0]  predicted classes (prob argmax) [25, 96, 44, 33], (SVM decision) [42, 93, 38, 25]  test bal.acc (SVM decision) 0.415
+  [pixel] done in 364s
+
+
+  [leaf] kernel spread p5/p50/p95: AS 105px s0.5 0.00/0.01/0.62; AS 105px s1.0 0.00/0.20/0.87; AS 70px s0.5 0.00/0.01/0.64; AS 70px s1.0 0.00/0.20/0.88; AS 53px s0.5 0.00/0.01/0.65; AS 53px s1.0 0.00/0.19/0.89; AS 42px s0.5 0.00/0.01/0.66; AS 42px s1.0 0.00/0.19/0.89; AS 35px s0.5 0.00/0.00/0.67; AS 35px s1.0 0.00/0.19/0.89; EAP 0.18/0.62/0.95
+  [leaf] BDR: {'iterations': 300, 'final_change': 0.00016924073243478055, 'converged': False, 'seconds': 44.5}
+  [leaf/pair] C=10000  eta=[0.0, 0.29, 0.0, 0.23, 0.0, 0.14, 0.0, 0.1, 0.23, 0.0, 0.0]  predicted classes (prob argmax) [22, 172, 0, 4], (SVM decision) [65, 98, 14, 21]  test bal.acc (SVM decision) 0.311
+  [leaf/full] C=10000  eta=[0.0, 0.29, 0.0, 0.23, 0.0, 0.14, 0.0, 0.1, 0.23, 0.0, 0.0]  predicted classes (prob argmax) [22, 172, 0, 4], (SVM decision) [65, 98, 14, 21]  test bal.acc (SVM decision) 0.311
+  [leaf] done in 48s
+fold 3: attribute profiles (30s)
+
+
+  [pixel] kernel spread p5/p50/p95: AS 105px s0.5 0.00/0.00/0.60; AS 105px s1.0 0.00/0.12/0.87; AS 70px s0.5 0.00/0.00/0.61; AS 70px s1.0 0.00/0.11/0.87; AS 53px s0.5 0.00/0.00/0.61; AS 53px s1.0 0.00/0.11/0.88; AS 42px s0.5 0.00/0.00/0.61; AS 42px s1.0 0.00/0.11/0.88; AS 35px s0.5 0.00/0.00/0.61; AS 35px s1.0 0.00/0.11/0.88; EAP 0.09/0.48/0.91
+  [pixel] BDR: {'iterations': 300, 'final_change': 0.0005582334303520509, 'converged': False, 'seconds': 34.7}
+  [pixel/pair] C=100  eta=[0.0, 0.2, 0.0, 0.21, 0.0, 0.23, 0.0, 0.18, 0.0, 0.18, 0.0]  predicted classes (prob argmax) [20, 93, 42, 45], (SVM decision) [21, 93, 43, 43]  test bal.acc (SVM decision) 0.348
+  [pixel/full] C=100  eta=[0.0, 0.2, 0.0, 0.21, 0.0, 0.23, 0.0, 0.18, 0.0, 0.18, 0.0]  predicted classes (prob argmax) [20, 93, 42, 45], (SVM decision) [21, 93, 43, 43]  test bal.acc (SVM decision) 0.348
+  [pixel] done in 309s
+
+
+  [leaf] kernel spread p5/p50/p95: AS 105px s0.5 0.00/0.01/0.61; AS 105px s1.0 0.00/0.19/0.86; AS 70px s0.5 0.00/0.01/0.63; AS 70px s1.0 0.00/0.19/0.87; AS 53px s0.5 0.00/0.00/0.64; AS 53px s1.0 0.00/0.18/0.88; AS 42px s0.5 0.00/0.00/0.65; AS 42px s1.0 0.00/0.18/0.89; AS 35px s0.5 0.00/0.00/0.66; AS 35px s1.0 0.00/0.18/0.89; EAP 0.17/0.61/0.95
+  [leaf] BDR: {'iterations': 300, 'final_change': 0.00018878868010795136, 'converged': False, 'seconds': 34.2}
+  [leaf/pair] C=100  eta=[0.0, 0.45, 0.0, 0.18, 0.0, 0.17, 0.01, 0.05, 0.14, 0.0, 0.0]  predicted classes (prob argmax) [40, 155, 4, 1], (SVM decision) [40, 84, 34, 42]  test bal.acc (SVM decision) 0.322
+  [leaf/full] C=100  eta=[0.0, 0.44, 0.0, 0.18, 0.0, 0.17, 0.01, 0.06, 0.14, 0.0, 0.0]  predicted classes (prob argmax) [40, 155, 4, 1], (SVM decision) [40, 84, 34, 42]  test bal.acc (SVM decision) 0.322
+  [leaf] done in 36s
+fold 4: attribute profiles (30s)
+
+
+  [pixel] kernel spread p5/p50/p95: AS 105px s0.5 0.00/0.00/0.59; AS 105px s1.0 0.00/0.11/0.87; AS 70px s0.5 0.00/0.00/0.60; AS 70px s1.0 0.00/0.10/0.87; AS 53px s0.5 0.00/0.00/0.60; AS 53px s1.0 0.00/0.10/0.87; AS 42px s0.5 0.00/0.00/0.60; AS 42px s1.0 0.00/0.10/0.87; AS 35px s0.5 0.00/0.00/0.60; AS 35px s1.0 0.00/0.10/0.88; EAP 0.09/0.48/0.91
+  [pixel] BDR: {'iterations': 300, 'final_change': 0.0004182921820727603, 'converged': False, 'seconds': 34.7}
+  [pixel/pair] C=100  eta=[0.0, 0.24, 0.0, 0.17, 0.0, 0.2, 0.0, 0.19, 0.0, 0.2, 0.0]  predicted classes (prob argmax) [34, 96, 36, 34], (SVM decision) [52, 92, 23, 33]  test bal.acc (SVM decision) 0.456
+  [pixel/full] C=100  eta=[0.0, 0.24, 0.0, 0.16, 0.0, 0.2, 0.0, 0.19, 0.0, 0.2, 0.0]  predicted classes (prob argmax) [34, 96, 36, 34], (SVM decision) [52, 92, 23, 33]  test bal.acc (SVM decision) 0.456
+  [pixel] done in 312s
+
+
+  [leaf] kernel spread p5/p50/p95: AS 105px s0.5 0.00/0.01/0.61; AS 105px s1.0 0.00/0.18/0.87; AS 70px s0.5 0.00/0.00/0.63; AS 70px s1.0 0.00/0.17/0.88; AS 53px s0.5 0.00/0.00/0.64; AS 53px s1.0 0.00/0.17/0.88; AS 42px s0.5 0.00/0.00/0.65; AS 42px s1.0 0.00/0.17/0.89; AS 35px s0.5 0.00/0.00/0.66; AS 35px s1.0 0.00/0.17/0.89; EAP 0.18/0.61/0.95
+  [leaf] BDR: {'iterations': 300, 'final_change': 0.0001341952140256411, 'converged': False, 'seconds': 34.5}
+  [leaf/pair] C=10000  eta=[0.0, 0.41, 0.0, 0.22, 0.07, 0.0, 0.0, 0.19, 0.1, 0.0, 0.0]  predicted classes (prob argmax) [26, 171, 0, 3], (SVM decision) [75, 87, 18, 20]  test bal.acc (SVM decision) 0.349
+  [leaf/full] C=10000  eta=[0.0, 0.41, 0.0, 0.22, 0.07, 0.0, 0.0, 0.19, 0.1, 0.0, 0.0]  predicted classes (prob argmax) [26, 171, 0, 3], (SVM decision) [75, 87, 18, 20]  test bal.acc (SVM decision) 0.349
+  [leaf] done in 38s
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/experiments/results/12_gmkl__pixel__pair_penalty_oof.csv, _metrics.md and _metrics.json
+
+# 12 GMKL (pixel unit, pair penalty) - out-of-fold results
+
+Settings: unit=pixel, penalty=pair, superpixel px=105/70/53/42/35, tc=30.0, pairs=2000, inner CV folds=10, folds=0,1,2,3,4, train pixels per class=1000
+
+Every leaf is predicted by the model of the fold that held out its row. Decisions = the majority vote of the SVM's predicted classes over the leaf's pixels; ROC AUC uses the mean of the pixels' Platt-scaled probabilities. 'Within-variety' AUC compares leaves only with leaves of the same variety and fold (0.5 = chance); pooled AUC can be inflated by recognising the variety. Leafroll excludes Cab Franc (1 positive leaf).
+
+## 4 classes
+
+Balanced accuracy: **0.419** (chance = 0.25)
+
+Confusion matrix (rows = true class, columns = predicted class):
+
+| true \ predicted | healthy | RB only | LR only | both | total |
+|---|---|---|---|---|---|
+| **healthy** | 60 | 67 | 53 | 46 | 226 |
+| **RB only** | 48 | 366 | 46 | 57 | 517 |
+| **LR only** | 46 | 10 | 45 | 38 | 139 |
+| **both** | 22 | 14 | 36 | 44 | 116 |
+
+| class (one vs rest) | n | ROC AUC pooled | ROC AUC within-variety |
+|---|---|---|---|
+| healthy | 226 | 0.597 | 0.531 |
+| RB only | 517 | 0.806 | 0.542 |
+| LR only | 139 | 0.744 | 0.527 |
+| both | 116 | 0.721 | 0.532 |
+| **mean** | | 0.717 | 0.533 |
+
+## Per disease (derived from the 4-class output)
+
+| target | n (pos) | TN | FP | FN | TP | balanced acc. | ROC AUC pooled | ROC AUC within-variety |
+|---|---|---|---|---|---|---|---|---|
+| red_blotch | 998 (633) | 204 | 161 | 152 | 481 | 0.659 | 0.749 | 0.563 |
+| leafroll3 | 748 (254) | 292 | 202 | 91 | 163 | 0.616 | 0.649 | 0.488 |
+| any_disease | 998 (772) | 60 | 166 | 116 | 656 | 0.558 | 0.597 | 0.531 |
+
+## Per variety
+
+AUC here = within the variety, compared within folds. n/a = only one class present.
+
+| variety | n | 4-class bal. acc. | mean OvR AUC | RB bal. acc. | RB AUC | LR bal. acc. | LR AUC | any-disease bal. acc. | any-disease AUC |
+|---|---|---|---|---|---|---|---|---|---|
+| Baco | 248 | 0.256 | 0.480 | 0.495 | 0.479 | 0.480 | 0.446 | 0.502 | 0.391 |
+| Cab Franc | 250 | 0.387 | 0.518 | 0.580 | 0.619 | n/a | n/a | 0.580 | 0.603 |
+| Chardonnay | 250 | 0.275 | 0.546 | 0.584 | 0.618 | 0.504 | 0.482 | 0.534 | 0.579 |
+| Vidal | 250 | 0.258 | 0.577 | 0.521 | 0.594 | 0.500 | 0.612 | 0.508 | 0.583 |
+
+4-class confusion matrices per variety (rows = true, columns = predicted: healthy / RB only / LR only / both):
+
+- **Baco**: healthy -> [3, 1, 18, 37]; RB only -> [1, 0, 33, 48]; LR only -> [4, 0, 20, 30]; both -> [4, 0, 17, 32]
+- **Cab Franc**: healthy -> [2, 7, 0, 0]; RB only -> [15, 225, 0, 0]; LR only -> [0, 0, 0, 0]; both -> [0, 1, 0, 0]
+- **Chardonnay**: healthy -> [46, 0, 35, 9]; RB only -> [16, 0, 13, 9]; LR only -> [39, 0, 25, 8]; both -> [16, 3, 19, 12]
+- **Vidal**: healthy -> [9, 59, 0, 0]; RB only -> [16, 141, 0, 0]; LR only -> [3, 10, 0, 0]; both -> [2, 10, 0, 0]
+
+## GMKL per fold
+
+eta = learned kernel weights, in the order AS 105px s0.5, AS 105px s1.0, AS 70px s0.5, AS 70px s1.0, AS 53px s0.5, AS 53px s1.0, AS 42px s0.5, AS 42px s1.0, AS 35px s0.5, AS 35px s1.0, EAP.
+
+| fold | C | inner-CV bal. acc. at C | BDR iterations (converged) | negatives clipped | eta |
+|---|---|---|---|---|---|
+| 0 | 100 | 0.392 | 300 (False) | 6 | 0.00 0.23 0.00 0.22 0.00 0.18 0.00 0.16 0.00 0.20 0.00 |
+| 1 | 100 | 0.409 | 300 (False) | 6 | 0.00 0.26 0.00 0.16 0.00 0.15 0.00 0.22 0.00 0.20 0.00 |
+| 2 | 100 | 0.395 | 300 (False) | 6 | 0.00 0.24 0.00 0.20 0.00 0.19 0.00 0.18 0.00 0.19 0.00 |
+| 3 | 100 | 0.414 | 300 (False) | 6 | 0.00 0.20 0.00 0.21 0.00 0.23 0.00 0.18 0.00 0.18 0.00 |
+| 4 | 100 | 0.397 | 300 (False) | 6 | 0.00 0.24 0.00 0.17 0.00 0.20 0.00 0.19 0.00 0.20 0.00 |
+
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/experiments/results/12_gmkl__pixel__full_penalty_oof.csv, _metrics.md and _metrics.json
+
+# 12 GMKL (pixel unit, full penalty) - out-of-fold results
+
+Settings: unit=pixel, penalty=full, superpixel px=105/70/53/42/35, tc=30.0, pairs=2000, inner CV folds=10, folds=0,1,2,3,4, train pixels per class=1000
+
+Every leaf is predicted by the model of the fold that held out its row. Decisions = the majority vote of the SVM's predicted classes over the leaf's pixels; ROC AUC uses the mean of the pixels' Platt-scaled probabilities. 'Within-variety' AUC compares leaves only with leaves of the same variety and fold (0.5 = chance); pooled AUC can be inflated by recognising the variety. Leafroll excludes Cab Franc (1 positive leaf).
+
+## 4 classes
+
+Balanced accuracy: **0.419** (chance = 0.25)
+
+Confusion matrix (rows = true class, columns = predicted class):
+
+| true \ predicted | healthy | RB only | LR only | both | total |
+|---|---|---|---|---|---|
+| **healthy** | 60 | 67 | 53 | 46 | 226 |
+| **RB only** | 48 | 366 | 46 | 57 | 517 |
+| **LR only** | 46 | 10 | 45 | 38 | 139 |
+| **both** | 22 | 14 | 36 | 44 | 116 |
+
+| class (one vs rest) | n | ROC AUC pooled | ROC AUC within-variety |
+|---|---|---|---|
+| healthy | 226 | 0.597 | 0.531 |
+| RB only | 517 | 0.806 | 0.541 |
+| LR only | 139 | 0.744 | 0.527 |
+| both | 116 | 0.721 | 0.532 |
+| **mean** | | 0.717 | 0.533 |
+
+## Per disease (derived from the 4-class output)
+
+| target | n (pos) | TN | FP | FN | TP | balanced acc. | ROC AUC pooled | ROC AUC within-variety |
+|---|---|---|---|---|---|---|---|---|
+| red_blotch | 998 (633) | 204 | 161 | 152 | 481 | 0.659 | 0.749 | 0.563 |
+| leafroll3 | 748 (254) | 292 | 202 | 91 | 163 | 0.616 | 0.649 | 0.488 |
+| any_disease | 998 (772) | 60 | 166 | 116 | 656 | 0.558 | 0.597 | 0.531 |
+
+## Per variety
+
+AUC here = within the variety, compared within folds. n/a = only one class present.
+
+| variety | n | 4-class bal. acc. | mean OvR AUC | RB bal. acc. | RB AUC | LR bal. acc. | LR AUC | any-disease bal. acc. | any-disease AUC |
+|---|---|---|---|---|---|---|---|---|---|
+| Baco | 248 | 0.256 | 0.479 | 0.495 | 0.479 | 0.480 | 0.447 | 0.502 | 0.391 |
+| Cab Franc | 250 | 0.387 | 0.518 | 0.580 | 0.619 | n/a | n/a | 0.580 | 0.603 |
+| Chardonnay | 250 | 0.275 | 0.546 | 0.584 | 0.618 | 0.504 | 0.482 | 0.534 | 0.579 |
+| Vidal | 250 | 0.258 | 0.577 | 0.521 | 0.594 | 0.500 | 0.612 | 0.508 | 0.583 |
+
+4-class confusion matrices per variety (rows = true, columns = predicted: healthy / RB only / LR only / both):
+
+- **Baco**: healthy -> [3, 1, 18, 37]; RB only -> [1, 0, 33, 48]; LR only -> [4, 0, 20, 30]; both -> [4, 0, 17, 32]
+- **Cab Franc**: healthy -> [2, 7, 0, 0]; RB only -> [15, 225, 0, 0]; LR only -> [0, 0, 0, 0]; both -> [0, 1, 0, 0]
+- **Chardonnay**: healthy -> [46, 0, 35, 9]; RB only -> [16, 0, 13, 9]; LR only -> [39, 0, 25, 8]; both -> [16, 3, 19, 12]
+- **Vidal**: healthy -> [9, 59, 0, 0]; RB only -> [16, 141, 0, 0]; LR only -> [3, 10, 0, 0]; both -> [2, 10, 0, 0]
+
+## GMKL per fold
+
+eta = learned kernel weights, in the order AS 105px s0.5, AS 105px s1.0, AS 70px s0.5, AS 70px s1.0, AS 53px s0.5, AS 53px s1.0, AS 42px s0.5, AS 42px s1.0, AS 35px s0.5, AS 35px s1.0, EAP.
+
+| fold | C | inner-CV bal. acc. at C | BDR iterations (converged) | negatives clipped | eta |
+|---|---|---|---|---|---|
+| 0 | 100 | 0.392 | 300 (False) | 6 | 0.00 0.23 0.00 0.22 0.00 0.18 0.00 0.16 0.00 0.21 0.00 |
+| 1 | 100 | 0.409 | 300 (False) | 6 | 0.00 0.26 0.00 0.16 0.00 0.15 0.00 0.22 0.00 0.20 0.00 |
+| 2 | 100 | 0.395 | 300 (False) | 6 | 0.00 0.24 0.00 0.20 0.00 0.19 0.00 0.18 0.00 0.19 0.00 |
+| 3 | 100 | 0.413 | 300 (False) | 6 | 0.00 0.20 0.00 0.21 0.00 0.23 0.00 0.18 0.00 0.18 0.00 |
+| 4 | 100 | 0.397 | 300 (False) | 6 | 0.00 0.24 0.00 0.16 0.00 0.20 0.00 0.19 0.00 0.20 0.00 |
+
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/experiments/results/12_gmkl__leaf__pair_penalty_oof.csv, _metrics.md and _metrics.json
+
+# 12 GMKL (leaf unit, pair penalty) - out-of-fold results
+
+Settings: unit=leaf, penalty=pair, superpixel px=105/70/53/42/35, tc=30.0, pairs=2000, inner CV folds=10, folds=0,1,2,3,4
+
+Every leaf is predicted by the model of the fold that held out its row. Decisions = the SVM's predicted class; ROC AUC uses its Platt-scaled probabilities. 'Within-variety' AUC compares leaves only with leaves of the same variety and fold (0.5 = chance); pooled AUC can be inflated by recognising the variety. Leafroll excludes Cab Franc (1 positive leaf).
+
+## 4 classes
+
+Balanced accuracy: **0.353** (chance = 0.25)
+
+Confusion matrix (rows = true class, columns = predicted class):
+
+| true \ predicted | healthy | RB only | LR only | both | total |
+|---|---|---|---|---|---|
+| **healthy** | 75 | 68 | 44 | 39 | 226 |
+| **RB only** | 125 | 308 | 30 | 54 | 517 |
+| **LR only** | 53 | 19 | 30 | 37 | 139 |
+| **both** | 36 | 22 | 27 | 31 | 116 |
+
+| class (one vs rest) | n | ROC AUC pooled | ROC AUC within-variety |
+|---|---|---|---|
+| healthy | 226 | 0.559 | 0.501 |
+| RB only | 517 | 0.749 | 0.496 |
+| LR only | 139 | 0.680 | 0.487 |
+| both | 116 | 0.659 | 0.511 |
+| **mean** | | 0.662 | 0.499 |
+
+## Per disease (derived from the 4-class output)
+
+| target | n (pos) | TN | FP | FN | TP | balanced acc. | ROC AUC pooled | ROC AUC within-variety |
+|---|---|---|---|---|---|---|---|---|
+| red_blotch | 998 (633) | 202 | 163 | 218 | 415 | 0.605 | 0.686 | 0.524 |
+| leafroll3 | 748 (254) | 333 | 161 | 129 | 125 | 0.583 | 0.598 | 0.484 |
+| any_disease | 998 (772) | 75 | 151 | 214 | 558 | 0.527 | 0.559 | 0.501 |
+
+## Per variety
+
+AUC here = within the variety, compared within folds. n/a = only one class present.
+
+| variety | n | 4-class bal. acc. | mean OvR AUC | RB bal. acc. | RB AUC | LR bal. acc. | LR AUC | any-disease bal. acc. | any-disease AUC |
+|---|---|---|---|---|---|---|---|---|---|
+| Baco | 248 | 0.222 | 0.483 | 0.502 | 0.508 | 0.479 | 0.450 | 0.474 | 0.506 |
+| Cab Franc | 250 | 0.353 | 0.383 | 0.541 | 0.508 | n/a | n/a | 0.543 | 0.501 |
+| Chardonnay | 250 | 0.253 | 0.483 | 0.523 | 0.525 | 0.519 | 0.468 | 0.522 | 0.482 |
+| Vidal | 250 | 0.220 | 0.553 | 0.492 | 0.543 | 0.509 | 0.609 | 0.468 | 0.519 |
+
+4-class confusion matrices per variety (rows = true, columns = predicted: healthy / RB only / LR only / both):
+
+- **Baco**: healthy -> [15, 4, 17, 23]; RB only -> [27, 6, 17, 32]; LR only -> [16, 5, 11, 22]; both -> [15, 8, 11, 19]
+- **Cab Franc**: healthy -> [2, 7, 0, 0]; RB only -> [33, 201, 1, 5]; LR only -> [0, 0, 0, 0]; both -> [0, 1, 0, 0]
+- **Chardonnay**: healthy -> [41, 9, 26, 14]; RB only -> [18, 2, 8, 10]; LR only -> [30, 9, 19, 14]; both -> [18, 5, 15, 12]
+- **Vidal**: healthy -> [17, 48, 1, 2]; RB only -> [47, 99, 4, 7]; LR only -> [7, 5, 0, 1]; both -> [3, 8, 1, 0]
+
+## GMKL per fold
+
+eta = learned kernel weights, in the order AS 105px s0.5, AS 105px s1.0, AS 70px s0.5, AS 70px s1.0, AS 53px s0.5, AS 53px s1.0, AS 42px s0.5, AS 42px s1.0, AS 35px s0.5, AS 35px s1.0, EAP.
+
+| fold | C | inner-CV bal. acc. at C | BDR iterations (converged) | negatives clipped | eta |
+|---|---|---|---|---|---|
+| 0 | 100 | 0.382 | 300 (False) | 5 | 0.00 0.30 0.00 0.25 0.08 0.02 0.00 0.15 0.20 0.00 0.00 |
+| 1 | 100 | 0.371 | 300 (False) | 5 | 0.00 0.44 0.00 0.26 0.13 0.00 0.00 0.08 0.06 0.02 0.00 |
+| 2 | 10000 | 0.372 | 300 (False) | 6 | 0.00 0.29 0.00 0.23 0.00 0.14 0.00 0.10 0.23 0.00 0.00 |
+| 3 | 100 | 0.423 | 300 (False) | 5 | 0.00 0.45 0.00 0.18 0.00 0.17 0.01 0.05 0.14 0.00 0.00 |
+| 4 | 10000 | 0.340 | 300 (False) | 6 | 0.00 0.41 0.00 0.22 0.07 0.00 0.00 0.19 0.10 0.00 0.00 |
+
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/experiments/results/12_gmkl__leaf__full_penalty_oof.csv, _metrics.md and _metrics.json
+
+# 12 GMKL (leaf unit, full penalty) - out-of-fold results
+
+Settings: unit=leaf, penalty=full, superpixel px=105/70/53/42/35, tc=30.0, pairs=2000, inner CV folds=10, folds=0,1,2,3,4
+
+Every leaf is predicted by the model of the fold that held out its row. Decisions = the SVM's predicted class; ROC AUC uses its Platt-scaled probabilities. 'Within-variety' AUC compares leaves only with leaves of the same variety and fold (0.5 = chance); pooled AUC can be inflated by recognising the variety. Leafroll excludes Cab Franc (1 positive leaf).
+
+## 4 classes
+
+Balanced accuracy: **0.353** (chance = 0.25)
+
+Confusion matrix (rows = true class, columns = predicted class):
+
+| true \ predicted | healthy | RB only | LR only | both | total |
+|---|---|---|---|---|---|
+| **healthy** | 75 | 68 | 44 | 39 | 226 |
+| **RB only** | 125 | 308 | 30 | 54 | 517 |
+| **LR only** | 53 | 19 | 30 | 37 | 139 |
+| **both** | 36 | 22 | 27 | 31 | 116 |
+
+| class (one vs rest) | n | ROC AUC pooled | ROC AUC within-variety |
+|---|---|---|---|
+| healthy | 226 | 0.559 | 0.502 |
+| RB only | 517 | 0.749 | 0.496 |
+| LR only | 139 | 0.680 | 0.487 |
+| both | 116 | 0.659 | 0.511 |
+| **mean** | | 0.662 | 0.499 |
+
+## Per disease (derived from the 4-class output)
+
+| target | n (pos) | TN | FP | FN | TP | balanced acc. | ROC AUC pooled | ROC AUC within-variety |
+|---|---|---|---|---|---|---|---|---|
+| red_blotch | 998 (633) | 202 | 163 | 218 | 415 | 0.605 | 0.686 | 0.524 |
+| leafroll3 | 748 (254) | 333 | 161 | 129 | 125 | 0.583 | 0.598 | 0.484 |
+| any_disease | 998 (772) | 75 | 151 | 214 | 558 | 0.527 | 0.559 | 0.502 |
+
+## Per variety
+
+AUC here = within the variety, compared within folds. n/a = only one class present.
+
+| variety | n | 4-class bal. acc. | mean OvR AUC | RB bal. acc. | RB AUC | LR bal. acc. | LR AUC | any-disease bal. acc. | any-disease AUC |
+|---|---|---|---|---|---|---|---|---|---|
+| Baco | 248 | 0.222 | 0.483 | 0.502 | 0.509 | 0.479 | 0.451 | 0.474 | 0.507 |
+| Cab Franc | 250 | 0.353 | 0.383 | 0.541 | 0.508 | n/a | n/a | 0.543 | 0.501 |
+| Chardonnay | 250 | 0.253 | 0.484 | 0.523 | 0.525 | 0.519 | 0.469 | 0.522 | 0.483 |
+| Vidal | 250 | 0.220 | 0.552 | 0.492 | 0.542 | 0.509 | 0.608 | 0.468 | 0.518 |
+
+4-class confusion matrices per variety (rows = true, columns = predicted: healthy / RB only / LR only / both):
+
+- **Baco**: healthy -> [15, 4, 17, 23]; RB only -> [27, 6, 17, 32]; LR only -> [16, 5, 11, 22]; both -> [15, 8, 11, 19]
+- **Cab Franc**: healthy -> [2, 7, 0, 0]; RB only -> [33, 201, 1, 5]; LR only -> [0, 0, 0, 0]; both -> [0, 1, 0, 0]
+- **Chardonnay**: healthy -> [41, 9, 26, 14]; RB only -> [18, 2, 8, 10]; LR only -> [30, 9, 19, 14]; both -> [18, 5, 15, 12]
+- **Vidal**: healthy -> [17, 48, 1, 2]; RB only -> [47, 99, 4, 7]; LR only -> [7, 5, 0, 1]; both -> [3, 8, 1, 0]
+
+## GMKL per fold
+
+eta = learned kernel weights, in the order AS 105px s0.5, AS 105px s1.0, AS 70px s0.5, AS 70px s1.0, AS 53px s0.5, AS 53px s1.0, AS 42px s0.5, AS 42px s1.0, AS 35px s0.5, AS 35px s1.0, EAP.
+
+| fold | C | inner-CV bal. acc. at C | BDR iterations (converged) | negatives clipped | eta |
+|---|---|---|---|---|---|
+| 0 | 100 | 0.381 | 300 (False) | 5 | 0.00 0.30 0.00 0.26 0.08 0.02 0.00 0.15 0.19 0.00 0.00 |
+| 1 | 100 | 0.371 | 300 (False) | 5 | 0.00 0.44 0.00 0.27 0.13 0.00 0.00 0.08 0.06 0.02 0.00 |
+| 2 | 10000 | 0.369 | 300 (False) | 6 | 0.00 0.29 0.00 0.23 0.00 0.14 0.00 0.10 0.23 0.00 0.00 |
+| 3 | 100 | 0.421 | 300 (False) | 5 | 0.00 0.44 0.00 0.18 0.00 0.17 0.01 0.06 0.14 0.00 0.00 |
+| 4 | 10000 | 0.340 | 300 (False) | 6 | 0.00 0.41 0.00 0.22 0.07 0.00 0.00 0.19 0.10 0.00 0.00 |
+
+total 2004s
+
+real	33m25.625s
+user	198m28.312s
+sys	2m12.946s

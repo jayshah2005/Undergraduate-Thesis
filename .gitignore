@@ -1,0 +1,21 @@
+# Environment
+.venv/
+__pycache__/
+*.pyc
+*.nbi
+*.nbc
+
+# Raw data (4 GB) and rebuildable caches
+vine_hsi.h5
+claude runs/shared/cache/
+claude runs/pmmfnet/cache/
+
+# Trained model weights (kept on disk, not in git)
+*.pt
+**/checkpoints/
+
+# Test / smoke-run outputs
+claude runs/gmkl/results/quick/
+claude runs/gmkl/logs/quick_12.log
+claude runs/pmmfnet/runs/custom/smoke/
+claude runs/pmmfnet/runs/smoke/*/

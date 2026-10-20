@@ -1,0 +1,17 @@
+[Parallel(n_jobs=7)]: Using backend LokyBackend with 7 concurrent workers.
+[Parallel(n_jobs=7)]: Done   3 out of  10 | elapsed:   21.4s remaining:   50.0s
+[Parallel(n_jobs=7)]: Done   6 out of  10 | elapsed:  2.3min remaining:  1.6min
+[Parallel(n_jobs=7)]: Done  10 out of  10 | elapsed:  2.4min finished
+all fits finished in 144s
+[03_pixel_logreg] fold 0: n=200  AUC red_blotch=0.669  leafroll=0.644
+[03_pixel_logreg] fold 1: n=200  AUC red_blotch=0.716  leafroll=0.701
+[03_pixel_logreg] fold 2: n=198  AUC red_blotch=0.842  leafroll=0.666
+[03_pixel_logreg] fold 3: n=200  AUC red_blotch=0.703  leafroll=0.617
+[03_pixel_logreg] fold 4: n=200  AUC red_blotch=0.800  leafroll=0.706
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/03_pixel_logreg_oof.csv  (998 leaves)
+[03_pixel_hgb] fold 0: n=200  AUC red_blotch=0.727  leafroll=0.662
+[03_pixel_hgb] fold 1: n=200  AUC red_blotch=0.701  leafroll=0.696
+[03_pixel_hgb] fold 2: n=198  AUC red_blotch=0.854  leafroll=0.712
+[03_pixel_hgb] fold 3: n=200  AUC red_blotch=0.723  leafroll=0.556
+[03_pixel_hgb] fold 4: n=200  AUC red_blotch=0.795  leafroll=0.700
+[saved] /home/jay/Desktop/CODE/Classification/experiments/results/03_pixel_hgb_oof.csv  (998 leaves)
