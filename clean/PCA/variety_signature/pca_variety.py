@@ -27,15 +27,19 @@ def analyse(X: torch.Tensor, var: torch.Tensor, mean_reflectance: torch.Tensor,
             generator: torch.Generator) -> tuple[dict, torch.Tensor, torch.Tensor]:
     """Compute the variance share of variety, PCA scores, and eta² on each PC.
 
+    n: the number of vines.
+    n_pcs: the number of principal components returned.
+
     :param X: SNV spectra, shape (n, 204).
     :type X: torch.Tensor
     :param var: Variety codes, length n.
     :type var: torch.Tensor
-    :param mean_reflectance: Raw mean reflectance per vine, used to check SNV.
+    :param mean_reflectance: Raw mean reflectance per vine, length n. Used to check SNV.
     :type mean_reflectance: torch.Tensor
     :param generator: Seeded CPU generator for the permutation test.
     :type generator: torch.Generator
-    :return: Result dict, scores Z, explained-variance ratio.
+    :return: Result dict, scores Z of shape (n, n_pcs), explained-variance
+        ratio of length n_pcs.
     :rtype: tuple
     """
     Z, ev, _loadings, _ev_all = pca_fit(X, N_PCS)
@@ -53,9 +57,14 @@ def analyse(X: torch.Tensor, var: torch.Tensor, mean_reflectance: torch.Tensor,
 def fig_spectra(w, X, var):
     """Plot every leaf's SNV curve, faint, plus the four variety means.
 
+    n: the number of vines.
+
     :param w: Wavelengths in nm, shape (204,).
+    :type w: torch.Tensor
     :param X: SNV spectra, shape (n, 204).
+    :type X: torch.Tensor
     :param var: Variety codes, length n.
+    :type var: torch.Tensor
     """
     fig, ax = plt.subplots(figsize=(8, 5))
     for i, v in enumerate(VARIETIES):
@@ -78,9 +87,14 @@ def fig_spectra(w, X, var):
 def fig_difference(w, X, var):
     """Plot variety mean minus the grand mean.
 
+    n: the number of vines.
+
     :param w: Wavelengths in nm, shape (204,).
+    :type w: torch.Tensor
     :param X: SNV spectra, shape (n, 204).
+    :type X: torch.Tensor
     :param var: Variety codes, length n.
+    :type var: torch.Tensor
     """
     fig, ax = plt.subplots(figsize=(8, 5))
     gm = X.mean(0)
@@ -98,9 +112,15 @@ def fig_difference(w, X, var):
 def fig_pca(Z, ev, var):
     """Plot PC1 vs PC2 and PC2 vs PC3, coloured by variety.
 
+    n: the number of vines.
+    n_pcs: the number of principal components returned.
+
     :param Z: Scores, shape (n, n_pcs).
-    :param ev: Explained-variance ratio of those PCs.
+    :type Z: torch.Tensor
+    :param ev: Explained-variance ratio of those PCs, length n_pcs.
+    :type ev: torch.Tensor
     :param var: Variety codes, length n.
+    :type var: torch.Tensor
     """
     z, e = np_(Z), np_(ev)
     fig, axes = plt.subplots(1, 2, figsize=(13, 5.5))
@@ -163,9 +183,14 @@ def tables(res: dict) -> str:
 def compute(device: torch.device):
     """SNV-normalise spectra and run the variety analysis with a seeded generator.
 
+    n: the number of vines.
+    n_pcs: the number of principal components returned.
+
     :param device: GPU or CPU.
     :type device: torch.device
-    :return: Result dict, wavelengths, SNV spectra, variety codes, scores, explained variance.
+    :return: Result dict, wavelengths (204,), SNV spectra (n, 204), variety
+        codes of length n, scores Z of shape (n, n_pcs), explained-variance
+        ratio of length n_pcs.
     :rtype: tuple
     """
     # Set seeds to ensure reproducibility
@@ -173,14 +198,19 @@ def compute(device: torch.device):
     generator = torch.Generator() # Create generator
     generator.manual_seed(SEED) # Set generator seed
 
-    _meta, w, X_raw, _glint, var, _cls, _row = load_leaf_means(device)
+    _meta, wavelengths, X_raw, _glint, var, _cls, _row = load_leaf_means(device)
 
     # Raw mean over the 204 bands; SNV subtracts this, then we correlate PCs with it as a check.
     mean_reflectance = X_raw.mean(1)
+
+    # SNV-normalise spectra
     X = snv(X_raw)
+
+    # Compute 
     sn, Z, ev = analyse(X, var, mean_reflectance, generator)
+    
     res = {"n_leaves": int(X.shape[0]), "device": str(device), "snv": sn}
-    return res, w, X, var, Z, ev
+    return res, wavelengths, X, var, Z, ev
 
 
 def main() -> None:

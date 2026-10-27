@@ -35,9 +35,10 @@ def np_(t: torch.Tensor):
 
     Why NumPy: files and plots, not compute.
 
-    :param t: Tensor on any device.
+    :param t: Tensor of any shape, on any device.
     :type t: torch.Tensor
-    :return: A NumPy array on the CPU.
+    :return: NumPy array of the same shape as t, on the CPU.
+    :rtype: numpy.ndarray
     """
     return t.detach().cpu().numpy()
 
@@ -50,9 +51,12 @@ def snv(X: torch.Tensor) -> torch.Tensor:
     keeps spectral shape. Population SD (unbiased=False): rescaling this
     curve, not estimating a population.
 
+    n: the number of vines.
+    d: the number of spectral bands.
+
     :param X: Spectra, shape (n, d).
     :type X: torch.Tensor
-    :return: SNV spectra of the same shape.
+    :return: SNV spectra, shape (n, d).
     :rtype: torch.Tensor
     """
     return (X - X.mean(1, keepdim=True)) / X.std(1, keepdim=True, unbiased=False)
@@ -65,12 +69,16 @@ def pca_fit(X: torch.Tensor, n_pcs: int = N_PCS):
     Bands are not z-scored: noisy edge bands near 400/1000 nm would otherwise
     dominate.
 
+    n: the number of vines.
+    d: the number of spectral bands.
+
     :param X: Spectra, shape (n, d).
     :type X: torch.Tensor
     :param n_pcs: Number of score columns to return.
     :type n_pcs: int
-    :return: Scores Z (n, n_pcs), explained-variance ratio of those PCs,
-        loadings (d, n_pcs), and the full explained-variance ratio.
+    :return: Scores Z of shape (n, n_pcs), explained-variance ratio of those
+        PCs (length n_pcs), loadings of shape (d, n_pcs), and the full
+        explained-variance ratio (length min(n, d)).
     :rtype: tuple
     """
     # Centre each band by subtracting its mean over vines (axis 0), not over bands.
@@ -97,9 +105,12 @@ def pca_fit(X: torch.Tensor, n_pcs: int = N_PCS):
 def total_ss(X: torch.Tensor) -> torch.Tensor:
     """Sum squared distances of every row from the mean, over all columns.
 
+    n: the number of vines.
+    d: the number of spectral bands.
+
     :param X: Spectra, shape (n, d).
     :type X: torch.Tensor
-    :return: A scalar sum of squares.
+    :return: Scalar sum of squares, shape ().
     :rtype: torch.Tensor
     """
     return ((X - X.mean(0)) ** 2).sum()
@@ -108,11 +119,14 @@ def total_ss(X: torch.Tensor) -> torch.Tensor:
 def between_ss(X: torch.Tensor, g: torch.Tensor) -> torch.Tensor:
     """Compute the between-group sum of squares.
 
+    n: the number of vines.
+    d: the number of spectral bands.
+
     :param X: Spectra, shape (n, d).
     :type X: torch.Tensor
     :param g: Integer labels, length n.
     :type g: torch.Tensor
-    :return: A scalar sum of squares.
+    :return: Scalar sum of squares, shape ().
     :rtype: torch.Tensor
     """
     gm = X.mean(0)
@@ -126,13 +140,16 @@ def between_ss(X: torch.Tensor, g: torch.Tensor) -> torch.Tensor:
 def between_ss_within(X: torch.Tensor, g: torch.Tensor, strata: torch.Tensor) -> torch.Tensor:
     """Sum between-group SS inside each stratum (group effect net of the strata).
 
+    n: the number of vines.
+    d: the number of spectral bands.
+
     :param X: Spectra, shape (n, d).
     :type X: torch.Tensor
     :param g: Integer labels, length n.
     :type g: torch.Tensor
     :param strata: Stratum ids, length n (e.g. variety).
     :type strata: torch.Tensor
-    :return: A scalar sum of squares.
+    :return: Scalar sum of squares, shape ().
     :rtype: torch.Tensor
     """
     ss = X.new_zeros(())
@@ -144,6 +161,9 @@ def between_ss_within(X: torch.Tensor, g: torch.Tensor, strata: torch.Tensor) ->
 
 def r2(X: torch.Tensor, g: torch.Tensor) -> float:
     """Return the share of total SS lying between the groups of g.
+
+    n: the number of vines.
+    d: the number of spectral bands.
 
     :param X: Spectra, shape (n, d).
     :type X: torch.Tensor
@@ -166,13 +186,15 @@ def permute_within(g: torch.Tensor, strata: torch.Tensor, generator: torch.Gener
     randperm uses a CPU generator (PyTorch requirement); indices are then
     moved onto g's device.
 
+    n: the number of vines.
+
     :param g: Integer labels, length n.
     :type g: torch.Tensor
     :param strata: Stratum ids, length n.
     :type strata: torch.Tensor
     :param generator: Seeded CPU generator for randperm.
     :type generator: torch.Generator
-    :return: A shuffled copy of g.
+    :return: A shuffled copy of g, length n.
     :rtype: torch.Tensor
     """
     out = g.clone()
@@ -189,11 +211,14 @@ def r2_test(X: torch.Tensor, g: torch.Tensor, strata: torch.Tensor | None,
 
     p = (1 + #shuffles with R² >= observed) / (1 + n_perm). strata=None permutes freely.
 
+    n: the number of vines.
+    d: the number of spectral bands.
+
     :param X: Spectra, shape (n, d).
     :type X: torch.Tensor
     :param g: Integer labels, length n.
     :type g: torch.Tensor
-    :param strata: Stratum ids, or None for a free shuffle.
+    :param strata: Stratum ids, length n, or None for a free shuffle.
     :type strata: torch.Tensor | None
     :param generator: Seeded CPU generator for randperm.
     :type generator: torch.Generator
@@ -226,6 +251,10 @@ def r2_test(X: torch.Tensor, g: torch.Tensor, strata: torch.Tensor | None,
 def cohens_d(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
     """Compute per-band (mean b - mean a) / pooled SD.
 
+    n_a: the number of vines in the reference group.
+    n_b: the number of vines in the contrast group.
+    d: the number of spectral bands.
+
     :param a: Reference group, shape (n_a, d).
     :type a: torch.Tensor
     :param b: Contrast group, shape (n_b, d).
@@ -245,9 +274,12 @@ def load_leaf_means(device: torch.device):
 
     cls = red_blotch + 2 * leafroll3 -> 0 healthy, 1 RB only, 2 LR only, 3 both.
 
+    n: the number of vines.
+
     :param device: GPU or CPU.
     :type device: torch.device
-    :return: meta, wavelengths, X, glint, var, cls, row.
+    :return: meta (n rows), wavelengths (204,), X (n, 204), glint (n,),
+        var / cls / row integer codes each of length n.
     :rtype: tuple
     """
     meta, w, X_np, glint_np = load_dataset()
@@ -273,9 +305,12 @@ def pca_table(Z: torch.Tensor, ev: torch.Tensor, g: torch.Tensor,
               mean_reflectance: torch.Tensor, group_key: str) -> list[dict]:
     """Build one row per PC: explained variance, eta² of g, correlation with mean reflectance.
 
+    n: the number of vines.
+    n_pcs: the number of principal components returned.
+
     :param Z: Scores, shape (n, n_pcs).
     :type Z: torch.Tensor
-    :param ev: Explained-variance ratio of those PCs.
+    :param ev: Explained-variance ratio of those PCs, length n_pcs.
     :type ev: torch.Tensor
     :param g: Integer group labels, length n.
     :type g: torch.Tensor
@@ -283,7 +318,7 @@ def pca_table(Z: torch.Tensor, ev: torch.Tensor, g: torch.Tensor,
     :type mean_reflectance: torch.Tensor
     :param group_key: Column name for eta² (e.g. "variety").
     :type group_key: str
-    :return: One dict per PC.
+    :return: List of n_pcs dicts, one per PC.
     :rtype: list
     """
     rows = []

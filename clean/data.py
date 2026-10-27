@@ -18,6 +18,11 @@ META_PATH = CACHE_DIR / "meta.parquet"
 def _leaf_pixels(cube: np.ndarray) -> np.ndarray:
     """Keep pixels that are leaf. Background is exactly 0 in every band.
 
+    lines: the number of spatial lines.
+    bands: the number of spectral bands.
+    samples: the number of spatial samples.
+    n_leaf_pixels: the number of non-background pixels.
+
     :param cube: Reflectance cube as stored in HDF5, shape (lines, bands, samples).
     :type cube: np.ndarray
     :return: Leaf pixels as (n_leaf_pixels, 204) float64 reflectance.
@@ -32,7 +37,9 @@ def _leaf_pixels(cube: np.ndarray) -> np.ndarray:
 def _build() -> tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray]:
     """Walk every vine in the HDF5. Slow (~1 min) only when the cache is missing.
 
-    :return: meta, wavelengths (204,), mean spectra (n, 204), glint share (n,).
+    n: the number of vines.
+
+    :return: meta (n rows), wavelengths (204,), mean spectra (n, 204), glint share (n,).
     :rtype: tuple
     """
     if not H5_PATH.exists():
@@ -90,7 +97,9 @@ def _build() -> tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray]:
 def _save(meta: pd.DataFrame, wavelengths: np.ndarray, X: np.ndarray, glint: np.ndarray) -> None:
     """Write the leaf-mean table and spectra to cache/.
 
-    :param meta: One row of labels per vine.
+    n: the number of vines.
+
+    :param meta: Labels, n rows, one per vine.
     :type meta: pd.DataFrame
     :param wavelengths: Band centres in nm, shape (204,).
     :type wavelengths: np.ndarray
@@ -107,7 +116,9 @@ def _save(meta: pd.DataFrame, wavelengths: np.ndarray, X: np.ndarray, glint: np.
 def _load_cache() -> tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray] | None:
     """Return the cached table, or None if it is missing or out of date.
 
-    :return: meta, wavelengths, mean spectra, glint, or None.
+    n: the number of vines.
+
+    :return: meta (n rows), wavelengths (204,), mean spectra (n, 204), glint (n,), or None.
     :rtype: tuple | None
     """
     if not (MEANS_PATH.exists() and META_PATH.exists()):

@@ -70,6 +70,54 @@ def pca_fit(X, n_pcs=10):
 Use Sphinx `:param:` / `:type:` / `:return:` / `:rtype:` fields for parameter
 documentation. This is the single accepted style across the project.
 
+### Shapes of tensors and arrays
+
+A bare `:type X: torch.Tensor` (or `np.ndarray`) is not enough. Whenever a
+parameter or return value is array-like, state its shape in `:param:` /
+`:return:`. Use `length n` for 1-d vectors. Name the axes when a size alone
+is unclear (`(n_vines, n_bands)`). Write a known size as a number (`204`
+bands); use `n`, `d` when it varies. Same rule for lists, tuples, and dicts
+that hold arrays.
+
+Every named size in a shape (`n`, `d`, `n_v`, `n_pcs`) gets its own line in
+the docstring body, before `:param:`, in this form:
+
+```
+n_v: the number of vines in this variety.
+```
+
+A size that is already a `:param:` (for example `n_pcs` as an argument) does
+not need a second glossary line. Do not use `n_v` in a shape with no
+definition in that function.
+
+```python
+def snv(X: torch.Tensor) -> torch.Tensor:
+    """Centre and scale each spectrum over its own bands.
+
+    n: the number of vines.
+    d: the number of spectral bands.
+
+    :param X: Spectra, shape (n, d).
+    :type X: torch.Tensor
+    :return: SNV spectra, shape (n, d).
+    :rtype: torch.Tensor
+    """
+```
+
+```python
+def analyse_within(Xv, cv, rv, generator):
+    """Test the 4-class label plus PCA on this variety only.
+
+    n_v: the number of vines in this variety.
+    n_pcs: the number of principal components returned.
+
+    :param Xv: SNV spectra for one variety, shape (n_v, 204).
+    :type Xv: torch.Tensor
+    :return: Result dict, scores Z of shape (n_v, n_pcs).
+    :rtype: tuple
+    """
+```
+
 ```python
 def bind_module(tree: ast.Module, path: str = None) -> MainBindings:
     """Reduce a module to the bindings a worker needs.
@@ -249,6 +297,8 @@ def test_T_equals_transpose(self, mat): ...
 | Function docs | `"""Imperative summary."""` |
 | Class docs | `"""Single-line or multi-line."""` after `class` |
 | Parameter docs | `:param name:` / `:type name:` (Sphinx) |
+| Arrays / tensors | Shape or length in `:param:` / `:return:`, not only `:type:` |
+| Named sizes | `n_v: the number of vines in this variety.` before `:param:` |
 | Inline comments | `#` on line above code |
 | End-of-line | `#` for very short annotations or `# noqa:` |
 | Sentence case | Docstrings start with uppercase |
@@ -261,6 +311,8 @@ def test_T_equals_transpose(self, mat): ...
 | Pitfall | Fix |
 |---------|-----|
 | Using Google-style `Args:` blocks | Use Sphinx `:param:` / `:type:` style instead |
+| `:type X: torch.Tensor` with no shape | Add `shape (n, d)` or `length n` on `:param:` / `:return:` |
+| `shape (n_v, 204)` with no definition of n_v | Add `n_v: the number of vines in this variety.` before `:param:` |
 | Forgetting the trailing period in Python docstrings | All Python docstrings end with a period |
 | Duplicating comments | Do not place a `#` line that repeats the docstring below it |
 | Placing `# noqa:` on the wrong line | Put it on the line with the actual violation, not a surrounding `def` or decorator line |

@@ -30,6 +30,8 @@ def variance_share(X: torch.Tensor, var: torch.Tensor, cls: torch.Tensor, row: t
 
     The last two overlap because disease prevalence differs by row.
 
+    n: the number of vines.
+
     :param X: SNV spectra, shape (n, 204).
     :type X: torch.Tensor
     :param var: Variety codes, length n.
@@ -43,10 +45,10 @@ def variance_share(X: torch.Tensor, var: torch.Tensor, cls: torch.Tensor, row: t
     """
     tot = total_ss(X)
     return {
-        "variety": float(between_ss(X, var) / tot),
-        "class (pooled over varieties)": float(between_ss(X, cls) / tot),
-        "class within variety": float(between_ss_within(X, cls, var) / tot),
-        "row within variety": float(between_ss_within(X, row, var) / tot),
+        "variety": float(between_ss(X, var) / tot), # Share of variance between varieties
+        "class (pooled over varieties)": float(between_ss(X, cls) / tot), # Share of variance between disease classes when all varieties are pooled together
+        "class within variety": float(between_ss_within(X, cls, var) / tot), # Share of variance between disease classes within each variety
+        "row within variety": float(between_ss_within(X, row, var) / tot), # Share of variance between rows within each variety
     }
 
 
@@ -54,42 +56,54 @@ def analyse_within(Xv: torch.Tensor, cv: torch.Tensor, rv: torch.Tensor,
                    generator: torch.Generator) -> tuple[dict, torch.Tensor, torch.Tensor]:
     """Test the 4-class label (and coarser targets) plus PCA on this variety only.
 
-    :param Xv: SNV spectra for one variety.
+    n_v: the number of vines in this variety.
+    n_pcs: the number of principal components returned.
+
+    :param Xv: SNV spectra for one variety, shape (n_v, 204).
     :type Xv: torch.Tensor
-    :param cv: Disease-class codes for that variety.
+    :param cv: Disease-class codes for that variety, length n_v.
     :type cv: torch.Tensor
-    :param rv: Vineyard-row codes for that variety.
+    :param rv: Vineyard-row codes for that variety, length n_v.
     :type rv: torch.Tensor
     :param generator: Seeded CPU generator for the permutation test.
     :type generator: torch.Generator
-    :return: Result dict, scores Z, explained-variance ratio.
+    :return: Result dict, scores Z of shape (n_v, n_pcs), explained-variance
+        ratio of length n_pcs.
     :rtype: tuple
     """
-    # RB / LR labels include co-infection (cls 3 = both), matching the vine-level disease flags.
+
+    # Define targets to test
     targets = {
-        "class (4)": cv,
-        "healthy vs any disease": (cv > 0).to(torch.long),
-        "RB label": ((cv == 1) | (cv == 3)).to(torch.long),
-        "LR label": ((cv == 2) | (cv == 3)).to(torch.long),
+        "class (4)": cv,    # Healthy, RB only, LR only, both
+        "healthy vs any disease": (cv > 0).to(torch.long), # Healthy vs any disease
+        "RB label": ((cv == 1) | (cv == 3)).to(torch.long), # RB or not
+        "LR label": ((cv == 2) | (cv == 3)).to(torch.long), # LR or not
     }
+
+    # Compute R² for each target
     res = {}
-    for name, g in targets.items():
-        r, p, chance = r2_test(Xv, g, rv, generator)
+    for name, g in targets.items(): # g is the class code for target name
+        r, p, chance = r2_test(Xv, g, rv, generator) # Test R² for target g
         res[name] = {"R2": r, "p (permuted within rows)": p, "R2 by chance": chance}
+    
+    # Test R² for row
     r, p, chance = r2_test(Xv, rv, None, generator)
     res["row"] = {"R2": r, "p (free permutation)": p, "R2 by chance": chance}
 
+    # Fit PCA and compute eta² for each PC
     Z, ev, _loadings, _ev_all = pca_fit(Xv, N_PCS)
     res["pca"] = [
         {"pc": k + 1, "explained": float(ev[k]),
          "eta2 class": r2(Z[:, k:k + 1], cv), "eta2 row": r2(Z[:, k:k + 1], rv)}
         for k in range(N_PCS)
     ]
-    return res, Z, ev
 
+    return res, Z, ev # Return results, scores Z of shape (n_v, n_pcs), explained-variance ratio of length n_pcs
 
 def effect_curves(X: torch.Tensor, var: torch.Tensor, cls: torch.Tensor) -> dict:
     """Compute per-band Cohen's d of healthy vs each contrast, inside every variety.
+
+    n: the number of vines.
 
     :param X: SNV spectra, shape (n, 204).
     :type X: torch.Tensor
@@ -120,7 +134,8 @@ def effect_peaks(w, curves: dict) -> dict:
     """Record the largest |d| and its wavelength for every variety x contrast.
 
     :param w: Wavelengths in nm, shape (204,).
-    :param curves: Output of :func:`effect_curves`.
+    :type w: torch.Tensor
+    :param curves: Output of :func:`effect_curves`; each curve is length 204.
     :type curves: dict
     :return: Comparison name -> max |d| and wavelength.
     :rtype: dict
@@ -139,10 +154,16 @@ def effect_peaks(w, curves: dict) -> dict:
 def fig_spectra_by_class(w, X, var, cls):
     """Plot class mean ± 1 SD inside each variety (SNV).
 
+    n: the number of vines.
+
     :param w: Wavelengths in nm, shape (204,).
+    :type w: torch.Tensor
     :param X: SNV spectra, shape (n, 204).
+    :type X: torch.Tensor
     :param var: Variety codes, length n.
+    :type var: torch.Tensor
     :param cls: Disease-class codes, length n.
+    :type cls: torch.Tensor
     """
     fig, axes = plt.subplots(2, 2, figsize=(14, 9), sharex=True, sharey=True)
     for ax, i, v in zip(axes.flat, range(4), VARIETIES):
@@ -168,10 +189,16 @@ def fig_spectra_by_class(w, X, var, cls):
 def fig_difference_healthy(w, X, var, cls):
     """Plot class mean minus healthy mean for Baco and Chardonnay.
 
+    n: the number of vines.
+
     :param w: Wavelengths in nm, shape (204,).
+    :type w: torch.Tensor
     :param X: SNV spectra, shape (n, 204).
+    :type X: torch.Tensor
     :param var: Variety codes, length n.
+    :type var: torch.Tensor
     :param cls: Disease-class codes, length n.
+    :type cls: torch.Tensor
     """
     fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharey=True)
     for ax, i, v in zip(axes, (0, 2), ("Baco", "Chardonnay")):
@@ -197,10 +224,17 @@ def fig_difference_healthy(w, X, var, cls):
 def fig_pca_pooled(Z, ev, var, cls):
     """Plot all leaves with colour = disease class. Confounded: class tracks cultivar.
 
+    n: the number of vines.
+    n_pcs: the number of principal components returned.
+
     :param Z: Scores from a pooled PCA, shape (n, n_pcs).
-    :param ev: Explained-variance ratio of those PCs.
+    :type Z: torch.Tensor
+    :param ev: Explained-variance ratio of those PCs, length n_pcs.
+    :type ev: torch.Tensor
     :param var: Variety codes, length n.
+    :type var: torch.Tensor
     :param cls: Disease-class codes, length n.
+    :type cls: torch.Tensor
     """
     z, e = np_(Z), np_(ev)
     fig, axes = plt.subplots(1, 2, figsize=(13, 5.5))
@@ -225,9 +259,14 @@ def fig_pca_pooled(Z, ev, var, cls):
 def fig_pca_within(X, var, cls):
     """Fit a new PCA inside each variety so cultivar cannot count as disease.
 
+    n: the number of vines.
+
     :param X: SNV spectra, shape (n, 204).
+    :type X: torch.Tensor
     :param var: Variety codes, length n.
+    :type var: torch.Tensor
     :param cls: Disease-class codes, length n.
+    :type cls: torch.Tensor
     """
     fig, axes = plt.subplots(4, 2, figsize=(13, 16))
     for r, v in enumerate(VARIETIES):
@@ -252,7 +291,8 @@ def fig_effect_sizes(w, curves: dict):
     """Plot Cohen's d vs wavelength, one panel per variety.
 
     :param w: Wavelengths in nm, shape (204,).
-    :param curves: Output of :func:`effect_curves`.
+    :type w: torch.Tensor
+    :param curves: Output of :func:`effect_curves`; each curve is length 204.
     :type curves: dict
     """
     fig, axes = plt.subplots(2, 2, figsize=(14, 9), sharey=True)
@@ -351,24 +391,39 @@ def tables(res: dict) -> str:
 def compute(device: torch.device):
     """SNV-normalise spectra and run the disease-class analysis with a seeded generator.
 
+    n: the number of vines.
+    n_pcs: the number of principal components returned.
+
     :param device: GPU or CPU.
     :type device: torch.device
-    :return: Result dict, wavelengths, SNV spectra, labels, pooled scores, effect curves.
+    :return: Result dict, wavelengths (204,), SNV spectra (n, 204), variety and
+        class codes of length n each, pooled scores Z of shape (n, n_pcs),
+        explained-variance ratio of length n_pcs, effect curves (each d of
+        length 204).
     :rtype: tuple
     """
-    torch.manual_seed(SEED)
+    # Set seeds to ensure reproducibility
+    torch.manual_seed(SEED) # Set global seed
+    generator = torch.Generator() # Create generator
+    generator.manual_seed(SEED) # Set generator seed
+
+    # Load data
     generator = torch.Generator()
     generator.manual_seed(SEED)
     _meta, w, X_raw, _glint, var, cls, row = load_leaf_means(device)
+
+    # SNV-normalise spectra
     X = snv(X_raw)
 
     share = variance_share(X, var, cls, row)
     within = {}
     for i, v in enumerate(VARIETIES):
         m = var == i
-        stats, _Z, _ev = analyse_within(X[m], cls[m], row[m], generator)
+        stats, _Z, _ev = analyse_within(X[m], cls[m], row[m], generator) # Test R² for each target and do PCA inside each variety
         within[v] = stats
-    Z_all, ev_all, _loadings, _ev = pca_fit(X, N_PCS)
+
+    Z_all, ev_all, _loadings, _ev = pca_fit(X, N_PCS) # Fit PCA to all vines
+
     curves = effect_curves(X, var, cls)
     res = {
         "n_leaves": int(X.shape[0]),
@@ -381,15 +436,20 @@ def compute(device: torch.device):
 
 def main() -> None:
     """Run the analysis and write figures, tables, and the log."""
+    # Create directories
     for d in (FIG, RES, LOGS):
         d.mkdir(exist_ok=True)
     (LOGS / "run.log").unlink(missing_ok=True)
     log = get_logger("pca_disease_class", log_file=LOGS / "run.log")
 
+    # Get device and compute
     device = get_device()
     log.info("device %s", device)
+
+    # Compute
     res, w, X, var, cls, Z, ev, curves = compute(device)
 
+    # Write results
     md = tables(res)
     (RES / "results.json").write_text(json.dumps(res, indent=2))
     (RES / "tables.md").write_text(md)
