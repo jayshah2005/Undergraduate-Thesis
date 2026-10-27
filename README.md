@@ -55,6 +55,7 @@ Classification/
 ├── requirements.txt
 ├── Knowledge Base.txt       # short notes / paper list
 ├── research_notes/          # longer write-ups
+├── clean/                   # PCA of leaf-mean spectra (variety; disease class)
 └── claude runs/             # all code, results and reports (index: claude runs/README.md)
     ├── shared/                      # data cache + code every pipeline uses (folds, labels, metrics)
     ├── pmmfnet/                     # PMMFNet paper: original run, controlled experiments, your own runs

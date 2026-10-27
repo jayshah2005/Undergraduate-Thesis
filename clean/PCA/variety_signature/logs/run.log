@@ -1,0 +1,23 @@
+device cuda
+# Is the spectral signature different by variety?
+
+SNV-normalised leaf-mean spectra (brightness removed). R² = share of the total sum of squares (all 204 bands) that lies between the four variety means. Chance = mean R² of shuffled labels. PCA is covariance PCA of the 998 vines.
+
+R² variety = 0.510 (chance 0.003, p = 0.001).
+
+## PCA: first 10 PCs
+
+| PC | explained | eta² variety | corr with brightness |
+|---|---|---|---|
+| 1 | 47.9% | 0.586 | +0.17 |
+| 2 | 34.2% | 0.514 | +0.44 |
+| 3 | 13.1% | 0.377 | -0.05 |
+| 4 | 2.1% | 0.084 | -0.29 |
+| 5 | 1.0% | 0.120 | -0.43 |
+| 6 | 0.6% | 0.152 | -0.02 |
+| 7 | 0.3% | 0.034 | +0.19 |
+| 8 | 0.2% | 0.192 | -0.44 |
+| 9 | 0.1% | 0.092 | +0.13 |
+| 10 | 0.1% | 0.004 | -0.17 |
+
+[saved] /home/jay/Desktop/CODE/Classification/clean/PCA/variety_signature/figures/*.png, /home/jay/Desktop/CODE/Classification/clean/PCA/variety_signature/results/tables.md, /home/jay/Desktop/CODE/Classification/clean/PCA/variety_signature/results/results.json

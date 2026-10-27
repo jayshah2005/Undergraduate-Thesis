@@ -9,7 +9,8 @@ Everything here works on the 998 leaves of `../vine_hsi.h5`. Every folder has it
 | `gmkl/` | GMKL paper (graph-based multiple kernel learning), pixel and leaf level | 4-class bal. acc. 0.42 (pixel); within-variety AUC ≈ 0.53 |
 | `spectra_exploration/` | Do the leaf spectra separate by variety or by disease? (PCA, variance split, effect sizes) | variety explains ~50% of the variance, disease within variety ≤ 1% |
 | `disease_differences/` | healthy vs red blotch vs leafroll inside each of the 4 varieties | only Chardonnay healthy vs RB differs significantly (shape, red edge ~707 nm) |
-| `variety_logistic_regression/` | predicting the variety from the leaf spectrum | balanced accuracy 0.94 |
+| `variety_logistic_regression/` | predicting the variety from the leaf spectrum (204 bands) | balanced accuracy 0.94 |
+| `variety_logistic_regression_rgb/` | the same model on three pseudo-RGB bands (640 / 550 / 460 nm) | raw 0.85; SNV 0.51 |
 | `cache/transfer_learning_study/` | archive of the first 47-run study (classical models, pixel nets, CNNs, foundation models) | all tied; within-variety AUC 0.53–0.59 |
 
 Evaluation everywhere: 5 folds = vineyard rows R1–R5 held out whole. Within-variety AUC (0.5 = chance) is the honest disease measure; pooled scores are inflated by recognising the variety.

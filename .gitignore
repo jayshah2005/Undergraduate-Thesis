@@ -9,6 +9,7 @@ __pycache__/
 vine_hsi.h5
 claude runs/shared/cache/
 claude runs/pmmfnet/cache/
+clean/cache/
 
 # Trained model weights (kept on disk, not in git)
 *.pt

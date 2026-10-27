@@ -31,15 +31,15 @@ description: Use whenever writing or refactoring any script in this repo. Keeps 
 
 ## 2. Comments a newcomer can follow
 
-- **Every file starts with a docstring**: what question it answers, how to run it, what it reads,
-  what it writes.
-- **Every function has a docstring**: what it does, its inputs/outputs with shapes and units where
-  relevant (`(n_leaves, 204) float64 reflectance`).
+- **Every file starts with a docstring.** Format follows `commenting-python`
+  (single-line module docstring; Sphinx `:param:` on functions). How to run a
+  script lives in the README. Put shapes and units in the function docstring
+  (`(n_leaves, 204) float64 reflectance`).
 - **Comment the *why*, not the *what***: why rows are held out together, why labels are shuffled
   within rows, why SNV, why the scaler is fitted on training leaves only. Skip comments that only
   repeat the code.
 - **Name the steps of long functions** with short section comments (`# 1. inner CV picks C`).
-- **Define domain terms once** (SNV, within-variety AUC, fold = row, RB / LR) in the file docstring.
+- **Define domain terms once** (SNV, within-variety AUC, fold = row, RB / LR) in the relevant function docstring.
 - Keep comment density consistent with the surrounding code; no essays.
 
 ## Checklist before finishing

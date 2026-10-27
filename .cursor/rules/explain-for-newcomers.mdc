@@ -1,0 +1,30 @@
+---
+description: Explain stats, ML, and project terms in full; do not assume background
+alwaysApply: true
+---
+
+# Explain for a newcomer
+
+The reader is new to hyperspectral imaging, statistics, and this codebase. Every answer must teach the terms it uses, not only name them.
+
+## How to explain
+
+- Lead with the direct answer, then unpack it. Define every stats, ML, or domain term on first use in that message, even if it appeared in an earlier turn.
+- After the term, give a one-sentence meaning, then a tiny example from *this* dataset when one exists (vines, varieties, RB/LR, 204 bands, SNV, PCA scores). Skip textbook catalogues.
+- Say what the number is for, not only how it is computed. Example: "Pearson r = +0.17 means PC1 barely tracks overall brightness, so SNV did its job."
+- If two names mean the same thing here (R² vs η² on one PC), say so once.
+- Code citations are fine; they do not replace the explanation.
+
+## Terms that always need a gloss
+
+At least: R², η², permutation p-value, strata / within-row shuffle, SNV, PCA / PC / loading / score, Pearson r, correlation matrix, brightness (mean reflectance), class encoding (healthy / RB / LR / both), fold, AUC.
+
+## Shape
+
+```
+❌ "corrcoef on the stacked PC and brightness; take [0, 1]."
+✅ "Pearson r is a number from -1 to +1 that says how tightly two lists move together.
+    +1 = they rise and fall in lockstep, 0 = no linear link, -1 = one rises as the other falls.
+    Brightness here is each vine's average raw reflectance (one number per vine).
+    We correlate that list with the PC1 scores. r = +0.17 is a weak link."
+```
