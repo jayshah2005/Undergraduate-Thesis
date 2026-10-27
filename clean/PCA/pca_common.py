@@ -46,7 +46,7 @@ def snv(X: torch.Tensor) -> torch.Tensor:
     """Centre and scale each spectrum over its own bands.
 
     For each vine, subtract the mean over its 204 bands and divide by that
-    vine's SD. Removes overall brightness (sun, leaf angle, session) and
+    vine's SD. Removes overall mean reflectance (sun, leaf angle, session) and
     keeps spectral shape. Population SD (unbiased=False): rescaling this
     curve, not estimating a population.
 
@@ -80,14 +80,18 @@ def pca_fit(X: torch.Tensor, n_pcs: int = N_PCS):
     U, S, Vh = torch.linalg.svd(Xc, full_matrices=False)
 
     # SVD signs are arbitrary. Flip each PC so its largest |loading| is positive.
-    cols = torch.abs(Vh).argmax(1)
-    signs = torch.sign(Vh[torch.arange(Vh.shape[0], device=Vh.device), cols])
+    cols = torch.abs(Vh).argmax(1)  # Find the column with the largest absolute value for each row
+    signs = torch.sign(Vh[torch.arange(Vh.shape[0], device=Vh.device), cols])  # Get the sign of the largest absolute value for each row
     signs = torch.where(signs == 0, torch.ones_like(signs), signs)
-    U = U * signs
-    Vh = Vh * signs.unsqueeze(1)
-    ev = (S ** 2) / (S ** 2).sum()
+    U = U * signs  # Multiply each row of U by the sign of the largest absolute value for that row
+    Vh = Vh * signs.unsqueeze(1)  # Multiply each row of Vh by the sign of the largest absolute value for that row
+    ev = (S ** 2) / (S ** 2).sum() # Explained variance ratio of the PCs
+
+    # X_c = U * S * V^T
+    # Z = X_c * V = U * S * V^T * V = U * S
     Z = U[:, :n_pcs] * S[:n_pcs]
-    return Z, ev[:n_pcs], Vh[:n_pcs].T, ev
+
+    return Z, ev[:n_pcs], Vh[:n_pcs].T, ev  
 
 
 def total_ss(X: torch.Tensor) -> torch.Tensor:
@@ -199,6 +203,8 @@ def r2_test(X: torch.Tensor, g: torch.Tensor, strata: torch.Tensor | None,
     :rtype: tuple
     """
     obs = r2(X, g)
+
+    # Permute the labels and compute the R² for each permutation
     n_ge, null_sum = 1, 0.0
     n = g.numel()
     for _ in range(n_perm):
@@ -210,6 +216,10 @@ def r2_test(X: torch.Tensor, g: torch.Tensor, strata: torch.Tensor | None,
         null_sum += v
         if v >= obs:
             n_ge += 1
+
+    # Return the observed R², the p-value, and the mean null R²
+    # The p-value is the proportion of permutations with an R² greater than or equal to the observed R²
+    # The mean null R² is the average R² of the permutations
     return obs, n_ge / (1 + n_perm), null_sum / n_perm
 
 
@@ -259,9 +269,9 @@ def load_leaf_means(device: torch.device):
     return meta, w, X, glint, var, cls, row
 
 
-def pca_table(Z: torch.Tensor, ev: torch.Tensor, g: torch.Tensor, brightness: torch.Tensor,
-              group_key: str) -> list[dict]:
-    """Build one row per PC: explained variance, eta² of g, correlation with brightness.
+def pca_table(Z: torch.Tensor, ev: torch.Tensor, g: torch.Tensor,
+              mean_reflectance: torch.Tensor, group_key: str) -> list[dict]:
+    """Build one row per PC: explained variance, eta² of g, correlation with mean reflectance.
 
     :param Z: Scores, shape (n, n_pcs).
     :type Z: torch.Tensor
@@ -269,8 +279,8 @@ def pca_table(Z: torch.Tensor, ev: torch.Tensor, g: torch.Tensor, brightness: to
     :type ev: torch.Tensor
     :param g: Integer group labels, length n.
     :type g: torch.Tensor
-    :param brightness: Raw mean reflectance per vine, length n.
-    :type brightness: torch.Tensor
+    :param mean_reflectance: Raw mean reflectance per vine, length n.
+    :type mean_reflectance: torch.Tensor
     :param group_key: Column name for eta² (e.g. "variety").
     :type group_key: str
     :return: One dict per PC.
@@ -282,8 +292,8 @@ def pca_table(Z: torch.Tensor, ev: torch.Tensor, g: torch.Tensor, brightness: to
             "pc": k + 1,
             "explained": float(ev[k]),
             f"eta2 {group_key}": r2(Z[:, k:k + 1], g),
-            "corr with brightness": float(
-                torch.corrcoef(torch.stack([Z[:, k], brightness]))[0, 1]
+            "corr with mean_reflectance": float(
+                torch.corrcoef(torch.stack([Z[:, k], mean_reflectance]))[0, 1]
             ),
         })
     return rows

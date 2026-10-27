@@ -10,61 +10,61 @@
         "pc": 1,
         "explained": 0.47878611111508745,
         "eta2 variety": 0.5857343913520578,
-        "corr with brightness": 0.16544719884496634
+        "corr with mean_reflectance": 0.16544719884496634
       },
       {
         "pc": 2,
         "explained": 0.34169777070856155,
         "eta2 variety": 0.5139090566984377,
-        "corr with brightness": 0.43554005525162565
+        "corr with mean_reflectance": 0.43554005525162565
       },
       {
         "pc": 3,
         "explained": 0.1307797225429425,
         "eta2 variety": 0.37676384457277956,
-        "corr with brightness": -0.04863606803272351
+        "corr with mean_reflectance": -0.04863606803272351
       },
       {
         "pc": 4,
         "explained": 0.021437757138904636,
         "eta2 variety": 0.08367475800061622,
-        "corr with brightness": -0.29431159302806664
+        "corr with mean_reflectance": -0.29431159302806664
       },
       {
         "pc": 5,
         "explained": 0.010288308350682437,
         "eta2 variety": 0.1204475545748497,
-        "corr with brightness": -0.43149044410013604
+        "corr with mean_reflectance": -0.43149044410013604
       },
       {
         "pc": 6,
         "explained": 0.006053640851731623,
         "eta2 variety": 0.15151408129386956,
-        "corr with brightness": -0.01776830510788327
+        "corr with mean_reflectance": -0.01776830510788327
       },
       {
         "pc": 7,
         "explained": 0.0029971367298978627,
         "eta2 variety": 0.03375830029213318,
-        "corr with brightness": 0.18995955826267513
+        "corr with mean_reflectance": 0.18995955826267513
       },
       {
         "pc": 8,
         "explained": 0.002080796242308536,
         "eta2 variety": 0.19155846806163593,
-        "corr with brightness": -0.44132893229878395
+        "corr with mean_reflectance": -0.44132893229878395
       },
       {
         "pc": 9,
         "explained": 0.0010367155202995598,
         "eta2 variety": 0.09226501226138552,
-        "corr with brightness": 0.13181844338771184
+        "corr with mean_reflectance": 0.13181844338771184
       },
       {
         "pc": 10,
         "explained": 0.0007074226722470013,
         "eta2 variety": 0.0043668795368045615,
-        "corr with brightness": -0.1694055155391653
+        "corr with mean_reflectance": -0.1694055155391653
       }
     ]
   }

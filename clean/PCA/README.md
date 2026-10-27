@@ -1,6 +1,6 @@
 # PCA of SNV leaf-mean spectra
 
-Each vine is one leaf, represented by the SNV-normalised mean of its pixels over 204 bands (400-1000 nm). SNV removes overall brightness so PCA sees spectral shape. Spectra come from `data.py`.
+Each vine is one leaf, represented by the SNV-normalised mean of its pixels over 204 bands (400-1000 nm). SNV removes overall mean reflectance so PCA sees spectral shape. Spectra come from `data.py`.
 
 | folder | question |
 |---|---|

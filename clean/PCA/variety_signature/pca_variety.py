@@ -23,7 +23,7 @@ FIG, RES, LOGS = HERE / "figures", HERE / "results", HERE / "logs"
 
 
 # Computation
-def analyse(X: torch.Tensor, var: torch.Tensor, brightness: torch.Tensor,
+def analyse(X: torch.Tensor, var: torch.Tensor, mean_reflectance: torch.Tensor,
             generator: torch.Generator) -> tuple[dict, torch.Tensor, torch.Tensor]:
     """Compute the variance share of variety, PCA scores, and eta² on each PC.
 
@@ -31,8 +31,8 @@ def analyse(X: torch.Tensor, var: torch.Tensor, brightness: torch.Tensor,
     :type X: torch.Tensor
     :param var: Variety codes, length n.
     :type var: torch.Tensor
-    :param brightness: Raw mean reflectance per vine, used to check SNV.
-    :type brightness: torch.Tensor
+    :param mean_reflectance: Raw mean reflectance per vine, used to check SNV.
+    :type mean_reflectance: torch.Tensor
     :param generator: Seeded CPU generator for the permutation test.
     :type generator: torch.Generator
     :return: Result dict, scores Z, explained-variance ratio.
@@ -44,7 +44,7 @@ def analyse(X: torch.Tensor, var: torch.Tensor, brightness: torch.Tensor,
         "r2_variety": r,
         "p (free permutation)": p,
         "r2_by_chance": chance,
-        "pca": pca_table(Z, ev, var, brightness, "variety"),
+        "pca": pca_table(Z, ev, var, mean_reflectance, "variety"),
     }
     return out, Z, ev
 
@@ -130,7 +130,7 @@ def tables(res: dict) -> str:
     lines = [
         "# Is the spectral signature different by variety?",
         "",
-        "SNV-normalised leaf-mean spectra (brightness removed). R² = share of the total "
+        "SNV-normalised leaf-mean spectra (mean reflectance removed). R² = share of the total "
         "sum of squares (all 204 bands) that lies between the four variety means. Chance = "
         "mean R² of shuffled labels. PCA is covariance PCA of the 998 vines.",
         "",
@@ -139,14 +139,24 @@ def tables(res: dict) -> str:
         "",
         f"## PCA: first {N_PCS} PCs",
         "",
-        "| PC | explained | eta² variety | corr with brightness |",
+        "| PC | explained | eta² variety | corr with mean_reflectance |",
         "|---|---|---|---|",
     ]
     for p in r["pca"]:
         lines.append(
             f"| {p['pc']} | {p['explained']:.1%} | {p['eta2 variety']:.3f} | "
-            f"{p['corr with brightness']:+.2f} |"
+            f"{p['corr with mean_reflectance']:+.2f} |"
         )
+    lines.extend([
+        "",
+        "Explained — of all SNV variation across 204 bands, how much lives on that PC.",
+        "",
+        "η² variety — of the variation in that PC's scores only, how much sits between "
+        "the four varieties.",
+        "",
+        "corr with mean_reflectance — Pearson r of that PC's scores with each vine's "
+        "raw mean reflectance (the check that SNV worked).",
+    ])
     return "\n".join(lines) + "\n"
 
 
@@ -165,10 +175,10 @@ def compute(device: torch.device):
 
     _meta, w, X_raw, _glint, var, _cls, _row = load_leaf_means(device)
 
-    # Raw mean reflectance, used to check that SNV removed brightness.
-    brightness = X_raw.mean(1)  # This is the value that we subtract from spectra during SNV
+    # Raw mean over the 204 bands; SNV subtracts this, then we correlate PCs with it as a check.
+    mean_reflectance = X_raw.mean(1)
     X = snv(X_raw)
-    sn, Z, ev = analyse(X, var, brightness, generator)
+    sn, Z, ev = analyse(X, var, mean_reflectance, generator)
     res = {"n_leaves": int(X.shape[0]), "device": str(device), "snv": sn}
     return res, w, X, var, Z, ev
 
@@ -198,7 +208,6 @@ def main() -> None:
     fig_pca(Z, ev, var)
     log.info(md)
     log.info("[saved] %s/*.png, %s, %s", FIG, RES / "tables.md", RES / "results.json")
-
 
 if __name__ == "__main__":
     main()

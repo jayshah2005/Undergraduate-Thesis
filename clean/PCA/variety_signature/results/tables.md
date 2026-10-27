@@ -1,12 +1,12 @@
 # Is the spectral signature different by variety?
 
-SNV-normalised leaf-mean spectra (brightness removed). R² = share of the total sum of squares (all 204 bands) that lies between the four variety means. Chance = mean R² of shuffled labels. PCA is covariance PCA of the 998 vines.
+SNV-normalised leaf-mean spectra (mean reflectance removed). R² = share of the total sum of squares (all 204 bands) that lies between the four variety means. Chance = mean R² of shuffled labels. PCA is covariance PCA of the 998 vines.
 
 R² variety = 0.510 (chance 0.003, p = 0.001).
 
 ## PCA: first 10 PCs
 
-| PC | explained | eta² variety | corr with brightness |
+| PC | explained | eta² variety | corr with mean_reflectance |
 |---|---|---|---|
 | 1 | 47.9% | 0.586 | +0.17 |
 | 2 | 34.2% | 0.514 | +0.44 |
@@ -18,3 +18,9 @@ R² variety = 0.510 (chance 0.003, p = 0.001).
 | 8 | 0.2% | 0.192 | -0.44 |
 | 9 | 0.1% | 0.092 | +0.13 |
 | 10 | 0.1% | 0.004 | -0.17 |
+
+Explained — of all SNV variation across 204 bands, how much lives on that PC.
+
+η² variety — of the variation in that PC's scores only, how much sits between the four varieties.
+
+corr with mean_reflectance — Pearson r of that PC's scores with each vine's raw mean reflectance (the check that SNV worked).
