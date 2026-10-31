@@ -6,6 +6,7 @@
 - **Most dependable model:** logistic regression on all 204 bands, trained on 4 rows: balanced accuracy 0.939 (chance 0.25). It has no epoch count to choose and gives the same answer every time.
 - **CNN vs logistic regression:** logistic regression is better. With the epoch count chosen inside each training split, a single CNN on 204 bands averages 0.814 against 0.939. Only a 3-seed ensemble comes level, at 0.925 (Δ −0.014 [−0.032, +0.004]).
 - **204 bands vs RGB:** 204 bands win by a wide margin in logistic regression. The CNN gives no firm answer. Single RGB models average higher (0.872 vs 0.814), but only on 2 of 3 seeds and with no interval. Ensembles favour 204 bands (0.925 vs 0.876, Δ +0.049 [+0.027, +0.072]).
+- **Adding the mean spectrum to the CNN's last layer:** no improvement under the rule fixed in advance (ensemble − plain CNN: 204 bands Δ +0.000 [−0.016, +0.016], RGB Δ +0.009 [−0.005, +0.025]).
 
 ## Results
 
@@ -16,12 +17,13 @@ Balanced accuracy, with 95% intervals from resampling leaves. CNN numbers are 3-
 | CNN, 4 rows, epochs chosen inside each split | 0.925 (0.909–0.940) | 0.876 (0.857–0.896) | +0.049 [+0.027, +0.072] |
 | CNN, 4 rows, no validation, 37 epochs | 0.949 (0.936–0.961) | 0.838 (0.816–0.860) | +0.111 [+0.088, +0.134] |
 | CNN, 3 rows, early stopping on a fourth | 0.898 (0.880–0.916) | 0.824 (0.799–0.846) | +0.074 [+0.049, +0.100] |
+| CNN + mean spectrum, 3 rows, early stopping on a fourth | 0.898 (0.880–0.916) | 0.833 (0.809–0.854) | +0.065 [+0.043, +0.090] |
 | Logistic regression, same 3 rows | 0.849 (0.827–0.871) | 0.488 (0.457–0.517) | +0.361 [+0.328, +0.394] |
 | Logistic regression, 4 rows | 0.939 (0.924–0.952) | 0.500 (0.468–0.530) | +0.439 [+0.408, +0.470] |
 
 ![Scores](cnn/figures/scores.png)
 
-CNN points in the figure are ensembles, so its top row does not show the single-model result below.
+CNN points in the figure are ensembles, so they do not show the single-model results below.
 
 By held-out row:
 
@@ -33,6 +35,8 @@ By held-out row:
 | CNN, 204 bands, 3 rows, early stopping | 0.595 | 0.975 | 0.975 | 0.975 | 0.970 | 0.974 |
 | CNN, RGB, 4 rows, 37 epochs | 0.880 | 0.875 | 0.855 | 0.825 | 0.755 | 0.828 |
 | CNN, RGB, 3 rows, early stopping | 0.730 | 0.870 | 0.905 | 0.820 | 0.795 | 0.848 |
+| CNN + mean spectrum, 204 bands, 3 rows, early stopping | 0.655 | 0.975 | 0.980 | 0.960 | 0.920 | 0.959 |
+| CNN + mean spectrum, RGB, 3 rows, early stopping | 0.710 | 0.900 | 0.880 | 0.865 | 0.810 | 0.864 |
 | Logistic regression, 204 bands, same 3 rows | 0.610 | 0.890 | 0.970 | 0.935 | 0.840 | 0.909 |
 | Logistic regression, 204 bands, 4 rows | 0.905 | 0.960 | 0.990 | 0.960 | 0.880 | 0.948 |
 
@@ -53,6 +57,23 @@ For each test row, 4 trials trained on 3 of the other rows and validated on the 
 - **204 bands did not benefit from the longer runs.** Compared with 37 epochs, the ensemble fell from 0.949 to 0.925 and the single-model mean from 0.834 to 0.814, a change within seed noise.
 - **The headline has no interval.** With 3 seeds per input, its spread is shown by seed rather than as a 95% interval.
 
+## Mean spectrum added to the CNN's last layer
+
+The last layer reads the 48-d pooled vector plus the SNV mean spectrum, z-scored on each split's training leaves. The spectrum weights have no weight decay; everything else keeps 1e-2. Training matches the plain early-stopping run: 3 training rows, a validation row, and the checkpoint with the lowest validation loss. Each model sets its own training length from the validation row. The rule was fixed before any score existed: the ensemble's interval against the plain CNN must exclude 0, and the single-model average must beat the plain CNN on all 3 seeds.
+
+| input | single model, plain CNN, by seed | single model, + mean spectrum, by seed | means | ensemble Δ against plain CNN | 48-d part alone | spectrum part alone |
+|---|---|---|---|---|---|---|
+| 204 bands | 0.857, 0.856, 0.914 | 0.910, 0.871, 0.870 | 0.876 → 0.884 | +0.000 [−0.016, +0.016] | 0.531 | 0.821 |
+| RGB | 0.781, 0.791, 0.788 | 0.816, 0.815, 0.840 | 0.787 → 0.824 | +0.009 [−0.005, +0.025] | 0.823 | 0.424 |
+
+- **Neither input meets the rule.** 204 bands fail both tests: the ensemble doesn't move, and single models are higher on only 2 of 3 seeds. RGB passes the seed test but not the ensemble test, so its gain is a hint that a further run would have to confirm.
+- **204-band single models may be slightly steadier.** Their seed range narrows from 0.856–0.914 to 0.870–0.910, and the worst single row rises from 0.47 to 0.59. That's 3 seeds, so it's weak evidence.
+- **R1 remains the weak row.** The ensemble goes from 0.595 to 0.655 there, and without R1 it falls from 0.974 to 0.959.
+- **The parts behave differently by input.** Each part's score comes from one jointly trained model, so neither shows what that part could do if trained alone.
+  - **204 bands:** the spectrum part scores 0.821 and the 48-d part 0.531, while together they score 0.898. The spectrum carries most of the decision, and the CNN adds to it.
+  - **RGB:** the 48-d part alone scores 0.823 and the whole model 0.833, so the CNN does nearly all the work.
+- **Against logistic regression on 204 bands:** the ensemble beats it on the same 3 rows (Δ +0.049 [+0.033, +0.067]), the same gain as the plain CNN. It stays below logistic regression on 4 rows (Δ −0.041 [−0.056, −0.024]), though that comparison gives logistic regression an extra training row.
+
 ## What the numbers say
 
 1. **The no-validation CNN depends on the number of epochs.** The counts were first fixed in advance at 8 (204 bands) and 37 (RGB), each 3/4 of the earlier median best epoch. On that pair RGB beats 204 bands (Δ −0.153 [−0.188, −0.118]), but only because 8 epochs is too few: training loss is still 0.32 there and reaches 0.12 by epoch 37.
@@ -68,14 +89,6 @@ For each test row, 4 trials trained on 3 of the other rows and validated on the 
 5. **The CNN on RGB probably isn't using colour alone.** Its ensembles reach 0.82–0.88 while logistic regression on the same 3 bands reaches 0.49–0.50, so the extra must come from spatial information: pattern within the leaf, or leaf size and shape. Leaf size alone (pixel count, height, width) scores 0.654 in logistic regression. No test here separates these.
 6. **Intervals are narrower than the real uncertainty.** They resample leaves, but leaves in a row aren't independent, there are only 5 rows, and they ignore seed and epoch choice. Points 1–3 show how much those matter.
 
-## Which wavelengths matter (logistic regression, 204 bands)
-
-`logistic_regression/results/band_importance.md`, `logistic_regression/figures/band_importance.png`:
-
-- **No single band is enough:** the best one, 691 nm, scores 0.71.
-- **Any region alone falls short of all 204 bands (0.939):** red 0.889, green 0.882, red edge 0.864, NIR 0.803, blue 0.766.
-- **Choosing bands from the training rows:** 50 bands reach 0.895, 10 reach 0.797.
-
 ## Caveat: variety is confounded with imaging day
 
 Baco was imaged on 2026-08-12, Chardonnay on 2026-08-26, and Cab Franc and Vidal on 2026-09-03. SNV removes brightness, but not any spectral difference between sessions, such as lighting colour. These scores show that the varieties can be told apart in this dataset, not that the cause is cultivar biology alone. Rows are held out, but no imaging day is, since each variety has only one.
@@ -84,4 +97,4 @@ Baco was imaged on 2026-08-12, Chardonnay on 2026-08-26, and Cab Franc and Vidal
 
 - **Claim:** "On held-out rows, a leaf's SNV mean spectrum predicts its variety with balanced accuracy 0.94 (chance 0.25). RGB alone reaches 0.50 under the same model."
 - **State alongside it:** the imaging-day caveat, and that the RGB figure is for SNV-normalised RGB.
-- **Not supported:** "the CNN beats logistic regression", "skipping validation improves the CNN", "204 bands beat RGB in the CNN" or "RGB beats 204 bands in the CNN" (ensembles and single models disagree), and "hyperspectral beats RGB by 0.44 in general".
+- **Not supported:** "the CNN beats logistic regression", "skipping validation improves the CNN", "adding the mean spectrum improves the CNN", "204 bands beat RGB in the CNN" or "RGB beats 204 bands in the CNN" (ensembles and single models disagree), and "hyperspectral beats RGB by 0.44 in general".

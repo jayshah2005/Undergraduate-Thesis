@@ -28,7 +28,7 @@ BAND_COLOR = {"all": "#2a78d6", "rgb": "#eb6834"}
 GRID = "#e1e0d9"
 
 
-def load_ensemble(run: str, n: int) -> tuple[np.ndarray, np.ndarray]:
+def load_ensemble(run: str, n: int, key: str = "prob") -> tuple[np.ndarray, np.ndarray]:
     """Collect one run's test probabilities and average them over the seeds.
 
     n: the number of leaves. s: the number of seeds.
@@ -37,6 +37,8 @@ def load_ensemble(run: str, n: int) -> tuple[np.ndarray, np.ndarray]:
     :type run: str
     :param n: Number of leaves.
     :type n: int
+    :param key: Which saved probabilities: prob, or prob_cnn / prob_spectrum of a fusion run.
+    :type key: str
     :return: Ensemble probabilities (n, 4) and per-seed probabilities (s, n, 4).
     :rtype: tuple
     """
@@ -44,7 +46,7 @@ def load_ensemble(run: str, n: int) -> tuple[np.ndarray, np.ndarray]:
     for s in SEEDS:
         for k in range(5):
             f = np.load(RESULTS / run / f"seed{s}" / f"fold{k}.npz")
-            P[s, f["test_idx"]] = f["prob"]
+            P[s, f["test_idx"]] = f[key]
     assert not np.isnan(P).any(), f"missing folds for {run}"
     return P.mean(0), P
 
@@ -139,7 +141,7 @@ def score_run(run: str, y: np.ndarray, rows: np.ndarray, device: torch.device) -
     m = evaluate(y, ens, device)
     m["seed_scores"] = [evaluate(y, p, device)["balanced_accuracy"] for p in seeds]
     m["per_row"] = {r: balanced_accuracy_score(y[rows == r], ens[rows == r].argmax(1)) for r in ROWS}
-    # The nested experiment's headline: the 5 row scores averaged, for each single model.
+    # The nested and fusion headline: the 5 row scores averaged, for each single model.
     m["seed_row_means"] = [float(np.mean([balanced_accuracy_score(y[rows == r], p[rows == r].argmax(1)) for r in ROWS]))
                            for p in seeds]
     m["median_best_epoch"] = float(np.median([np.load(RESULTS / run / f"seed{s}" / f"fold{k}.npz")["best_epoch"]
@@ -158,7 +160,7 @@ def compute(device: torch.device) -> dict:
     """
     meta, _w, _m, _g = load_dataset()
     rows = meta.row.to_numpy().astype(str)
-    out = {"cnn": {}, "lr3": {}, "lr4": {}, "deltas": {}, "chosen_epochs": {}}
+    out = {"cnn": {}, "lr3": {}, "lr4": {}, "deltas": {}, "chosen_epochs": {}, "fusion_parts": {}}
     for b in BANDS:
         d = load_features(LRConfig(b), device)
         y = d["y"]
@@ -168,6 +170,9 @@ def compute(device: torch.device) -> dict:
         out["cnn"][f"{b}_no_val_e37"] = score_run(f"{b}_no_val_e37", y, rows, device)
         out["cnn"][f"{b}_nested"] = score_run(f"{b}_nested", y, rows, device)
         out["chosen_epochs"][b] = json.loads((RESULTS / f"{b}_nested" / "chosen_epochs.json").read_text())
+        out["cnn"][f"{b}_fusion"] = score_run(f"{b}_fusion", y, rows, device)
+        out["fusion_parts"][b] = {key: evaluate(y, load_ensemble(f"{b}_fusion", len(y), key)[0], device)
+                                  for key in ("prob_cnn", "prob_spectrum")}
     cnn, lr3, lr4 = out["cnn"], out["lr3"], out["lr4"]
     out["deltas"] = {
         "CNN: 204 bands − RGB": paired_delta(y, cnn["all"]["pred"], cnn["rgb"]["pred"], device),
@@ -187,7 +192,13 @@ def compute(device: torch.device) -> dict:
             y, cnn["all_no_val_e37"]["pred"], lr4["all"]["pred"], device),
         "RGB: CNN, 37 epochs, no validation − logistic regression (4 rows)": paired_delta(
             y, cnn["rgb_no_val_e37"]["pred"], lr4["rgb"]["pred"], device),
+        "CNN + mean spectrum: 204 bands − RGB": paired_delta(y, cnn["all_fusion"]["pred"], cnn["rgb_fusion"]["pred"], device),
     }
+    for b, name in (("all", "204 bands"), ("rgb", "RGB")):
+        fused = cnn[f"{b}_fusion"]["pred"]
+        out["deltas"][f"{name}: CNN + mean spectrum − plain CNN"] = paired_delta(y, fused, cnn[b]["pred"], device)
+        out["deltas"][f"{name}: CNN + mean spectrum − logistic regression (3 rows)"] = paired_delta(y, fused, lr3[b]["pred"], device)
+        out["deltas"][f"{name}: CNN + mean spectrum − logistic regression (4 rows)"] = paired_delta(y, fused, lr4[b]["pred"], device)
     return out
 
 
@@ -206,7 +217,8 @@ def to_markdown(r: dict) -> str:
 
     lines = ["# Variety CNN: metrics", "", "Balanced accuracy, chance 0.25; held-out field rows; 95% bootstrap interval. "
              "Every model uses SNV; CNN scores are 3-seed ensembles. `_no_val_e<N>` = trained on 4 rows for exactly N "
-             "epochs, with no validation row. `_nested` = the same, with N chosen inside each training split.", "",
+             "epochs, with no validation row. `_nested` = the same, with N chosen inside each training split. "
+             "`_fusion` = the plain run, with the mean spectrum also in the last layer.", "",
              "| model | balanced accuracy |", "|---|---|"]
     lines += [line(f"CNN `{k}`", m) for k, m in r["cnn"].items()]
     lines += [line(f"logistic regression `{k}`, same 3 rows", m) for k, m in r["lr3"].items()]
@@ -221,6 +233,13 @@ def to_markdown(r: dict) -> str:
         means = r["cnn"][f"{b}_nested"]["seed_row_means"]
         lines.append(f"| `{b}` | {', '.join(f'{x:.3f}' for x in means)} | {np.mean(means):.3f} | "
                      + " | ".join(str(chosen[x]) for x in ROWS) + " |")
+    lines += ["", "## CNN with the mean spectrum in its last layer", "",
+              "Trained like the plain CNN (3 rows, early stopping). Row average per seed; each part alone is a 3-seed ensemble.", "",
+              "| input | plain CNN, per seed | + mean spectrum, per seed | 48-d part alone | spectrum part alone |", "|---|---|---|---|---|"]
+    for b, parts in r["fusion_parts"].items():
+        plain, fused = r["cnn"][b]["seed_row_means"], r["cnn"][f"{b}_fusion"]["seed_row_means"]
+        lines.append(f"| `{b}` | {', '.join(f'{x:.3f}' for x in plain)} | {', '.join(f'{x:.3f}' for x in fused)} | "
+                     f"{parts['prob_cnn']['balanced_accuracy']:.3f} | {parts['prob_spectrum']['balanced_accuracy']:.3f} |")
     lines += ["", "## CNN detail", "", "| configuration | seeds | " + " | ".join(ROWS) + " | median best epoch |",
               "|---|---|" + "---|" * (len(ROWS) + 1)]
     lines += [f"| `{k}` | {', '.join(f'{s:.3f}' for s in m['seed_scores'])} | "
@@ -238,12 +257,13 @@ def plot_scores(r: dict, path: Path) -> None:
     :type path: Path
     """
     # Each row is (label, 204-band result, RGB result).
-    groups = [("CNN, 4 rows, epochs chosen in each split", r["cnn"]["all_nested"], r["cnn"]["rgb_nested"]),
+    groups = [("CNN + mean spectrum, 3 rows, early stopping", r["cnn"]["all_fusion"], r["cnn"]["rgb_fusion"]),
+              ("CNN, 4 rows, epochs chosen in each split", r["cnn"]["all_nested"], r["cnn"]["rgb_nested"]),
               ("CNN, 4 rows, 37 epochs", r["cnn"]["all_no_val_e37"], r["cnn"]["rgb_no_val_e37"]),
               ("CNN, 3 rows, early stopping", r["cnn"]["all"], r["cnn"]["rgb"]),
               ("Logistic regression, same 3 rows", r["lr3"]["all"], r["lr3"]["rgb"]),
               ("Logistic regression, 4 rows", r["lr4"]["all"], r["lr4"]["rgb"])]
-    fig, ax = plt.subplots(figsize=(9, 4.2))
+    fig, ax = plt.subplots(figsize=(9, 4.8))
     for i, (_label, a, b) in enumerate(groups):
         for off, m, bands in ((-0.14, a, "all"), (0.14, b, "rgb")):
             lo, hi = m["balanced_accuracy_ci95"]

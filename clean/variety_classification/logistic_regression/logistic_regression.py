@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -27,7 +26,7 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA"):
         sys.path.insert(0, str(p))
 from data import load_dataset  # noqa: E402
 from log import get_logger  # noqa: E402
-from pca_common import VAR_COLORS, VARIETIES, get_device, np_, snv  # noqa: E402
+from pca_common import VARIETIES, get_device, np_, snv  # noqa: E402
 
 RES, FIG = HERE / "results", HERE / "figures"
 BANDS = ("all", "rgb")
@@ -96,7 +95,7 @@ def make_model(C: float):
     :return: Unfitted scikit-learn pipeline.
     :rtype: sklearn.pipeline.Pipeline
     """
-    return make_pipeline(StandardScaler(), LogisticRegression(C=C, max_iter=10_000))
+    return make_pipeline(StandardScaler(), LogisticRegression(C=C, solver="lbfgs", penalty="l2", max_iter=10_000))
 
 
 def choose_C(X: np.ndarray, y: np.ndarray, rows: np.ndarray) -> float:
@@ -205,24 +204,6 @@ def evaluate(y: np.ndarray, P: np.ndarray, device: torch.device) -> dict:
     }
 
 
-def fit_coefficients(X: np.ndarray, y: np.ndarray, folds: dict) -> tuple[float, np.ndarray]:
-    """Refit on all leaves to show which bands the model uses; never used for the score.
-
-    n: the number of leaves. d: the number of features.
-
-    :param X: Features, shape (n, d).
-    :type X: np.ndarray
-    :param y: Variety codes, length n.
-    :type y: np.ndarray
-    :param folds: Per-row results of :func:`nested_row_cv`; gives the most often chosen C.
-    :type folds: dict
-    :return: That C and the weights, shape (4, d).
-    :rtype: tuple
-    """
-    C = Counter(f["chosen_C"] for f in folds.values()).most_common(1)[0][0]
-    return C, make_model(C).fit(X, y)[-1].coef_
-
-
 def metrics_markdown(cfg: Config, m: dict, folds: dict) -> str:
     """Build metrics.md: balanced accuracy, confusion matrix, per-variety and per-row scores.
 
@@ -302,41 +283,6 @@ def plot_confusion(cm: np.ndarray, cfg: Config, bacc: float, path: Path) -> None
     plt.close(fig)
 
 
-def plot_coefficients(coef: np.ndarray, wavelengths: np.ndarray, cfg: Config, C: float, path: Path) -> None:
-    """Draw the model's weight on each band per variety: lines for all bands, bars for rgb.
-
-    :param coef: Weights per standardised band, shape (4, d).
-    :type coef: np.ndarray
-    :param wavelengths: Band centres of the features, length d.
-    :type wavelengths: np.ndarray
-    :param cfg: The configuration that was run.
-    :type cfg: Config
-    :param C: The C of the fit, for the title.
-    :type C: float
-    :param path: Output file.
-    :type path: Path
-    """
-    fig, ax = plt.subplots(figsize=(7, 4.5) if cfg.bands == "rgb" else (11, 4.5))
-    if cfg.bands == "rgb":
-        width = 0.18
-        for k, v in enumerate(VARIETIES):
-            ax.bar(np.arange(3) + (k - 1.5) * width, coef[k], width * 0.9, label=v, color=VAR_COLORS[v])
-        ax.set_xticks(range(3), [f"{n}\n{w:.0f} nm" for n, w in zip(RGB_NM, wavelengths)])
-    else:
-        for k, v in enumerate(VARIETIES):
-            ax.plot(wavelengths, coef[k], lw=2, label=v, color=VAR_COLORS[v])
-        ax.set_xlim(wavelengths[0], wavelengths[-1])
-        ax.set_xlabel("wavelength (nm)", color=MUTED)
-    ax.axhline(0, color=MUTED, lw=0.8)
-    ax.set_ylabel("weight per standardised band", color=MUTED)
-    ax.set_title(f"{cfg.name}: weight per variety (all leaves, C = {C:g})", loc="left", color=INK)
-    ax.legend(frameon=False, labelcolor=INK)
-    _style(ax)
-    fig.tight_layout()
-    fig.savefig(path, dpi=150)
-    plt.close(fig)
-
-
 def comparison_markdown(metrics: dict) -> str:
     """Build comparison.md: one line per configuration.
 
@@ -359,21 +305,15 @@ def comparison_markdown(metrics: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def write_outputs(cfg: Config, d: dict, m: dict, folds: dict, C: float, coef: np.ndarray) -> None:
-    """Write the configuration's tables and figures.
+def write_outputs(cfg: Config, m: dict, folds: dict) -> None:
+    """Write the configuration's tables and confusion matrix.
 
     :param cfg: The configuration that was run.
     :type cfg: Config
-    :param d: Output of :func:`load_features`.
-    :type d: dict
     :param m: Output of :func:`evaluate`.
     :type m: dict
     :param folds: Per-row results of :func:`nested_row_cv`.
     :type folds: dict
-    :param C: C of the coefficient fit.
-    :type C: float
-    :param coef: Weights, shape (4, d).
-    :type coef: np.ndarray
     """
     res, fig = RES / cfg.name, FIG / cfg.name
     res.mkdir(parents=True, exist_ok=True)
@@ -381,7 +321,6 @@ def write_outputs(cfg: Config, d: dict, m: dict, folds: dict, C: float, coef: np
     (res / "metrics.md").write_text(metrics_markdown(cfg, m, folds))
     write_metrics_json(res / "metrics.json", cfg, m, folds)
     plot_confusion(m["confusion"], cfg, m["balanced_accuracy"], fig / "confusion_matrix.png")
-    plot_coefficients(coef, d["wavelengths"], cfg, C, fig / "coefficients.png")
 
 
 def main() -> None:
@@ -405,8 +344,7 @@ def main() -> None:
     d = load_features(cfg, device)
     P, folds = nested_row_cv(d["X"], d["y"], d["rows"])
     m = evaluate(d["y"], P, device)
-    C, coef = fit_coefficients(d["X"], d["y"], folds)
-    write_outputs(cfg, d, m, folds, C, coef)
+    write_outputs(cfg, m, folds)
     log.info("%s bands: balanced accuracy %.3f | results/%s/metrics.md", cfg.name, m["balanced_accuracy"], cfg.name)
 
 
