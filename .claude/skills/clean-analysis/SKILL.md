@@ -3,7 +3,7 @@ name: clean-analysis
 description: >-
   Write and refactor code under clean/. Keep clean/ independent of claude runs/
   and other experiment folders; require readable, well-documented scripts a
-  newcomer can follow. Use when creating or editing files in clean/, clean/PCA,
+  newcomer can follow. Use when creating or editing files in clean/, its three topic folders,
   or when the user mentions the clean folder.
 ---
 
@@ -14,9 +14,10 @@ Analyses in `clean/` have their own loaders. They do not import `claude runs/`,
 
 ## Isolation
 
-- Import only from `clean/` (`data.py`, `log.py`, `PCA/pca_common.py`) and third-party libraries.
+- Import only from `clean/` (`data.py`, `log.py`, `cnn_common.py`, `leaf_sources.csv`, `spectral_analysis/PCA/pca_common.py`) and third-party libraries.
 - Never `sys.path` into `claude runs/` or `from common import …` / `from spectra import …` / `from vine_data import …`.
 - The only file outside `clean/` that code may read is `vine_hsi.h5`, through `clean/data.py`.
+- One topic folder per kind of work: `variety_classification/`, `spectral_analysis/`, `disease_classification/`.
 - Cache leaf means in `clean/cache/`, not in `claude runs/shared/cache/`.
 - Do not add experiment code under `claude runs/` while working on `clean/`.
 
@@ -31,6 +32,7 @@ Analyses in `clean/` have their own loaders. They do not import `claude runs/`,
 
 - Computation returns values. It never prints and never writes logs.
 - Logging uses `clean/log.py` `get_logger`, set up once in `main()`.
+- Keep output short. Analysis and report scripts print one line and keep no log file. Only training keeps a log (latest run, one line per seed or arm), and passing checks stay silent. Never copy a report into a log, or write a file nothing reads.
 - Reports and figures are separate functions, called after `compute()`.
 - `logs/`, `results/`, `figures/` stay separate.
 

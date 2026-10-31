@@ -24,8 +24,8 @@ D. Trivial properties as single predictors, within-variety AUC (0.5 = useless; <
    mean NIR/red ratio             red_blotch 0.476   leafroll3 0.487
 
 E. Best single wavelengths (within-variety univariate AUC; figure saved)
-   red_blotch  top bands: 707nm (AUC 0.536), 710nm (AUC 0.536), 704nm (AUC 0.536), 557nm (AUC 0.535), 563nm (AUC 0.535)
-   leafroll3   top bands: 536nm (AUC 0.531), 542nm (AUC 0.530), 539nm (AUC 0.530), 545nm (AUC 0.530), 533nm (AUC 0.530)
+   red_blotch  top bands: 703nm (AUC 0.536), 706nm (AUC 0.536), 700nm (AUC 0.536), 551nm (AUC 0.535), 557nm (AUC 0.535)
+   leafroll3   top bands: 531nm (AUC 0.531), 537nm (AUC 0.530), 534nm (AUC 0.530), 540nm (AUC 0.530), 528nm (AUC 0.530)
 
 F. Logistic regression TRAINED AND TESTED INSIDE one variety (5-fold by row), mean spectra, AUC
    red_blotch  Baco 0.542   Cab Franc n/a (too few of one class)   Chardonnay 0.609   Vidal 0.596
@@ -33,4 +33,4 @@ F. Logistic regression TRAINED AND TESTED INSIDE one variety (5-fold by row), me
 
 ======================================================================
 
-saved /home/jay/Desktop/CODE/Classification/experiments/results/diagnostics.txt and diagnostics_band_auc.png
+saved /home/jay/Desktop/CODE/Classification/claude runs/shared/results/diagnostics.txt and diagnostics_band_auc.png

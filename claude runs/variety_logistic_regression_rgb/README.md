@@ -1,6 +1,6 @@
 # Variety prediction with logistic regression (RGB only)
 
-Same nested row-fold logistic regression as `../variety_logistic_regression/`, but each leaf is three numbers: the mean reflectance at the Specim IQ bands nearest **640 / 550 / 460 nm** (actual centres 639.4 / 550.7 / 459.1 nm). Those are the same pseudo-RGB picks as the archived ResNet adaptor.
+Same nested row-fold logistic regression as `../variety_logistic_regression/`, but each leaf is three numbers: the mean reflectance at the Specim IQ bands nearest **640 / 550 / 460 nm** (actual centres 640.0 / 548.5 / 461.0 nm). Those are the same pseudo-RGB picks as the archived ResNet adaptor.
 
 The point is a control: how much of the 204-band variety score is already in a colour photograph?
 
@@ -27,10 +27,10 @@ Chance is 0.25. The 204-band numbers are from `../variety_logistic_regression/`.
 |---|---|---|---|---|
 | 204 bands | SNV | **0.939** (0.924–0.954) | 0.940 | 0.88–0.99 |
 | 204 bands | raw | 0.920 (0.904–0.936) | 0.920 | 0.82–0.99 |
-| RGB (3 bands) | raw | **0.848** (0.825–0.870) | 0.848 | 0.81–0.90 |
-| RGB (3 bands) | SNV | 0.506 (0.477–0.536) | 0.504 | 0.42–0.60 |
+| RGB (3 bands) | raw | **0.859** (0.837–0.880) | 0.859 | 0.82–0.92 |
+| RGB (3 bands) | SNV | 0.500 (0.471–0.530) | 0.497 | 0.44–0.58 |
 
-- **Raw RGB is already enough to tell varieties apart well** (0.85 vs 0.92 with all 204 bands). Most of the raw-spectrum variety signal is visible colour / brightness, not the NIR.
-- **SNV kills the RGB model** (0.51). With only three channels, SNV throws away brightness and leaves almost no shape. The 204-band SNV model stays at 0.94 because it still has the green peak, red edge, and the rest of the curve.
-- **Where raw RGB errors are:** Cab Franc vs Vidal (48 Cab Franc → Vidal, 23 Vidal → Cab Franc), plus some Baco/Chardonnay mix-ups.
+- **Raw RGB is already enough to tell varieties apart well** (0.86 vs 0.92 with all 204 bands). Most of the raw-spectrum variety signal is visible colour / brightness, not the NIR.
+- **SNV kills the RGB model** (0.50). With only three channels, SNV throws away brightness and leaves almost no shape. The 204-band SNV model stays at 0.94 because it still has the green peak, red edge, and the rest of the curve.
+- **Where raw RGB errors are:** Cab Franc vs Vidal (41 Cab Franc → Vidal, 22 Vidal → Cab Franc), plus some Baco/Chardonnay mix-ups.
 - **Caveat:** same as the 204-band run — variety is confounded with imaging day and lighting. Raw RGB in particular can use brightness from those sources.

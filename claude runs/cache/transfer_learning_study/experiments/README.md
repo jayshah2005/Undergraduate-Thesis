@@ -3,7 +3,7 @@
 One script per approach from the research report
 (`../reports/Hyperspectral grapevine transfer learning.md`), all scored the same way.
 
-**Task:** 998 leaf cut-outs (Specim IQ, 204 bands, 400–1000 nm, 4 varieties). Two yes/no labels per leaf:
+**Task:** 998 leaf cut-outs (Specim IQ, 204 bands, 397–1004 nm, 4 varieties). Two yes/no labels per leaf:
 `red_blotch` and `leafroll3`. *Healthy* = both negative; *any disease* = either positive.
 
 ## 1. Start here: what the results say
@@ -14,9 +14,9 @@ All numbers are AUC (0.5 = coin flip, 1.0 = perfect). The "within-variety" colum
 
 | approach family | settings tried | within-variety AUC, any disease: worst / median / best |
 |---|---|---|
-| 07 foundation models (DOFA, DINOv2) | 4 | 0.549 / 0.566 / **0.587** (`07_dinov2_probe`) |
+| 07 foundation models (DOFA, DINOv2) | 4 | 0.543 / 0.556 / **0.585** (`07_dinov2_probe`) |
 | 02 classical on leaf-mean spectra, one model per variety | 16 | 0.475 / 0.540 / 0.581 |
-| 06 ResNet-18 (pretrained, scratch, fixed-RGB control) | 3 | 0.553 / 0.561 / 0.574 |
+| 06 ResNet-18 (pretrained, scratch, fixed-RGB control) | 3 | 0.554 / 0.561 / 0.575 |
 | 02 classical on leaf-mean spectra (one pooled model) | 16 | 0.483 / 0.532 / 0.558 |
 | 08 self-supervised pretraining | 2 | 0.543 / 0.550 / 0.557 |
 | 03 classical on pixels | 2 | 0.524 / 0.533 / 0.542 |
@@ -27,16 +27,16 @@ All numbers are AUC (0.5 = coin flip, 1.0 = perfect). The "within-variety" colum
 **Findings (read these with the caveats in section 5):**
 
 1. **The spectral signal is weak. No approach is clearly better than the others.** Within a variety the best runs reach about 0.55–0.59 AUC for "any disease". Differences between families are inside the noise (a 95% bootstrap interval on a paired difference is about ±0.05).
-   - **Red blotch: a small real signal.** 27 of 47 runs have a within-variety 95% interval entirely above 0.5 (best ≈ 0.59).
-   - **Leafroll: none detected.** 0 of 47 runs. "Any disease": 15 of 47. (Runs are correlated and many were screened, so read this as "consistently a little above chance" for red blotch, not 27 independent confirmations.)
+   - **Red blotch: a small real signal.** 28 of 47 runs have a within-variety 95% interval entirely above 0.5 (best ≈ 0.59).
+   - **Leafroll: none detected.** 0 of 47 runs. "Any disease": 14 of 47. (Runs are correlated and many were screened, so read this as "consistently a little above chance" for red blotch, not 28 independent confirmations.)
 2. **Much of the headline accuracy is the variety.** Guessing from the variety alone gives pooled AUC 0.745 (red blotch) and 0.616 (any disease): 96% of Cab Franc leaves have red blotch, 35% of Chardonnay leaves do. Pooled numbers above ~0.7 are mostly this.
 3. **Is transfer learning worth it? Not clearly, here.**
-   - ImageNet-pretrained ResNet-18 vs the same net from random weights: pooled AUC for "any disease" +0.047 (95% CI +0.008 to +0.080), but within-variety only +0.021 (CI −0.027 to +0.064), i.e. not distinguishable from zero.
+   - ImageNet-pretrained ResNet-18 vs the same net from random weights: pooled AUC for "any disease" +0.050 (95% CI +0.014 to +0.086), but within-variety only +0.021 (CI −0.032 to +0.076), i.e. not distinguishable from zero.
    - Self-supervised pretraining on our own spectra vs the same net from scratch: no effect (−0.014, CI −0.034 to +0.007).
-   - Frozen hyperspectral foundation model (DOFA) vs ImageNet ResNet: no difference within variety (−0.024, CI −0.076 to +0.038); lower pooled (−0.107), meaning it captures less variety information.
-   - A fixed pseudo-RGB input (no learned band adaptor) did as well as the learned 204→3 adaptor (0.561 vs 0.574 within variety).
-   - The best single run (DINOv2 with a band adaptor, frozen backbone, 0.587) is not significantly better than the best classical run (+0.006, CI −0.046 to +0.073; a pair chosen after seeing the results).
-4. **Signal direction differs between varieties** (`results/diagnostics_band_auc.png`). For red blotch, reflectance at 530–620 nm and around the red edge (~705 nm) separates sick from healthy leaves in Chardonnay, Vidal and Cab Franc, and the effect is **reversed in Baco**. A single pooled model cannot use a signal whose sign depends on the variety.
+   - Frozen hyperspectral foundation model (DOFA) vs ImageNet ResNet: no difference within variety (−0.022, CI −0.077 to +0.038); lower pooled (−0.119), meaning it captures less variety information.
+   - A fixed pseudo-RGB input (no learned band adaptor) did as well as the learned 204→3 adaptor (0.561 vs 0.575 within variety).
+   - The best single run (DINOv2 with a band adaptor, frozen backbone, 0.585) is not significantly better than the best classical run (+0.004, CI −0.046 to +0.068; a pair chosen after seeing the results).
+4. **Signal direction differs between varieties** (`results/diagnostics_band_auc.png`). For red blotch, reflectance at 530–620 nm and around the red edge (~703 nm) separates sick from healthy leaves in Chardonnay, Vidal and Cab Franc, and the effect is **reversed in Baco**. A single pooled model cannot use a signal whose sign depends on the variety.
    - Leave-one-variety-out (the model never saw the test variety): within-variety AUC ≈ 0.47–0.55, and pooled leafroll AUC 0.29–0.45 (*below* chance because the direction flips). Models do not transfer across varieties.
    - One model per variety helps a little for classical models (best 0.581 vs 0.558 pooled), but not significantly. Chardonnay and Vidal carry the most signal (red blotch ~0.55–0.62 within variety); Baco carries almost none.
 5. **Neighbouring vines have similar labels** (leafroll especially: AUC 0.72 from the two neighbours' labels), which is why folds are whole rows. In our checks random splits did *not* inflate the scores (`results/diagnostics.txt`, section C), because these models find little signal to leak.

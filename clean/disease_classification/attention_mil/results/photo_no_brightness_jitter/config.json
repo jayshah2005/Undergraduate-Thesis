@@ -1,0 +1,18 @@
+{
+  "batch": 8,
+  "lr": 0.001,
+  "weight_decay": 0.01,
+  "max_epochs": 80,
+  "patience": 15,
+  "brightness_jitter": 0.0,
+  "dropout": 0.5,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "variety": "Chardonnay",
+  "canvas": 136,
+  "folds": "photo",
+  "folds_meaning": "random photos dealt evenly per row (2 per fold; R1 has 13 photos, so 3 or 2): new vines in rows seen in training"
+}

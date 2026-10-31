@@ -1,0 +1,17 @@
+{
+  "batch": 8,
+  "lr": 0.001,
+  "weight_decay": 0.01,
+  "max_epochs": 80,
+  "patience": 15,
+  "brightness_jitter": 0.0,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "variety": "Chardonnay",
+  "canvas": 136,
+  "folds": "row",
+  "folds_meaning": "fold k = field row k: the test row is never seen in training (new part of the vineyard)"
+}

@@ -6,34 +6,34 @@ One mean spectrum per leaf; leaves with both viruses left out. R2 = share of the
 
 | variety | comparison | n | R2 (chance) | p | p Holm | max abs d (nm) |
 |---|---|---|---|---|---|---|
-| Baco | healthy vs RB only | 59 / 82 | 0.005 (0.007) | 0.426 | 1.000 | 0.22 (403) |
-| Baco | healthy vs LR only | 59 / 54 | 0.000 (0.008) | 0.963 | 1.000 | 0.16 (403) |
-| Baco | RB only vs LR only | 82 / 54 | 0.003 (0.007) | 0.508 | 1.000 | 0.14 (784) |
+| Baco | healthy vs RB only | 59 / 82 | 0.005 (0.007) | 0.426 | 1.000 | 0.22 (400) |
+| Baco | healthy vs LR only | 59 / 54 | 0.000 (0.008) | 0.963 | 1.000 | 0.16 (400) |
+| Baco | RB only vs LR only | 82 / 54 | 0.003 (0.007) | 0.508 | 1.000 | 0.14 (781) |
 | Baco | healthy vs RB only vs LR only | 59 / 82 / 54 | 0.004 (0.010) | 0.694 | 1.000 | - |
-| Cab Franc | healthy vs RB only | 9 / 240 | 0.000 (0.004) | 0.965 | 1.000 | 0.25 (453) |
-| Chardonnay | healthy vs RB only | 90 / 38 | 0.001 (0.008) | 0.691 | 1.000 | 0.38 (707) |
-| Chardonnay | healthy vs LR only | 90 / 72 | 0.007 (0.008) | 0.344 | 1.000 | 0.24 (707) |
-| Chardonnay | RB only vs LR only | 38 / 72 | 0.009 (0.007) | 0.282 | 1.000 | 0.22 (982) |
+| Cab Franc | healthy vs RB only | 9 / 240 | 0.000 (0.004) | 0.965 | 1.000 | 0.25 (449) |
+| Chardonnay | healthy vs RB only | 90 / 38 | 0.001 (0.008) | 0.691 | 1.000 | 0.38 (703) |
+| Chardonnay | healthy vs LR only | 90 / 72 | 0.007 (0.008) | 0.344 | 1.000 | 0.24 (703) |
+| Chardonnay | RB only vs LR only | 38 / 72 | 0.009 (0.007) | 0.282 | 1.000 | 0.22 (985) |
 | Chardonnay | healthy vs RB only vs LR only | 90 / 38 / 72 | 0.008 (0.010) | 0.474 | 1.000 | - |
-| Vidal | healthy vs RB only | 68 / 157 | 0.004 (0.004) | 0.293 | 1.000 | 0.20 (574) |
-| Vidal | healthy vs LR only | 68 / 13 | 0.004 (0.011) | 0.535 | 1.000 | 0.22 (997) |
-| Vidal | RB only vs LR only | 157 / 13 | 0.000 (0.005) | 0.937 | 1.000 | 0.13 (406) |
+| Vidal | healthy vs RB only | 68 / 157 | 0.004 (0.004) | 0.293 | 1.000 | 0.20 (569) |
+| Vidal | healthy vs LR only | 68 / 13 | 0.004 (0.011) | 0.535 | 1.000 | 0.22 (1000) |
+| Vidal | RB only vs LR only | 157 / 13 | 0.000 (0.005) | 0.937 | 1.000 | 0.13 (403) |
 | Vidal | healthy vs RB only vs LR only | 68 / 157 / 13 | 0.004 (0.008) | 0.615 | 1.000 | - |
 
 ## SNV spectra
 
 | variety | comparison | n | R2 (chance) | p | p Holm | max abs d (nm) | AUC |
 |---|---|---|---|---|---|---|---|
-| Baco | healthy vs RB only | 59 / 82 | 0.028 (0.014) | 0.113 | 1.000 | 0.46 (613) | 0.585 |
-| Baco | healthy vs LR only | 59 / 54 | 0.008 (0.017) | 0.697 | 1.000 | 0.36 (970) | 0.433 |
-| Baco | RB only vs LR only | 82 / 54 | 0.010 (0.006) | 0.150 | 1.000 | 0.32 (784) | 0.590 |
+| Baco | healthy vs RB only | 59 / 82 | 0.028 (0.014) | 0.113 | 1.000 | 0.46 (607) | 0.585 |
+| Baco | healthy vs LR only | 59 / 54 | 0.008 (0.017) | 0.697 | 1.000 | 0.36 (973) | 0.433 |
+| Baco | RB only vs LR only | 82 / 54 | 0.010 (0.006) | 0.150 | 1.000 | 0.32 (781) | 0.590 |
 | Baco | healthy vs RB only vs LR only | 59 / 82 / 54 | 0.023 (0.016) | 0.207 | 1.000 | - | - |
-| Cab Franc | healthy vs RB only | 9 / 240 | 0.001 (0.004) | 0.772 | 1.000 | 0.84 (935) | - |
-| Chardonnay | healthy vs RB only | 90 / 38 | 0.064 (0.009) | 0.001 | **0.026** | 0.81 (707) | 0.552 |
-| Chardonnay | healthy vs LR only | 90 / 72 | 0.004 (0.006) | 0.539 | 1.000 | 0.24 (699) | 0.453 |
-| Chardonnay | RB only vs LR only | 38 / 72 | 0.045 (0.014) | 0.025 | 0.550 | 0.63 (515) | 0.627 |
+| Cab Franc | healthy vs RB only | 9 / 240 | 0.001 (0.004) | 0.772 | 1.000 | 0.84 (936) | - |
+| Chardonnay | healthy vs RB only | 90 / 38 | 0.064 (0.009) | 0.001 | **0.026** | 0.81 (703) | 0.552 |
+| Chardonnay | healthy vs LR only | 90 / 72 | 0.004 (0.006) | 0.539 | 1.000 | 0.24 (694) | 0.453 |
+| Chardonnay | RB only vs LR only | 38 / 72 | 0.045 (0.014) | 0.025 | 0.550 | 0.63 (510) | 0.627 |
 | Chardonnay | healthy vs RB only vs LR only | 90 / 38 / 72 | 0.043 (0.012) | 0.003 | 0.075 | - | - |
-| Vidal | healthy vs RB only | 68 / 157 | 0.026 (0.004) | 0.008 | 0.192 | 0.49 (542) | 0.621 |
-| Vidal | healthy vs LR only | 68 / 13 | 0.014 (0.011) | 0.236 | 1.000 | 0.72 (965) | 0.572 |
-| Vidal | RB only vs LR only | 157 / 13 | 0.002 (0.005) | 0.764 | 1.000 | 0.43 (518) | 0.495 |
+| Vidal | healthy vs RB only | 68 / 157 | 0.026 (0.004) | 0.008 | 0.192 | 0.49 (537) | 0.621 |
+| Vidal | healthy vs LR only | 68 / 13 | 0.014 (0.011) | 0.236 | 1.000 | 0.72 (967) | 0.572 |
+| Vidal | RB only vs LR only | 157 / 13 | 0.002 (0.005) | 0.764 | 1.000 | 0.43 (513) | 0.495 |
 | Vidal | healthy vs RB only vs LR only | 68 / 157 / 13 | 0.026 (0.007) | 0.017 | 0.391 | - | - |

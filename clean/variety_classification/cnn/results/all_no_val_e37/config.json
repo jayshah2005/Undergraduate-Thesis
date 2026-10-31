@@ -1,0 +1,18 @@
+{
+  "bands": "all",
+  "training": {
+    "batch": 8,
+    "lr": 0.001,
+    "weight_decay": 0.01,
+    "max_epochs": 37,
+    "patience": 15,
+    "dropout": 0.5,
+    "validation": false
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "canvas": 212
+}

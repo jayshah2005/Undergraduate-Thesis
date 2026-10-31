@@ -7,7 +7,7 @@ Groups (inside one variety at a time, so variety differences cannot count as dis
     healthy = neither virus, RB only = red blotch alone, LR only = leafroll 3 alone.
     Leaves with both viruses are left out so each group has one disease. Cab Franc has no
     LR-only leaves and only 9 healthy ones, so only healthy vs RB is possible there.
-Leaf spectrum = the mean over all of the leaf's pixels (204 bands, 400-1000 nm). Every test is run
+Leaf spectrum = the mean over all of the leaf's pixels (204 bands, 397-1004 nm). Every test is run
 on the raw spectra and after SNV (each leaf centred and scaled over its own bands: brightness
 removed, shape kept).
 

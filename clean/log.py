@@ -7,14 +7,13 @@ from pathlib import Path
 
 
 def get_logger(name: str, log_file: Path | None = None, level: int = logging.INFO) -> logging.Logger:
-    """Write messages to the terminal and, if given, append them to log_file.
+    """Write messages to the terminal and, if given, to log_file (the latest run only).
 
-    No timestamps or levels in the file, so logs/run.log is readable as a report.
-    Computation code never calls this; use it once in main().
+    Only training scripts keep a log file. Computation code never calls this; use it once in main().
 
     :param name: Logger name, unique per script.
     :type name: str
-    :param log_file: Optional path to append. Parent directories are created.
+    :param log_file: Optional path, overwritten on each run. Parent directories are created.
     :type log_file: Path | None
     :param level: Logging level, default INFO.
     :type level: int
@@ -25,17 +24,22 @@ def get_logger(name: str, log_file: Path | None = None, level: int = logging.INF
     logger.setLevel(level)
     logger.propagate = False
     fmt = logging.Formatter("%(message)s")
+
+    # Add a stream handler to the logger
     if not any(isinstance(h, logging.StreamHandler) and not isinstance(h, logging.FileHandler)
                for h in logger.handlers):
         h = logging.StreamHandler(sys.stdout)
         h.setFormatter(fmt)
         logger.addHandler(h)
+
+    # Add a file handler to the logger if log_file is provided
     if log_file is not None:
         log_file = Path(log_file).resolve()
         if not any(isinstance(h, logging.FileHandler) and Path(h.baseFilename) == log_file
                    for h in logger.handlers):
             log_file.parent.mkdir(parents=True, exist_ok=True)
-            h = logging.FileHandler(log_file, mode="a")
+            h = logging.FileHandler(log_file, mode="w")
             h.setFormatter(fmt)
             logger.addHandler(h)
+    
     return logger

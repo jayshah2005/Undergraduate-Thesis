@@ -3,6 +3,14 @@
 The first round of approaches on the 998 leaves (labels: red blotch, leafroll 3). Archived on 2026-10-19 to keep
 `claude runs/experiments/` clean for paper implementations. None of the approaches did well.
 
+> **Partial rerun 2026-10-29 (factory wavelengths).** The original runs used a nominal 400–1000 nm wavelength grid
+> instead of the Specim IQ calibration (397–1004 nm; up to 5 nm off). Only 06 (pseudo-RGB band picks), 07 (DOFA
+> wavelength embedding, DINOv2 adaptor init) and 10 (wavelength labels) use wavelengths, so those were rerun and 09
+> rebuilt; every other run is unchanged. AUCs moved by at most 0.024 and balanced accuracies by at most 0.034
+> (within the ±0.05 per-run uncertainty; GPU training is not bit-for-bit repeatable, so part of that is run-to-run
+> noise) and no conclusion changed. The scripts were run next to `shared/common.py` (as described at the end of this
+> README), so their logs show `claude runs/shared/results/…`; the outputs were then moved into `experiments/results/`.
+
 ## Setup shared by every run
 
 - Unit = one leaf (998 leaves, 4 varieties). Every model outputs two probabilities per leaf: P(red blotch) and
@@ -35,8 +43,8 @@ prior alone reaches 0.652 for red blotch.
 | 03 Every pixel a sample (204 bands, leaf's label), logistic regression or gradient boosting, leaf = mean of its pixels | 2 | 0.542 / 0.584 / 0.485 | 0.694 / 0.649 |
 | 04 Same pixel set-up with an MLP or a 1-D CNN along the wavelength axis | 2 | 0.538 / 0.582 / 0.503 | 0.695 / 0.671 |
 | 05 Leaf = bag of 256 pixels; attention weights per pixel and per disease (attention MIL) | 1 | 0.527 / 0.570 / 0.482 | 0.692 / 0.661 |
-| 06 Whole-leaf image, 204→3 band adaptor, ResNet-18 from ImageNet or from scratch, plus a fixed pseudo-RGB control | 3 | 0.574 / 0.560 / 0.496 | 0.677 / 0.584 |
-| 07 Whole-leaf image into DOFA (hyperspectral, all bands + wavelengths) or DINOv2 (RGB + adaptor), frozen or last 2 blocks tuned | 4 | 0.587 / 0.565 / 0.544 | 0.681 / 0.662 |
+| 06 Whole-leaf image, 204→3 band adaptor, ResNet-18 from ImageNet or from scratch, plus a fixed pseudo-RGB control | 3 | 0.575 / 0.554 / 0.497 | 0.687 / 0.584 |
+| 07 Whole-leaf image into DOFA (hyperspectral, all bands + wavelengths) or DINOv2 (RGB + adaptor), frozen or last 2 blocks tuned | 4 | 0.585 / 0.557 / 0.538 | 0.685 / 0.666 |
 | 08 Masked-band autoencoder pretraining on unlabelled pixels, then the pixel classifier of 04; vs same net from scratch | 2 | 0.557 / 0.576 / 0.498 | 0.707 / 0.671 |
 
 Each number is the best over that approach's variants, picked per column, so it is optimistic. Every variant is
@@ -210,13 +218,13 @@ The model found no clearly diseased pixels to attend to.
 
 | run | within-variety AUC any / RB / LR | balanced acc. RB / LR |
 |---|---|---|
-| 06_resnet18_pretrained | 0.574 / 0.535 / 0.496 | 0.655 / 0.584 |
-| 06_resnet18_scratch | 0.553 / 0.543 / 0.475 | 0.660 / 0.546 |
-| 06_resnet18_pretrained_fixedrgb | 0.561 / 0.560 / 0.489 | 0.677 / 0.569 |
+| 06_resnet18_pretrained | 0.575 / 0.542 / 0.497 | 0.668 / 0.584 |
+| 06_resnet18_scratch | 0.554 / 0.554 / 0.474 | 0.687 / 0.580 |
+| 06_resnet18_pretrained_fixedrgb | 0.561 / 0.550 / 0.479 | 0.673 / 0.564 |
 
 How it did:
-- **Pretraining:** pretrained beat scratch on pooled AUC for any disease (+0.047, 95% CI +0.008 to +0.080), but not within variety (+0.021, CI −0.027 to +0.064). The gain came from recognising the variety.
-- **Fit vs generalisation:** the pretrained network fitted the training leaves much better (training loss 0.20 vs 0.375, fold 0), but this did not carry over to new leaves.
+- **Pretraining:** pretrained beat scratch on pooled AUC for any disease (+0.050, 95% CI +0.014 to +0.086), but not within variety (+0.021, CI −0.032 to +0.076). The gain came from recognising the variety.
+- **Fit vs generalisation:** the pretrained network fitted the training leaves much better (training loss 0.20 vs 0.28, fold 0), but this did not carry over to new leaves.
 - **Band adaptor:** the fixed pseudo-RGB input did as well as the learned adaptor.
 
 ### 07 Foundation models: DOFA and DINOv2 (`07_foundation_models.py`)
@@ -233,15 +241,15 @@ How it did:
 
 | run | within-variety AUC any / RB / LR | balanced acc. RB / LR |
 |---|---|---|
-| 07_dofa_probe | 0.550 / 0.531 / 0.491 | 0.644 / 0.638 |
-| 07_dofa_last2 | 0.549 / 0.565 / 0.471 | 0.681 / 0.662 |
-| 07_dinov2_probe | 0.587 / 0.517 / 0.542 | 0.657 / 0.644 |
-| 07_dinov2_last2 | 0.583 / 0.542 / 0.544 | 0.664 / 0.622 |
+| 07_dofa_probe | 0.553 / 0.528 / 0.490 | 0.644 / 0.643 |
+| 07_dofa_last2 | 0.543 / 0.557 / 0.474 | 0.685 / 0.666 |
+| 07_dinov2_probe | 0.585 / 0.521 / 0.538 | 0.667 / 0.645 |
+| 07_dinov2_last2 | 0.559 / 0.527 / 0.537 | 0.647 / 0.616 |
 
 How it did:
-- **DINOv2 probe:** the highest within-variety score of the whole study for any disease (0.587). Compared with the best classical run it is not significantly better (+0.006, CI −0.046 to +0.073), and that pair was chosen after seeing the results.
-- **Frozen DOFA:** training loss stayed near 0.63, close to chance, and it had the lowest pooled AUC of the deep models (−0.107 vs the pretrained ResNet).
-- **DINOv2 with two blocks tuned:** reached training loss 0.33 but scored the same on held-out leaves, i.e. it overfitted.
+- **DINOv2 probe:** the highest within-variety score of the whole study for any disease (0.585). Compared with the best classical run it is not significantly better (+0.004, CI −0.046 to +0.068), and that pair was chosen after seeing the results.
+- **Frozen DOFA:** training loss stayed near 0.63, close to chance, and it had the lowest pooled AUC of the deep models (−0.119 vs the pretrained ResNet).
+- **DINOv2 with two blocks tuned:** reached training loss about 0.3 but scored no better on held-out leaves, i.e. it overfitted.
 
 ### 08 Self-supervised pretraining on our own spectra (`08_self_supervised_pretraining.py`)
 
@@ -269,7 +277,7 @@ mean). Leaf spectra are smooth enough that the task taught interpolation, not di
 
 ## Overall
 
-- Red blotch has a small, real signal (within-variety AUC about 0.55–0.59; 27 of 47 runs had a 95% interval above 0.5).
+- Red blotch has a small, real signal (within-variety AUC about 0.55–0.59; 28 of 47 runs had a 95% interval above 0.5).
 - Leafroll shows none (0 of 47).
 - All approaches are statistically tied.
 - Much of any pooled score is the variety.

@@ -33,5 +33,5 @@ cd "claude runs/variety_logistic_regression"
 Chance is 0.25.
 
 - **Where the errors are:** almost all involve Vidal. 21 Baco and 15 Cab Franc leaves were called Vidal, and 13 Vidal leaves were called Cab Franc.
-- **What the model uses:** after removing brightness it still identifies the variety, so it relies on spectral shape. No single band does the job (best one-band model: 696 nm, balanced accuracy 0.71). Green (500–600 nm) or red (600–680 nm) alone already reach ~0.89; the full 204-band score is 0.94. Details: `results/band_importance.md` and `figures/band_importance.png`.
+- **What the model uses:** after removing brightness it still identifies the variety, so it relies on spectral shape. No single band does the job (best one-band model: 691 nm, balanced accuracy 0.71). Green (500–600 nm) or red (600–680 nm) alone already reach ~0.89; the full 204-band score is 0.94. Details: `results/band_importance.md` and `figures/band_importance.png`.
 - **Caveat:** "variety" also carries anything acquired together with it (imaging day, lighting). A high score shows the spectra separate the varieties, not that cultivar biology alone is the cause.

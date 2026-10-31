@@ -20,7 +20,7 @@ Holm correction is applied over all 26 tests. Holm-adjusted p < 0.05 counts as s
 
 - **Only one comparison is significant: Chardonnay healthy vs RB only, after SNV.**
   - R² 0.064 vs 0.009 by chance; p = 0.001, Holm 0.026.
-  - The largest effect is d = 0.81 at 707 nm, on the red edge. There is also a green effect around 520–620 nm.
+  - The largest effect is d = 0.81 at 703 nm, on the red edge. There is also a green effect around 520–620 nm.
 - **Suggestive, but not significant after correction:**
   - Vidal healthy vs RB only, SNV: p = 0.008, Holm 0.19, classifier AUC 0.62.
   - Chardonnay RB only vs LR only, SNV: p = 0.025, Holm 0.55, AUC 0.63.

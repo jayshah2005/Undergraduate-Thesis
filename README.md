@@ -1,6 +1,6 @@
 # Grapevine hyperspectral disease classification
 
-Classify red blotch and leafroll-3 on Specim IQ leaf cut-outs (998 leaves, 4 varieties, 204 bands, 400–1000 nm). Labels are binary per disease; a leaf can have both, either, or neither (healthy).
+Classify red blotch and leafroll-3 on Specim IQ leaf cut-outs (998 leaves, 4 varieties, 204 bands, 397–1004 nm). Labels are binary per disease; a leaf can have both, either, or neither (healthy).
 
 This repo holds the raw HDF5, shared loaders, exploratory analysis, and paper re-implementations under `claude runs/` (index: `claude runs/README.md`). An earlier 47-run transfer-learning study is archived in `claude runs/cache/transfer_learning_study/` (weak within-variety signal; variety alone explains much of the pooled AUC).
 
@@ -13,7 +13,7 @@ This repo holds the raw HDF5, shared loaders, exploratory analysis, and paper re
 | File | `vine_hsi.h5` (~4 GB) |
 | Sensor | Specim IQ |
 | Cubes | `(lines, bands, samples)` as stored in ENVI BIL |
-| Bands | 204, 400–1000 nm |
+| Bands | 204, 397–1004 nm (Specim IQ factory calibration, uneven ~3 nm steps) |
 | Unit | one leaf cut-out (“vine”) |
 | Labels | `red_blotch`, `leafroll3` (attrs on each vine group) |
 | Varieties | Baco, Cab Franc, Chardonnay, Vidal |
@@ -55,7 +55,7 @@ Classification/
 ├── requirements.txt
 ├── Knowledge Base.txt       # short notes / paper list
 ├── research_notes/          # longer write-ups
-├── clean/                   # PCA of leaf-mean spectra (variety; disease class)
+├── clean/                   # variety classification, spectral analysis, disease classification
 └── claude runs/             # all code, results and reports (index: claude runs/README.md)
     ├── shared/                      # data cache + code every pipeline uses (folds, labels, metrics)
     ├── pmmfnet/                     # PMMFNet paper: original run, controlled experiments, your own runs

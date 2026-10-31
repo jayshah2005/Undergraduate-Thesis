@@ -6,32 +6,32 @@ Every leaf is predicted by the model of the fold that held out its row. Decision
 
 ## 4 classes
 
-Balanced accuracy: **0.419** (chance = 0.25)
+Balanced accuracy: **0.422** (chance = 0.25)
 
 Confusion matrix (rows = true class, columns = predicted class):
 
 | true \ predicted | healthy | RB only | LR only | both | total |
 |---|---|---|---|---|---|
-| **healthy** | 60 | 67 | 53 | 46 | 226 |
-| **RB only** | 48 | 366 | 46 | 57 | 517 |
-| **LR only** | 46 | 10 | 45 | 38 | 139 |
-| **both** | 22 | 14 | 36 | 44 | 116 |
+| **healthy** | 55 | 69 | 58 | 44 | 226 |
+| **RB only** | 43 | 367 | 50 | 57 | 517 |
+| **LR only** | 43 | 11 | 48 | 37 | 139 |
+| **both** | 20 | 14 | 37 | 45 | 116 |
 
 | class (one vs rest) | n | ROC AUC pooled | ROC AUC within-variety |
 |---|---|---|---|
-| healthy | 226 | 0.597 | 0.531 |
-| RB only | 517 | 0.806 | 0.541 |
-| LR only | 139 | 0.744 | 0.527 |
-| both | 116 | 0.721 | 0.532 |
-| **mean** | | 0.717 | 0.533 |
+| healthy | 226 | 0.588 | 0.509 |
+| RB only | 517 | 0.802 | 0.529 |
+| LR only | 139 | 0.745 | 0.526 |
+| both | 116 | 0.719 | 0.531 |
+| **mean** | | 0.713 | 0.524 |
 
 ## Per disease (derived from the 4-class output)
 
 | target | n (pos) | TN | FP | FN | TP | balanced acc. | ROC AUC pooled | ROC AUC within-variety |
 |---|---|---|---|---|---|---|---|---|
-| red_blotch | 998 (633) | 204 | 161 | 152 | 481 | 0.659 | 0.749 | 0.563 |
-| leafroll3 | 748 (254) | 292 | 202 | 91 | 163 | 0.616 | 0.649 | 0.488 |
-| any_disease | 998 (772) | 60 | 166 | 116 | 656 | 0.558 | 0.597 | 0.531 |
+| red_blotch | 998 (633) | 204 | 161 | 150 | 483 | 0.661 | 0.749 | 0.557 |
+| leafroll3 | 748 (254) | 285 | 209 | 87 | 167 | 0.617 | 0.643 | 0.480 |
+| any_disease | 998 (772) | 55 | 171 | 106 | 666 | 0.553 | 0.588 | 0.509 |
 
 ## Per variety
 
@@ -39,17 +39,17 @@ AUC here = within the variety, compared within folds. n/a = only one class prese
 
 | variety | n | 4-class bal. acc. | mean OvR AUC | RB bal. acc. | RB AUC | LR bal. acc. | LR AUC | any-disease bal. acc. | any-disease AUC |
 |---|---|---|---|---|---|---|---|---|---|
-| Baco | 248 | 0.256 | 0.479 | 0.495 | 0.479 | 0.480 | 0.447 | 0.502 | 0.391 |
-| Cab Franc | 250 | 0.387 | 0.518 | 0.580 | 0.619 | n/a | n/a | 0.580 | 0.603 |
-| Chardonnay | 250 | 0.275 | 0.546 | 0.584 | 0.618 | 0.504 | 0.482 | 0.534 | 0.579 |
-| Vidal | 250 | 0.258 | 0.577 | 0.521 | 0.594 | 0.500 | 0.612 | 0.508 | 0.583 |
+| Baco | 248 | 0.261 | 0.475 | 0.500 | 0.483 | 0.479 | 0.432 | 0.496 | 0.379 |
+| Cab Franc | 250 | 0.388 | 0.452 | 0.582 | 0.610 | n/a | n/a | 0.582 | 0.575 |
+| Chardonnay | 250 | 0.277 | 0.532 | 0.579 | 0.612 | 0.505 | 0.470 | 0.539 | 0.548 |
+| Vidal | 250 | 0.250 | 0.574 | 0.511 | 0.576 | 0.493 | 0.631 | 0.505 | 0.562 |
 
 4-class confusion matrices per variety (rows = true, columns = predicted: healthy / RB only / LR only / both):
 
-- **Baco**: healthy -> [3, 1, 18, 37]; RB only -> [1, 0, 33, 48]; LR only -> [4, 0, 20, 30]; both -> [4, 0, 17, 32]
-- **Cab Franc**: healthy -> [2, 7, 0, 0]; RB only -> [15, 225, 0, 0]; LR only -> [0, 0, 0, 0]; both -> [0, 1, 0, 0]
-- **Chardonnay**: healthy -> [46, 0, 35, 9]; RB only -> [16, 0, 13, 9]; LR only -> [39, 0, 25, 8]; both -> [16, 3, 19, 12]
-- **Vidal**: healthy -> [9, 59, 0, 0]; RB only -> [16, 141, 0, 0]; LR only -> [3, 10, 0, 0]; both -> [2, 10, 0, 0]
+- **Baco**: healthy -> [3, 1, 18, 37]; RB only -> [2, 0, 33, 47]; LR only -> [5, 0, 20, 29]; both -> [4, 0, 16, 33]
+- **Cab Franc**: healthy -> [2, 7, 0, 0]; RB only -> [14, 226, 0, 0]; LR only -> [0, 0, 0, 0]; both -> [0, 1, 0, 0]
+- **Chardonnay**: healthy -> [43, 0, 40, 7]; RB only -> [14, 0, 17, 7]; LR only -> [36, 0, 28, 8]; both -> [14, 3, 21, 12]
+- **Vidal**: healthy -> [7, 61, 0, 0]; RB only -> [13, 141, 0, 3]; LR only -> [2, 11, 0, 0]; both -> [2, 10, 0, 0]
 
 ## GMKL per fold
 
@@ -57,8 +57,8 @@ eta = learned kernel weights, in the order AS 105px s0.5, AS 105px s1.0, AS 70px
 
 | fold | C | inner-CV bal. acc. at C | BDR iterations (converged) | negatives clipped | eta |
 |---|---|---|---|---|---|
-| 0 | 100 | 0.392 | 300 (False) | 6 | 0.00 0.23 0.00 0.22 0.00 0.18 0.00 0.16 0.00 0.21 0.00 |
-| 1 | 100 | 0.409 | 300 (False) | 6 | 0.00 0.26 0.00 0.16 0.00 0.15 0.00 0.22 0.00 0.20 0.00 |
-| 2 | 100 | 0.395 | 300 (False) | 6 | 0.00 0.24 0.00 0.20 0.00 0.19 0.00 0.18 0.00 0.19 0.00 |
-| 3 | 100 | 0.413 | 300 (False) | 6 | 0.00 0.20 0.00 0.21 0.00 0.23 0.00 0.18 0.00 0.18 0.00 |
-| 4 | 100 | 0.397 | 300 (False) | 6 | 0.00 0.24 0.00 0.16 0.00 0.20 0.00 0.19 0.00 0.20 0.00 |
+| 0 | 100 | 0.393 | 300 (False) | 6 | 0.00 0.26 0.00 0.19 0.00 0.20 0.00 0.20 0.00 0.15 0.00 |
+| 1 | 100 | 0.411 | 300 (False) | 6 | 0.00 0.27 0.00 0.20 0.00 0.18 0.00 0.18 0.00 0.17 0.00 |
+| 2 | 100 | 0.381 | 300 (False) | 6 | 0.00 0.26 0.00 0.18 0.00 0.20 0.00 0.18 0.00 0.18 0.00 |
+| 3 | 100 | 0.409 | 300 (False) | 6 | 0.00 0.27 0.00 0.18 0.00 0.19 0.00 0.20 0.00 0.16 0.00 |
+| 4 | 100 | 0.400 | 300 (False) | 6 | 0.00 0.25 0.00 0.20 0.00 0.20 0.00 0.17 0.00 0.19 0.00 |

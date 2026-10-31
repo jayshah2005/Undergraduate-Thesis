@@ -11,77 +11,77 @@
     "pca_all": [
       {
         "pc": 1,
-        "explained": 0.9658201648728743,
-        "eta2 variety": 0.5601966145931687,
-        "eta2 class within variety": 0.0017618428915712155,
+        "explained": 0.9658201648728739,
+        "eta2 variety": 0.5601966145931684,
+        "eta2 class within variety": 0.0017618428915712136,
         "corr with brightness": 0.9963075049114277
       },
       {
         "pc": 2,
-        "explained": 0.025200237724849146,
-        "eta2 variety": 0.6443426972492797,
-        "eta2 class within variety": 0.005393006154402275,
-        "corr with brightness": 0.0850534556938069
+        "explained": 0.02520023772484914,
+        "eta2 variety": 0.6443426972492938,
+        "eta2 class within variety": 0.00539300615440223,
+        "corr with brightness": 0.08505345569385463
       },
       {
         "pc": 3,
-        "explained": 0.005470301647074017,
-        "eta2 variety": 0.1488896523044429,
-        "eta2 class within variety": 0.01825335447535833,
-        "corr with brightness": -0.00038873830575707126
+        "explained": 0.00547030164707402,
+        "eta2 variety": 0.14888965230445,
+        "eta2 class within variety": 0.018253354475357905,
+        "corr with brightness": -0.00038873830575375545
       },
       {
         "pc": 4,
-        "explained": 0.0022092027031546603,
-        "eta2 variety": 0.404545298076278,
-        "eta2 class within variety": 0.002110927640832257,
-        "corr with brightness": -0.0066492178647147935
+        "explained": 0.002209202703154657,
+        "eta2 variety": 0.4045452980762778,
+        "eta2 class within variety": 0.0021109276408322604,
+        "corr with brightness": -0.006649217864708412
       },
       {
         "pc": 5,
-        "explained": 0.0006402220041122501,
-        "eta2 variety": 0.11959842122437737,
-        "eta2 class within variety": 0.009564034184384779,
-        "corr with brightness": 0.009551521574560911
+        "explained": 0.0006402220041122484,
+        "eta2 variety": 0.11959842122437679,
+        "eta2 class within variety": 0.009564034184384756,
+        "corr with brightness": 0.00955152157455838
       },
       {
         "pc": 6,
-        "explained": 0.00032474034396219684,
-        "eta2 variety": 0.005537541890917898,
-        "eta2 class within variety": 0.01635888411784981,
-        "corr with brightness": 0.0009992294001357792
+        "explained": 0.00032474034396219793,
+        "eta2 variety": 0.005537541890918144,
+        "eta2 class within variety": 0.01635888411785024,
+        "corr with brightness": 0.000999229400131744
       },
       {
         "pc": 7,
-        "explained": 0.00011512773310252293,
-        "eta2 variety": 0.021712985296309013,
-        "eta2 class within variety": 0.019558223387817413,
-        "corr with brightness": 7.224956859491699e-05
+        "explained": 0.00011512773310252303,
+        "eta2 variety": 0.021712985296310806,
+        "eta2 class within variety": 0.01955822338781704,
+        "corr with brightness": 7.224956858491619e-05
       },
       {
         "pc": 8,
-        "explained": 7.395189886433046e-05,
-        "eta2 variety": 0.05173192495446533,
-        "eta2 class within variety": 0.006198294855493089,
-        "corr with brightness": -0.0007117039753273019
+        "explained": 7.39518988643307e-05,
+        "eta2 variety": 0.051731924954466456,
+        "eta2 class within variety": 0.006198294855492908,
+        "corr with brightness": -0.0007117039753279081
       },
       {
         "pc": 9,
-        "explained": 3.106969094788708e-05,
-        "eta2 variety": 0.04207467709435489,
-        "eta2 class within variety": 0.009473424337149072,
-        "corr with brightness": 0.00039757260505564736
+        "explained": 3.1069690947887125e-05,
+        "eta2 variety": 0.042074677090734765,
+        "eta2 class within variety": 0.00947342433829598,
+        "corr with brightness": 0.00039757260504623925
       },
       {
         "pc": 10,
-        "explained": 2.1302253483381356e-05,
-        "eta2 variety": 0.10260527184862794,
-        "eta2 class within variety": 0.01092436338683303,
-        "corr with brightness": -2.1598383701669303e-05
+        "explained": 2.1302253483381383e-05,
+        "eta2 variety": 0.10260527186058702,
+        "eta2 class within variety": 0.010924363371538136,
+        "corr with brightness": -2.1598383691275108e-05
       }
     ],
     "silhouette_all_pc1-5": {
-      "variety": 0.10384237588413724,
+      "variety": 0.10384237588413717,
       "class": -0.07599862113939153
     },
     "within": {
@@ -295,78 +295,78 @@
     "pca_all": [
       {
         "pc": 1,
-        "explained": 0.4787861111150823,
-        "eta2 variety": 0.5857343913520382,
-        "eta2 class within variety": 0.014952275005714912,
-        "corr with brightness": 0.16544719884495213
+        "explained": 0.4787861111150817,
+        "eta2 variety": 0.5857343913520376,
+        "eta2 class within variety": 0.014952275005714949,
+        "corr with brightness": 0.16544719884495146
       },
       {
         "pc": 2,
-        "explained": 0.34169777070856683,
-        "eta2 variety": 0.513909056698453,
-        "eta2 class within variety": 0.008902567746577555,
-        "corr with brightness": 0.4355400552516312
+        "explained": 0.34169777070856716,
+        "eta2 variety": 0.5139090566984541,
+        "eta2 class within variety": 0.008902567746577541,
+        "corr with brightness": 0.43554005525163136
       },
       {
         "pc": 3,
-        "explained": 0.1307797225429431,
-        "eta2 variety": 0.3767638445727814,
-        "eta2 class within variety": 0.0033884002881093785,
-        "corr with brightness": -0.048636068032719464
+        "explained": 0.1307797225429432,
+        "eta2 variety": 0.37676384457278156,
+        "eta2 class within variety": 0.0033884002881093816,
+        "corr with brightness": -0.04863606803271966
       },
       {
         "pc": 4,
-        "explained": 0.021437757138903824,
-        "eta2 variety": 0.08367475800061916,
-        "eta2 class within variety": 0.01052268680179005,
-        "corr with brightness": -0.2943115930280646
+        "explained": 0.0214377571389038,
+        "eta2 variety": 0.08367475800061813,
+        "eta2 class within variety": 0.010522686801790184,
+        "corr with brightness": -0.29431159302806414
       },
       {
         "pc": 5,
-        "explained": 0.01028830835068244,
-        "eta2 variety": 0.12044755457485012,
-        "eta2 class within variety": 0.013161397763251962,
-        "corr with brightness": -0.43149044410013665
+        "explained": 0.010288308350682427,
+        "eta2 variety": 0.12044755457485036,
+        "eta2 class within variety": 0.013161397763251946,
+        "corr with brightness": -0.43149044410013715
       },
       {
         "pc": 6,
-        "explained": 0.006053640851731583,
-        "eta2 variety": 0.151514081293869,
-        "eta2 class within variety": 0.00425596909265802,
-        "corr with brightness": -0.01776830510788563
+        "explained": 0.006053640851731606,
+        "eta2 variety": 0.1515140812938687,
+        "eta2 class within variety": 0.0042559690926579725,
+        "corr with brightness": -0.01776830510788543
       },
       {
         "pc": 7,
-        "explained": 0.002997136729897913,
-        "eta2 variety": 0.03375830029214543,
-        "eta2 class within variety": 0.011628570510158916,
-        "corr with brightness": 0.1899595582626587
+        "explained": 0.002997136729897902,
+        "eta2 variety": 0.03375830029213248,
+        "eta2 class within variety": 0.01162857051016475,
+        "corr with brightness": 0.18995955826272917
       },
       {
         "pc": 8,
-        "explained": 0.0020807962423085853,
-        "eta2 variety": 0.1915584680607327,
-        "eta2 class within variety": 0.012716507352737183,
-        "corr with brightness": -0.4413289322994346
+        "explained": 0.002080796242308585,
+        "eta2 variety": 0.19155846806092497,
+        "eta2 class within variety": 0.012716507352444732,
+        "corr with brightness": -0.44132893229775
       },
       {
         "pc": 9,
-        "explained": 0.001036715520299564,
-        "eta2 variety": 0.0922650123188527,
-        "eta2 class within variety": 0.01906912054130832,
-        "corr with brightness": 0.13181844356043276
+        "explained": 0.0010367155202995644,
+        "eta2 variety": 0.09226501219274175,
+        "eta2 class within variety": 0.019069120534902975,
+        "corr with brightness": 0.13181844319050212
       },
       {
         "pc": 10,
-        "explained": 0.0007074226722457147,
-        "eta2 variety": 0.004366878701032561,
-        "eta2 class within variety": 0.010457234863457154,
-        "corr with brightness": -0.16940550944640567
+        "explained": 0.0007074226722465839,
+        "eta2 variety": 0.004366879281932366,
+        "eta2 class within variety": 0.010457233209414784,
+        "corr with brightness": -0.1694055219858235
       }
     ],
     "silhouette_all_pc1-5": {
-      "variety": 0.23020065750551708,
-      "class": -0.01484418030869159
+      "variety": 0.23020065750551713,
+      "class": -0.014844180308691602
     },
     "within": {
       "Baco": {
@@ -571,43 +571,43 @@
   "effect_size_peaks": {
     "Baco: healthy vs RB only": {
       "max |d|": 0.22176390362591847,
-      "at nm": 402.9556579589844
+      "at nm": 400.20001220703125
     },
     "Baco: healthy vs LR only": {
       "max |d|": 0.15508642809251727,
-      "at nm": 402.9556579589844
+      "at nm": 400.20001220703125
     },
     "Baco: healthy vs any disease": {
       "max |d|": 0.18057665247340757,
-      "at nm": 402.9556579589844
+      "at nm": 400.20001220703125
     },
     "Chardonnay: healthy vs RB only": {
       "max |d|": 0.37723570593117794,
-      "at nm": 707.38916015625
+      "at nm": 702.5800170898438
     },
     "Chardonnay: healthy vs LR only": {
       "max |d|": 0.24112547838817644,
-      "at nm": 707.38916015625
+      "at nm": 702.5800170898438
     },
     "Chardonnay: healthy vs any disease": {
       "max |d|": 0.35634630408697904,
-      "at nm": 707.38916015625
+      "at nm": 702.5800170898438
     },
     "variety: Baco vs Chardonnay": {
       "max |d|": 4.510400441200633,
-      "at nm": 400.0
+      "at nm": 397.32000732421875
     },
     "variety: Baco vs Vidal": {
       "max |d|": 4.829244369081033,
-      "at nm": 400.0
+      "at nm": 397.32000732421875
     },
     "variety: Chardonnay vs Vidal": {
       "max |d|": 2.0456625960082917,
-      "at nm": 787.192138671875
+      "at nm": 783.6699829101562
     },
     "variety: Cab Franc vs Vidal": {
       "max |d|": 0.7315954162378636,
-      "at nm": 553.694580078125
+      "at nm": 548.5499877929688
     }
   },
   "glint_pixel_share": {

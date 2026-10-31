@@ -23,7 +23,9 @@ Code layout: `gmkl.py` functions are silent and return values; `12_gmkl.py` comp
 
 | unit | 4-class balanced accuracy | mean OvR AUC pooled / within-variety | RB / LR within-variety AUC |
 |---|---|---|---|
-| pixel | 0.419 | 0.717 / 0.533 | 0.563 / 0.488 |
-| leaf | 0.353 | 0.662 / 0.499 | 0.524 / 0.484 |
+| pixel | 0.422 | 0.713 / 0.524 | 0.557 / 0.480 |
+| leaf | 0.381 (pair) / 0.383 (full) | 0.674 / 0.494 (pair), 0.669 / 0.497 (full) | 0.531–0.537 / 0.462 |
 
-The two penalty graphs give identical results, because the learned kernel weights agree within 0.01.
+At pixel level the two penalty graphs give the same results (up to 0.001 in one AUC), because the learned kernel weights agree within 0.01; at leaf level they differ by up to 0.01 AUC per class.
+
+Rerun 2026-10-29 with the camera's factory wavelengths. The superpixels are segmented on the bands nearest 640 / 550 / 460 nm, and the first run (a nominal 400–1000 nm grid) picked bands 81 / 51 / 20 instead of 83 / 52 / 22. Pixel-level results barely moved (0.419 → 0.422); the leaf level went from 0.353 to 0.38. The previous outputs are in `CODE/header_backups/classification_before_rerun/`.

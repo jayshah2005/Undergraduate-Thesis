@@ -1,0 +1,9 @@
+device: cuda
+   [06_resnet18_pretrained f0] epoch   1/2  train loss 0.7468  (4s)
+   [06_resnet18_pretrained f0] epoch   2/2  train loss 0.6102  (6s)
+[06_resnet18_pretrained] fold 0: n=200  AUC red_blotch=0.757  leafroll=0.672
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/shared/results/quick/06_resnet18_pretrained_oof.csv  (200 leaves)
+   [06_resnet18_scratch f0] epoch   1/2  train loss 0.7683  (2s)
+   [06_resnet18_scratch f0] epoch   2/2  train loss 0.6584  (3s)
+[06_resnet18_scratch] fold 0: n=200  AUC red_blotch=0.628  leafroll=0.683
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/shared/results/quick/06_resnet18_scratch_oof.csv  (200 leaves)

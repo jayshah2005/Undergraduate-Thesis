@@ -5,7 +5,7 @@ Exploration only: nothing is trained except one small cross-validated linear che
 Run from claude runs/spectra_exploration/:
     ../../.venv/bin/python -u explore_spectra.py
 
-Leaf spectrum = the mean over all of the leaf's pixels, all 204 bands (400-1000 nm), read from
+Leaf spectrum = the mean over all of the leaf's pixels, all 204 bands (397-1004 nm), read from
 the pixel cache by ../shared/spectra.py (cached in ../shared/cache/leaf_mean_spectra.npz; also
 written here as results/leaf_mean_spectra.csv). Disease class = the 4 classes of the models:
 healthy / RB only / LR only / both. One leaf per vine, so leaves are independent at the vine level.

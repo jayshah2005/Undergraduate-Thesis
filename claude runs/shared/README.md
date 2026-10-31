@@ -24,4 +24,6 @@ Imported by every pipeline in `claude runs/` (each script adds this folder to `s
 | `gmkl_*` | superpixels and leaf kernels | `../gmkl/12_gmkl.py` |
 | `leaf_mean_spectra.npz` | mean spectrum + glint share per leaf | `spectra.py` |
 
+**The cache is not on disk: it was deleted on 2026-10-30 to save 14 GB.** Scripts under `claude runs/` need it rebuilt before they can run.
+
 Rebuild the base cache (a few minutes): `cd "claude runs/shared" && ../../.venv/bin/python -u 00_build_cache.py`.

@@ -36,7 +36,7 @@ The disease p-values below come from shuffling labels within rows, so a row effe
 
 - **Baco:** healthy and diseased leaves do not separate. Every disease R² is at or below chance, and the linear AUC is 0.47–0.52. Rows separate Baco leaves far more than disease does: R² 0.25 after SNV. The PCA fitted inside Baco shows no class structure (fig. 05).
 - **Chardonnay:** there is a small, real **shape** signal for red blotch. It is invisible in the raw spectra, where brightness swamps it.
-  - After SNV, red blotch explains 6.9% of Chardonnay's spectral variance (chance 0.7%, p = 0.001). The effect sits at the red edge (peak |d| = 0.38 at 707 nm) and in the green, 520–620 nm (fig. 07).
+  - After SNV, red blotch explains 6.9% of Chardonnay's spectral variance (chance 0.7%, p = 0.001). The effect sits at the red edge (peak |d| = 0.38 at 703 nm) and in the green, 520–620 nm (fig. 07).
   - That is still a weak separation: linear AUC about 0.57–0.59, comparable to Chardonnay's own row effect (R² 0.063).
   - Leafroll shows nothing.
 

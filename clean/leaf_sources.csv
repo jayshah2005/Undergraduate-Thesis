@@ -1,0 +1,999 @@
+leaf,capture,capture_id,orientation,leaf_pixels,mismatched_values
+Baco/R1/1/1.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/392/results/REFLECTANCE_392.dat,392,rot90_cw,13954,0
+Baco/R1/2/2.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/392/results/REFLECTANCE_392.dat,392,rot90_cw,15189,0
+Baco/R1/3/3.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/393/results/REFLECTANCE_393.dat,393,rot90_cw,13165,0
+Baco/R1/4/4.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/393/results/REFLECTANCE_393.dat,393,rot90_cw,13189,0
+Baco/R1/5/5.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/394/results/REFLECTANCE_394.dat,394,rot90_cw,15510,0
+Baco/R1/6/6.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/394/results/REFLECTANCE_394.dat,394,rot90_cw,13560,0
+Baco/R1/7/7.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/395/results/REFLECTANCE_395.dat,395,rot90_cw,9545,0
+Baco/R1/8/8.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/395/results/REFLECTANCE_395.dat,395,rot90_cw,14332,0
+Baco/R1/9/9.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/396/results/REFLECTANCE_396.dat,396,rot90_cw,8967,0
+Baco/R1/10/10.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/396/results/REFLECTANCE_396.dat,396,rot90_cw,9430,0
+Baco/R1/11/11.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/397/results/REFLECTANCE_397.dat,397,rot90_cw,14672,0
+Baco/R1/12/12.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/397/results/REFLECTANCE_397.dat,397,rot90_cw,8321,0
+Baco/R1/13/13.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/398/results/REFLECTANCE_398.dat,398,rot90_cw,19156,0
+Baco/R1/14/14.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/398/results/REFLECTANCE_398.dat,398,rot90_cw,12389,0
+Baco/R1/15/15.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/399/results/REFLECTANCE_399.dat,399,rot90_cw,8056,0
+Baco/R1/16/16.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/399/results/REFLECTANCE_399.dat,399,rot90_cw,8896,0
+Baco/R1/17/17.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/400/results/REFLECTANCE_400.dat,400,rot90_cw,12921,0
+Baco/R1/18/18.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/400/results/REFLECTANCE_400.dat,400,rot90_cw,14790,0
+Baco/R1/19/19.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/401/results/REFLECTANCE_401.dat,401,rot90_cw,11425,0
+Baco/R1/20/20.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/401/results/REFLECTANCE_401.dat,401,rot90_cw,14006,0
+Baco/R1/21/21.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/402/results/REFLECTANCE_402.dat,402,rot90_cw,12038,0
+Baco/R1/22/22.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/402/results/REFLECTANCE_402.dat,402,rot90_cw,19331,0
+Baco/R1/23/23.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/403/results/REFLECTANCE_403.dat,403,rot90_cw,10222,0
+Baco/R1/24/24.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/403/results/REFLECTANCE_403.dat,403,rot90_cw,12163,0
+Baco/R1/25/25.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/404/results/REFLECTANCE_404.dat,404,rot90_cw,16784,0
+Baco/R1/26/26.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/404/results/REFLECTANCE_404.dat,404,rot90_cw,14134,0
+Baco/R1/27/27.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/405/results/REFLECTANCE_405.dat,405,rot90_cw,17166,0
+Baco/R1/28/28.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/405/results/REFLECTANCE_405.dat,405,rot90_cw,17901,0
+Baco/R1/29/29.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/406/results/REFLECTANCE_406.dat,406,rot90_cw,7449,0
+Baco/R1/30/30.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/406/results/REFLECTANCE_406.dat,406,rot90_cw,23129,0
+Baco/R1/31/31.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/407/results/REFLECTANCE_407.dat,407,rot90_cw,11134,0
+Baco/R1/32/32.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/407/results/REFLECTANCE_407.dat,407,rot90_cw,13056,0
+Baco/R1/33/33.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/408/results/REFLECTANCE_408.dat,408,rot90_cw,14387,0
+Baco/R1/34/34.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/408/results/REFLECTANCE_408.dat,408,rot90_cw,16514,0
+Baco/R1/35/35.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/409/results/REFLECTANCE_409.dat,409,rot90_cw,13790,0
+Baco/R1/36/36.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/409/results/REFLECTANCE_409.dat,409,rot90_cw,18734,0
+Baco/R1/37/37.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/410/results/REFLECTANCE_410.dat,410,rot90_cw,14701,0
+Baco/R1/38/38.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/410/results/REFLECTANCE_410.dat,410,rot90_cw,10547,0
+Baco/R1/39/39.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/411/results/REFLECTANCE_411.dat,411,rot90_cw,7162,0
+Baco/R1/40/40.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/411/results/REFLECTANCE_411.dat,411,rot90_cw,13153,0
+Baco/R1/41/41.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/412/results/REFLECTANCE_412.dat,412,rot90_cw,10324,0
+Baco/R1/42/42.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/412/results/REFLECTANCE_412.dat,412,rot90_cw,16660,0
+Baco/R1/43/43.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/413/results/REFLECTANCE_413.dat,413,rot90_cw,14211,0
+Baco/R1/44/44.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/413/results/REFLECTANCE_413.dat,413,rot90_cw,15652,0
+Baco/R1/45/45.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/414/results/REFLECTANCE_414.dat,414,rot90_cw,11574,0
+Baco/R1/46/46.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/414/results/REFLECTANCE_414.dat,414,rot90_cw,16401,0
+Baco/R1/47/47.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/415/results/REFLECTANCE_415.dat,415,rot90_cw,12180,0
+Baco/R1/48/48.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/415/results/REFLECTANCE_415.dat,415,rot90_cw,14552,0
+Baco/R1/49/49.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/416/results/REFLECTANCE_416.dat,416,rot90_cw,12876,0
+Baco/R1/50/50.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/416/results/REFLECTANCE_416.dat,416,rot90_cw,14186,0
+Baco/R2/1/1.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/367/results/REFLECTANCE_367.dat,367,rot90_cw,11163,0
+Baco/R2/2/2.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/367/results/REFLECTANCE_367.dat,367,rot90_cw,15088,0
+Baco/R2/3/3.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/368/results/REFLECTANCE_368.dat,368,rot90_cw,10823,0
+Baco/R2/4/4.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/368/results/REFLECTANCE_368.dat,368,rot90_cw,17846,0
+Baco/R2/5/5.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/369/results/REFLECTANCE_369.dat,369,rot90_cw,9789,0
+Baco/R2/6/6.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/369/results/REFLECTANCE_369.dat,369,rot90_cw,11095,0
+Baco/R2/7/7.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/370/results/REFLECTANCE_370.dat,370,rot90_cw,13234,0
+Baco/R2/8/8.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/370/results/REFLECTANCE_370.dat,370,rot90_cw,17064,0
+Baco/R2/9/9.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/371/results/REFLECTANCE_371.dat,371,rot90_cw,9253,0
+Baco/R2/10/10.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/371/results/REFLECTANCE_371.dat,371,rot90_cw,16090,0
+Baco/R2/11/11.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/372/results/REFLECTANCE_372.dat,372,rot90_cw,12167,0
+Baco/R2/12/12.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/372/results/REFLECTANCE_372.dat,372,rot90_cw,15377,0
+Baco/R2/13/13.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/373/results/REFLECTANCE_373.dat,373,rot90_cw,11392,0
+Baco/R2/14/14.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/373/results/REFLECTANCE_373.dat,373,rot90_cw,13860,0
+Baco/R2/15/15.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/374/results/REFLECTANCE_374.dat,374,rot90_cw,12708,0
+Baco/R2/16/16.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/374/results/REFLECTANCE_374.dat,374,rot90_cw,12858,0
+Baco/R2/17/17.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/375/results/REFLECTANCE_375.dat,375,rot90_cw,9932,0
+Baco/R2/18/18.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/375/results/REFLECTANCE_375.dat,375,rot90_cw,12792,0
+Baco/R2/19/19.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/376/results/REFLECTANCE_376.dat,376,rot90_cw,8545,0
+Baco/R2/20/20.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/376/results/REFLECTANCE_376.dat,376,rot90_cw,10511,0
+Baco/R2/21/21.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/377/results/REFLECTANCE_377.dat,377,rot90_cw,16556,0
+Baco/R2/22/22.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/377/results/REFLECTANCE_377.dat,377,rot90_cw,14885,0
+Baco/R2/23/23.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/378/results/REFLECTANCE_378.dat,378,rot90_cw,11617,0
+Baco/R2/24/24.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/378/results/REFLECTANCE_378.dat,378,rot90_cw,10508,0
+Baco/R2/25/25.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/379/results/REFLECTANCE_379.dat,379,rot90_cw,9960,0
+Baco/R2/26/26.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/379/results/REFLECTANCE_379.dat,379,rot90_cw,15300,0
+Baco/R2/27/27.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/380/results/REFLECTANCE_380.dat,380,rot90_cw,7535,0
+Baco/R2/28/28.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/380/results/REFLECTANCE_380.dat,380,rot90_cw,9767,0
+Baco/R2/29/29.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/381/results/REFLECTANCE_381.dat,381,rot90_cw,15432,0
+Baco/R2/30/30.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/381/results/REFLECTANCE_381.dat,381,rot90_cw,13751,0
+Baco/R2/31/31.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/382/results/REFLECTANCE_382.dat,382,rot90_cw,11871,0
+Baco/R2/32/32.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/382/results/REFLECTANCE_382.dat,382,rot90_cw,14227,0
+Baco/R2/33/33.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/383/results/REFLECTANCE_383.dat,383,rot90_cw,11628,0
+Baco/R2/34/34.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/383/results/REFLECTANCE_383.dat,383,rot90_cw,16022,0
+Baco/R2/35/35.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/384/results/REFLECTANCE_384.dat,384,rot90_cw,10472,0
+Baco/R2/36/36.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/384/results/REFLECTANCE_384.dat,384,rot90_cw,16313,0
+Baco/R2/37/37.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/385/results/REFLECTANCE_385.dat,385,rot90_cw,10029,0
+Baco/R2/38/38.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/385/results/REFLECTANCE_385.dat,385,rot90_cw,10350,0
+Baco/R2/39/39.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/386/results/REFLECTANCE_386.dat,386,rot90_cw,8184,0
+Baco/R2/40/40.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/386/results/REFLECTANCE_386.dat,386,rot90_cw,18697,0
+Baco/R2/41/41.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/387/results/REFLECTANCE_387.dat,387,rot90_cw,8996,0
+Baco/R2/42/42.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/387/results/REFLECTANCE_387.dat,387,rot90_cw,10165,0
+Baco/R2/43/43.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/388/results/REFLECTANCE_388.dat,388,rot90_cw,14806,0
+Baco/R2/44/44.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/388/results/REFLECTANCE_388.dat,388,rot90_cw,13643,0
+Baco/R2/45/45.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/389/results/REFLECTANCE_389.dat,389,rot90_cw,13329,0
+Baco/R2/46/46.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/389/results/REFLECTANCE_389.dat,389,rot90_cw,14018,0
+Baco/R2/47/47.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/390/results/REFLECTANCE_390.dat,390,rot90_cw,7734,0
+Baco/R2/48/48.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/390/results/REFLECTANCE_390.dat,390,rot90_cw,20169,0
+Baco/R2/49/49.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/391/results/REFLECTANCE_391.dat,391,rot90_cw,12749,0
+Baco/R2/50/50.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/391/results/REFLECTANCE_391.dat,391,rot90_cw,15158,0
+Baco/R3/1/1.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/343/results/REFLECTANCE_343.dat,343,rot90_cw,13670,0
+Baco/R3/2/2.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/343/results/REFLECTANCE_343.dat,343,rot90_cw,14109,0
+Baco/R3/3/3.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/344/results/REFLECTANCE_344.dat,344,rot90_cw,13773,0
+Baco/R3/4/4.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/344/results/REFLECTANCE_344.dat,344,rot90_cw,10928,0
+Baco/R3/5/5.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/345/results/REFLECTANCE_345.dat,345,rot90_cw,20111,0
+Baco/R3/6/6.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/345/results/REFLECTANCE_345.dat,345,rot90_cw,9967,0
+Baco/R3/7/7.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/346/results/REFLECTANCE_346.dat,346,rot90_cw,14298,0
+Baco/R3/8/8.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/346/results/REFLECTANCE_346.dat,346,rot90_cw,10833,0
+Baco/R3/11/11.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/347/results/REFLECTANCE_347.dat,347,rot90_cw,14841,0
+Baco/R3/12/12.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/347/results/REFLECTANCE_347.dat,347,rot90_cw,14269,0
+Baco/R3/13/13.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/348/results/REFLECTANCE_348.dat,348,rot90_cw,10025,0
+Baco/R3/14/14.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/348/results/REFLECTANCE_348.dat,348,rot90_cw,11034,0
+Baco/R3/15/15.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/349/results/REFLECTANCE_349.dat,349,rot90_cw,12312,0
+Baco/R3/16/16.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/349/results/REFLECTANCE_349.dat,349,rot90_cw,15345,0
+Baco/R3/17/17.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/350/results/REFLECTANCE_350.dat,350,rot90_cw,16706,0
+Baco/R3/18/18.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/350/results/REFLECTANCE_350.dat,350,rot90_cw,14655,0
+Baco/R3/19/19.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/351/results/REFLECTANCE_351.dat,351,rot90_cw,11566,0
+Baco/R3/20/20.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/351/results/REFLECTANCE_351.dat,351,rot90_cw,11290,0
+Baco/R3/21/21.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/352/results/REFLECTANCE_352.dat,352,rot90_cw,15122,0
+Baco/R3/22/22.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/352/results/REFLECTANCE_352.dat,352,rot90_cw,15851,0
+Baco/R3/23/23.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/353/results/REFLECTANCE_353.dat,353,rot90_cw,11217,0
+Baco/R3/24/24.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/353/results/REFLECTANCE_353.dat,353,rot90_cw,12629,0
+Baco/R3/25/25.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/354/results/REFLECTANCE_354.dat,354,rot90_cw,11725,0
+Baco/R3/26/26.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/354/results/REFLECTANCE_354.dat,354,rot90_cw,11169,0
+Baco/R3/27/27.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/355/results/REFLECTANCE_355.dat,355,rot90_cw,13858,0
+Baco/R3/28/28.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/355/results/REFLECTANCE_355.dat,355,rot90_cw,17786,0
+Baco/R3/29/29.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/356/results/REFLECTANCE_356.dat,356,rot90_cw,18125,0
+Baco/R3/30/30.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/356/results/REFLECTANCE_356.dat,356,rot90_cw,16521,0
+Baco/R3/31/31.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/357/results/REFLECTANCE_357.dat,357,rot90_cw,11293,0
+Baco/R3/32/32.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/357/results/REFLECTANCE_357.dat,357,rot90_cw,13168,0
+Baco/R3/33/33.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/358/results/REFLECTANCE_358.dat,358,rot90_cw,18667,0
+Baco/R3/34/34.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/358/results/REFLECTANCE_358.dat,358,rot90_cw,14117,0
+Baco/R3/35/35.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/359/results/REFLECTANCE_359.dat,359,rot90_cw,8466,0
+Baco/R3/36/36.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/359/results/REFLECTANCE_359.dat,359,rot90_cw,13077,0
+Baco/R3/37/37.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/360/results/REFLECTANCE_360.dat,360,rot90_cw,13920,0
+Baco/R3/38/38.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/360/results/REFLECTANCE_360.dat,360,rot90_cw,15921,0
+Baco/R3/39/39.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/361/results/REFLECTANCE_361.dat,361,rot90_cw,8993,0
+Baco/R3/40/40.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/361/results/REFLECTANCE_361.dat,361,rot90_cw,11186,0
+Baco/R3/41/41.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/362/results/REFLECTANCE_362.dat,362,rot90_cw,15439,0
+Baco/R3/42/42.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/362/results/REFLECTANCE_362.dat,362,rot90_cw,13553,0
+Baco/R3/43/43.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/363/results/REFLECTANCE_363.dat,363,rot90_cw,14681,0
+Baco/R3/44/44.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/363/results/REFLECTANCE_363.dat,363,rot90_cw,19023,0
+Baco/R3/45/45.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/364/results/REFLECTANCE_364.dat,364,rot90_cw,14947,0
+Baco/R3/46/46.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/364/results/REFLECTANCE_364.dat,364,rot90_cw,14609,0
+Baco/R3/47/47.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/365/results/REFLECTANCE_365.dat,365,rot90_cw,16627,0
+Baco/R3/48/48.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/365/results/REFLECTANCE_365.dat,365,rot90_cw,13536,0
+Baco/R3/49/49.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/366/results/REFLECTANCE_366.dat,366,rot90_cw,12237,0
+Baco/R3/50/50.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/366/results/REFLECTANCE_366.dat,366,rot90_cw,12630,0
+Baco/R4/1/1.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/317/results/REFLECTANCE_317.dat,317,rot90_cw,8497,0
+Baco/R4/2/2.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/317/results/REFLECTANCE_317.dat,317,rot90_cw,14205,0
+Baco/R4/3/3.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/318/results/REFLECTANCE_318.dat,318,rot90_cw,15849,0
+Baco/R4/4/4.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/318/results/REFLECTANCE_318.dat,318,rot90_cw,9154,0
+Baco/R4/5/5.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/319/results/REFLECTANCE_319.dat,319,rot90_cw,9944,0
+Baco/R4/6/6.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/319/results/REFLECTANCE_319.dat,319,rot90_cw,12330,0
+Baco/R4/7/7.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/320/results/REFLECTANCE_320.dat,320,rot90_cw,9176,0
+Baco/R4/8/8.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/320/results/REFLECTANCE_320.dat,320,rot90_cw,8890,0
+Baco/R4/9/9.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/321/results/REFLECTANCE_321.dat,321,rot90_cw,12889,0
+Baco/R4/10/10.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/321/results/REFLECTANCE_321.dat,321,rot90_cw,8009,0
+Baco/R4/11/11.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/322/results/REFLECTANCE_322.dat,322,rot90_cw,11988,0
+Baco/R4/12/12.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/322/results/REFLECTANCE_322.dat,322,rot90_cw,11494,0
+Baco/R4/13/13.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/323/results/REFLECTANCE_323.dat,323,rot90_cw,12038,0
+Baco/R4/14/14.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/323/results/REFLECTANCE_323.dat,323,rot90_cw,10594,0
+Baco/R4/15/15.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/324/results/REFLECTANCE_324.dat,324,rot90_cw,16790,0
+Baco/R4/16/16.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/324/results/REFLECTANCE_324.dat,324,rot90_cw,19916,0
+Baco/R4/17/17.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/325/results/REFLECTANCE_325.dat,325,rot90_cw,17464,0
+Baco/R4/18/18.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/325/results/REFLECTANCE_325.dat,325,rot90_cw,12567,0
+Baco/R4/19/19.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/326/results/REFLECTANCE_326.dat,326,rot90_cw,14598,0
+Baco/R4/20/20.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/326/results/REFLECTANCE_326.dat,326,rot90_cw,13941,0
+Baco/R4/21/21.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/327/results/REFLECTANCE_327.dat,327,rot90_cw,16085,0
+Baco/R4/22/22.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/327/results/REFLECTANCE_327.dat,327,rot90_cw,23608,0
+Baco/R4/23/23.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/328/results/REFLECTANCE_328.dat,328,rot90_cw,10600,0
+Baco/R4/24/24.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/328/results/REFLECTANCE_328.dat,328,rot90_cw,11868,0
+Baco/R4/25/25.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/329/results/REFLECTANCE_329.dat,329,rot90_cw,12737,0
+Baco/R4/26/26.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/329/results/REFLECTANCE_329.dat,329,rot90_cw,18787,0
+Baco/R4/27/27.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/330/results/REFLECTANCE_330.dat,330,rot90_cw,14734,0
+Baco/R4/28/28.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/330/results/REFLECTANCE_330.dat,330,rot90_cw,12811,0
+Baco/R4/29/29.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/331/results/REFLECTANCE_331.dat,331,rot90_cw,11518,0
+Baco/R4/30/30.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/331/results/REFLECTANCE_331.dat,331,rot90_cw,14480,0
+Baco/R4/31/31.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/332/results/REFLECTANCE_332.dat,332,rot90_cw,10100,0
+Baco/R4/32/32.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/332/results/REFLECTANCE_332.dat,332,rot90_cw,15761,0
+Baco/R4/33/33.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/333/results/REFLECTANCE_333.dat,333,rot90_cw,13059,0
+Baco/R4/34/34.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/333/results/REFLECTANCE_333.dat,333,rot90_cw,9864,0
+Baco/R4/35/35.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/334/results/REFLECTANCE_334.dat,334,rot90_cw,13472,0
+Baco/R4/36/36.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/334/results/REFLECTANCE_334.dat,334,rot90_cw,12598,0
+Baco/R4/37/37.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/335/results/REFLECTANCE_335.dat,335,rot90_cw,11130,0
+Baco/R4/38/38.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/335/results/REFLECTANCE_335.dat,335,rot90_cw,11917,0
+Baco/R4/39/39.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/336/results/REFLECTANCE_336.dat,336,rot90_cw,14146,0
+Baco/R4/40/40.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/336/results/REFLECTANCE_336.dat,336,rot90_cw,14073,0
+Baco/R4/41/41.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/337/results/REFLECTANCE_337.dat,337,rot90_cw,13563,0
+Baco/R4/42/42.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/337/results/REFLECTANCE_337.dat,337,rot90_cw,11482,0
+Baco/R4/43/43.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/339/results/REFLECTANCE_339.dat,339,rot90_cw,8982,0
+Baco/R4/44/44.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/339/results/REFLECTANCE_339.dat,339,rot90_cw,16206,0
+Baco/R4/45/45.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/340/results/REFLECTANCE_340.dat,340,rot90_cw,12070,0
+Baco/R4/46/46.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/340/results/REFLECTANCE_340.dat,340,rot90_cw,10617,0
+Baco/R4/47/47.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/341/results/REFLECTANCE_341.dat,341,rot90_cw,10831,0
+Baco/R4/48/48.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/341/results/REFLECTANCE_341.dat,341,rot90_cw,16587,0
+Baco/R4/49/49.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/342/results/REFLECTANCE_342.dat,342,rot90_cw,13354,0
+Baco/R4/50/50.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/342/results/REFLECTANCE_342.dat,342,rot90_cw,22819,0
+Baco/R5/1/1.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/292/results/REFLECTANCE_292.dat,292,rot90_cw,7649,0
+Baco/R5/2/2.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/292/results/REFLECTANCE_292.dat,292,rot90_cw,6364,0
+Baco/R5/3/3.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/293/results/REFLECTANCE_293.dat,293,rot90_cw,6806,0
+Baco/R5/4/4.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/293/results/REFLECTANCE_293.dat,293,rot90_cw,10207,0
+Baco/R5/5/5.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/294/results/REFLECTANCE_294.dat,294,rot90_cw,7415,0
+Baco/R5/6/6.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/294/results/REFLECTANCE_294.dat,294,rot90_cw,6136,0
+Baco/R5/7/7.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/295/results/REFLECTANCE_295.dat,295,rot90_cw,7489,0
+Baco/R5/8/8.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/295/results/REFLECTANCE_295.dat,295,rot90_cw,6564,0
+Baco/R5/9/9.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/296/results/REFLECTANCE_296.dat,296,rot90_cw,7645,0
+Baco/R5/10/10.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/296/results/REFLECTANCE_296.dat,296,rot90_cw,8063,0
+Baco/R5/11/11.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/297/results/REFLECTANCE_297.dat,297,rot90_cw,7107,0
+Baco/R5/12/12.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/297/results/REFLECTANCE_297.dat,297,rot90_cw,6609,0
+Baco/R5/13/13.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/298/results/REFLECTANCE_298.dat,298,rot90_cw,8356,0
+Baco/R5/14/14.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/298/results/REFLECTANCE_298.dat,298,rot90_cw,8643,0
+Baco/R5/15/15.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/299/results/REFLECTANCE_299.dat,299,rot90_cw,6092,0
+Baco/R5/16/16.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/299/results/REFLECTANCE_299.dat,299,rot90_cw,8153,0
+Baco/R5/17/17.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/300/results/REFLECTANCE_300.dat,300,rot90_cw,15948,0
+Baco/R5/18/18.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/300/results/REFLECTANCE_300.dat,300,rot90_cw,14932,0
+Baco/R5/19/19.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/301/results/REFLECTANCE_301.dat,301,rot90_cw,11433,0
+Baco/R5/20/20.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/301/results/REFLECTANCE_301.dat,301,rot90_cw,14137,0
+Baco/R5/21/21.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/302/results/REFLECTANCE_302.dat,302,rot90_cw,14293,0
+Baco/R5/22/22.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/302/results/REFLECTANCE_302.dat,302,rot90_cw,18304,0
+Baco/R5/23/23.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/303/results/REFLECTANCE_303.dat,303,rot90_cw,8417,0
+Baco/R5/24/24.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/303/results/REFLECTANCE_303.dat,303,rot90_cw,10531,0
+Baco/R5/25/25.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/304/results/REFLECTANCE_304.dat,304,rot90_cw,11655,0
+Baco/R5/26/26.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/304/results/REFLECTANCE_304.dat,304,rot90_cw,13595,0
+Baco/R5/27/27.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/305/results/REFLECTANCE_305.dat,305,rot90_cw,9745,0
+Baco/R5/28/28.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/305/results/REFLECTANCE_305.dat,305,rot90_cw,13703,0
+Baco/R5/29/29.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/306/results/REFLECTANCE_306.dat,306,rot90_cw,12658,0
+Baco/R5/30/30.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/306/results/REFLECTANCE_306.dat,306,rot90_cw,9868,0
+Baco/R5/31/31.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/307/results/REFLECTANCE_307.dat,307,rot90_cw,11651,0
+Baco/R5/32/32.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/307/results/REFLECTANCE_307.dat,307,rot90_cw,11131,0
+Baco/R5/33/33.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/308/results/REFLECTANCE_308.dat,308,rot90_cw,9580,0
+Baco/R5/34/34.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/308/results/REFLECTANCE_308.dat,308,rot90_cw,13724,0
+Baco/R5/35/35.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/309/results/REFLECTANCE_309.dat,309,rot90_cw,14315,0
+Baco/R5/36/36.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/309/results/REFLECTANCE_309.dat,309,rot90_cw,9187,0
+Baco/R5/37/37.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/310/results/REFLECTANCE_310.dat,310,rot90_cw,12997,0
+Baco/R5/38/38.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/310/results/REFLECTANCE_310.dat,310,rot90_cw,10873,0
+Baco/R5/39/39.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/311/results/REFLECTANCE_311.dat,311,rot90_cw,12373,0
+Baco/R5/40/40.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/311/results/REFLECTANCE_311.dat,311,rot90_cw,12893,0
+Baco/R5/41/41.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/312/results/REFLECTANCE_312.dat,312,rot90_cw,14087,0
+Baco/R5/42/42.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/312/results/REFLECTANCE_312.dat,312,rot90_cw,9746,0
+Baco/R5/43/43.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/313/results/REFLECTANCE_313.dat,313,rot90_cw,9226,0
+Baco/R5/44/44.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/313/results/REFLECTANCE_313.dat,313,rot90_cw,9867,0
+Baco/R5/45/45.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/314/results/REFLECTANCE_314.dat,314,rot90_cw,9623,0
+Baco/R5/46/46.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/314/results/REFLECTANCE_314.dat,314,rot90_cw,7287,0
+Baco/R5/47/47.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/315/results/REFLECTANCE_315.dat,315,rot90_cw,17678,0
+Baco/R5/48/48.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/315/results/REFLECTANCE_315.dat,315,rot90_cw,14756,0
+Baco/R5/49/49.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/316/results/REFLECTANCE_316.dat,316,rot90_cw,9579,0
+Baco/R5/50/50.img,Aug12_2026_HSI_Baco_Row_18_17_16_15_14_leaves/316/results/REFLECTANCE_316.dat,316,rot90_cw,10118,0
+Chardonnay/R1/1/1.img,Aug262026_HSI_Chardonnay_leaves/419/results/REFLECTANCE_419.dat,419,rot90_cw,3645,0
+Chardonnay/R1/2/2.img,Aug262026_HSI_Chardonnay_leaves/419/results/REFLECTANCE_419.dat,419,rot90_cw,8118,0
+Chardonnay/R1/3/3.img,Aug262026_HSI_Chardonnay_leaves/419/results/REFLECTANCE_419.dat,419,rot90_cw,7638,0
+Chardonnay/R1/4/4.img,Aug262026_HSI_Chardonnay_leaves/419/results/REFLECTANCE_419.dat,419,rot90_cw,5528,0
+Chardonnay/R1/5/5.img,Aug262026_HSI_Chardonnay_leaves/420/results/REFLECTANCE_420.dat,420,rot90_cw,5849,0
+Chardonnay/R1/6/6.img,Aug262026_HSI_Chardonnay_leaves/420/results/REFLECTANCE_420.dat,420,rot90_cw,5835,0
+Chardonnay/R1/7/7.img,Aug262026_HSI_Chardonnay_leaves/420/results/REFLECTANCE_420.dat,420,rot90_cw,6338,0
+Chardonnay/R1/8/8.img,Aug262026_HSI_Chardonnay_leaves/420/results/REFLECTANCE_420.dat,420,rot90_cw,5132,0
+Chardonnay/R1/9/9.img,Aug262026_HSI_Chardonnay_leaves/421/results/REFLECTANCE_421.dat,421,rot90_cw,6375,0
+Chardonnay/R1/10/10.img,Aug262026_HSI_Chardonnay_leaves/421/results/REFLECTANCE_421.dat,421,rot90_cw,6675,0
+Chardonnay/R1/11/11.img,Aug262026_HSI_Chardonnay_leaves/421/results/REFLECTANCE_421.dat,421,rot90_cw,4604,0
+Chardonnay/R1/12/12.img,Aug262026_HSI_Chardonnay_leaves/421/results/REFLECTANCE_421.dat,421,rot90_cw,5192,0
+Chardonnay/R1/13/13.img,Aug262026_HSI_Chardonnay_leaves/422/results/REFLECTANCE_422.dat,422,rot90_cw,4699,0
+Chardonnay/R1/14/14.img,Aug262026_HSI_Chardonnay_leaves/422/results/REFLECTANCE_422.dat,422,rot90_cw,4752,0
+Chardonnay/R1/15/15.img,Aug262026_HSI_Chardonnay_leaves/422/results/REFLECTANCE_422.dat,422,rot90_cw,5901,0
+Chardonnay/R1/16/16.img,Aug262026_HSI_Chardonnay_leaves/422/results/REFLECTANCE_422.dat,422,rot90_cw,5184,0
+Chardonnay/R1/17/17.img,Aug262026_HSI_Chardonnay_leaves/424/results/REFLECTANCE_424.dat,424,rot90_cw,7663,0
+Chardonnay/R1/18/18.img,Aug262026_HSI_Chardonnay_leaves/424/results/REFLECTANCE_424.dat,424,rot90_cw,4592,0
+Chardonnay/R1/19/19.img,Aug262026_HSI_Chardonnay_leaves/424/results/REFLECTANCE_424.dat,424,rot90_cw,7225,0
+Chardonnay/R1/20/20.img,Aug262026_HSI_Chardonnay_leaves/424/results/REFLECTANCE_424.dat,424,rot90_cw,3398,0
+Chardonnay/R1/21/21.img,Aug262026_HSI_Chardonnay_leaves/425/results/REFLECTANCE_425.dat,425,rot90_cw,4975,0
+Chardonnay/R1/22/22.img,Aug262026_HSI_Chardonnay_leaves/425/results/REFLECTANCE_425.dat,425,rot90_cw,2419,0
+Chardonnay/R1/23/23.img,Aug262026_HSI_Chardonnay_leaves/425/results/REFLECTANCE_425.dat,425,rot90_cw,6922,0
+Chardonnay/R1/24/24.img,Aug262026_HSI_Chardonnay_leaves/425/results/REFLECTANCE_425.dat,425,rot90_cw,4939,0
+Chardonnay/R1/25/25.img,Aug262026_HSI_Chardonnay_leaves/426/results/REFLECTANCE_426.dat,426,rot90_cw,4418,0
+Chardonnay/R1/26/26.img,Aug262026_HSI_Chardonnay_leaves/426/results/REFLECTANCE_426.dat,426,rot90_cw,6428,0
+Chardonnay/R1/27/27.img,Aug262026_HSI_Chardonnay_leaves/426/results/REFLECTANCE_426.dat,426,rot90_cw,1856,0
+Chardonnay/R1/28/28.img,Aug262026_HSI_Chardonnay_leaves/426/results/REFLECTANCE_426.dat,426,rot90_cw,5300,0
+Chardonnay/R1/29/29.img,Aug262026_HSI_Chardonnay_leaves/427/results/REFLECTANCE_427.dat,427,rot90_cw,4691,0
+Chardonnay/R1/30/30.img,Aug262026_HSI_Chardonnay_leaves/427/results/REFLECTANCE_427.dat,427,rot90_cw,5882,0
+Chardonnay/R1/31/31.img,Aug262026_HSI_Chardonnay_leaves/427/results/REFLECTANCE_427.dat,427,rot90_cw,6610,0
+Chardonnay/R1/32/32.img,Aug262026_HSI_Chardonnay_leaves/427/results/REFLECTANCE_427.dat,427,rot90_cw,4930,0
+Chardonnay/R1/33/33.img,Aug262026_HSI_Chardonnay_leaves/428/results/REFLECTANCE_428.dat,428,rot90_cw,7592,0
+Chardonnay/R1/34/34.img,Aug262026_HSI_Chardonnay_leaves/428/results/REFLECTANCE_428.dat,428,rot90_cw,4190,0
+Chardonnay/R1/35/35.img,Aug262026_HSI_Chardonnay_leaves/428/results/REFLECTANCE_428.dat,428,rot90_cw,5854,0
+Chardonnay/R1/36/36.img,Aug262026_HSI_Chardonnay_leaves/428/results/REFLECTANCE_428.dat,428,rot90_cw,8003,0
+Chardonnay/R1/37/37.img,Aug262026_HSI_Chardonnay_leaves/429/results/REFLECTANCE_429.dat,429,rot90_cw,4174,0
+Chardonnay/R1/38/38.img,Aug262026_HSI_Chardonnay_leaves/429/results/REFLECTANCE_429.dat,429,rot90_cw,3558,0
+Chardonnay/R1/39/39.img,Aug262026_HSI_Chardonnay_leaves/429/results/REFLECTANCE_429.dat,429,rot90_cw,6344,0
+Chardonnay/R1/40/40.img,Aug262026_HSI_Chardonnay_leaves/429/results/REFLECTANCE_429.dat,429,rot90_cw,5490,0
+Chardonnay/R1/41/41.img,Aug262026_HSI_Chardonnay_leaves/430/results/REFLECTANCE_430.dat,430,rot90_cw,5572,0
+Chardonnay/R1/42/42.img,Aug262026_HSI_Chardonnay_leaves/430/results/REFLECTANCE_430.dat,430,rot90_cw,8004,0
+Chardonnay/R1/43/43.img,Aug262026_HSI_Chardonnay_leaves/430/results/REFLECTANCE_430.dat,430,rot90_cw,6730,0
+Chardonnay/R1/44/44.img,Aug262026_HSI_Chardonnay_leaves/430/results/REFLECTANCE_430.dat,430,rot90_cw,4667,0
+Chardonnay/R1/45/45.img,Aug262026_HSI_Chardonnay_leaves/431/results/REFLECTANCE_431.dat,431,rot90_cw,3208,0
+Chardonnay/R1/46/46.img,Aug262026_HSI_Chardonnay_leaves/431/results/REFLECTANCE_431.dat,431,rot90_cw,7721,0
+Chardonnay/R1/47/47.img,Aug262026_HSI_Chardonnay_leaves/431/results/REFLECTANCE_431.dat,431,rot90_cw,6431,0
+Chardonnay/R1/48/48.img,Aug262026_HSI_Chardonnay_leaves/431/results/REFLECTANCE_431.dat,431,rot90_cw,5019,0
+Chardonnay/R1/49/49.img,Aug262026_HSI_Chardonnay_leaves/432/results/REFLECTANCE_432.dat,432,rot90_cw,4140,0
+Chardonnay/R1/50/50.img,Aug262026_HSI_Chardonnay_leaves/432/results/REFLECTANCE_432.dat,432,rot90_cw,5442,0
+Chardonnay/R2/1/1.img,Aug262026_HSI_Chardonnay_leaves/433/results/REFLECTANCE_433.dat,433,rot90_cw,6116,0
+Chardonnay/R2/2/2.img,Aug262026_HSI_Chardonnay_leaves/433/results/REFLECTANCE_433.dat,433,rot90_cw,5642,0
+Chardonnay/R2/3/3.img,Aug262026_HSI_Chardonnay_leaves/433/results/REFLECTANCE_433.dat,433,rot90_cw,6720,0
+Chardonnay/R2/4/4.img,Aug262026_HSI_Chardonnay_leaves/433/results/REFLECTANCE_433.dat,433,rot90_cw,3482,0
+Chardonnay/R2/5/5.img,Aug262026_HSI_Chardonnay_leaves/433/results/REFLECTANCE_433.dat,433,rot90_cw,5928,0
+Chardonnay/R2/6/6.img,Aug262026_HSI_Chardonnay_leaves/434/results/REFLECTANCE_434.dat,434,rot90_cw,3723,0
+Chardonnay/R2/7/7.img,Aug262026_HSI_Chardonnay_leaves/434/results/REFLECTANCE_434.dat,434,rot90_cw,7083,0
+Chardonnay/R2/8/8.img,Aug262026_HSI_Chardonnay_leaves/434/results/REFLECTANCE_434.dat,434,rot90_cw,5707,0
+Chardonnay/R2/9/9.img,Aug262026_HSI_Chardonnay_leaves/434/results/REFLECTANCE_434.dat,434,rot90_cw,4306,0
+Chardonnay/R2/10/10.img,Aug262026_HSI_Chardonnay_leaves/434/results/REFLECTANCE_434.dat,434,rot90_cw,7233,0
+Chardonnay/R2/11/11.img,Aug262026_HSI_Chardonnay_leaves/435/results/REFLECTANCE_435.dat,435,rot90_cw,5284,0
+Chardonnay/R2/12/12.img,Aug262026_HSI_Chardonnay_leaves/435/results/REFLECTANCE_435.dat,435,rot90_cw,6497,0
+Chardonnay/R2/13/13.img,Aug262026_HSI_Chardonnay_leaves/435/results/REFLECTANCE_435.dat,435,rot90_cw,7737,0
+Chardonnay/R2/14/14.img,Aug262026_HSI_Chardonnay_leaves/435/results/REFLECTANCE_435.dat,435,rot90_cw,4981,0
+Chardonnay/R2/15/15.img,Aug262026_HSI_Chardonnay_leaves/435/results/REFLECTANCE_435.dat,435,rot90_cw,6161,0
+Chardonnay/R2/16/16.img,Aug262026_HSI_Chardonnay_leaves/436/results/REFLECTANCE_436.dat,436,rot90_cw,2122,0
+Chardonnay/R2/17/17.img,Aug262026_HSI_Chardonnay_leaves/436/results/REFLECTANCE_436.dat,436,rot90_cw,4515,0
+Chardonnay/R2/18/18.img,Aug262026_HSI_Chardonnay_leaves/436/results/REFLECTANCE_436.dat,436,rot90_cw,5442,0
+Chardonnay/R2/19/19.img,Aug262026_HSI_Chardonnay_leaves/436/results/REFLECTANCE_436.dat,436,rot90_cw,6478,0
+Chardonnay/R2/20/20.img,Aug262026_HSI_Chardonnay_leaves/436/results/REFLECTANCE_436.dat,436,rot90_cw,4395,0
+Chardonnay/R2/21/21.img,Aug262026_HSI_Chardonnay_leaves/437/results/REFLECTANCE_437.dat,437,rot90_cw,6757,0
+Chardonnay/R2/22/22.img,Aug262026_HSI_Chardonnay_leaves/437/results/REFLECTANCE_437.dat,437,rot90_cw,3309,0
+Chardonnay/R2/23/23.img,Aug262026_HSI_Chardonnay_leaves/437/results/REFLECTANCE_437.dat,437,rot90_cw,6238,0
+Chardonnay/R2/24/24.img,Aug262026_HSI_Chardonnay_leaves/437/results/REFLECTANCE_437.dat,437,rot90_cw,5160,0
+Chardonnay/R2/25/25.img,Aug262026_HSI_Chardonnay_leaves/437/results/REFLECTANCE_437.dat,437,rot90_cw,2803,0
+Chardonnay/R2/26/26.img,Aug262026_HSI_Chardonnay_leaves/438/results/REFLECTANCE_438.dat,438,rot90_cw,4372,0
+Chardonnay/R2/27/27.img,Aug262026_HSI_Chardonnay_leaves/438/results/REFLECTANCE_438.dat,438,rot90_cw,7695,0
+Chardonnay/R2/28/28.img,Aug262026_HSI_Chardonnay_leaves/438/results/REFLECTANCE_438.dat,438,rot90_cw,4424,0
+Chardonnay/R2/29/29.img,Aug262026_HSI_Chardonnay_leaves/438/results/REFLECTANCE_438.dat,438,rot90_cw,3980,0
+Chardonnay/R2/30/30.img,Aug262026_HSI_Chardonnay_leaves/438/results/REFLECTANCE_438.dat,438,rot90_cw,4321,0
+Chardonnay/R2/31/31.img,Aug262026_HSI_Chardonnay_leaves/439/results/REFLECTANCE_439.dat,439,rot90_cw,4739,0
+Chardonnay/R2/32/32.img,Aug262026_HSI_Chardonnay_leaves/439/results/REFLECTANCE_439.dat,439,rot90_cw,3345,0
+Chardonnay/R2/33/33.img,Aug262026_HSI_Chardonnay_leaves/439/results/REFLECTANCE_439.dat,439,rot90_cw,4069,0
+Chardonnay/R2/34/34.img,Aug262026_HSI_Chardonnay_leaves/439/results/REFLECTANCE_439.dat,439,rot90_cw,4527,0
+Chardonnay/R2/35/35.img,Aug262026_HSI_Chardonnay_leaves/439/results/REFLECTANCE_439.dat,439,rot90_cw,3775,0
+Chardonnay/R2/36/36.img,Aug262026_HSI_Chardonnay_leaves/440/results/REFLECTANCE_440.dat,440,rot90_cw,6228,0
+Chardonnay/R2/37/37.img,Aug262026_HSI_Chardonnay_leaves/440/results/REFLECTANCE_440.dat,440,rot90_cw,2331,0
+Chardonnay/R2/38/38.img,Aug262026_HSI_Chardonnay_leaves/440/results/REFLECTANCE_440.dat,440,rot90_cw,5799,0
+Chardonnay/R2/39/39.img,Aug262026_HSI_Chardonnay_leaves/440/results/REFLECTANCE_440.dat,440,rot90_cw,3620,0
+Chardonnay/R2/40/40.img,Aug262026_HSI_Chardonnay_leaves/440/results/REFLECTANCE_440.dat,440,rot90_cw,4167,0
+Chardonnay/R2/41/41.img,Aug262026_HSI_Chardonnay_leaves/441/results/REFLECTANCE_441.dat,441,rot90_cw,6739,0
+Chardonnay/R2/42/42.img,Aug262026_HSI_Chardonnay_leaves/441/results/REFLECTANCE_441.dat,441,rot90_cw,5596,0
+Chardonnay/R2/43/43.img,Aug262026_HSI_Chardonnay_leaves/441/results/REFLECTANCE_441.dat,441,rot90_cw,4994,0
+Chardonnay/R2/44/44.img,Aug262026_HSI_Chardonnay_leaves/441/results/REFLECTANCE_441.dat,441,rot90_cw,4867,0
+Chardonnay/R2/45/45.img,Aug262026_HSI_Chardonnay_leaves/441/results/REFLECTANCE_441.dat,441,rot90_cw,6637,0
+Chardonnay/R2/46/46.img,Aug262026_HSI_Chardonnay_leaves/442/results/REFLECTANCE_442.dat,442,rot90_cw,4637,0
+Chardonnay/R2/47/47.img,Aug262026_HSI_Chardonnay_leaves/442/results/REFLECTANCE_442.dat,442,rot90_cw,9909,0
+Chardonnay/R2/48/48.img,Aug262026_HSI_Chardonnay_leaves/442/results/REFLECTANCE_442.dat,442,rot90_cw,6154,0
+Chardonnay/R2/49/49.img,Aug262026_HSI_Chardonnay_leaves/442/results/REFLECTANCE_442.dat,442,rot90_cw,4549,0
+Chardonnay/R2/50/50.img,Aug262026_HSI_Chardonnay_leaves/442/results/REFLECTANCE_442.dat,442,rot90_cw,6990,0
+Chardonnay/R3/1/1.img,Aug262026_HSI_Chardonnay_leaves/443/results/REFLECTANCE_443.dat,443,rot90_cw,2938,0
+Chardonnay/R3/2/2.img,Aug262026_HSI_Chardonnay_leaves/443/results/REFLECTANCE_443.dat,443,rot90_cw,5855,0
+Chardonnay/R3/3/3.img,Aug262026_HSI_Chardonnay_leaves/443/results/REFLECTANCE_443.dat,443,rot90_cw,6613,0
+Chardonnay/R3/4/4.img,Aug262026_HSI_Chardonnay_leaves/443/results/REFLECTANCE_443.dat,443,rot90_cw,3639,0
+Chardonnay/R3/5/5.img,Aug262026_HSI_Chardonnay_leaves/443/results/REFLECTANCE_443.dat,443,rot90_cw,4461,0
+Chardonnay/R3/6/6.img,Aug262026_HSI_Chardonnay_leaves/444/results/REFLECTANCE_444.dat,444,rot90_cw,5582,0
+Chardonnay/R3/7/7.img,Aug262026_HSI_Chardonnay_leaves/444/results/REFLECTANCE_444.dat,444,rot90_cw,4455,0
+Chardonnay/R3/8/8.img,Aug262026_HSI_Chardonnay_leaves/444/results/REFLECTANCE_444.dat,444,rot90_cw,5063,0
+Chardonnay/R3/9/9.img,Aug262026_HSI_Chardonnay_leaves/444/results/REFLECTANCE_444.dat,444,rot90_cw,4901,0
+Chardonnay/R3/10/10.img,Aug262026_HSI_Chardonnay_leaves/444/results/REFLECTANCE_444.dat,444,rot90_cw,5251,0
+Chardonnay/R3/11/11.img,Aug262026_HSI_Chardonnay_leaves/445/results/REFLECTANCE_445.dat,445,rot90_cw,5026,0
+Chardonnay/R3/12/12.img,Aug262026_HSI_Chardonnay_leaves/445/results/REFLECTANCE_445.dat,445,rot90_cw,5169,0
+Chardonnay/R3/13/13.img,Aug262026_HSI_Chardonnay_leaves/445/results/REFLECTANCE_445.dat,445,rot90_cw,7250,0
+Chardonnay/R3/14/14.img,Aug262026_HSI_Chardonnay_leaves/445/results/REFLECTANCE_445.dat,445,rot90_cw,7097,0
+Chardonnay/R3/15/15.img,Aug262026_HSI_Chardonnay_leaves/445/results/REFLECTANCE_445.dat,445,rot90_cw,8598,0
+Chardonnay/R3/16/16.img,Aug262026_HSI_Chardonnay_leaves/446/results/REFLECTANCE_446.dat,446,rot90_cw,6957,0
+Chardonnay/R3/17/17.img,Aug262026_HSI_Chardonnay_leaves/446/results/REFLECTANCE_446.dat,446,rot90_cw,5609,0
+Chardonnay/R3/18/18.img,Aug262026_HSI_Chardonnay_leaves/446/results/REFLECTANCE_446.dat,446,rot90_cw,4669,0
+Chardonnay/R3/19/19.img,Aug262026_HSI_Chardonnay_leaves/446/results/REFLECTANCE_446.dat,446,rot90_cw,8632,0
+Chardonnay/R3/20/20.img,Aug262026_HSI_Chardonnay_leaves/446/results/REFLECTANCE_446.dat,446,rot90_cw,5607,0
+Chardonnay/R3/21/21.img,Aug262026_HSI_Chardonnay_leaves/447/results/REFLECTANCE_447.dat,447,rot90_cw,5732,0
+Chardonnay/R3/22/22.img,Aug262026_HSI_Chardonnay_leaves/447/results/REFLECTANCE_447.dat,447,rot90_cw,2820,0
+Chardonnay/R3/23/23.img,Aug262026_HSI_Chardonnay_leaves/447/results/REFLECTANCE_447.dat,447,rot90_cw,6077,0
+Chardonnay/R3/24/24.img,Aug262026_HSI_Chardonnay_leaves/447/results/REFLECTANCE_447.dat,447,rot90_cw,6615,0
+Chardonnay/R3/25/25.img,Aug262026_HSI_Chardonnay_leaves/447/results/REFLECTANCE_447.dat,447,rot90_cw,4368,0
+Chardonnay/R3/26/26.img,Aug262026_HSI_Chardonnay_leaves/448/results/REFLECTANCE_448.dat,448,rot90_cw,10944,0
+Chardonnay/R3/27/27.img,Aug262026_HSI_Chardonnay_leaves/448/results/REFLECTANCE_448.dat,448,rot90_cw,5476,0
+Chardonnay/R3/28/28.img,Aug262026_HSI_Chardonnay_leaves/448/results/REFLECTANCE_448.dat,448,rot90_cw,5732,0
+Chardonnay/R3/29/29.img,Aug262026_HSI_Chardonnay_leaves/448/results/REFLECTANCE_448.dat,448,rot90_cw,4825,0
+Chardonnay/R3/30/30.img,Aug262026_HSI_Chardonnay_leaves/448/results/REFLECTANCE_448.dat,448,rot90_cw,4760,0
+Chardonnay/R3/31/31.img,Aug262026_HSI_Chardonnay_leaves/449/results/REFLECTANCE_449.dat,449,rot90_cw,7827,0
+Chardonnay/R3/32/32.img,Aug262026_HSI_Chardonnay_leaves/449/results/REFLECTANCE_449.dat,449,rot90_cw,8913,0
+Chardonnay/R3/33/33.img,Aug262026_HSI_Chardonnay_leaves/449/results/REFLECTANCE_449.dat,449,rot90_cw,7682,0
+Chardonnay/R3/34/34.img,Aug262026_HSI_Chardonnay_leaves/449/results/REFLECTANCE_449.dat,449,rot90_cw,4450,0
+Chardonnay/R3/35/35.img,Aug262026_HSI_Chardonnay_leaves/449/results/REFLECTANCE_449.dat,449,rot90_cw,7366,0
+Chardonnay/R3/36/36.img,Aug262026_HSI_Chardonnay_leaves/450/results/REFLECTANCE_450.dat,450,rot90_cw,6588,0
+Chardonnay/R3/37/37.img,Aug262026_HSI_Chardonnay_leaves/450/results/REFLECTANCE_450.dat,450,rot90_cw,6142,0
+Chardonnay/R3/38/38.img,Aug262026_HSI_Chardonnay_leaves/450/results/REFLECTANCE_450.dat,450,rot90_cw,4179,0
+Chardonnay/R3/39/39.img,Aug262026_HSI_Chardonnay_leaves/450/results/REFLECTANCE_450.dat,450,rot90_cw,5817,0
+Chardonnay/R3/40/40.img,Aug262026_HSI_Chardonnay_leaves/450/results/REFLECTANCE_450.dat,450,rot90_cw,4019,0
+Chardonnay/R3/41/41.img,Aug262026_HSI_Chardonnay_leaves/451/results/REFLECTANCE_451.dat,451,rot90_cw,6793,0
+Chardonnay/R3/42/42.img,Aug262026_HSI_Chardonnay_leaves/451/results/REFLECTANCE_451.dat,451,rot90_cw,8426,0
+Chardonnay/R3/43/43.img,Aug262026_HSI_Chardonnay_leaves/451/results/REFLECTANCE_451.dat,451,rot90_cw,8672,0
+Chardonnay/R3/44/44.img,Aug262026_HSI_Chardonnay_leaves/451/results/REFLECTANCE_451.dat,451,rot90_cw,7172,0
+Chardonnay/R3/45/45.img,Aug262026_HSI_Chardonnay_leaves/451/results/REFLECTANCE_451.dat,451,rot90_cw,3999,0
+Chardonnay/R3/46/46.img,Aug262026_HSI_Chardonnay_leaves/452/results/REFLECTANCE_452.dat,452,rot90_cw,7043,0
+Chardonnay/R3/47/47.img,Aug262026_HSI_Chardonnay_leaves/452/results/REFLECTANCE_452.dat,452,rot90_cw,3629,0
+Chardonnay/R3/48/48.img,Aug262026_HSI_Chardonnay_leaves/452/results/REFLECTANCE_452.dat,452,rot90_cw,6169,0
+Chardonnay/R3/49/49.img,Aug262026_HSI_Chardonnay_leaves/452/results/REFLECTANCE_452.dat,452,rot90_cw,6550,0
+Chardonnay/R3/50/50.img,Aug262026_HSI_Chardonnay_leaves/452/results/REFLECTANCE_452.dat,452,rot90_cw,5661,0
+Chardonnay/R4/1/1.img,Aug262026_HSI_Chardonnay_leaves/453/results/REFLECTANCE_453.dat,453,rot90_cw,5066,0
+Chardonnay/R4/2/2.img,Aug262026_HSI_Chardonnay_leaves/453/results/REFLECTANCE_453.dat,453,rot90_cw,5261,0
+Chardonnay/R4/3/3.img,Aug262026_HSI_Chardonnay_leaves/453/results/REFLECTANCE_453.dat,453,rot90_cw,7559,0
+Chardonnay/R4/4/4.img,Aug262026_HSI_Chardonnay_leaves/453/results/REFLECTANCE_453.dat,453,rot90_cw,3938,0
+Chardonnay/R4/5/5.img,Aug262026_HSI_Chardonnay_leaves/453/results/REFLECTANCE_453.dat,453,rot90_cw,8713,0
+Chardonnay/R4/6/6.img,Aug262026_HSI_Chardonnay_leaves/454/results/REFLECTANCE_454.dat,454,rot90_cw,5539,0
+Chardonnay/R4/7/7.img,Aug262026_HSI_Chardonnay_leaves/454/results/REFLECTANCE_454.dat,454,rot90_cw,6388,0
+Chardonnay/R4/8/8.img,Aug262026_HSI_Chardonnay_leaves/454/results/REFLECTANCE_454.dat,454,rot90_cw,4926,0
+Chardonnay/R4/9/9.img,Aug262026_HSI_Chardonnay_leaves/454/results/REFLECTANCE_454.dat,454,rot90_cw,7579,0
+Chardonnay/R4/10/10.img,Aug262026_HSI_Chardonnay_leaves/454/results/REFLECTANCE_454.dat,454,rot90_cw,6241,0
+Chardonnay/R4/11/11.img,Aug262026_HSI_Chardonnay_leaves/455/results/REFLECTANCE_455.dat,455,rot90_cw,5683,0
+Chardonnay/R4/12/12.img,Aug262026_HSI_Chardonnay_leaves/455/results/REFLECTANCE_455.dat,455,rot90_cw,4937,0
+Chardonnay/R4/13/13.img,Aug262026_HSI_Chardonnay_leaves/455/results/REFLECTANCE_455.dat,455,rot90_cw,4959,0
+Chardonnay/R4/14/14.img,Aug262026_HSI_Chardonnay_leaves/455/results/REFLECTANCE_455.dat,455,rot90_cw,6016,0
+Chardonnay/R4/15/15.img,Aug262026_HSI_Chardonnay_leaves/455/results/REFLECTANCE_455.dat,455,rot90_cw,5961,0
+Chardonnay/R4/16/16.img,Aug262026_HSI_Chardonnay_leaves/456/results/REFLECTANCE_456.dat,456,rot90_cw,7894,0
+Chardonnay/R4/17/17.img,Aug262026_HSI_Chardonnay_leaves/456/results/REFLECTANCE_456.dat,456,rot90_cw,4514,0
+Chardonnay/R4/18/18.img,Aug262026_HSI_Chardonnay_leaves/456/results/REFLECTANCE_456.dat,456,rot90_cw,4832,0
+Chardonnay/R4/19/19.img,Aug262026_HSI_Chardonnay_leaves/456/results/REFLECTANCE_456.dat,456,rot90_cw,5479,0
+Chardonnay/R4/20/20.img,Aug262026_HSI_Chardonnay_leaves/456/results/REFLECTANCE_456.dat,456,rot90_cw,3908,0
+Chardonnay/R4/21/21.img,Aug262026_HSI_Chardonnay_leaves/457/results/REFLECTANCE_457.dat,457,rot90_cw,5678,0
+Chardonnay/R4/22/22.img,Aug262026_HSI_Chardonnay_leaves/457/results/REFLECTANCE_457.dat,457,rot90_cw,3450,0
+Chardonnay/R4/23/23.img,Aug262026_HSI_Chardonnay_leaves/457/results/REFLECTANCE_457.dat,457,rot90_cw,5991,0
+Chardonnay/R4/24/24.img,Aug262026_HSI_Chardonnay_leaves/457/results/REFLECTANCE_457.dat,457,rot90_cw,5383,0
+Chardonnay/R4/25/25.img,Aug262026_HSI_Chardonnay_leaves/457/results/REFLECTANCE_457.dat,457,rot90_cw,5969,0
+Chardonnay/R4/26/26.img,Aug262026_HSI_Chardonnay_leaves/458/results/REFLECTANCE_458.dat,458,rot90_cw,7875,0
+Chardonnay/R4/27/27.img,Aug262026_HSI_Chardonnay_leaves/458/results/REFLECTANCE_458.dat,458,rot90_cw,4679,0
+Chardonnay/R4/28/28.img,Aug262026_HSI_Chardonnay_leaves/458/results/REFLECTANCE_458.dat,458,rot90_cw,5169,0
+Chardonnay/R4/29/29.img,Aug262026_HSI_Chardonnay_leaves/458/results/REFLECTANCE_458.dat,458,rot90_cw,4438,0
+Chardonnay/R4/30/30.img,Aug262026_HSI_Chardonnay_leaves/458/results/REFLECTANCE_458.dat,458,rot90_cw,8603,0
+Chardonnay/R4/31/31.img,Aug262026_HSI_Chardonnay_leaves/459/results/REFLECTANCE_459.dat,459,rot90_cw,4959,0
+Chardonnay/R4/32/32.img,Aug262026_HSI_Chardonnay_leaves/459/results/REFLECTANCE_459.dat,459,rot90_cw,2781,0
+Chardonnay/R4/33/33.img,Aug262026_HSI_Chardonnay_leaves/459/results/REFLECTANCE_459.dat,459,rot90_cw,8258,0
+Chardonnay/R4/34/34.img,Aug262026_HSI_Chardonnay_leaves/459/results/REFLECTANCE_459.dat,459,rot90_cw,5367,0
+Chardonnay/R4/35/35.img,Aug262026_HSI_Chardonnay_leaves/459/results/REFLECTANCE_459.dat,459,rot90_cw,3661,0
+Chardonnay/R4/36/36.img,Aug262026_HSI_Chardonnay_leaves/460/results/REFLECTANCE_460.dat,460,rot90_cw,3644,0
+Chardonnay/R4/37/37.img,Aug262026_HSI_Chardonnay_leaves/460/results/REFLECTANCE_460.dat,460,rot90_cw,7409,0
+Chardonnay/R4/38/38.img,Aug262026_HSI_Chardonnay_leaves/460/results/REFLECTANCE_460.dat,460,rot90_cw,2422,0
+Chardonnay/R4/39/39.img,Aug262026_HSI_Chardonnay_leaves/460/results/REFLECTANCE_460.dat,460,rot90_cw,8505,0
+Chardonnay/R4/40/40.img,Aug262026_HSI_Chardonnay_leaves/460/results/REFLECTANCE_460.dat,460,rot90_cw,4354,0
+Chardonnay/R4/41/41.img,Aug262026_HSI_Chardonnay_leaves/461/results/REFLECTANCE_461.dat,461,rot90_cw,3992,0
+Chardonnay/R4/42/42.img,Aug262026_HSI_Chardonnay_leaves/461/results/REFLECTANCE_461.dat,461,rot90_cw,2294,0
+Chardonnay/R4/43/43.img,Aug262026_HSI_Chardonnay_leaves/461/results/REFLECTANCE_461.dat,461,rot90_cw,3003,0
+Chardonnay/R4/44/44.img,Aug262026_HSI_Chardonnay_leaves/461/results/REFLECTANCE_461.dat,461,rot90_cw,5097,0
+Chardonnay/R4/45/45.img,Aug262026_HSI_Chardonnay_leaves/461/results/REFLECTANCE_461.dat,461,rot90_cw,6406,0
+Chardonnay/R4/46/46.img,Aug262026_HSI_Chardonnay_leaves/462/results/REFLECTANCE_462.dat,462,rot90_cw,8967,0
+Chardonnay/R4/47/47.img,Aug262026_HSI_Chardonnay_leaves/462/results/REFLECTANCE_462.dat,462,rot90_cw,7919,0
+Chardonnay/R4/48/48.img,Aug262026_HSI_Chardonnay_leaves/462/results/REFLECTANCE_462.dat,462,rot90_cw,8213,0
+Chardonnay/R4/49/49.img,Aug262026_HSI_Chardonnay_leaves/462/results/REFLECTANCE_462.dat,462,rot90_cw,6803,0
+Chardonnay/R4/50/50.img,Aug262026_HSI_Chardonnay_leaves/462/results/REFLECTANCE_462.dat,462,rot90_cw,7754,0
+Chardonnay/R5/1/1.img,Aug262026_HSI_Chardonnay_leaves/463/results/REFLECTANCE_463.dat,463,rot90_cw,3381,0
+Chardonnay/R5/2/2.img,Aug262026_HSI_Chardonnay_leaves/463/results/REFLECTANCE_463.dat,463,rot90_cw,3284,0
+Chardonnay/R5/3/3.img,Aug262026_HSI_Chardonnay_leaves/463/results/REFLECTANCE_463.dat,463,rot90_cw,4518,0
+Chardonnay/R5/4/4.img,Aug262026_HSI_Chardonnay_leaves/463/results/REFLECTANCE_463.dat,463,rot90_cw,6475,0
+Chardonnay/R5/5/5.img,Aug262026_HSI_Chardonnay_leaves/463/results/REFLECTANCE_463.dat,463,rot90_cw,4515,0
+Chardonnay/R5/6/6.img,Aug262026_HSI_Chardonnay_leaves/464/results/REFLECTANCE_464.dat,464,rot90_cw,6611,0
+Chardonnay/R5/7/7.img,Aug262026_HSI_Chardonnay_leaves/464/results/REFLECTANCE_464.dat,464,rot90_cw,3081,0
+Chardonnay/R5/8/8.img,Aug262026_HSI_Chardonnay_leaves/464/results/REFLECTANCE_464.dat,464,rot90_cw,6648,0
+Chardonnay/R5/9/9.img,Aug262026_HSI_Chardonnay_leaves/464/results/REFLECTANCE_464.dat,464,rot90_cw,6641,0
+Chardonnay/R5/10/10.img,Aug262026_HSI_Chardonnay_leaves/464/results/REFLECTANCE_464.dat,464,rot90_cw,5767,0
+Chardonnay/R5/11/11.img,Aug262026_HSI_Chardonnay_leaves/465/results/REFLECTANCE_465.dat,465,rot90_cw,9768,0
+Chardonnay/R5/12/12.img,Aug262026_HSI_Chardonnay_leaves/465/results/REFLECTANCE_465.dat,465,rot90_cw,2015,0
+Chardonnay/R5/13/13.img,Aug262026_HSI_Chardonnay_leaves/465/results/REFLECTANCE_465.dat,465,rot90_cw,8040,0
+Chardonnay/R5/14/14.img,Aug262026_HSI_Chardonnay_leaves/465/results/REFLECTANCE_465.dat,465,rot90_cw,4975,0
+Chardonnay/R5/15/15.img,Aug262026_HSI_Chardonnay_leaves/465/results/REFLECTANCE_465.dat,465,rot90_cw,9095,0
+Chardonnay/R5/16/16.img,Aug262026_HSI_Chardonnay_leaves/466/results/REFLECTANCE_466.dat,466,rot90_cw,6857,0
+Chardonnay/R5/17/17.img,Aug262026_HSI_Chardonnay_leaves/466/results/REFLECTANCE_466.dat,466,rot90_cw,6020,0
+Chardonnay/R5/18/18.img,Aug262026_HSI_Chardonnay_leaves/466/results/REFLECTANCE_466.dat,466,rot90_cw,7258,0
+Chardonnay/R5/19/19.img,Aug262026_HSI_Chardonnay_leaves/466/results/REFLECTANCE_466.dat,466,rot90_cw,7387,0
+Chardonnay/R5/20/20.img,Aug262026_HSI_Chardonnay_leaves/466/results/REFLECTANCE_466.dat,466,rot90_cw,4554,0
+Chardonnay/R5/21/21.img,Aug262026_HSI_Chardonnay_leaves/467/results/REFLECTANCE_467.dat,467,rot90_cw,5859,0
+Chardonnay/R5/22/22.img,Aug262026_HSI_Chardonnay_leaves/467/results/REFLECTANCE_467.dat,467,rot90_cw,7102,0
+Chardonnay/R5/23/23.img,Aug262026_HSI_Chardonnay_leaves/467/results/REFLECTANCE_467.dat,467,rot90_cw,3673,0
+Chardonnay/R5/24/24.img,Aug262026_HSI_Chardonnay_leaves/467/results/REFLECTANCE_467.dat,467,rot90_cw,5698,0
+Chardonnay/R5/25/25.img,Aug262026_HSI_Chardonnay_leaves/467/results/REFLECTANCE_467.dat,467,rot90_cw,8624,0
+Chardonnay/R5/26/26.img,Aug262026_HSI_Chardonnay_leaves/468/results/REFLECTANCE_468.dat,468,rot90_cw,6289,0
+Chardonnay/R5/27/27.img,Aug262026_HSI_Chardonnay_leaves/468/results/REFLECTANCE_468.dat,468,rot90_cw,3942,0
+Chardonnay/R5/28/28.img,Aug262026_HSI_Chardonnay_leaves/468/results/REFLECTANCE_468.dat,468,rot90_cw,8532,0
+Chardonnay/R5/29/29.img,Aug262026_HSI_Chardonnay_leaves/468/results/REFLECTANCE_468.dat,468,rot90_cw,4529,0
+Chardonnay/R5/30/30.img,Aug262026_HSI_Chardonnay_leaves/468/results/REFLECTANCE_468.dat,468,rot90_cw,7610,0
+Chardonnay/R5/31/31.img,Aug262026_HSI_Chardonnay_leaves/469/results/REFLECTANCE_469.dat,469,rot90_cw,3845,0
+Chardonnay/R5/32/32.img,Aug262026_HSI_Chardonnay_leaves/469/results/REFLECTANCE_469.dat,469,rot90_cw,6259,0
+Chardonnay/R5/33/33.img,Aug262026_HSI_Chardonnay_leaves/469/results/REFLECTANCE_469.dat,469,rot90_cw,7435,0
+Chardonnay/R5/34/34.img,Aug262026_HSI_Chardonnay_leaves/469/results/REFLECTANCE_469.dat,469,rot90_cw,5952,0
+Chardonnay/R5/35/35.img,Aug262026_HSI_Chardonnay_leaves/469/results/REFLECTANCE_469.dat,469,rot90_cw,10518,0
+Chardonnay/R5/36/36.img,Aug262026_HSI_Chardonnay_leaves/470/results/REFLECTANCE_470.dat,470,rot90_cw,5578,0
+Chardonnay/R5/37/37.img,Aug262026_HSI_Chardonnay_leaves/470/results/REFLECTANCE_470.dat,470,rot90_cw,5053,0
+Chardonnay/R5/38/38.img,Aug262026_HSI_Chardonnay_leaves/470/results/REFLECTANCE_470.dat,470,rot90_cw,6390,0
+Chardonnay/R5/39/39.img,Aug262026_HSI_Chardonnay_leaves/470/results/REFLECTANCE_470.dat,470,rot90_cw,5781,0
+Chardonnay/R5/40/40.img,Aug262026_HSI_Chardonnay_leaves/470/results/REFLECTANCE_470.dat,470,rot90_cw,2482,0
+Chardonnay/R5/41/41.img,Aug262026_HSI_Chardonnay_leaves/471/results/REFLECTANCE_471.dat,471,rot90_cw,4472,0
+Chardonnay/R5/42/42.img,Aug262026_HSI_Chardonnay_leaves/471/results/REFLECTANCE_471.dat,471,rot90_cw,6193,0
+Chardonnay/R5/43/43.img,Aug262026_HSI_Chardonnay_leaves/471/results/REFLECTANCE_471.dat,471,rot90_cw,5751,0
+Chardonnay/R5/44/44.img,Aug262026_HSI_Chardonnay_leaves/471/results/REFLECTANCE_471.dat,471,rot90_cw,6102,0
+Chardonnay/R5/45/45.img,Aug262026_HSI_Chardonnay_leaves/471/results/REFLECTANCE_471.dat,471,rot90_cw,6853,0
+Chardonnay/R5/46/46.img,Aug262026_HSI_Chardonnay_leaves/472/results/REFLECTANCE_472.dat,472,rot90_cw,4637,0
+Chardonnay/R5/47/47.img,Aug262026_HSI_Chardonnay_leaves/472/results/REFLECTANCE_472.dat,472,rot90_cw,6612,0
+Chardonnay/R5/48/48.img,Aug262026_HSI_Chardonnay_leaves/472/results/REFLECTANCE_472.dat,472,rot90_cw,3252,0
+Chardonnay/R5/49/49.img,Aug262026_HSI_Chardonnay_leaves/472/results/REFLECTANCE_472.dat,472,rot90_cw,6331,0
+Chardonnay/R5/50/50.img,Aug262026_HSI_Chardonnay_leaves/472/results/REFLECTANCE_472.dat,472,rot90_cw,4612,0
+Cab Franc/R1/1/1.img,Sept03042026_HSI_CabFranc_leaves/523/results/REFLECTANCE_523.dat,523,rot90_cw,6622,0
+Cab Franc/R1/2/2.img,Sept03042026_HSI_CabFranc_leaves/523/results/REFLECTANCE_523.dat,523,rot90_cw,5768,0
+Cab Franc/R1/3/3.img,Sept03042026_HSI_CabFranc_leaves/523/results/REFLECTANCE_523.dat,523,rot90_cw,4499,0
+Cab Franc/R1/4/4.img,Sept03042026_HSI_CabFranc_leaves/523/results/REFLECTANCE_523.dat,523,rot90_cw,5564,0
+Cab Franc/R1/5/5.img,Sept03042026_HSI_CabFranc_leaves/523/results/REFLECTANCE_523.dat,523,rot90_cw,2602,0
+Cab Franc/R1/6/6.img,Sept03042026_HSI_CabFranc_leaves/524/results/REFLECTANCE_524.dat,524,rot90_cw,7318,0
+Cab Franc/R1/7/7.img,Sept03042026_HSI_CabFranc_leaves/524/results/REFLECTANCE_524.dat,524,rot90_cw,6027,0
+Cab Franc/R1/8/8.img,Sept03042026_HSI_CabFranc_leaves/524/results/REFLECTANCE_524.dat,524,rot90_cw,6681,0
+Cab Franc/R1/9/9.img,Sept03042026_HSI_CabFranc_leaves/524/results/REFLECTANCE_524.dat,524,rot90_cw,4166,0
+Cab Franc/R1/10/10.img,Sept03042026_HSI_CabFranc_leaves/524/results/REFLECTANCE_524.dat,524,rot90_cw,4233,0
+Cab Franc/R1/11/11.img,Sept03042026_HSI_CabFranc_leaves/525/results/REFLECTANCE_525.dat,525,rot90_cw,5632,0
+Cab Franc/R1/12/12.img,Sept03042026_HSI_CabFranc_leaves/525/results/REFLECTANCE_525.dat,525,rot90_cw,5016,0
+Cab Franc/R1/13/13.img,Sept03042026_HSI_CabFranc_leaves/525/results/REFLECTANCE_525.dat,525,rot90_cw,6056,0
+Cab Franc/R1/14/14.img,Sept03042026_HSI_CabFranc_leaves/525/results/REFLECTANCE_525.dat,525,rot90_cw,7538,0
+Cab Franc/R1/15/15.img,Sept03042026_HSI_CabFranc_leaves/525/results/REFLECTANCE_525.dat,525,rot90_cw,4310,0
+Cab Franc/R1/16/16.img,Sept03042026_HSI_CabFranc_leaves/526/results/REFLECTANCE_526.dat,526,rot90_cw,6236,0
+Cab Franc/R1/17/17.img,Sept03042026_HSI_CabFranc_leaves/526/results/REFLECTANCE_526.dat,526,rot90_cw,4097,0
+Cab Franc/R1/18/18.img,Sept03042026_HSI_CabFranc_leaves/526/results/REFLECTANCE_526.dat,526,rot90_cw,5777,0
+Cab Franc/R1/19/19.img,Sept03042026_HSI_CabFranc_leaves/526/results/REFLECTANCE_526.dat,526,rot90_cw,6619,0
+Cab Franc/R1/20/20.img,Sept03042026_HSI_CabFranc_leaves/526/results/REFLECTANCE_526.dat,526,rot90_cw,6194,0
+Cab Franc/R1/21/21.img,Sept03042026_HSI_CabFranc_leaves/527/results/REFLECTANCE_527.dat,527,rot90_cw,4870,0
+Cab Franc/R1/22/22.img,Sept03042026_HSI_CabFranc_leaves/527/results/REFLECTANCE_527.dat,527,rot90_cw,5560,0
+Cab Franc/R1/23/23.img,Sept03042026_HSI_CabFranc_leaves/527/results/REFLECTANCE_527.dat,527,rot90_cw,5241,0
+Cab Franc/R1/24/24.img,Sept03042026_HSI_CabFranc_leaves/527/results/REFLECTANCE_527.dat,527,rot90_cw,4973,0
+Cab Franc/R1/25/25.img,Sept03042026_HSI_CabFranc_leaves/527/results/REFLECTANCE_527.dat,527,rot90_cw,7571,0
+Cab Franc/R1/26/26.img,Sept03042026_HSI_CabFranc_leaves/528/results/REFLECTANCE_528.dat,528,rot90_cw,6009,0
+Cab Franc/R1/27/27.img,Sept03042026_HSI_CabFranc_leaves/528/results/REFLECTANCE_528.dat,528,rot90_cw,4105,0
+Cab Franc/R1/28/28.img,Sept03042026_HSI_CabFranc_leaves/528/results/REFLECTANCE_528.dat,528,rot90_cw,6008,0
+Cab Franc/R1/29/29.img,Sept03042026_HSI_CabFranc_leaves/528/results/REFLECTANCE_528.dat,528,rot90_cw,5915,0
+Cab Franc/R1/30/30.img,Sept03042026_HSI_CabFranc_leaves/528/results/REFLECTANCE_528.dat,528,rot90_cw,5730,0
+Cab Franc/R1/31/31.img,Sept03042026_HSI_CabFranc_leaves/529/results/REFLECTANCE_529.dat,529,rot90_cw,5936,0
+Cab Franc/R1/32/32.img,Sept03042026_HSI_CabFranc_leaves/529/results/REFLECTANCE_529.dat,529,rot90_cw,6362,0
+Cab Franc/R1/33/33.img,Sept03042026_HSI_CabFranc_leaves/529/results/REFLECTANCE_529.dat,529,rot90_cw,6138,0
+Cab Franc/R1/34/34.img,Sept03042026_HSI_CabFranc_leaves/529/results/REFLECTANCE_529.dat,529,rot90_cw,6552,0
+Cab Franc/R1/35/35.img,Sept03042026_HSI_CabFranc_leaves/529/results/REFLECTANCE_529.dat,529,rot90_cw,5281,0
+Cab Franc/R1/36/36.img,Sept03042026_HSI_CabFranc_leaves/530/results/REFLECTANCE_530.dat,530,rot90_cw,6991,0
+Cab Franc/R1/37/37.img,Sept03042026_HSI_CabFranc_leaves/530/results/REFLECTANCE_530.dat,530,rot90_cw,4302,0
+Cab Franc/R1/38/38.img,Sept03042026_HSI_CabFranc_leaves/530/results/REFLECTANCE_530.dat,530,rot90_cw,5930,0
+Cab Franc/R1/39/39.img,Sept03042026_HSI_CabFranc_leaves/530/results/REFLECTANCE_530.dat,530,rot90_cw,6111,0
+Cab Franc/R1/40/40.img,Sept03042026_HSI_CabFranc_leaves/530/results/REFLECTANCE_530.dat,530,rot90_cw,10665,0
+Cab Franc/R1/41/41.img,Sept03042026_HSI_CabFranc_leaves/531/results/REFLECTANCE_531.dat,531,rot90_cw,6171,0
+Cab Franc/R1/42/42.img,Sept03042026_HSI_CabFranc_leaves/531/results/REFLECTANCE_531.dat,531,rot90_cw,5422,0
+Cab Franc/R1/43/43.img,Sept03042026_HSI_CabFranc_leaves/531/results/REFLECTANCE_531.dat,531,rot90_cw,7079,0
+Cab Franc/R1/44/44.img,Sept03042026_HSI_CabFranc_leaves/531/results/REFLECTANCE_531.dat,531,rot90_cw,9780,0
+Cab Franc/R1/45/45.img,Sept03042026_HSI_CabFranc_leaves/531/results/REFLECTANCE_531.dat,531,rot90_cw,5139,0
+Cab Franc/R1/46/46.img,Sept03042026_HSI_CabFranc_leaves/532/results/REFLECTANCE_532.dat,532,rot90_cw,6089,0
+Cab Franc/R1/47/47.img,Sept03042026_HSI_CabFranc_leaves/532/results/REFLECTANCE_532.dat,532,rot90_cw,4892,0
+Cab Franc/R1/48/48.img,Sept03042026_HSI_CabFranc_leaves/532/results/REFLECTANCE_532.dat,532,rot90_cw,9679,0
+Cab Franc/R1/49/49.img,Sept03042026_HSI_CabFranc_leaves/532/results/REFLECTANCE_532.dat,532,rot90_cw,10768,0
+Cab Franc/R1/50/50.img,Sept03042026_HSI_CabFranc_leaves/532/results/REFLECTANCE_532.dat,532,rot90_cw,8329,0
+Cab Franc/R2/1/1.img,Sept03042026_HSI_CabFranc_leaves/533/results/REFLECTANCE_533.dat,533,rot90_cw,6169,0
+Cab Franc/R2/2/2.img,Sept03042026_HSI_CabFranc_leaves/533/results/REFLECTANCE_533.dat,533,rot90_cw,7003,0
+Cab Franc/R2/3/3.img,Sept03042026_HSI_CabFranc_leaves/533/results/REFLECTANCE_533.dat,533,rot90_cw,4388,0
+Cab Franc/R2/4/4.img,Sept03042026_HSI_CabFranc_leaves/533/results/REFLECTANCE_533.dat,533,rot90_cw,4130,0
+Cab Franc/R2/5/5.img,Sept03042026_HSI_CabFranc_leaves/533/results/REFLECTANCE_533.dat,533,rot90_cw,7950,0
+Cab Franc/R2/6/6.img,Sept03042026_HSI_CabFranc_leaves/534/results/REFLECTANCE_534.dat,534,rot90_cw,4927,0
+Cab Franc/R2/7/7.img,Sept03042026_HSI_CabFranc_leaves/534/results/REFLECTANCE_534.dat,534,rot90_cw,6275,0
+Cab Franc/R2/8/8.img,Sept03042026_HSI_CabFranc_leaves/534/results/REFLECTANCE_534.dat,534,rot90_cw,6763,0
+Cab Franc/R2/9/9.img,Sept03042026_HSI_CabFranc_leaves/534/results/REFLECTANCE_534.dat,534,rot90_cw,5205,0
+Cab Franc/R2/10/10.img,Sept03042026_HSI_CabFranc_leaves/534/results/REFLECTANCE_534.dat,534,rot90_cw,4735,0
+Cab Franc/R2/11/11.img,Sept03042026_HSI_CabFranc_leaves/536/results/REFLECTANCE_536.dat,536,rot90_cw,3329,0
+Cab Franc/R2/12/12.img,Sept03042026_HSI_CabFranc_leaves/536/results/REFLECTANCE_536.dat,536,rot90_cw,5679,0
+Cab Franc/R2/13/13.img,Sept03042026_HSI_CabFranc_leaves/536/results/REFLECTANCE_536.dat,536,rot90_cw,5176,0
+Cab Franc/R2/14/14.img,Sept03042026_HSI_CabFranc_leaves/536/results/REFLECTANCE_536.dat,536,rot90_cw,3387,0
+Cab Franc/R2/15/15.img,Sept03042026_HSI_CabFranc_leaves/536/results/REFLECTANCE_536.dat,536,rot90_cw,4300,0
+Cab Franc/R2/16/16.img,Sept03042026_HSI_CabFranc_leaves/537/results/REFLECTANCE_537.dat,537,rot90_cw,9197,0
+Cab Franc/R2/17/17.img,Sept03042026_HSI_CabFranc_leaves/537/results/REFLECTANCE_537.dat,537,rot90_cw,4443,0
+Cab Franc/R2/18/18.img,Sept03042026_HSI_CabFranc_leaves/537/results/REFLECTANCE_537.dat,537,rot90_cw,6127,0
+Cab Franc/R2/19/19.img,Sept03042026_HSI_CabFranc_leaves/537/results/REFLECTANCE_537.dat,537,rot90_cw,5621,0
+Cab Franc/R2/20/20.img,Sept03042026_HSI_CabFranc_leaves/537/results/REFLECTANCE_537.dat,537,rot90_cw,5381,0
+Cab Franc/R2/21/21.img,Sept03042026_HSI_CabFranc_leaves/538/results/REFLECTANCE_538.dat,538,rot90_cw,6315,0
+Cab Franc/R2/22/22.img,Sept03042026_HSI_CabFranc_leaves/538/results/REFLECTANCE_538.dat,538,rot90_cw,7693,0
+Cab Franc/R2/23/23.img,Sept03042026_HSI_CabFranc_leaves/538/results/REFLECTANCE_538.dat,538,rot90_cw,4348,0
+Cab Franc/R2/24/24.img,Sept03042026_HSI_CabFranc_leaves/538/results/REFLECTANCE_538.dat,538,rot90_cw,6440,0
+Cab Franc/R2/25/25.img,Sept03042026_HSI_CabFranc_leaves/538/results/REFLECTANCE_538.dat,538,rot90_cw,7354,0
+Cab Franc/R2/26/26.img,Sept03042026_HSI_CabFranc_leaves/539/results/REFLECTANCE_539.dat,539,rot90_cw,4560,0
+Cab Franc/R2/27/27.img,Sept03042026_HSI_CabFranc_leaves/539/results/REFLECTANCE_539.dat,539,rot90_cw,5685,0
+Cab Franc/R2/28/28.img,Sept03042026_HSI_CabFranc_leaves/539/results/REFLECTANCE_539.dat,539,rot90_cw,3410,0
+Cab Franc/R2/29/29.img,Sept03042026_HSI_CabFranc_leaves/539/results/REFLECTANCE_539.dat,539,rot90_cw,5477,0
+Cab Franc/R2/30/30.img,Sept03042026_HSI_CabFranc_leaves/539/results/REFLECTANCE_539.dat,539,rot90_cw,6404,0
+Cab Franc/R2/31/31.img,Sept03042026_HSI_CabFranc_leaves/540/results/REFLECTANCE_540.dat,540,rot90_cw,5998,0
+Cab Franc/R2/32/32.img,Sept03042026_HSI_CabFranc_leaves/540/results/REFLECTANCE_540.dat,540,rot90_cw,5881,0
+Cab Franc/R2/33/33.img,Sept03042026_HSI_CabFranc_leaves/540/results/REFLECTANCE_540.dat,540,rot90_cw,6270,0
+Cab Franc/R2/34/34.img,Sept03042026_HSI_CabFranc_leaves/540/results/REFLECTANCE_540.dat,540,rot90_cw,3587,0
+Cab Franc/R2/35/35.img,Sept03042026_HSI_CabFranc_leaves/540/results/REFLECTANCE_540.dat,540,rot90_cw,3650,0
+Cab Franc/R2/36/36.img,Sept03042026_HSI_CabFranc_leaves/541/results/REFLECTANCE_541.dat,541,rot90_cw,5418,0
+Cab Franc/R2/37/37.img,Sept03042026_HSI_CabFranc_leaves/541/results/REFLECTANCE_541.dat,541,rot90_cw,4526,0
+Cab Franc/R2/38/38.img,Sept03042026_HSI_CabFranc_leaves/541/results/REFLECTANCE_541.dat,541,rot90_cw,4716,0
+Cab Franc/R2/39/39.img,Sept03042026_HSI_CabFranc_leaves/541/results/REFLECTANCE_541.dat,541,rot90_cw,5575,0
+Cab Franc/R2/40/40.img,Sept03042026_HSI_CabFranc_leaves/541/results/REFLECTANCE_541.dat,541,rot90_cw,4499,0
+Cab Franc/R2/41/41.img,Sept03042026_HSI_CabFranc_leaves/542/results/REFLECTANCE_542.dat,542,rot90_cw,4739,0
+Cab Franc/R2/42/42.img,Sept03042026_HSI_CabFranc_leaves/542/results/REFLECTANCE_542.dat,542,rot90_cw,4479,0
+Cab Franc/R2/43/43.img,Sept03042026_HSI_CabFranc_leaves/542/results/REFLECTANCE_542.dat,542,rot90_cw,5869,0
+Cab Franc/R2/44/44.img,Sept03042026_HSI_CabFranc_leaves/542/results/REFLECTANCE_542.dat,542,rot90_cw,7354,0
+Cab Franc/R2/45/45.img,Sept03042026_HSI_CabFranc_leaves/542/results/REFLECTANCE_542.dat,542,rot90_cw,5032,0
+Cab Franc/R2/46/46.img,Sept03042026_HSI_CabFranc_leaves/543/results/REFLECTANCE_543.dat,543,rot90_cw,5454,0
+Cab Franc/R2/47/47.img,Sept03042026_HSI_CabFranc_leaves/543/results/REFLECTANCE_543.dat,543,rot90_cw,4545,0
+Cab Franc/R2/48/48.img,Sept03042026_HSI_CabFranc_leaves/543/results/REFLECTANCE_543.dat,543,rot90_cw,5994,0
+Cab Franc/R2/49/49.img,Sept03042026_HSI_CabFranc_leaves/543/results/REFLECTANCE_543.dat,543,rot90_cw,6304,0
+Cab Franc/R2/50/50.img,Sept03042026_HSI_CabFranc_leaves/543/results/REFLECTANCE_543.dat,543,rot90_cw,3971,0
+Cab Franc/R3/1/1.img,Sept03042026_HSI_CabFranc_leaves/544/results/REFLECTANCE_544.dat,544,rot90_cw,8924,0
+Cab Franc/R3/2/2.img,Sept03042026_HSI_CabFranc_leaves/544/results/REFLECTANCE_544.dat,544,rot90_cw,4853,0
+Cab Franc/R3/3/3.img,Sept03042026_HSI_CabFranc_leaves/544/results/REFLECTANCE_544.dat,544,rot90_cw,4878,0
+Cab Franc/R3/4/4.img,Sept03042026_HSI_CabFranc_leaves/544/results/REFLECTANCE_544.dat,544,rot90_cw,3427,0
+Cab Franc/R3/5/5.img,Sept03042026_HSI_CabFranc_leaves/544/results/REFLECTANCE_544.dat,544,rot90_cw,6683,0
+Cab Franc/R3/6/6.img,Sept03042026_HSI_CabFranc_leaves/545/results/REFLECTANCE_545.dat,545,rot90_cw,4001,0
+Cab Franc/R3/7/7.img,Sept03042026_HSI_CabFranc_leaves/545/results/REFLECTANCE_545.dat,545,rot90_cw,2563,0
+Cab Franc/R3/8/8.img,Sept03042026_HSI_CabFranc_leaves/545/results/REFLECTANCE_545.dat,545,rot90_cw,6459,0
+Cab Franc/R3/9/9.img,Sept03042026_HSI_CabFranc_leaves/545/results/REFLECTANCE_545.dat,545,rot90_cw,2948,0
+Cab Franc/R3/10/10.img,Sept03042026_HSI_CabFranc_leaves/545/results/REFLECTANCE_545.dat,545,rot90_cw,5113,0
+Cab Franc/R3/11/11.img,Sept03042026_HSI_CabFranc_leaves/546/results/REFLECTANCE_546.dat,546,rot90_cw,3684,0
+Cab Franc/R3/12/12.img,Sept03042026_HSI_CabFranc_leaves/546/results/REFLECTANCE_546.dat,546,rot90_cw,3337,0
+Cab Franc/R3/13/13.img,Sept03042026_HSI_CabFranc_leaves/546/results/REFLECTANCE_546.dat,546,rot90_cw,1733,0
+Cab Franc/R3/14/14.img,Sept03042026_HSI_CabFranc_leaves/546/results/REFLECTANCE_546.dat,546,rot90_cw,5013,0
+Cab Franc/R3/15/15.img,Sept03042026_HSI_CabFranc_leaves/546/results/REFLECTANCE_546.dat,546,rot90_cw,5425,0
+Cab Franc/R3/16/16.img,Sept03042026_HSI_CabFranc_leaves/547/results/REFLECTANCE_547.dat,547,rot90_cw,6201,0
+Cab Franc/R3/17/17.img,Sept03042026_HSI_CabFranc_leaves/547/results/REFLECTANCE_547.dat,547,rot90_cw,5672,0
+Cab Franc/R3/18/18.img,Sept03042026_HSI_CabFranc_leaves/547/results/REFLECTANCE_547.dat,547,rot90_cw,2646,0
+Cab Franc/R3/19/19.img,Sept03042026_HSI_CabFranc_leaves/547/results/REFLECTANCE_547.dat,547,rot90_cw,8170,0
+Cab Franc/R3/20/20.img,Sept03042026_HSI_CabFranc_leaves/547/results/REFLECTANCE_547.dat,547,rot90_cw,4718,0
+Cab Franc/R3/21/21.img,Sept03042026_HSI_CabFranc_leaves/548/results/REFLECTANCE_548.dat,548,rot90_cw,4983,0
+Cab Franc/R3/22/22.img,Sept03042026_HSI_CabFranc_leaves/548/results/REFLECTANCE_548.dat,548,rot90_cw,3677,0
+Cab Franc/R3/23/23.img,Sept03042026_HSI_CabFranc_leaves/548/results/REFLECTANCE_548.dat,548,rot90_cw,5604,0
+Cab Franc/R3/24/24.img,Sept03042026_HSI_CabFranc_leaves/548/results/REFLECTANCE_548.dat,548,rot90_cw,5535,0
+Cab Franc/R3/25/25.img,Sept03042026_HSI_CabFranc_leaves/548/results/REFLECTANCE_548.dat,548,rot90_cw,3713,0
+Cab Franc/R3/26/26.img,Sept03042026_HSI_CabFranc_leaves/549/results/REFLECTANCE_549.dat,549,rot90_cw,3537,0
+Cab Franc/R3/27/27.img,Sept03042026_HSI_CabFranc_leaves/549/results/REFLECTANCE_549.dat,549,rot90_cw,5011,0
+Cab Franc/R3/28/28.img,Sept03042026_HSI_CabFranc_leaves/549/results/REFLECTANCE_549.dat,549,rot90_cw,5218,0
+Cab Franc/R3/29/29.img,Sept03042026_HSI_CabFranc_leaves/549/results/REFLECTANCE_549.dat,549,rot90_cw,4294,0
+Cab Franc/R3/30/30.img,Sept03042026_HSI_CabFranc_leaves/549/results/REFLECTANCE_549.dat,549,rot90_cw,2354,0
+Cab Franc/R3/31/31.img,Sept03042026_HSI_CabFranc_leaves/550/results/REFLECTANCE_550.dat,550,rot90_cw,4983,0
+Cab Franc/R3/32/32.img,Sept03042026_HSI_CabFranc_leaves/550/results/REFLECTANCE_550.dat,550,rot90_cw,4241,0
+Cab Franc/R3/33/33.img,Sept03042026_HSI_CabFranc_leaves/550/results/REFLECTANCE_550.dat,550,rot90_cw,3344,0
+Cab Franc/R3/34/34.img,Sept03042026_HSI_CabFranc_leaves/550/results/REFLECTANCE_550.dat,550,rot90_cw,3861,0
+Cab Franc/R3/35/35.img,Sept03042026_HSI_CabFranc_leaves/550/results/REFLECTANCE_550.dat,550,rot90_cw,4956,0
+Cab Franc/R3/36/36.img,Sept03042026_HSI_CabFranc_leaves/551/results/REFLECTANCE_551.dat,551,rot90_cw,4513,0
+Cab Franc/R3/37/37.img,Sept03042026_HSI_CabFranc_leaves/551/results/REFLECTANCE_551.dat,551,rot90_cw,3489,0
+Cab Franc/R3/38/38.img,Sept03042026_HSI_CabFranc_leaves/551/results/REFLECTANCE_551.dat,551,rot90_cw,4434,0
+Cab Franc/R3/39/39.img,Sept03042026_HSI_CabFranc_leaves/551/results/REFLECTANCE_551.dat,551,rot90_cw,4497,0
+Cab Franc/R3/40/40.img,Sept03042026_HSI_CabFranc_leaves/551/results/REFLECTANCE_551.dat,551,rot90_cw,4480,0
+Cab Franc/R3/41/41.img,Sept03042026_HSI_CabFranc_leaves/552/results/REFLECTANCE_552.dat,552,rot90_cw,4414,0
+Cab Franc/R3/42/42.img,Sept03042026_HSI_CabFranc_leaves/552/results/REFLECTANCE_552.dat,552,rot90_cw,2474,0
+Cab Franc/R3/43/43.img,Sept03042026_HSI_CabFranc_leaves/552/results/REFLECTANCE_552.dat,552,rot90_cw,3074,0
+Cab Franc/R3/44/44.img,Sept03042026_HSI_CabFranc_leaves/552/results/REFLECTANCE_552.dat,552,rot90_cw,2575,0
+Cab Franc/R3/45/45.img,Sept03042026_HSI_CabFranc_leaves/552/results/REFLECTANCE_552.dat,552,rot90_cw,3334,0
+Cab Franc/R3/46/46.img,Sept03042026_HSI_CabFranc_leaves/553/results/REFLECTANCE_553.dat,553,rot90_cw,4282,0
+Cab Franc/R3/47/47.img,Sept03042026_HSI_CabFranc_leaves/553/results/REFLECTANCE_553.dat,553,rot90_cw,4621,0
+Cab Franc/R3/48/48.img,Sept03042026_HSI_CabFranc_leaves/553/results/REFLECTANCE_553.dat,553,rot90_cw,4638,0
+Cab Franc/R3/49/49.img,Sept03042026_HSI_CabFranc_leaves/553/results/REFLECTANCE_553.dat,553,rot90_cw,4677,0
+Cab Franc/R3/50/50.img,Sept03042026_HSI_CabFranc_leaves/553/results/REFLECTANCE_553.dat,553,rot90_cw,5671,0
+Cab Franc/R4/1/1.img,Sept03042026_HSI_CabFranc_leaves/554/results/REFLECTANCE_554.dat,554,rot90_cw,4755,0
+Cab Franc/R4/2/2.img,Sept03042026_HSI_CabFranc_leaves/554/results/REFLECTANCE_554.dat,554,rot90_cw,4461,0
+Cab Franc/R4/3/3.img,Sept03042026_HSI_CabFranc_leaves/554/results/REFLECTANCE_554.dat,554,rot90_cw,4021,0
+Cab Franc/R4/4/4.img,Sept03042026_HSI_CabFranc_leaves/554/results/REFLECTANCE_554.dat,554,rot90_cw,4489,0
+Cab Franc/R4/5/5.img,Sept03042026_HSI_CabFranc_leaves/554/results/REFLECTANCE_554.dat,554,rot90_cw,1021,0
+Cab Franc/R4/6/6.img,Sept03042026_HSI_CabFranc_leaves/555/results/REFLECTANCE_555.dat,555,rot90_cw,5684,0
+Cab Franc/R4/7/7.img,Sept03042026_HSI_CabFranc_leaves/555/results/REFLECTANCE_555.dat,555,rot90_cw,5923,0
+Cab Franc/R4/8/8.img,Sept03042026_HSI_CabFranc_leaves/555/results/REFLECTANCE_555.dat,555,rot90_cw,4569,0
+Cab Franc/R4/9/9.img,Sept03042026_HSI_CabFranc_leaves/555/results/REFLECTANCE_555.dat,555,rot90_cw,4606,0
+Cab Franc/R4/10/10.img,Sept03042026_HSI_CabFranc_leaves/555/results/REFLECTANCE_555.dat,555,rot90_cw,4669,0
+Cab Franc/R4/11/11.img,Sept03042026_HSI_CabFranc_leaves/556/results/REFLECTANCE_556.dat,556,rot90_cw,5399,0
+Cab Franc/R4/12/12.img,Sept03042026_HSI_CabFranc_leaves/556/results/REFLECTANCE_556.dat,556,rot90_cw,5280,0
+Cab Franc/R4/13/13.img,Sept03042026_HSI_CabFranc_leaves/556/results/REFLECTANCE_556.dat,556,rot90_cw,3373,0
+Cab Franc/R4/14/14.img,Sept03042026_HSI_CabFranc_leaves/556/results/REFLECTANCE_556.dat,556,rot90_cw,3618,0
+Cab Franc/R4/15/15.img,Sept03042026_HSI_CabFranc_leaves/556/results/REFLECTANCE_556.dat,556,rot90_cw,4666,0
+Cab Franc/R4/16/16.img,Sept03042026_HSI_CabFranc_leaves/557/results/REFLECTANCE_557.dat,557,rot90_cw,3566,0
+Cab Franc/R4/17/17.img,Sept03042026_HSI_CabFranc_leaves/557/results/REFLECTANCE_557.dat,557,rot90_cw,5417,0
+Cab Franc/R4/18/18.img,Sept03042026_HSI_CabFranc_leaves/557/results/REFLECTANCE_557.dat,557,rot90_cw,4150,0
+Cab Franc/R4/19/19.img,Sept03042026_HSI_CabFranc_leaves/557/results/REFLECTANCE_557.dat,557,rot90_cw,5814,0
+Cab Franc/R4/20/20.img,Sept03042026_HSI_CabFranc_leaves/557/results/REFLECTANCE_557.dat,557,rot90_cw,5675,0
+Cab Franc/R4/21/21.img,Sept03042026_HSI_CabFranc_leaves/558/results/REFLECTANCE_558.dat,558,rot90_cw,4944,0
+Cab Franc/R4/22/22.img,Sept03042026_HSI_CabFranc_leaves/558/results/REFLECTANCE_558.dat,558,rot90_cw,3335,0
+Cab Franc/R4/23/23.img,Sept03042026_HSI_CabFranc_leaves/558/results/REFLECTANCE_558.dat,558,rot90_cw,3312,0
+Cab Franc/R4/24/24.img,Sept03042026_HSI_CabFranc_leaves/558/results/REFLECTANCE_558.dat,558,rot90_cw,4280,0
+Cab Franc/R4/25/25.img,Sept03042026_HSI_CabFranc_leaves/558/results/REFLECTANCE_558.dat,558,rot90_cw,3557,0
+Cab Franc/R4/26/26.img,Sept03042026_HSI_CabFranc_leaves/559/results/REFLECTANCE_559.dat,559,rot90_cw,6272,0
+Cab Franc/R4/27/27.img,Sept03042026_HSI_CabFranc_leaves/559/results/REFLECTANCE_559.dat,559,rot90_cw,4831,0
+Cab Franc/R4/28/28.img,Sept03042026_HSI_CabFranc_leaves/559/results/REFLECTANCE_559.dat,559,rot90_cw,5772,0
+Cab Franc/R4/29/29.img,Sept03042026_HSI_CabFranc_leaves/559/results/REFLECTANCE_559.dat,559,rot90_cw,4886,0
+Cab Franc/R4/30/30.img,Sept03042026_HSI_CabFranc_leaves/559/results/REFLECTANCE_559.dat,559,rot90_cw,4412,0
+Cab Franc/R4/31/31.img,Sept03042026_HSI_CabFranc_leaves/560/results/REFLECTANCE_560.dat,560,rot90_cw,4140,0
+Cab Franc/R4/32/32.img,Sept03042026_HSI_CabFranc_leaves/560/results/REFLECTANCE_560.dat,560,rot90_cw,3584,0
+Cab Franc/R4/33/33.img,Sept03042026_HSI_CabFranc_leaves/560/results/REFLECTANCE_560.dat,560,rot90_cw,3132,0
+Cab Franc/R4/34/34.img,Sept03042026_HSI_CabFranc_leaves/560/results/REFLECTANCE_560.dat,560,rot90_cw,3879,0
+Cab Franc/R4/35/35.img,Sept03042026_HSI_CabFranc_leaves/560/results/REFLECTANCE_560.dat,560,rot90_cw,2221,0
+Cab Franc/R4/36/36.img,Sept03042026_HSI_CabFranc_leaves/561/results/REFLECTANCE_561.dat,561,rot90_cw,6076,0
+Cab Franc/R4/37/37.img,Sept03042026_HSI_CabFranc_leaves/561/results/REFLECTANCE_561.dat,561,rot90_cw,3219,0
+Cab Franc/R4/38/38.img,Sept03042026_HSI_CabFranc_leaves/561/results/REFLECTANCE_561.dat,561,rot90_cw,2488,0
+Cab Franc/R4/39/39.img,Sept03042026_HSI_CabFranc_leaves/561/results/REFLECTANCE_561.dat,561,rot90_cw,2495,0
+Cab Franc/R4/40/40.img,Sept03042026_HSI_CabFranc_leaves/561/results/REFLECTANCE_561.dat,561,rot90_cw,3735,0
+Cab Franc/R4/41/41.img,Sept03042026_HSI_CabFranc_leaves/562/results/REFLECTANCE_562.dat,562,rot90_cw,4215,0
+Cab Franc/R4/42/42.img,Sept03042026_HSI_CabFranc_leaves/562/results/REFLECTANCE_562.dat,562,rot90_cw,5919,0
+Cab Franc/R4/43/43.img,Sept03042026_HSI_CabFranc_leaves/562/results/REFLECTANCE_562.dat,562,rot90_cw,2629,0
+Cab Franc/R4/44/44.img,Sept03042026_HSI_CabFranc_leaves/562/results/REFLECTANCE_562.dat,562,rot90_cw,3534,0
+Cab Franc/R4/45/45.img,Sept03042026_HSI_CabFranc_leaves/562/results/REFLECTANCE_562.dat,562,rot90_cw,3233,0
+Cab Franc/R4/46/46.img,Sept03042026_HSI_CabFranc_leaves/563/results/REFLECTANCE_563.dat,563,rot90_cw,4595,0
+Cab Franc/R4/47/47.img,Sept03042026_HSI_CabFranc_leaves/563/results/REFLECTANCE_563.dat,563,rot90_cw,3772,0
+Cab Franc/R4/48/48.img,Sept03042026_HSI_CabFranc_leaves/563/results/REFLECTANCE_563.dat,563,rot90_cw,5848,0
+Cab Franc/R4/49/49.img,Sept03042026_HSI_CabFranc_leaves/563/results/REFLECTANCE_563.dat,563,rot90_cw,3564,0
+Cab Franc/R4/50/50.img,Sept03042026_HSI_CabFranc_leaves/563/results/REFLECTANCE_563.dat,563,rot90_cw,4480,0
+Cab Franc/R5/1/1.img,Sept03042026_HSI_CabFranc_leaves/564/results/REFLECTANCE_564.dat,564,rot90_cw,3713,0
+Cab Franc/R5/2/2.img,Sept03042026_HSI_CabFranc_leaves/564/results/REFLECTANCE_564.dat,564,rot90_cw,4050,0
+Cab Franc/R5/3/3.img,Sept03042026_HSI_CabFranc_leaves/564/results/REFLECTANCE_564.dat,564,rot90_cw,3728,0
+Cab Franc/R5/4/4.img,Sept03042026_HSI_CabFranc_leaves/564/results/REFLECTANCE_564.dat,564,rot90_cw,4515,0
+Cab Franc/R5/5/5.img,Sept03042026_HSI_CabFranc_leaves/564/results/REFLECTANCE_564.dat,564,rot90_cw,3513,0
+Cab Franc/R5/6/6.img,Sept03042026_HSI_CabFranc_leaves/565/results/REFLECTANCE_565.dat,565,rot90_cw,5392,0
+Cab Franc/R5/7/7.img,Sept03042026_HSI_CabFranc_leaves/565/results/REFLECTANCE_565.dat,565,rot90_cw,5218,0
+Cab Franc/R5/8/8.img,Sept03042026_HSI_CabFranc_leaves/565/results/REFLECTANCE_565.dat,565,rot90_cw,7295,0
+Cab Franc/R5/9/9.img,Sept03042026_HSI_CabFranc_leaves/565/results/REFLECTANCE_565.dat,565,rot90_cw,4429,0
+Cab Franc/R5/10/10.img,Sept03042026_HSI_CabFranc_leaves/565/results/REFLECTANCE_565.dat,565,rot90_cw,5075,0
+Cab Franc/R5/11/11.img,Sept03042026_HSI_CabFranc_leaves/566/results/REFLECTANCE_566.dat,566,rot90_cw,3980,0
+Cab Franc/R5/12/12.img,Sept03042026_HSI_CabFranc_leaves/566/results/REFLECTANCE_566.dat,566,rot90_cw,5352,0
+Cab Franc/R5/13/13.img,Sept03042026_HSI_CabFranc_leaves/566/results/REFLECTANCE_566.dat,566,rot90_cw,6122,0
+Cab Franc/R5/14/14.img,Sept03042026_HSI_CabFranc_leaves/566/results/REFLECTANCE_566.dat,566,rot90_cw,5367,0
+Cab Franc/R5/15/15.img,Sept03042026_HSI_CabFranc_leaves/566/results/REFLECTANCE_566.dat,566,rot90_cw,4481,0
+Cab Franc/R5/16/16.img,Sept03042026_HSI_CabFranc_leaves/567/results/REFLECTANCE_567.dat,567,rot90_cw,5731,0
+Cab Franc/R5/17/17.img,Sept03042026_HSI_CabFranc_leaves/567/results/REFLECTANCE_567.dat,567,rot90_cw,4519,0
+Cab Franc/R5/18/18.img,Sept03042026_HSI_CabFranc_leaves/567/results/REFLECTANCE_567.dat,567,rot90_cw,6220,0
+Cab Franc/R5/19/19.img,Sept03042026_HSI_CabFranc_leaves/567/results/REFLECTANCE_567.dat,567,rot90_cw,4964,0
+Cab Franc/R5/20/20.img,Sept03042026_HSI_CabFranc_leaves/567/results/REFLECTANCE_567.dat,567,rot90_cw,3409,0
+Cab Franc/R5/21/21.img,Sept03042026_HSI_CabFranc_leaves/568/results/REFLECTANCE_568.dat,568,rot90_cw,6008,0
+Cab Franc/R5/22/22.img,Sept03042026_HSI_CabFranc_leaves/568/results/REFLECTANCE_568.dat,568,rot90_cw,4001,0
+Cab Franc/R5/23/23.img,Sept03042026_HSI_CabFranc_leaves/568/results/REFLECTANCE_568.dat,568,rot90_cw,4337,0
+Cab Franc/R5/24/24.img,Sept03042026_HSI_CabFranc_leaves/568/results/REFLECTANCE_568.dat,568,rot90_cw,3057,0
+Cab Franc/R5/25/25.img,Sept03042026_HSI_CabFranc_leaves/568/results/REFLECTANCE_568.dat,568,rot90_cw,8593,0
+Cab Franc/R5/26/26.img,Sept03042026_HSI_CabFranc_leaves/569/results/REFLECTANCE_569.dat,569,rot90_cw,2246,0
+Cab Franc/R5/27/27.img,Sept03042026_HSI_CabFranc_leaves/569/results/REFLECTANCE_569.dat,569,rot90_cw,4973,0
+Cab Franc/R5/28/28.img,Sept03042026_HSI_CabFranc_leaves/569/results/REFLECTANCE_569.dat,569,rot90_cw,3787,0
+Cab Franc/R5/29/29.img,Sept03042026_HSI_CabFranc_leaves/569/results/REFLECTANCE_569.dat,569,rot90_cw,5371,0
+Cab Franc/R5/30/30.img,Sept03042026_HSI_CabFranc_leaves/569/results/REFLECTANCE_569.dat,569,rot90_cw,3352,0
+Cab Franc/R5/31/31.img,Sept03042026_HSI_CabFranc_leaves/570/results/REFLECTANCE_570.dat,570,rot90_cw,4479,0
+Cab Franc/R5/32/32.img,Sept03042026_HSI_CabFranc_leaves/570/results/REFLECTANCE_570.dat,570,rot90_cw,4205,0
+Cab Franc/R5/33/33.img,Sept03042026_HSI_CabFranc_leaves/570/results/REFLECTANCE_570.dat,570,rot90_cw,5273,0
+Cab Franc/R5/34/34.img,Sept03042026_HSI_CabFranc_leaves/570/results/REFLECTANCE_570.dat,570,rot90_cw,7273,0
+Cab Franc/R5/35/35.img,Sept03042026_HSI_CabFranc_leaves/570/results/REFLECTANCE_570.dat,570,rot90_cw,3654,0
+Cab Franc/R5/36/36.img,Sept03042026_HSI_CabFranc_leaves/571/results/REFLECTANCE_571.dat,571,rot90_cw,4056,0
+Cab Franc/R5/37/37.img,Sept03042026_HSI_CabFranc_leaves/571/results/REFLECTANCE_571.dat,571,rot90_cw,4178,0
+Cab Franc/R5/38/38.img,Sept03042026_HSI_CabFranc_leaves/571/results/REFLECTANCE_571.dat,571,rot90_cw,4071,0
+Cab Franc/R5/39/39.img,Sept03042026_HSI_CabFranc_leaves/571/results/REFLECTANCE_571.dat,571,rot90_cw,4102,0
+Cab Franc/R5/40/40.img,Sept03042026_HSI_CabFranc_leaves/571/results/REFLECTANCE_571.dat,571,rot90_cw,2170,0
+Cab Franc/R5/41/41.img,Sept03042026_HSI_CabFranc_leaves/572/results/REFLECTANCE_572.dat,572,rot90_cw,4747,0
+Cab Franc/R5/42/42.img,Sept03042026_HSI_CabFranc_leaves/572/results/REFLECTANCE_572.dat,572,rot90_cw,3947,0
+Cab Franc/R5/43/43.img,Sept03042026_HSI_CabFranc_leaves/572/results/REFLECTANCE_572.dat,572,rot90_cw,5280,0
+Cab Franc/R5/44/44.img,Sept03042026_HSI_CabFranc_leaves/572/results/REFLECTANCE_572.dat,572,rot90_cw,3767,0
+Cab Franc/R5/45/45.img,Sept03042026_HSI_CabFranc_leaves/572/results/REFLECTANCE_572.dat,572,rot90_cw,3927,0
+Cab Franc/R5/46/46.img,Sept03042026_HSI_CabFranc_leaves/573/results/REFLECTANCE_573.dat,573,rot90_cw,4480,0
+Cab Franc/R5/47/47.img,Sept03042026_HSI_CabFranc_leaves/573/results/REFLECTANCE_573.dat,573,rot90_cw,4002,0
+Cab Franc/R5/48/48.img,Sept03042026_HSI_CabFranc_leaves/573/results/REFLECTANCE_573.dat,573,rot90_cw,5641,0
+Cab Franc/R5/49/49.img,Sept03042026_HSI_CabFranc_leaves/573/results/REFLECTANCE_573.dat,573,rot90_cw,6595,0
+Cab Franc/R5/50/50.img,Sept03042026_HSI_CabFranc_leaves/573/results/REFLECTANCE_573.dat,573,rot90_cw,2698,0
+Vidal/R1/1/1.img,Sept03042026_HSI_Vidal_leaves/473/results/REFLECTANCE_473.dat,473,rot90_cw,9640,0
+Vidal/R1/2/2.img,Sept03042026_HSI_Vidal_leaves/473/results/REFLECTANCE_473.dat,473,rot90_cw,6349,0
+Vidal/R1/3/3.img,Sept03042026_HSI_Vidal_leaves/473/results/REFLECTANCE_473.dat,473,rot90_cw,7132,0
+Vidal/R1/4/4.img,Sept03042026_HSI_Vidal_leaves/473/results/REFLECTANCE_473.dat,473,rot90_cw,7394,0
+Vidal/R1/5/5.img,Sept03042026_HSI_Vidal_leaves/473/results/REFLECTANCE_473.dat,473,rot90_cw,7467,0
+Vidal/R1/6/6.img,Sept03042026_HSI_Vidal_leaves/474/results/REFLECTANCE_474.dat,474,rot90_cw,7693,0
+Vidal/R1/7/7.img,Sept03042026_HSI_Vidal_leaves/474/results/REFLECTANCE_474.dat,474,rot90_cw,5558,0
+Vidal/R1/8/8.img,Sept03042026_HSI_Vidal_leaves/474/results/REFLECTANCE_474.dat,474,rot90_cw,6622,0
+Vidal/R1/9/9.img,Sept03042026_HSI_Vidal_leaves/474/results/REFLECTANCE_474.dat,474,rot90_cw,11328,0
+Vidal/R1/10/10.img,Sept03042026_HSI_Vidal_leaves/474/results/REFLECTANCE_474.dat,474,rot90_cw,6070,0
+Vidal/R1/11/11.img,Sept03042026_HSI_Vidal_leaves/475/results/REFLECTANCE_475.dat,475,rot90_cw,7039,0
+Vidal/R1/12/12.img,Sept03042026_HSI_Vidal_leaves/475/results/REFLECTANCE_475.dat,475,rot90_cw,4028,0
+Vidal/R1/13/13.img,Sept03042026_HSI_Vidal_leaves/475/results/REFLECTANCE_475.dat,475,rot90_cw,5462,0
+Vidal/R1/14/14.img,Sept03042026_HSI_Vidal_leaves/475/results/REFLECTANCE_475.dat,475,rot90_cw,8321,0
+Vidal/R1/15/15.img,Sept03042026_HSI_Vidal_leaves/475/results/REFLECTANCE_475.dat,475,rot90_cw,5903,0
+Vidal/R1/16/16.img,Sept03042026_HSI_Vidal_leaves/476/results/REFLECTANCE_476.dat,476,rot90_cw,8991,0
+Vidal/R1/17/17.img,Sept03042026_HSI_Vidal_leaves/476/results/REFLECTANCE_476.dat,476,rot90_cw,6191,0
+Vidal/R1/18/18.img,Sept03042026_HSI_Vidal_leaves/476/results/REFLECTANCE_476.dat,476,rot90_cw,6284,0
+Vidal/R1/19/19.img,Sept03042026_HSI_Vidal_leaves/476/results/REFLECTANCE_476.dat,476,rot90_cw,7090,0
+Vidal/R1/20/20.img,Sept03042026_HSI_Vidal_leaves/476/results/REFLECTANCE_476.dat,476,rot90_cw,5562,0
+Vidal/R1/21/21.img,Sept03042026_HSI_Vidal_leaves/477/results/REFLECTANCE_477.dat,477,rot90_cw,5875,0
+Vidal/R1/22/22.img,Sept03042026_HSI_Vidal_leaves/477/results/REFLECTANCE_477.dat,477,rot90_cw,4840,0
+Vidal/R1/23/23.img,Sept03042026_HSI_Vidal_leaves/477/results/REFLECTANCE_477.dat,477,rot90_cw,6135,0
+Vidal/R1/24/24.img,Sept03042026_HSI_Vidal_leaves/477/results/REFLECTANCE_477.dat,477,rot90_cw,5487,0
+Vidal/R1/25/25.img,Sept03042026_HSI_Vidal_leaves/477/results/REFLECTANCE_477.dat,477,rot90_cw,4258,0
+Vidal/R1/26/26.img,Sept03042026_HSI_Vidal_leaves/478/results/REFLECTANCE_478.dat,478,rot90_cw,6060,0
+Vidal/R1/27/27.img,Sept03042026_HSI_Vidal_leaves/478/results/REFLECTANCE_478.dat,478,rot90_cw,6026,0
+Vidal/R1/28/28.img,Sept03042026_HSI_Vidal_leaves/478/results/REFLECTANCE_478.dat,478,rot90_cw,7374,0
+Vidal/R1/29/29.img,Sept03042026_HSI_Vidal_leaves/478/results/REFLECTANCE_478.dat,478,rot90_cw,3845,0
+Vidal/R1/30/30.img,Sept03042026_HSI_Vidal_leaves/478/results/REFLECTANCE_478.dat,478,rot90_cw,6601,0
+Vidal/R1/31/31.img,Sept03042026_HSI_Vidal_leaves/479/results/REFLECTANCE_479.dat,479,rot90_cw,7419,0
+Vidal/R1/32/32.img,Sept03042026_HSI_Vidal_leaves/479/results/REFLECTANCE_479.dat,479,rot90_cw,8521,0
+Vidal/R1/33/33.img,Sept03042026_HSI_Vidal_leaves/479/results/REFLECTANCE_479.dat,479,rot90_cw,8611,0
+Vidal/R1/34/34.img,Sept03042026_HSI_Vidal_leaves/479/results/REFLECTANCE_479.dat,479,rot90_cw,7790,0
+Vidal/R1/35/35.img,Sept03042026_HSI_Vidal_leaves/479/results/REFLECTANCE_479.dat,479,rot90_cw,4733,0
+Vidal/R1/36/36.img,Sept03042026_HSI_Vidal_leaves/480/results/REFLECTANCE_480.dat,480,rot90_cw,6964,0
+Vidal/R1/37/37.img,Sept03042026_HSI_Vidal_leaves/480/results/REFLECTANCE_480.dat,480,rot90_cw,4920,0
+Vidal/R1/38/38.img,Sept03042026_HSI_Vidal_leaves/480/results/REFLECTANCE_480.dat,480,rot90_cw,4159,0
+Vidal/R1/39/39.img,Sept03042026_HSI_Vidal_leaves/480/results/REFLECTANCE_480.dat,480,rot90_cw,5726,0
+Vidal/R1/40/40.img,Sept03042026_HSI_Vidal_leaves/480/results/REFLECTANCE_480.dat,480,rot90_cw,6087,0
+Vidal/R1/41/41.img,Sept03042026_HSI_Vidal_leaves/481/results/REFLECTANCE_481.dat,481,rot90_cw,7608,0
+Vidal/R1/42/42.img,Sept03042026_HSI_Vidal_leaves/481/results/REFLECTANCE_481.dat,481,rot90_cw,8877,0
+Vidal/R1/43/43.img,Sept03042026_HSI_Vidal_leaves/481/results/REFLECTANCE_481.dat,481,rot90_cw,8205,0
+Vidal/R1/44/44.img,Sept03042026_HSI_Vidal_leaves/481/results/REFLECTANCE_481.dat,481,rot90_cw,9846,0
+Vidal/R1/45/45.img,Sept03042026_HSI_Vidal_leaves/481/results/REFLECTANCE_481.dat,481,rot90_cw,6846,0
+Vidal/R1/46/46.img,Sept03042026_HSI_Vidal_leaves/482/results/REFLECTANCE_482.dat,482,rot90_cw,5456,0
+Vidal/R1/47/47.img,Sept03042026_HSI_Vidal_leaves/482/results/REFLECTANCE_482.dat,482,rot90_cw,6759,0
+Vidal/R1/48/48.img,Sept03042026_HSI_Vidal_leaves/482/results/REFLECTANCE_482.dat,482,rot90_cw,6194,0
+Vidal/R1/49/49.img,Sept03042026_HSI_Vidal_leaves/482/results/REFLECTANCE_482.dat,482,rot90_cw,4464,0
+Vidal/R1/50/50.img,Sept03042026_HSI_Vidal_leaves/482/results/REFLECTANCE_482.dat,482,rot90_cw,5897,0
+Vidal/R2/1/1.img,Sept03042026_HSI_Vidal_leaves/483/results/REFLECTANCE_483.dat,483,rot90_cw,9232,0
+Vidal/R2/2/2.img,Sept03042026_HSI_Vidal_leaves/483/results/REFLECTANCE_483.dat,483,rot90_cw,6617,0
+Vidal/R2/3/3.img,Sept03042026_HSI_Vidal_leaves/483/results/REFLECTANCE_483.dat,483,rot90_cw,6521,0
+Vidal/R2/4/4.img,Sept03042026_HSI_Vidal_leaves/483/results/REFLECTANCE_483.dat,483,rot90_cw,7344,0
+Vidal/R2/5/5.img,Sept03042026_HSI_Vidal_leaves/483/results/REFLECTANCE_483.dat,483,rot90_cw,6310,0
+Vidal/R2/6/6.img,Sept03042026_HSI_Vidal_leaves/484/results/REFLECTANCE_484.dat,484,rot90_cw,6455,0
+Vidal/R2/7/7.img,Sept03042026_HSI_Vidal_leaves/484/results/REFLECTANCE_484.dat,484,rot90_cw,6309,0
+Vidal/R2/8/8.img,Sept03042026_HSI_Vidal_leaves/484/results/REFLECTANCE_484.dat,484,rot90_cw,9832,0
+Vidal/R2/9/9.img,Sept03042026_HSI_Vidal_leaves/484/results/REFLECTANCE_484.dat,484,rot90_cw,5860,0
+Vidal/R2/10/10.img,Sept03042026_HSI_Vidal_leaves/484/results/REFLECTANCE_484.dat,484,rot90_cw,6790,0
+Vidal/R2/11/11.img,Sept03042026_HSI_Vidal_leaves/485/results/REFLECTANCE_485.dat,485,rot90_cw,6589,0
+Vidal/R2/12/12.img,Sept03042026_HSI_Vidal_leaves/485/results/REFLECTANCE_485.dat,485,rot90_cw,5989,0
+Vidal/R2/13/13.img,Sept03042026_HSI_Vidal_leaves/485/results/REFLECTANCE_485.dat,485,rot90_cw,8052,0
+Vidal/R2/14/14.img,Sept03042026_HSI_Vidal_leaves/485/results/REFLECTANCE_485.dat,485,rot90_cw,7490,0
+Vidal/R2/15/15.img,Sept03042026_HSI_Vidal_leaves/485/results/REFLECTANCE_485.dat,485,rot90_cw,7772,0
+Vidal/R2/16/16.img,Sept03042026_HSI_Vidal_leaves/486/results/REFLECTANCE_486.dat,486,rot90_cw,8133,0
+Vidal/R2/17/17.img,Sept03042026_HSI_Vidal_leaves/486/results/REFLECTANCE_486.dat,486,rot90_cw,7337,0
+Vidal/R2/18/18.img,Sept03042026_HSI_Vidal_leaves/486/results/REFLECTANCE_486.dat,486,rot90_cw,7999,0
+Vidal/R2/19/19.img,Sept03042026_HSI_Vidal_leaves/486/results/REFLECTANCE_486.dat,486,rot90_cw,7511,0
+Vidal/R2/20/20.img,Sept03042026_HSI_Vidal_leaves/486/results/REFLECTANCE_486.dat,486,rot90_cw,6627,0
+Vidal/R2/21/21.img,Sept03042026_HSI_Vidal_leaves/487/results/REFLECTANCE_487.dat,487,rot90_cw,8466,0
+Vidal/R2/22/22.img,Sept03042026_HSI_Vidal_leaves/487/results/REFLECTANCE_487.dat,487,rot90_cw,4950,0
+Vidal/R2/23/23.img,Sept03042026_HSI_Vidal_leaves/487/results/REFLECTANCE_487.dat,487,rot90_cw,8279,0
+Vidal/R2/24/24.img,Sept03042026_HSI_Vidal_leaves/487/results/REFLECTANCE_487.dat,487,rot90_cw,8202,0
+Vidal/R2/25/25.img,Sept03042026_HSI_Vidal_leaves/487/results/REFLECTANCE_487.dat,487,rot90_cw,8552,0
+Vidal/R2/26/26.img,Sept03042026_HSI_Vidal_leaves/488/results/REFLECTANCE_488.dat,488,rot90_cw,8117,0
+Vidal/R2/27/27.img,Sept03042026_HSI_Vidal_leaves/488/results/REFLECTANCE_488.dat,488,rot90_cw,4496,0
+Vidal/R2/28/28.img,Sept03042026_HSI_Vidal_leaves/488/results/REFLECTANCE_488.dat,488,rot90_cw,5729,0
+Vidal/R2/29/29.img,Sept03042026_HSI_Vidal_leaves/488/results/REFLECTANCE_488.dat,488,rot90_cw,7539,0
+Vidal/R2/30/30.img,Sept03042026_HSI_Vidal_leaves/488/results/REFLECTANCE_488.dat,488,rot90_cw,8561,0
+Vidal/R2/31/31.img,Sept03042026_HSI_Vidal_leaves/489/results/REFLECTANCE_489.dat,489,rot90_cw,4982,0
+Vidal/R2/32/32.img,Sept03042026_HSI_Vidal_leaves/489/results/REFLECTANCE_489.dat,489,rot90_cw,5715,0
+Vidal/R2/33/33.img,Sept03042026_HSI_Vidal_leaves/489/results/REFLECTANCE_489.dat,489,rot90_cw,7837,0
+Vidal/R2/34/34.img,Sept03042026_HSI_Vidal_leaves/489/results/REFLECTANCE_489.dat,489,rot90_cw,8393,0
+Vidal/R2/35/35.img,Sept03042026_HSI_Vidal_leaves/489/results/REFLECTANCE_489.dat,489,rot90_cw,8140,0
+Vidal/R2/36/36.img,Sept03042026_HSI_Vidal_leaves/490/results/REFLECTANCE_490.dat,490,rot90_cw,6038,0
+Vidal/R2/37/37.img,Sept03042026_HSI_Vidal_leaves/490/results/REFLECTANCE_490.dat,490,rot90_cw,6943,0
+Vidal/R2/38/38.img,Sept03042026_HSI_Vidal_leaves/490/results/REFLECTANCE_490.dat,490,rot90_cw,8510,0
+Vidal/R2/39/39.img,Sept03042026_HSI_Vidal_leaves/490/results/REFLECTANCE_490.dat,490,rot90_cw,8100,0
+Vidal/R2/40/40.img,Sept03042026_HSI_Vidal_leaves/490/results/REFLECTANCE_490.dat,490,rot90_cw,6812,0
+Vidal/R2/41/41.img,Sept03042026_HSI_Vidal_leaves/491/results/REFLECTANCE_491.dat,491,rot90_cw,6098,0
+Vidal/R2/42/42.img,Sept03042026_HSI_Vidal_leaves/491/results/REFLECTANCE_491.dat,491,rot90_cw,10179,0
+Vidal/R2/43/43.img,Sept03042026_HSI_Vidal_leaves/491/results/REFLECTANCE_491.dat,491,rot90_cw,8921,0
+Vidal/R2/44/44.img,Sept03042026_HSI_Vidal_leaves/491/results/REFLECTANCE_491.dat,491,rot90_cw,8174,0
+Vidal/R2/45/45.img,Sept03042026_HSI_Vidal_leaves/491/results/REFLECTANCE_491.dat,491,rot90_cw,5943,0
+Vidal/R2/46/46.img,Sept03042026_HSI_Vidal_leaves/492/results/REFLECTANCE_492.dat,492,rot90_cw,7925,0
+Vidal/R2/47/47.img,Sept03042026_HSI_Vidal_leaves/492/results/REFLECTANCE_492.dat,492,rot90_cw,7536,0
+Vidal/R2/48/48.img,Sept03042026_HSI_Vidal_leaves/492/results/REFLECTANCE_492.dat,492,rot90_cw,7682,0
+Vidal/R2/49/49.img,Sept03042026_HSI_Vidal_leaves/492/results/REFLECTANCE_492.dat,492,rot90_cw,8044,0
+Vidal/R2/50/50.img,Sept03042026_HSI_Vidal_leaves/492/results/REFLECTANCE_492.dat,492,rot90_cw,6934,0
+Vidal/R3/1/1.img,Sept03042026_HSI_Vidal_leaves/493/results/REFLECTANCE_493.dat,493,rot90_cw,7086,0
+Vidal/R3/2/2.img,Sept03042026_HSI_Vidal_leaves/493/results/REFLECTANCE_493.dat,493,rot90_cw,6995,0
+Vidal/R3/3/3.img,Sept03042026_HSI_Vidal_leaves/493/results/REFLECTANCE_493.dat,493,rot90_cw,6633,0
+Vidal/R3/4/4.img,Sept03042026_HSI_Vidal_leaves/493/results/REFLECTANCE_493.dat,493,rot90_cw,6921,0
+Vidal/R3/5/5.img,Sept03042026_HSI_Vidal_leaves/493/results/REFLECTANCE_493.dat,493,rot90_cw,6911,0
+Vidal/R3/6/6.img,Sept03042026_HSI_Vidal_leaves/494/results/REFLECTANCE_494.dat,494,rot90_cw,6758,0
+Vidal/R3/7/7.img,Sept03042026_HSI_Vidal_leaves/494/results/REFLECTANCE_494.dat,494,rot90_cw,8542,0
+Vidal/R3/8/8.img,Sept03042026_HSI_Vidal_leaves/494/results/REFLECTANCE_494.dat,494,rot90_cw,8893,0
+Vidal/R3/9/9.img,Sept03042026_HSI_Vidal_leaves/494/results/REFLECTANCE_494.dat,494,rot90_cw,6042,0
+Vidal/R3/10/10.img,Sept03042026_HSI_Vidal_leaves/494/results/REFLECTANCE_494.dat,494,rot90_cw,5408,0
+Vidal/R3/11/11.img,Sept03042026_HSI_Vidal_leaves/495/results/REFLECTANCE_495.dat,495,rot90_cw,7018,0
+Vidal/R3/12/12.img,Sept03042026_HSI_Vidal_leaves/495/results/REFLECTANCE_495.dat,495,rot90_cw,7462,0
+Vidal/R3/13/13.img,Sept03042026_HSI_Vidal_leaves/495/results/REFLECTANCE_495.dat,495,rot90_cw,9002,0
+Vidal/R3/14/14.img,Sept03042026_HSI_Vidal_leaves/495/results/REFLECTANCE_495.dat,495,rot90_cw,9432,0
+Vidal/R3/15/15.img,Sept03042026_HSI_Vidal_leaves/495/results/REFLECTANCE_495.dat,495,rot90_cw,9134,0
+Vidal/R3/16/16.img,Sept03042026_HSI_Vidal_leaves/496/results/REFLECTANCE_496.dat,496,rot90_cw,8600,0
+Vidal/R3/17/17.img,Sept03042026_HSI_Vidal_leaves/496/results/REFLECTANCE_496.dat,496,rot90_cw,7812,0
+Vidal/R3/18/18.img,Sept03042026_HSI_Vidal_leaves/496/results/REFLECTANCE_496.dat,496,rot90_cw,7094,0
+Vidal/R3/19/19.img,Sept03042026_HSI_Vidal_leaves/496/results/REFLECTANCE_496.dat,496,rot90_cw,8228,0
+Vidal/R3/20/20.img,Sept03042026_HSI_Vidal_leaves/496/results/REFLECTANCE_496.dat,496,rot90_cw,6849,0
+Vidal/R3/21/21.img,Sept03042026_HSI_Vidal_leaves/497/results/REFLECTANCE_497.dat,497,rot90_cw,7725,0
+Vidal/R3/22/22.img,Sept03042026_HSI_Vidal_leaves/497/results/REFLECTANCE_497.dat,497,rot90_cw,9481,0
+Vidal/R3/23/23.img,Sept03042026_HSI_Vidal_leaves/497/results/REFLECTANCE_497.dat,497,rot90_cw,8887,0
+Vidal/R3/24/24.img,Sept03042026_HSI_Vidal_leaves/497/results/REFLECTANCE_497.dat,497,rot90_cw,9707,0
+Vidal/R3/25/25.img,Sept03042026_HSI_Vidal_leaves/497/results/REFLECTANCE_497.dat,497,rot90_cw,7735,0
+Vidal/R3/26/26.img,Sept03042026_HSI_Vidal_leaves/498/results/REFLECTANCE_498.dat,498,rot90_cw,6943,0
+Vidal/R3/27/27.img,Sept03042026_HSI_Vidal_leaves/498/results/REFLECTANCE_498.dat,498,rot90_cw,8419,0
+Vidal/R3/28/28.img,Sept03042026_HSI_Vidal_leaves/498/results/REFLECTANCE_498.dat,498,rot90_cw,9173,0
+Vidal/R3/29/29.img,Sept03042026_HSI_Vidal_leaves/498/results/REFLECTANCE_498.dat,498,rot90_cw,10199,0
+Vidal/R3/30/30.img,Sept03042026_HSI_Vidal_leaves/498/results/REFLECTANCE_498.dat,498,rot90_cw,5807,0
+Vidal/R3/31/31.img,Sept03042026_HSI_Vidal_leaves/499/results/REFLECTANCE_499.dat,499,rot90_cw,8587,0
+Vidal/R3/32/32.img,Sept03042026_HSI_Vidal_leaves/499/results/REFLECTANCE_499.dat,499,rot90_cw,6631,0
+Vidal/R3/33/33.img,Sept03042026_HSI_Vidal_leaves/499/results/REFLECTANCE_499.dat,499,rot90_cw,7725,0
+Vidal/R3/34/34.img,Sept03042026_HSI_Vidal_leaves/499/results/REFLECTANCE_499.dat,499,rot90_cw,7108,0
+Vidal/R3/35/35.img,Sept03042026_HSI_Vidal_leaves/499/results/REFLECTANCE_499.dat,499,rot90_cw,6708,0
+Vidal/R3/36/36.img,Sept03042026_HSI_Vidal_leaves/500/results/REFLECTANCE_500.dat,500,rot90_cw,6573,0
+Vidal/R3/37/37.img,Sept03042026_HSI_Vidal_leaves/500/results/REFLECTANCE_500.dat,500,rot90_cw,7245,0
+Vidal/R3/38/38.img,Sept03042026_HSI_Vidal_leaves/500/results/REFLECTANCE_500.dat,500,rot90_cw,7412,0
+Vidal/R3/39/39.img,Sept03042026_HSI_Vidal_leaves/500/results/REFLECTANCE_500.dat,500,rot90_cw,7382,0
+Vidal/R3/40/40.img,Sept03042026_HSI_Vidal_leaves/500/results/REFLECTANCE_500.dat,500,rot90_cw,5975,0
+Vidal/R3/41/41.img,Sept03042026_HSI_Vidal_leaves/501/results/REFLECTANCE_501.dat,501,rot90_cw,5969,0
+Vidal/R3/42/42.img,Sept03042026_HSI_Vidal_leaves/501/results/REFLECTANCE_501.dat,501,rot90_cw,7039,0
+Vidal/R3/43/43.img,Sept03042026_HSI_Vidal_leaves/501/results/REFLECTANCE_501.dat,501,rot90_cw,5519,0
+Vidal/R3/44/44.img,Sept03042026_HSI_Vidal_leaves/501/results/REFLECTANCE_501.dat,501,rot90_cw,7373,0
+Vidal/R3/45/45.img,Sept03042026_HSI_Vidal_leaves/501/results/REFLECTANCE_501.dat,501,rot90_cw,6489,0
+Vidal/R3/46/46.img,Sept03042026_HSI_Vidal_leaves/502/results/REFLECTANCE_502.dat,502,rot90_cw,6378,0
+Vidal/R3/47/47.img,Sept03042026_HSI_Vidal_leaves/502/results/REFLECTANCE_502.dat,502,rot90_cw,7675,0
+Vidal/R3/48/48.img,Sept03042026_HSI_Vidal_leaves/502/results/REFLECTANCE_502.dat,502,rot90_cw,6195,0
+Vidal/R3/49/49.img,Sept03042026_HSI_Vidal_leaves/502/results/REFLECTANCE_502.dat,502,rot90_cw,6027,0
+Vidal/R3/50/50.img,Sept03042026_HSI_Vidal_leaves/502/results/REFLECTANCE_502.dat,502,rot90_cw,6328,0
+Vidal/R4/1/1.img,Sept03042026_HSI_Vidal_leaves/503/results/REFLECTANCE_503.dat,503,rot90_cw,7077,0
+Vidal/R4/2/2.img,Sept03042026_HSI_Vidal_leaves/503/results/REFLECTANCE_503.dat,503,rot90_cw,9297,0
+Vidal/R4/3/3.img,Sept03042026_HSI_Vidal_leaves/503/results/REFLECTANCE_503.dat,503,rot90_cw,7526,0
+Vidal/R4/4/4.img,Sept03042026_HSI_Vidal_leaves/503/results/REFLECTANCE_503.dat,503,rot90_cw,9811,0
+Vidal/R4/5/5.img,Sept03042026_HSI_Vidal_leaves/503/results/REFLECTANCE_503.dat,503,rot90_cw,7979,0
+Vidal/R4/6/6.img,Sept03042026_HSI_Vidal_leaves/504/results/REFLECTANCE_504.dat,504,rot90_cw,6479,0
+Vidal/R4/7/7.img,Sept03042026_HSI_Vidal_leaves/504/results/REFLECTANCE_504.dat,504,rot90_cw,7067,0
+Vidal/R4/8/8.img,Sept03042026_HSI_Vidal_leaves/504/results/REFLECTANCE_504.dat,504,rot90_cw,7167,0
+Vidal/R4/9/9.img,Sept03042026_HSI_Vidal_leaves/504/results/REFLECTANCE_504.dat,504,rot90_cw,8431,0
+Vidal/R4/10/10.img,Sept03042026_HSI_Vidal_leaves/504/results/REFLECTANCE_504.dat,504,rot90_cw,7999,0
+Vidal/R4/11/11.img,Sept03042026_HSI_Vidal_leaves/505/results/REFLECTANCE_505.dat,505,rot90_cw,8546,0
+Vidal/R4/12/12.img,Sept03042026_HSI_Vidal_leaves/505/results/REFLECTANCE_505.dat,505,rot90_cw,6318,0
+Vidal/R4/13/13.img,Sept03042026_HSI_Vidal_leaves/505/results/REFLECTANCE_505.dat,505,rot90_cw,8001,0
+Vidal/R4/14/14.img,Sept03042026_HSI_Vidal_leaves/505/results/REFLECTANCE_505.dat,505,rot90_cw,6998,0
+Vidal/R4/15/15.img,Sept03042026_HSI_Vidal_leaves/505/results/REFLECTANCE_505.dat,505,rot90_cw,6832,0
+Vidal/R4/16/16.img,Sept03042026_HSI_Vidal_leaves/506/results/REFLECTANCE_506.dat,506,rot90_cw,9315,0
+Vidal/R4/17/17.img,Sept03042026_HSI_Vidal_leaves/506/results/REFLECTANCE_506.dat,506,rot90_cw,9504,0
+Vidal/R4/18/18.img,Sept03042026_HSI_Vidal_leaves/506/results/REFLECTANCE_506.dat,506,rot90_cw,7776,0
+Vidal/R4/19/19.img,Sept03042026_HSI_Vidal_leaves/506/results/REFLECTANCE_506.dat,506,rot90_cw,9178,0
+Vidal/R4/20/20.img,Sept03042026_HSI_Vidal_leaves/506/results/REFLECTANCE_506.dat,506,rot90_cw,7703,0
+Vidal/R4/21/21.img,Sept03042026_HSI_Vidal_leaves/507/results/REFLECTANCE_507.dat,507,rot90_cw,5351,0
+Vidal/R4/22/22.img,Sept03042026_HSI_Vidal_leaves/507/results/REFLECTANCE_507.dat,507,rot90_cw,7149,0
+Vidal/R4/23/23.img,Sept03042026_HSI_Vidal_leaves/507/results/REFLECTANCE_507.dat,507,rot90_cw,8849,0
+Vidal/R4/24/24.img,Sept03042026_HSI_Vidal_leaves/507/results/REFLECTANCE_507.dat,507,rot90_cw,6951,0
+Vidal/R4/25/25.img,Sept03042026_HSI_Vidal_leaves/507/results/REFLECTANCE_507.dat,507,rot90_cw,6881,0
+Vidal/R4/26/26.img,Sept03042026_HSI_Vidal_leaves/508/results/REFLECTANCE_508.dat,508,rot90_cw,9075,0
+Vidal/R4/27/27.img,Sept03042026_HSI_Vidal_leaves/508/results/REFLECTANCE_508.dat,508,rot90_cw,8015,0
+Vidal/R4/28/28.img,Sept03042026_HSI_Vidal_leaves/508/results/REFLECTANCE_508.dat,508,rot90_cw,8387,0
+Vidal/R4/29/29.img,Sept03042026_HSI_Vidal_leaves/508/results/REFLECTANCE_508.dat,508,rot90_cw,4708,0
+Vidal/R4/30/30.img,Sept03042026_HSI_Vidal_leaves/508/results/REFLECTANCE_508.dat,508,rot90_cw,6689,0
+Vidal/R4/31/31.img,Sept03042026_HSI_Vidal_leaves/509/results/REFLECTANCE_509.dat,509,rot90_cw,8777,0
+Vidal/R4/32/32.img,Sept03042026_HSI_Vidal_leaves/509/results/REFLECTANCE_509.dat,509,rot90_cw,9235,0
+Vidal/R4/33/33.img,Sept03042026_HSI_Vidal_leaves/509/results/REFLECTANCE_509.dat,509,rot90_cw,9138,0
+Vidal/R4/34/34.img,Sept03042026_HSI_Vidal_leaves/509/results/REFLECTANCE_509.dat,509,rot90_cw,7458,0
+Vidal/R4/35/35.img,Sept03042026_HSI_Vidal_leaves/509/results/REFLECTANCE_509.dat,509,rot90_cw,8745,0
+Vidal/R4/36/36.img,Sept03042026_HSI_Vidal_leaves/510/results/REFLECTANCE_510.dat,510,rot90_cw,7145,0
+Vidal/R4/37/37.img,Sept03042026_HSI_Vidal_leaves/510/results/REFLECTANCE_510.dat,510,rot90_cw,6189,0
+Vidal/R4/38/38.img,Sept03042026_HSI_Vidal_leaves/510/results/REFLECTANCE_510.dat,510,rot90_cw,7832,0
+Vidal/R4/39/39.img,Sept03042026_HSI_Vidal_leaves/510/results/REFLECTANCE_510.dat,510,rot90_cw,7688,0
+Vidal/R4/40/40.img,Sept03042026_HSI_Vidal_leaves/510/results/REFLECTANCE_510.dat,510,rot90_cw,10372,0
+Vidal/R4/41/41.img,Sept03042026_HSI_Vidal_leaves/511/results/REFLECTANCE_511.dat,511,rot90_cw,10161,0
+Vidal/R4/42/42.img,Sept03042026_HSI_Vidal_leaves/511/results/REFLECTANCE_511.dat,511,rot90_cw,7129,0
+Vidal/R4/43/43.img,Sept03042026_HSI_Vidal_leaves/511/results/REFLECTANCE_511.dat,511,rot90_cw,8628,0
+Vidal/R4/44/44.img,Sept03042026_HSI_Vidal_leaves/511/results/REFLECTANCE_511.dat,511,rot90_cw,10154,0
+Vidal/R4/45/45.img,Sept03042026_HSI_Vidal_leaves/511/results/REFLECTANCE_511.dat,511,rot90_cw,9337,0
+Vidal/R4/46/46.img,Sept03042026_HSI_Vidal_leaves/512/results/REFLECTANCE_512.dat,512,rot90_cw,6775,0
+Vidal/R4/47/47.img,Sept03042026_HSI_Vidal_leaves/512/results/REFLECTANCE_512.dat,512,rot90_cw,9769,0
+Vidal/R4/48/48.img,Sept03042026_HSI_Vidal_leaves/512/results/REFLECTANCE_512.dat,512,rot90_cw,8973,0
+Vidal/R4/49/49.img,Sept03042026_HSI_Vidal_leaves/512/results/REFLECTANCE_512.dat,512,rot90_cw,9263,0
+Vidal/R4/50/50.img,Sept03042026_HSI_Vidal_leaves/512/results/REFLECTANCE_512.dat,512,rot90_cw,5424,0
+Vidal/R5/1/1.img,Sept03042026_HSI_Vidal_leaves/513/results/REFLECTANCE_513.dat,513,rot90_cw,9519,0
+Vidal/R5/2/2.img,Sept03042026_HSI_Vidal_leaves/513/results/REFLECTANCE_513.dat,513,rot90_cw,6559,0
+Vidal/R5/3/3.img,Sept03042026_HSI_Vidal_leaves/513/results/REFLECTANCE_513.dat,513,rot90_cw,9248,0
+Vidal/R5/4/4.img,Sept03042026_HSI_Vidal_leaves/513/results/REFLECTANCE_513.dat,513,rot90_cw,7718,0
+Vidal/R5/5/5.img,Sept03042026_HSI_Vidal_leaves/513/results/REFLECTANCE_513.dat,513,rot90_cw,9517,0
+Vidal/R5/6/6.img,Sept03042026_HSI_Vidal_leaves/514/results/REFLECTANCE_514.dat,514,rot90_cw,8612,0
+Vidal/R5/7/7.img,Sept03042026_HSI_Vidal_leaves/514/results/REFLECTANCE_514.dat,514,rot90_cw,5580,0
+Vidal/R5/8/8.img,Sept03042026_HSI_Vidal_leaves/514/results/REFLECTANCE_514.dat,514,rot90_cw,6736,0
+Vidal/R5/9/9.img,Sept03042026_HSI_Vidal_leaves/514/results/REFLECTANCE_514.dat,514,rot90_cw,6916,0
+Vidal/R5/10/10.img,Sept03042026_HSI_Vidal_leaves/514/results/REFLECTANCE_514.dat,514,rot90_cw,5727,0
+Vidal/R5/11/11.img,Sept03042026_HSI_Vidal_leaves/515/results/REFLECTANCE_515.dat,515,rot90_cw,10784,0
+Vidal/R5/12/12.img,Sept03042026_HSI_Vidal_leaves/515/results/REFLECTANCE_515.dat,515,rot90_cw,9277,0
+Vidal/R5/13/13.img,Sept03042026_HSI_Vidal_leaves/515/results/REFLECTANCE_515.dat,515,rot90_cw,9257,0
+Vidal/R5/14/14.img,Sept03042026_HSI_Vidal_leaves/515/results/REFLECTANCE_515.dat,515,rot90_cw,9220,0
+Vidal/R5/15/15.img,Sept03042026_HSI_Vidal_leaves/515/results/REFLECTANCE_515.dat,515,rot90_cw,10288,0
+Vidal/R5/16/16.img,Sept03042026_HSI_Vidal_leaves/516/results/REFLECTANCE_516.dat,516,rot90_cw,8588,0
+Vidal/R5/17/17.img,Sept03042026_HSI_Vidal_leaves/516/results/REFLECTANCE_516.dat,516,rot90_cw,10140,0
+Vidal/R5/18/18.img,Sept03042026_HSI_Vidal_leaves/516/results/REFLECTANCE_516.dat,516,rot90_cw,8009,0
+Vidal/R5/19/19.img,Sept03042026_HSI_Vidal_leaves/516/results/REFLECTANCE_516.dat,516,rot90_cw,9464,0
+Vidal/R5/20/20.img,Sept03042026_HSI_Vidal_leaves/516/results/REFLECTANCE_516.dat,516,rot90_cw,6541,0
+Vidal/R5/21/21.img,Sept03042026_HSI_Vidal_leaves/517/results/REFLECTANCE_517.dat,517,rot90_cw,7987,0
+Vidal/R5/22/22.img,Sept03042026_HSI_Vidal_leaves/517/results/REFLECTANCE_517.dat,517,rot90_cw,7922,0
+Vidal/R5/23/23.img,Sept03042026_HSI_Vidal_leaves/517/results/REFLECTANCE_517.dat,517,rot90_cw,10710,0
+Vidal/R5/24/24.img,Sept03042026_HSI_Vidal_leaves/517/results/REFLECTANCE_517.dat,517,rot90_cw,7136,0
+Vidal/R5/25/25.img,Sept03042026_HSI_Vidal_leaves/517/results/REFLECTANCE_517.dat,517,rot90_cw,8476,0
+Vidal/R5/26/26.img,Sept03042026_HSI_Vidal_leaves/518/results/REFLECTANCE_518.dat,518,rot90_cw,8730,0
+Vidal/R5/27/27.img,Sept03042026_HSI_Vidal_leaves/518/results/REFLECTANCE_518.dat,518,rot90_cw,7010,0
+Vidal/R5/28/28.img,Sept03042026_HSI_Vidal_leaves/518/results/REFLECTANCE_518.dat,518,rot90_cw,8357,0
+Vidal/R5/29/29.img,Sept03042026_HSI_Vidal_leaves/518/results/REFLECTANCE_518.dat,518,rot90_cw,8109,0
+Vidal/R5/30/30.img,Sept03042026_HSI_Vidal_leaves/518/results/REFLECTANCE_518.dat,518,rot90_cw,7401,0
+Vidal/R5/31/31.img,Sept03042026_HSI_Vidal_leaves/519/results/REFLECTANCE_519.dat,519,rot90_cw,7974,0
+Vidal/R5/32/32.img,Sept03042026_HSI_Vidal_leaves/519/results/REFLECTANCE_519.dat,519,rot90_cw,8473,0
+Vidal/R5/33/33.img,Sept03042026_HSI_Vidal_leaves/519/results/REFLECTANCE_519.dat,519,rot90_cw,6119,0
+Vidal/R5/34/34.img,Sept03042026_HSI_Vidal_leaves/519/results/REFLECTANCE_519.dat,519,rot90_cw,6912,0
+Vidal/R5/35/35.img,Sept03042026_HSI_Vidal_leaves/519/results/REFLECTANCE_519.dat,519,rot90_cw,7423,0
+Vidal/R5/36/36.img,Sept03042026_HSI_Vidal_leaves/520/results/REFLECTANCE_520.dat,520,rot90_cw,7291,0
+Vidal/R5/37/37.img,Sept03042026_HSI_Vidal_leaves/520/results/REFLECTANCE_520.dat,520,rot90_cw,6561,0
+Vidal/R5/38/38.img,Sept03042026_HSI_Vidal_leaves/520/results/REFLECTANCE_520.dat,520,rot90_cw,8910,0
+Vidal/R5/39/39.img,Sept03042026_HSI_Vidal_leaves/520/results/REFLECTANCE_520.dat,520,rot90_cw,10807,0
+Vidal/R5/40/40.img,Sept03042026_HSI_Vidal_leaves/520/results/REFLECTANCE_520.dat,520,rot90_cw,6976,0
+Vidal/R5/41/41.img,Sept03042026_HSI_Vidal_leaves/521/results/REFLECTANCE_521.dat,521,rot90_cw,7843,0
+Vidal/R5/42/42.img,Sept03042026_HSI_Vidal_leaves/521/results/REFLECTANCE_521.dat,521,rot90_cw,9180,0
+Vidal/R5/43/43.img,Sept03042026_HSI_Vidal_leaves/521/results/REFLECTANCE_521.dat,521,rot90_cw,7654,0
+Vidal/R5/44/44.img,Sept03042026_HSI_Vidal_leaves/521/results/REFLECTANCE_521.dat,521,rot90_cw,10545,0
+Vidal/R5/45/45.img,Sept03042026_HSI_Vidal_leaves/521/results/REFLECTANCE_521.dat,521,rot90_cw,7613,0
+Vidal/R5/46/46.img,Sept03042026_HSI_Vidal_leaves/522/results/REFLECTANCE_522.dat,522,rot90_cw,7643,0
+Vidal/R5/47/47.img,Sept03042026_HSI_Vidal_leaves/522/results/REFLECTANCE_522.dat,522,rot90_cw,8087,0
+Vidal/R5/48/48.img,Sept03042026_HSI_Vidal_leaves/522/results/REFLECTANCE_522.dat,522,rot90_cw,11013,0
+Vidal/R5/49/49.img,Sept03042026_HSI_Vidal_leaves/522/results/REFLECTANCE_522.dat,522,rot90_cw,5714,0
+Vidal/R5/50/50.img,Sept03042026_HSI_Vidal_leaves/522/results/REFLECTANCE_522.dat,522,rot90_cw,9917,0

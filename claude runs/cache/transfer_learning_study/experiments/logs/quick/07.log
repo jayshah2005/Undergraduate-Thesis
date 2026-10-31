@@ -1,0 +1,17 @@
+   [07_dofa_probe f0] epoch   1/2  train loss 0.6967  (2s)
+   [07_dofa_probe f0] epoch   2/2  train loss 0.6645  (4s)
+[07_dofa_probe] fold 0: n=200  AUC red_blotch=0.676  leafroll=0.655
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/shared/results/quick/07_dofa_probe_oof.csv  (200 leaves)
+   [07_dofa_last2 f0] epoch   1/2  train loss 0.6898  (2s)
+   [07_dofa_last2 f0] epoch   2/2  train loss 0.6461  (4s)
+[07_dofa_last2] fold 0: n=200  AUC red_blotch=0.665  leafroll=0.631
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/shared/results/quick/07_dofa_last2_oof.csv  (200 leaves)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+   [07_dinov2_probe f0] epoch   1/2  train loss 0.7411  (2s)
+   [07_dinov2_probe f0] epoch   2/2  train loss 0.6517  (4s)
+[07_dinov2_probe] fold 0: n=200  AUC red_blotch=0.626  leafroll=0.539
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/shared/results/quick/07_dinov2_probe_oof.csv  (200 leaves)
+   [07_dinov2_last2 f0] epoch   1/2  train loss 0.8743  (2s)
+   [07_dinov2_last2 f0] epoch   2/2  train loss 0.6213  (4s)
+[07_dinov2_last2] fold 0: n=200  AUC red_blotch=0.694  leafroll=0.678
+[saved] /home/jay/Desktop/CODE/Classification/claude runs/shared/results/quick/07_dinov2_last2_oof.csv  (200 leaves)

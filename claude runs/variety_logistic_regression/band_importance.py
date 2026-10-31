@@ -42,14 +42,15 @@ from variety_logistic_regression import (                            # noqa: E40
 )
 
 RES, FIG, LOGS = HERE / "results", HERE / "figures", HERE / "logs"
-# Named slices of the 400–1000 nm curve (inclusive). RGB is the 3-band control.
+# Named slices of the 397–1004 nm curve (Specim IQ factory calibration; inclusive, so together the five
+# colour regions cover all 204 bands). RGB is the 3-band control.
 REGIONS = {
-    "blue 400-500 nm": (400, 500),
+    "blue 397-500 nm": (397, 500),
     "green 500-600 nm": (500, 600),
     "red 600-680 nm": (600, 680),
     "red edge 680-760 nm": (680, 760),
-    "NIR 760-1000 nm": (760, 1000),
-    "visible 400-700 nm": (400, 700),
+    "NIR 760-1004 nm": (760, 1004),
+    "visible 397-700 nm": (397, 700),
 }
 TOP_K = (1, 3, 5, 10, 20, 50)
 
@@ -149,8 +150,8 @@ def plot_importance(wavelengths, uni, mean_abs_coef, perm, path: Path) -> None:
             ax.set_ylim(*ylim)
             ax.axhline(0.25, color="k", lw=0.6, ls="--")
         ax.axhline(0, color="k", lw=0.4)
-        for x0, x1, c in ((400, 500, "#d9edf7"), (500, 600, "#dff0d8"),
-                          (600, 680, "#f2dede"), (680, 760, "#fcf8e3"), (760, 1000, "#f5f5f5")):
+        for x0, x1, c in ((397, 500, "#d9edf7"), (500, 600, "#dff0d8"),
+                          (600, 680, "#f2dede"), (680, 760, "#fcf8e3"), (760, 1004, "#f5f5f5")):
             ax.axvspan(x0, x1, color=c, zorder=0)
     axes[-1].set_xlabel("wavelength (nm)")
     axes[-1].set_xlim(wavelengths[0], wavelengths[-1])

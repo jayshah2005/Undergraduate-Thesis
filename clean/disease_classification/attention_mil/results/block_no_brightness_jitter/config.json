@@ -1,0 +1,18 @@
+{
+  "batch": 8,
+  "lr": 0.001,
+  "weight_decay": 0.01,
+  "max_epochs": 80,
+  "patience": 15,
+  "brightness_jitter": 0.0,
+  "dropout": 0.5,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "variety": "Chardonnay",
+  "canvas": 136,
+  "folds": "block",
+  "folds_meaning": "fold k = the photos of each row whose first vine is in 10k+1 to 10k+10: like photo, but the held-out vines are neighbours of each other, not of the training vines (except at block edges)"
+}

@@ -80,13 +80,13 @@ PCA inside Chardonnay (raw): eta2 of class / row per PC: PC1 0.01/0.06, PC2 0.06
 
 | comparison | max abs d | at nm |
 |---|---|---|
-| Baco: healthy vs RB only | 0.22 | 403 |
-| Baco: healthy vs LR only | 0.16 | 403 |
-| Baco: healthy vs any disease | 0.18 | 403 |
-| Chardonnay: healthy vs RB only | 0.38 | 707 |
-| Chardonnay: healthy vs LR only | 0.24 | 707 |
-| Chardonnay: healthy vs any disease | 0.36 | 707 |
-| variety: Baco vs Chardonnay | 4.51 | 400 |
-| variety: Baco vs Vidal | 4.83 | 400 |
-| variety: Chardonnay vs Vidal | 2.05 | 787 |
-| variety: Cab Franc vs Vidal | 0.73 | 554 |
+| Baco: healthy vs RB only | 0.22 | 400 |
+| Baco: healthy vs LR only | 0.16 | 400 |
+| Baco: healthy vs any disease | 0.18 | 400 |
+| Chardonnay: healthy vs RB only | 0.38 | 703 |
+| Chardonnay: healthy vs LR only | 0.24 | 703 |
+| Chardonnay: healthy vs any disease | 0.36 | 703 |
+| variety: Baco vs Chardonnay | 4.51 | 397 |
+| variety: Baco vs Vidal | 4.83 | 397 |
+| variety: Chardonnay vs Vidal | 2.05 | 784 |
+| variety: Cab Franc vs Vidal | 0.73 | 549 |

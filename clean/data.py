@@ -130,6 +130,105 @@ def _load_cache() -> tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray] | N
     return meta, d["wavelengths"], d["mean"], d["glint"]
 
 
+def load_example_cube(path: str = "Baco/R1/V1"):
+    """Load one vine cube for pipeline figures.
+
+    lines, samples: spatial size of this cube.
+    bands: 204.
+
+    :param path: HDF5 group path variety/row/vine.
+    :type path: str
+    :return: cube (lines, samples, 204), wavelengths (204,), leaf-mean (204,), path.
+    :rtype: tuple
+    """
+    if not H5_PATH.exists():
+        raise FileNotFoundError(f"dataset not found: {H5_PATH}")
+    variety, row_name, vine_name = path.split("/")
+    with h5py.File(H5_PATH, "r") as h5:
+        wavelengths = np.asarray(h5["wavelengths"][:], dtype=np.float64)
+        g = h5[variety][row_name][vine_name]
+        # Why NumPy: h5py gives ndarrays. Spatial pixel is the last axis after this transpose.
+        cube = np.ascontiguousarray(np.asarray(g["cube"]).transpose(0, 2, 1))
+        cube = np.nan_to_num(cube, nan=0.0).astype(np.float64)
+    mask = (cube != 0).any(axis=2)
+    mean = cube[mask].mean(0)
+    return cube, wavelengths, mean, path
+
+
+def load_capture_ids(paths) -> np.ndarray:
+    """Return the camera image (capture) each leaf was cut from.
+
+    leaf_sources.csv matched every leaf to its capture by exact pixel values. Leaves per
+    image: Baco 2, Cab Franc and Vidal 5, Chardonnay 4 in row R1 (the last image has 2)
+    and 5 in rows R2-R5.
+
+    n: the number of leaves asked for.
+
+    :param paths: Leaf paths as in load_cubes, e.g. "Chardonnay/R1/V1", length n.
+    :type paths: Iterable[str]
+    :return: Capture id per leaf, length n.
+    :rtype: np.ndarray
+    """
+    table = pd.read_csv(CLEAN_ROOT / "leaf_sources.csv")
+    # "Chardonnay/R1/1/1.img" in the table is "Chardonnay/R1/V1" in the HDF5.
+    parts = table.leaf.str.split("/", expand=True)
+    capture = dict(zip(parts[0] + "/" + parts[1] + "/V" + parts[2], table.capture_id))
+    return np.array([capture[p] for p in paths])
+
+
+def load_leaf_sizes() -> tuple[pd.DataFrame, np.ndarray]:
+    """Return each leaf's size, in the same order as load_dataset.
+
+    n: the number of vines.
+
+    :return: meta (n rows) and sizes (n, 3): leaf pixel count, height, width.
+    :rtype: tuple
+    """
+    meta, _wavelengths, _means, _glint = load_dataset()
+    sizes = np.empty((len(meta), 3))
+    with h5py.File(H5_PATH, "r") as h5:
+        for i, path in enumerate(meta.path):
+            # Stored as (lines, bands, samples); a leaf pixel is non-zero in some band.
+            cube = np.nan_to_num(np.asarray(h5[path]["cube"]), nan=0.0)
+            sizes[i] = (cube != 0).any(axis=1).sum(), cube.shape[0], cube.shape[2]
+    return meta, sizes
+
+
+def load_cubes(variety: str) -> tuple[pd.DataFrame, list[np.ndarray]]:
+    """Load every whole-leaf cube of one variety, in the same row order as load_dataset.
+
+    n: the number of vines of this variety.
+    lines, samples: spatial size of each cube (different for every leaf).
+
+    :param variety: Variety name as in the HDF5, e.g. "Chardonnay".
+    :type variety: str
+    :return: meta (n rows: path, row, vine, red_blotch, leafroll3) and n cubes, each
+        (204, lines, samples) float32 reflectance with background exactly 0.
+    :rtype: tuple
+    """
+    if not H5_PATH.exists():
+        raise FileNotFoundError(f"dataset not found: {H5_PATH}")
+    rows, cubes = [], []
+    with h5py.File(H5_PATH, "r") as h5:
+        for row_name in h5[variety].keys():
+            for vine_name in h5[variety][row_name].keys():
+                g = h5[variety][row_name][vine_name]
+                # Why NumPy: h5py gives ndarrays. Bands first, as torch convolutions expect (C, H, W).
+                cube = np.asarray(g["cube"], dtype=np.float32).transpose(1, 0, 2)
+                cubes.append(np.ascontiguousarray(np.nan_to_num(cube, nan=0.0)))
+                rows.append({
+                    "path": f"{variety}/{row_name}/{vine_name}",
+                    "row": str(g.attrs.get("row", row_name)),
+                    "vine": int(g.attrs.get("vine", str(vine_name).lstrip("V"))),
+                    "red_blotch": int(g.attrs.get("red_blotch", -1)),
+                    "leafroll3": int(g.attrs.get("leafroll3", -1)),
+                })
+    meta = pd.DataFrame(rows)
+    # Same order as load_dataset (variety, row, vine), so leaf i matches its mean spectrum.
+    order = meta.sort_values(["row", "vine"]).index.to_numpy()
+    return meta.loc[order].reset_index(drop=True), [cubes[i] for i in order]
+
+
 def load_dataset() -> tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray]:
     """Return one row per vine, from cache when it is valid.
 
