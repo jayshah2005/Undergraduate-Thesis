@@ -26,8 +26,7 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE.parent / "l
 from cnn_common import augment, pad_to_canvas  # noqa: E402
 from data import load_cubes, load_dataset  # noqa: E402
 from log import get_logger  # noqa: E402
-from logistic_regression import BANDS, load_features, rgb_bands  # noqa: E402
-from logistic_regression import Config as LRConfig  # noqa: E402
+from logistic_regression import BANDS, rgb_bands  # noqa: E402
 from model import VarietyCNN  # noqa: E402
 from pca_common import VARIETIES, get_device, np_  # noqa: E402
 
@@ -59,11 +58,10 @@ class TrainConfig:
     patience: int = 15     # epochs without a lower validation loss
     dropout: float = 0.5
     validation: bool = True  # False: train on all 4 non-test rows, no early stopping
-    fusion: bool = False     # True: the last layer also reads the mean spectrum, with no weight decay on it
 
     def suffix(self) -> str:
-        """Folder-name suffix of this run's settings ("" for the plain CNN with validation)."""
-        return ("" if self.validation else f"_no_val_e{self.max_epochs}") + ("_fusion" if self.fusion else "")
+        """Folder-name suffix of a run without validation ("" with it)."""
+        return "" if self.validation else f"_no_val_e{self.max_epochs}"
 
 
 def load(device: torch.device) -> dict:
@@ -130,28 +128,13 @@ def fold_split(rows: np.ndarray, k: int, validation: bool = True) -> tuple[np.nd
     return idx[~test & ~val], idx[val], idx[test]
 
 
-def standardise_spectra(spectra: torch.Tensor, train: torch.Tensor) -> torch.Tensor:
-    """Z-score each band with training leaves only, as logistic regression does.
-
-    n: the number of leaves. d: input bands.
-
-    :param spectra: SNV mean spectra, shape (n, d).
-    :type spectra: torch.Tensor
-    :param train: Training leaf indices.
-    :type train: torch.Tensor
-    :return: Standardised spectra, shape (n, d).
-    :rtype: torch.Tensor
-    """
-    return (spectra - spectra[train].mean(0)) / spectra[train].std(0, unbiased=False).clamp_min(1e-6)
-
-
-def _logits(model, X, mask, idx, bands, spectrum=None, batch: int = 16) -> torch.Tensor:
+def _logits(model, X, mask, idx, bands, batch: int = 16) -> torch.Tensor:
     """Logits for the given leaves, no augmentation (eval mode)."""
     out = []
     with torch.no_grad():
         for s in range(0, len(idx), batch):
             j = idx[s:s + batch]
-            out.append(model(preprocess(X[j][:, bands], mask[j]), mask[j], None if spectrum is None else spectrum[j]))
+            out.append(model(preprocess(X[j][:, bands], mask[j]), mask[j]))
     return torch.cat(out)
 
 
@@ -173,8 +156,7 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
     :type split: tuple
     :param seed: Seed for weights, batch order and augmentation.
     :type seed: int
-    :return: test probabilities (k, 4), best epoch, epochs run, per-epoch train and validation losses;
-        with fusion, also the test probabilities of each part of the last layer alone.
+    :return: test probabilities (k, 4), best epoch, epochs run, per-epoch train and validation losses.
     :rtype: dict
     """
     X, mask, y = d["X"], d["mask"], d["y"]
@@ -183,12 +165,8 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
     torch.manual_seed(seed)
     g = torch.Generator(device=dev).manual_seed(seed)
 
-    spectrum = standardise_spectra(d["spectra"], tr) if tc.fusion else None
-    model = VarietyCNN(len(bands), tc.dropout, len(bands) if tc.fusion else 0).to(dev)
-    groups = [{"params": [p for name, p in model.named_parameters() if name != "spectrum_weights"]}]
-    if tc.fusion:
-        groups.append({"params": [model.spectrum_weights], "weight_decay": 0.0})
-    opt = torch.optim.AdamW(groups, lr=tc.lr, weight_decay=tc.weight_decay)
+    model = VarietyCNN(len(bands), tc.dropout).to(dev)
+    opt = torch.optim.AdamW(model.parameters(), lr=tc.lr, weight_decay=tc.weight_decay)
     best, hist_tr, hist_va = (float("inf"), 0, None), [], []
     for epoch in range(1, tc.max_epochs + 1):
         model.train()
@@ -197,7 +175,7 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
         for s in range(0, len(order), tc.batch):
             j = order[s:s + tc.batch]
             x, m = augment(preprocess(X[j][:, bands], mask[j]), mask[j], g)
-            loss = F.cross_entropy(model(x, m, None if spectrum is None else spectrum[j]), y[j])
+            loss = F.cross_entropy(model(x, m), y[j])
             opt.zero_grad(set_to_none=True)
             loss.backward()
             opt.step()
@@ -207,7 +185,7 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
             continue
 
         model.eval()
-        vloss = F.cross_entropy(_logits(model, X, mask, va, bands, spectrum), y[va]).item()
+        vloss = F.cross_entropy(_logits(model, X, mask, va, bands), y[va]).item()
         hist_va.append(vloss)
         if vloss < best[0]:
             best = (vloss, epoch, copy.deepcopy(model.state_dict()))
@@ -217,13 +195,8 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
     if tc.validation:
         model.load_state_dict(best[2])
     model.eval()
-    prob = torch.softmax(_logits(model, X, mask, te, bands, spectrum), 1)
-    out = {"prob": prob, "best_epoch": best[1] if tc.validation else len(hist_tr), "epochs": len(hist_tr), "train_loss": hist_tr, "val_loss": hist_va}
-    if tc.fusion:
-        # Each part scored alone shows what it contributes; these never choose a checkpoint.
-        out["prob_cnn"] = torch.softmax(_logits(model, X, mask, te, bands), 1)
-        out["prob_spectrum"] = torch.softmax(spectrum[te].detach() @ model.spectrum_weights.detach(), 1)
-    return out
+    prob = torch.softmax(_logits(model, X, mask, te, bands), 1)
+    return {"prob": prob, "best_epoch": best[1] if tc.validation else len(hist_tr), "epochs": len(hist_tr), "train_loss": hist_tr, "val_loss": hist_va}
 
 
 def invariance_check(d: dict, bands: torch.Tensor) -> float:
@@ -272,8 +245,6 @@ def main() -> None:
     ap.add_argument("--no-validation", action="store_true",
                     help="train on all 4 non-test rows, no early stopping; needs --epochs")
     ap.add_argument("--epochs", type=int, help="exact number of epochs of a --no-validation run")
-    ap.add_argument("--fusion", action="store_true",
-                    help="the last layer also reads the mean spectrum, with no weight decay on it")
     ap.add_argument("--smoke", action="store_true", help="first test row, seed 0, 3 epochs, into results/smoke/")
     args = ap.parse_args()
     if args.no_validation and args.epochs is None:
@@ -283,7 +254,6 @@ def main() -> None:
     tc = TrainConfig(max_epochs=3, patience=3) if args.smoke else TrainConfig()
     if args.no_validation:
         tc = replace(tc, max_epochs=3 if args.smoke else args.epochs, validation=False)
-    tc = replace(tc, fusion=args.fusion)
     seeds, folds = ((0,), (0,)) if args.smoke else (SEEDS, range(5))
     run_name = cfg.name + tc.suffix()
     root = (RESULTS / "smoke" if args.smoke else RESULTS) / run_name
@@ -297,9 +267,6 @@ def main() -> None:
 
     d = load(device)
     bands = torch.as_tensor(d["rgb"] if cfg.bands == "rgb" else np.arange(d["X"].shape[1]), device=device)
-    if tc.fusion:
-        # The features logistic regression reads; load checked that the leaf order matches.
-        d["spectra"] = torch.as_tensor(load_features(LRConfig(cfg.bands), device)["X"], dtype=torch.float32, device=device)
     rows = d["meta"].row.to_numpy().astype(str)
     log.info("%s: %d leaves, %d bands, canvas %d", run_name, len(rows), len(bands), d["side"])
     change = invariance_check(d, bands)
@@ -319,9 +286,8 @@ def main() -> None:
                 continue
             split = fold_split(rows, k, tc.validation)
             r = train_fold(d, bands, tc, split, 100 * seed + k)
-            parts = {k: np_(r[k]) for k in ("prob_cnn", "prob_spectrum") if k in r}
             np.savez(f, test_idx=split[2], prob=np_(r["prob"]), best_epoch=r["best_epoch"], epochs=r["epochs"],
-                     train_loss=np.array(r["train_loss"]), val_loss=np.array(r["val_loss"]), **parts)
+                     train_loss=np.array(r["train_loss"]), val_loss=np.array(r["val_loss"]))
             epochs.append(r["best_epoch"])
         if epochs:
             log.info("seed %d: %d folds, median best epoch %.0f, %.0f s", seed, len(epochs), np.median(epochs),

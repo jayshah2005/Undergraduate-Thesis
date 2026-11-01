@@ -13,17 +13,6 @@ Does a small CNN that sees the whole leaf do better than logistic regression on 
 |---|---|---|
 | `--bands` | `all` (default), `rgb` | all 204 bands, or the 3 bands nearest 640 / 550 / 460 nm. Only the input of the first layer changes |
 | `--no-validation --epochs N` | off by default | train on all 4 non-test rows for exactly N epochs, keeping the last weights, with no early stopping. Results go to `results/<bands>_no_val_e<N>/` |
-| `--fusion` | off by default | the last layer also reads the leaf's mean spectrum, with no weight decay on it. Results go to `results/<bands>_fusion/` |
-
-## Giving the last layer the mean spectrum
-
-Fixed before any score was seen.
-
-- **Input to the last layer:** the 48-d pooled vector, with dropout, plus the mean spectrum logistic regression reads (SNV), z-scored with the training leaves of that split. The spectrum has no dropout. Its weights start at 0, so a seed starts the CNN part as in the plain model.
-- **Weight decay:** none on the spectrum weights. Everything else keeps the plain CNN's 1e-2.
-- **Training:** otherwise the early-stopping run: 3 training rows, one validation row, best checkpoint by validation loss, 3 seeds. That run is the control.
-- **Counts as an improvement only if both hold:** the ensemble's interval against the plain CNN excludes 0, and the 5-row single-model average beats the plain CNN on all 3 seeds. Each input is judged separately.
-- **Reported as well:** logistic regression on the same 3 rows and on 4 rows, and each part of the last layer scored alone. These diagnostics choose nothing.
 
 ## Choosing the epoch count inside each training split
 
@@ -53,8 +42,6 @@ cd clean/variety_classification/cnn
 ../../../.venv/bin/python -u run_experiments.py --bands all --no-validation --epochs 37
 ../../../.venv/bin/python -u run_nested.py --bands all                # ~1 h each; --smoke for a quick check
 ../../../.venv/bin/python -u run_nested.py --bands rgb
-../../../.venv/bin/python -u run_experiments.py --bands all --fusion
-../../../.venv/bin/python -u run_experiments.py --bands rgb --fusion
 ../../../.venv/bin/python -u report.py                                # results/metrics.md + figures/; needs every run it compares
 ```
 

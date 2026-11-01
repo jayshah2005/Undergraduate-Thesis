@@ -1,17 +1,15 @@
 # Variety CNN: metrics
 
-Balanced accuracy, chance 0.25; held-out field rows; 95% bootstrap interval. Every model uses SNV; CNN scores are 3-seed ensembles. `_no_val_e<N>` = trained on 4 rows for exactly N epochs, with no validation row. `_nested` = the same, with N chosen inside each training split. `_fusion` = the plain run, with the mean spectrum also in the last layer.
+Balanced accuracy, chance 0.25; held-out field rows; 95% bootstrap interval. Every model uses SNV; CNN scores are 3-seed ensembles. `_no_val_e<N>` = trained on 4 rows for exactly N epochs, with no validation row. `_nested` = the same, with N chosen inside each training split.
 
 | model | balanced accuracy |
 |---|---|
 | CNN `all` | 0.898 (0.880–0.916) |
 | CNN `all_no_val_e37` | 0.949 (0.936–0.961) |
 | CNN `all_nested` | 0.925 (0.909–0.940) |
-| CNN `all_fusion` | 0.898 (0.880–0.916) |
 | CNN `rgb` | 0.824 (0.799–0.846) |
 | CNN `rgb_no_val_e37` | 0.838 (0.816–0.860) |
 | CNN `rgb_nested` | 0.876 (0.857–0.896) |
-| CNN `rgb_fusion` | 0.833 (0.809–0.854) |
 | logistic regression `all`, same 3 rows | 0.849 (0.827–0.871) |
 | logistic regression `rgb`, same 3 rows | 0.488 (0.457–0.517) |
 | logistic regression `all`, 4 rows | 0.939 (0.924–0.952) |
@@ -34,13 +32,6 @@ Leaf size alone (pixel count, height, width), logistic regression: 0.654.
 | Logistic regression (4 rows): 204 bands − RGB | +0.439 [+0.408, +0.470] |
 | 204 bands: CNN, 37 epochs, no validation − logistic regression (4 rows) | +0.010 [-0.005, +0.026] |
 | RGB: CNN, 37 epochs, no validation − logistic regression (4 rows) | +0.338 [+0.305, +0.372] |
-| CNN + mean spectrum: 204 bands − RGB | +0.065 [+0.043, +0.090] |
-| 204 bands: CNN + mean spectrum − plain CNN | +0.000 [-0.016, +0.016] |
-| 204 bands: CNN + mean spectrum − logistic regression (3 rows) | +0.049 [+0.033, +0.067] |
-| 204 bands: CNN + mean spectrum − logistic regression (4 rows) | -0.041 [-0.056, -0.024] |
-| RGB: CNN + mean spectrum − plain CNN | +0.009 [-0.005, +0.025] |
-| RGB: CNN + mean spectrum − logistic regression (3 rows) | +0.345 [+0.312, +0.377] |
-| RGB: CNN + mean spectrum − logistic regression (4 rows) | +0.333 [+0.300, +0.367] |
 
 ## Epochs chosen inside each training split
 
@@ -51,15 +42,6 @@ Average of the 5 row scores for each of the 3 single models, and the epoch count
 | `all` | 0.866, 0.806, 0.771 | 0.814 | 67 | 34 | 76 | 64 | 69 |
 | `rgb` | 0.853, 0.884, 0.880 | 0.872 | 64 | 70 | 77 | 80 | 57 |
 
-## CNN with the mean spectrum in its last layer
-
-Trained like the plain CNN (3 rows, early stopping). Row average per seed; each part alone is a 3-seed ensemble.
-
-| input | plain CNN, per seed | + mean spectrum, per seed | 48-d part alone | spectrum part alone |
-|---|---|---|---|---|
-| `all` | 0.857, 0.856, 0.914 | 0.910, 0.871, 0.870 | 0.531 | 0.821 |
-| `rgb` | 0.781, 0.791, 0.788 | 0.816, 0.815, 0.840 | 0.823 | 0.424 |
-
 ## CNN detail
 
 | configuration | seeds | R1 | R2 | R3 | R4 | R5 | median best epoch |
@@ -67,8 +49,6 @@ Trained like the plain CNN (3 rows, early stopping). Row average per seed; each 
 | `all` | 0.857, 0.856, 0.914 | 0.595 | 0.975 | 0.975 | 0.975 | 0.970 | 11 |
 | `all_no_val_e37` | 0.826, 0.932, 0.744 | 0.915 | 0.970 | 0.964 | 0.960 | 0.935 | 37 |
 | `all_nested` | 0.866, 0.805, 0.772 | 0.845 | 0.950 | 0.975 | 0.940 | 0.915 | 67 |
-| `all_fusion` | 0.910, 0.871, 0.870 | 0.655 | 0.975 | 0.980 | 0.960 | 0.920 | 22 |
 | `rgb` | 0.780, 0.791, 0.788 | 0.730 | 0.870 | 0.905 | 0.820 | 0.795 | 49 |
 | `rgb_no_val_e37` | 0.814, 0.844, 0.857 | 0.880 | 0.875 | 0.855 | 0.825 | 0.755 | 37 |
 | `rgb_nested` | 0.853, 0.884, 0.880 | 0.885 | 0.865 | 0.915 | 0.870 | 0.845 | 70 |
-| `rgb_fusion` | 0.816, 0.815, 0.840 | 0.710 | 0.900 | 0.880 | 0.865 | 0.810 | 48 |

@@ -21,13 +21,9 @@ class VarietyCNN(nn.Module):
     The same network for 204 bands and for RGB; only the input of the first layer changes,
     so a score difference comes from the bands. Mean pooling over leaf positions means
     leaves of any size give the same-length input to the last layer.
-
-    With n_spectrum > 0 the last layer also reads the leaf's mean spectrum, directly: its
-    logits are the 48-d part plus spectrum_weights times the spectrum, the same as one
-    linear layer over both. Dropout applies to the 48-d part only.
     """
 
-    def __init__(self, n_bands: int, dropout: float = 0.5, n_spectrum: int = 0):
+    def __init__(self, n_bands: int, dropout: float = 0.5):
         super().__init__()
         c0, c1, c2 = WIDTHS
         self.spec = nn.Conv2d(n_bands, c0, 1, bias=False)
@@ -37,10 +33,8 @@ class VarietyCNN(nn.Module):
         self.conv4 = nn.Conv2d(c2, c2, 3, padding=1, bias=False)
         self.bn = nn.ModuleList([MaskedBatchNorm2d(c) for c in (c0, c1, c2, c2, c2)])
         self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(c2, N_VARIETIES))
-        # Zeros draw no random numbers, so a seed starts the CNN part exactly as in the plain model.
-        self.spectrum_weights = nn.Parameter(torch.zeros(n_spectrum, N_VARIETIES)) if n_spectrum else None
 
-    def forward(self, x: torch.Tensor, mask: torch.Tensor, spectrum: torch.Tensor | None = None) -> torch.Tensor:
+    def forward(self, x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         """Score each leaf.
 
         B: batch size. d: input bands. S: canvas side.
@@ -49,8 +43,6 @@ class VarietyCNN(nn.Module):
         :type x: torch.Tensor
         :param mask: 1 on leaf pixels, shape (B, 1, S, S).
         :type mask: torch.Tensor
-        :param spectrum: Standardised mean spectra, shape (B, d). None leaves out that part.
-        :type spectrum: torch.Tensor | None
         :return: Variety logits, shape (B, 4).
         :rtype: torch.Tensor
         """
@@ -69,5 +61,4 @@ class VarietyCNN(nn.Module):
         empty = valid.flatten(1).sum(1) == 0
         valid = torch.where(empty[:, None, None, None], mask, valid)
         z = (h * valid).sum((2, 3)) / valid.sum((2, 3))    # (B, 48)
-        logits = self.head(z)
-        return logits if spectrum is None else logits + spectrum @ self.spectrum_weights
+        return self.head(z)
