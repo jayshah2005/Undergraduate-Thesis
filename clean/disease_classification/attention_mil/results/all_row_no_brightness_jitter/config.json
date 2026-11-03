@@ -1,0 +1,16 @@
+{
+  "batch": 8,
+  "lr": 0.001,
+  "weight_decay": 0.01,
+  "max_epochs": 80,
+  "patience": 15,
+  "brightness_jitter": 0.0,
+  "dropout": 0.5,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "variety": "all",
+  "canvas": 212
+}

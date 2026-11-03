@@ -29,6 +29,7 @@ from log import get_logger  # noqa: E402
 from pca_common import VARIETIES, get_device, np_, snv  # noqa: E402
 
 RES, FIG = HERE / "results", HERE / "figures"
+ROWS = ["R1", "R2", "R3", "R4", "R5"]
 BANDS = ("all", "rgb")
 RGB_NM = {"R": 640.0, "G": 550.0, "B": 460.0}  # the pseudo-RGB picks of the earlier ResNet runs
 C_GRID = (1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10.0, 100.0, 1000.0)
@@ -95,38 +96,56 @@ def make_model(C: float):
     :return: Unfitted scikit-learn pipeline.
     :rtype: sklearn.pipeline.Pipeline
     """
-    return make_pipeline(StandardScaler(), LogisticRegression(C=C, solver="lbfgs", penalty="l2", max_iter=10_000))
+    return make_pipeline(StandardScaler(), LogisticRegression(C=C, solver="lbfgs", max_iter=10_000))
 
 
-def choose_C(X: np.ndarray, y: np.ndarray, rows: np.ndarray) -> float:
-    """Pick the C with the lowest leave-one-row-out log-loss on the training leaves.
+def fold_split(rows: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Test = row k, validation = row k+1, train = the other 3 rows.
 
-    k: the number of training leaves. d: the number of features.
+    Every variety model, CNN or logistic regression, uses this one split, so each sees the
+    same rows in the same roles. Whole rows are held out because neighbouring vines look alike.
 
-    :param X: Training features, shape (k, d).
-    :type X: np.ndarray
-    :param y: Variety codes, length k.
-    :type y: np.ndarray
-    :param rows: Field row per leaf, length k.
+    n: the number of leaves.
+
+    :param rows: Field row per leaf, length n.
     :type rows: np.ndarray
-    :return: The best C.
-    :rtype: float
+    :param k: Fold number 0-4.
+    :type k: int
+    :return: train, validation, test leaf indices.
+    :rtype: tuple
     """
-    scores = {}
-    for C in C_GRID:
-        P = np.empty((len(y), len(VARIETIES)))
-        for r in np.unique(rows):
-            te = rows == r
-            P[te] = make_model(C).fit(X[~te], y[~te]).predict_proba(X[te])
-        scores[C] = log_loss(y, P, labels=range(len(VARIETIES)))
-    return min(scores, key=scores.get)
+    idx = np.arange(len(rows))
+    test, val = rows == ROWS[k], rows == ROWS[(k + 1) % 5]
+    return idx[~test & ~val], idx[val], idx[test]
 
 
-def nested_row_cv(X: np.ndarray, y: np.ndarray, rows: np.ndarray) -> tuple[np.ndarray, dict]:
-    """Hold out one field row at a time, tuning C on the other four.
+def fit_with_validation(X: np.ndarray, y: np.ndarray, tr: np.ndarray, va: np.ndarray) -> tuple[float, object]:
+    """Fit one model per C on the training rows and keep the one with the lowest validation log-loss.
 
-    Whole rows are held out because neighbouring vines look alike. C is tuned inside the
-    training rows so the test row can't influence it.
+    The validation row only picks C and never fits the model, as it only picks the checkpoint
+    in the CNN.
+
+    n: the number of leaves. d: the number of features.
+
+    :param X: Features, shape (n, d).
+    :type X: np.ndarray
+    :param y: Variety codes, length n.
+    :type y: np.ndarray
+    :param tr: Training leaves.
+    :type tr: np.ndarray
+    :param va: Validation leaves.
+    :type va: np.ndarray
+    :return: The best C and its fitted model.
+    :rtype: tuple
+    """
+    fits = {C: make_model(C).fit(X[tr], y[tr]) for C in C_GRID}
+    losses = {C: log_loss(y[va], m.predict_proba(X[va]), labels=range(len(VARIETIES))) for C, m in fits.items()}
+    best = min(losses, key=losses.get)
+    return best, fits[best]
+
+
+def row_cv(X: np.ndarray, y: np.ndarray, rows: np.ndarray) -> tuple[np.ndarray, dict]:
+    """Hold out one field row at a time, with :func:`fold_split` and :func:`fit_with_validation`.
 
     n: the number of leaves. d: the number of features.
 
@@ -141,14 +160,11 @@ def nested_row_cv(X: np.ndarray, y: np.ndarray, rows: np.ndarray) -> tuple[np.nd
     """
     P = np.empty((len(y), len(VARIETIES)))
     folds = {}
-    for r in np.unique(rows):
-        te = rows == r
-        best = choose_C(X[~te], y[~te], rows[~te])
-        P[te] = make_model(best).fit(X[~te], y[~te]).predict_proba(X[te])
-        folds[str(r)] = {
-            "chosen_C": best,
-            "test_balanced_accuracy": balanced_accuracy_score(y[te], P[te].argmax(1)),
-        }
+    for k, r in enumerate(ROWS):
+        tr, va, te = fold_split(rows, k)
+        best, model = fit_with_validation(X, y, tr, va)
+        P[te] = model.predict_proba(X[te])
+        folds[r] = {"chosen_C": best, "test_balanced_accuracy": balanced_accuracy_score(y[te], P[te].argmax(1))}
     return P, folds
 
 
@@ -211,7 +227,7 @@ def metrics_markdown(cfg: Config, m: dict, folds: dict) -> str:
     :type cfg: Config
     :param m: Output of :func:`evaluate`.
     :type m: dict
-    :param folds: Per-row results of :func:`nested_row_cv`.
+    :param folds: Per-row results of :func:`row_cv`.
     :type folds: dict
     :return: Markdown text.
     :rtype: str
@@ -237,7 +253,7 @@ def write_metrics_json(path: Path, cfg: Config, m: dict, folds: dict) -> None:
     :type cfg: Config
     :param m: Output of :func:`evaluate`.
     :type m: dict
-    :param folds: Per-row results of :func:`nested_row_cv`.
+    :param folds: Per-row results of :func:`row_cv`.
     :type folds: dict
     """
     payload = {
@@ -293,7 +309,7 @@ def comparison_markdown(metrics: dict) -> str:
     """
     lines = ["# Variety prediction: configurations compared", "",
              "Balanced accuracy = the mean of the 4 recalls shown here; chance is 0.25. Every score comes from the "
-             "same 5 held-out field rows.", "",
+             "same 5 held-out field rows, each model trained on 3 rows with C chosen on a fourth.", "",
              "| configuration | balanced accuracy (95% CI) | " + " | ".join(f"{v} recall" for v in VARIETIES)
              + " | per-row range |", "|---|---|" + "---|" * (len(VARIETIES) + 1)]
     for name, m in sorted(metrics.items(), key=lambda kv: -kv[1]["balanced_accuracy"]):
@@ -312,7 +328,7 @@ def write_outputs(cfg: Config, m: dict, folds: dict) -> None:
     :type cfg: Config
     :param m: Output of :func:`evaluate`.
     :type m: dict
-    :param folds: Per-row results of :func:`nested_row_cv`.
+    :param folds: Per-row results of :func:`row_cv`.
     :type folds: dict
     """
     res, fig = RES / cfg.name, FIG / cfg.name
@@ -324,7 +340,7 @@ def write_outputs(cfg: Config, m: dict, folds: dict) -> None:
 
 
 def main() -> None:
-    """Parse config → log → load → nested row CV → metrics → write files, or compare finished runs."""
+    """Parse config → log → load → row CV → metrics → write files, or compare finished runs."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--bands", choices=BANDS, default=Config.bands, help="all 204 bands, or only the 3 RGB bands")
     ap.add_argument("--compare", action="store_true", help="table of every finished configuration, no fitting")
@@ -342,7 +358,7 @@ def main() -> None:
 
     device = get_device()
     d = load_features(cfg, device)
-    P, folds = nested_row_cv(d["X"], d["y"], d["rows"])
+    P, folds = row_cv(d["X"], d["y"], d["rows"])
     m = evaluate(d["y"], P, device)
     write_outputs(cfg, m, folds)
     log.info("%s bands: balanced accuracy %.3f | results/%s/metrics.md", cfg.name, m["balanced_accuracy"], cfg.name)

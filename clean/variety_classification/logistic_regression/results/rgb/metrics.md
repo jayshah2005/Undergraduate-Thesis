@@ -1,25 +1,25 @@
 # Variety logistic regression: `rgb` bands
 
-**Balanced accuracy: 0.500** (95% CI 0.468-0.530; chance 0.25)
+**Balanced accuracy: 0.503** (95% CI 0.472-0.533; chance 0.25)
 
 | true \ predicted | Baco | Cab Franc | Chardonnay | Vidal |
 |---|---|---|---|---|
-| **Baco** | 99 | 4 | 70 | 75 |
-| **Cab Franc** | 37 | 97 | 23 | 93 |
-| **Chardonnay** | 49 | 1 | 186 | 14 |
-| **Vidal** | 69 | 45 | 19 | 117 |
+| **Baco** | 87 | 7 | 76 | 78 |
+| **Cab Franc** | 29 | 86 | 26 | 109 |
+| **Chardonnay** | 43 | 2 | 192 | 13 |
+| **Vidal** | 53 | 38 | 22 | 137 |
 
 | variety | recall | ROC AUC (one vs rest) |
 |---|---|---|
-| Baco | 0.399 | 0.612 |
-| Cab Franc | 0.388 | 0.776 |
-| Chardonnay | 0.744 | 0.871 |
-| Vidal | 0.468 | 0.720 |
+| Baco | 0.351 | 0.599 |
+| Cab Franc | 0.344 | 0.774 |
+| Chardonnay | 0.768 | 0.870 |
+| Vidal | 0.548 | 0.719 |
 
 | test row | chosen C | balanced accuracy |
 |---|---|---|
-| R1 | 1 | 0.455 |
-| R2 | 0.1 | 0.485 |
-| R3 | 0.1 | 0.584 |
-| R4 | 0.1 | 0.540 |
-| R5 | 1000 | 0.435 |
+| R1 | 0.1 | 0.420 |
+| R2 | 1 | 0.500 |
+| R3 | 1000 | 0.599 |
+| R4 | 0.1 | 0.520 |
+| R5 | 0.1 | 0.475 |

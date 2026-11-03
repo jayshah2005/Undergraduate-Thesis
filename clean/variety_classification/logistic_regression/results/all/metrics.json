@@ -6,75 +6,75 @@
     "Chardonnay",
     "Vidal"
   ],
-  "balanced_accuracy": 0.9388225806451613,
+  "balanced_accuracy": 0.8738145161290323,
   "balanced_accuracy_ci95": [
-    0.9235058680176735,
-    0.9523577049374581
+    0.853468619287014,
+    0.8935214668512345
   ],
   "confusion": [
     [
-      226,
+      225,
       0,
-      1,
+      2,
       21
     ],
     [
       0,
-      231,
-      4,
-      15
-    ],
-    [
-      0,
+      212,
       2,
-      244,
-      4
+      36
     ],
     [
-      1,
-      13,
       0,
-      236
+      5,
+      236,
+      9
+    ],
+    [
+      22,
+      27,
+      2,
+      199
     ]
   ],
   "per_variety": {
     "Baco": {
-      "recall": 0.9112903225806451,
-      "auc_ovr": 0.9954838709677419
+      "recall": 0.907258064516129,
+      "auc_ovr": 0.9945698924731182
     },
     "Cab Franc": {
-      "recall": 0.924,
-      "auc_ovr": 0.9935240641711229
+      "recall": 0.848,
+      "auc_ovr": 0.9852673796791444
     },
     "Chardonnay": {
-      "recall": 0.976,
-      "auc_ovr": 0.9989679144385026
+      "recall": 0.944,
+      "auc_ovr": 0.9950695187165777
     },
     "Vidal": {
-      "recall": 0.944,
-      "auc_ovr": 0.9810320855614972
+      "recall": 0.796,
+      "auc_ovr": 0.9614759358288769
     }
   },
   "folds": {
     "R1": {
-      "chosen_C": 0.1,
-      "test_balanced_accuracy": 0.905
+      "chosen_C": 0.01,
+      "test_balanced_accuracy": 0.615
     },
     "R2": {
-      "chosen_C": 0.1,
-      "test_balanced_accuracy": 0.96
+      "chosen_C": 10.0,
+      "test_balanced_accuracy": 0.975
     },
     "R3": {
       "chosen_C": 1.0,
-      "test_balanced_accuracy": 0.99
+      "test_balanced_accuracy": 0.97
     },
     "R4": {
       "chosen_C": 10.0,
-      "test_balanced_accuracy": 0.96
+      "test_balanced_accuracy": 0.9249999999999999
     },
     "R5": {
-      "chosen_C": 10.0,
-      "test_balanced_accuracy": 0.88
+      "chosen_C": 1.0,
+      "test_balanced_accuracy": 0.885
     }
   }
 }

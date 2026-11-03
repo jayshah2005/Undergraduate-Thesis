@@ -7,7 +7,7 @@ import json
 import os
 import sys
 import time
-from dataclasses import asdict, dataclass, replace
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
 # Needed by cuBLAS for deterministic matrix products; must be set before CUDA starts.
@@ -26,12 +26,11 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE.parent / "l
 from cnn_common import augment, pad_to_canvas  # noqa: E402
 from data import load_cubes, load_dataset  # noqa: E402
 from log import get_logger  # noqa: E402
-from logistic_regression import BANDS, rgb_bands  # noqa: E402
+from logistic_regression import BANDS, ROWS, fold_split, rgb_bands  # noqa: E402
 from model import VarietyCNN  # noqa: E402
 from pca_common import VARIETIES, get_device, np_  # noqa: E402
 
 RESULTS, LOGS = HERE / "results", HERE / "logs"
-ROWS = ["R1", "R2", "R3", "R4", "R5"]
 SEEDS = (0, 1, 2)
 
 
@@ -54,14 +53,9 @@ class TrainConfig:
     batch: int = 8
     lr: float = 1e-3
     weight_decay: float = 1e-2
-    max_epochs: int = 80   # without validation, the exact number of epochs
+    max_epochs: int = 80
     patience: int = 15     # epochs without a lower validation loss
     dropout: float = 0.5
-    validation: bool = True  # False: train on all 4 non-test rows, no early stopping
-
-    def suffix(self) -> str:
-        """Folder-name suffix of a run without validation ("" with it)."""
-        return "" if self.validation else f"_no_val_e{self.max_epochs}"
 
 
 def load(device: torch.device) -> dict:
@@ -106,28 +100,6 @@ def preprocess(x: torch.Tensor, m: torch.Tensor) -> torch.Tensor:
     return (x - x.mean(1, keepdim=True)) / x.std(1, keepdim=True, unbiased=False).clamp_min(1e-6) * m
 
 
-def fold_split(rows: np.ndarray, k: int, validation: bool = True) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Test = row k, validation (early stopping) = row k+1, train = the other 3 rows.
-
-    Without validation the validation set is empty and row k+1 trains too.
-
-    n: the number of leaves.
-
-    :param rows: Field row per leaf, length n.
-    :type rows: np.ndarray
-    :param k: Fold number 0-4.
-    :type k: int
-    :param validation: Keep a validation row.
-    :type validation: bool
-    :return: train, validation, test leaf indices.
-    :rtype: tuple
-    """
-    idx = np.arange(len(rows))
-    test = rows == ROWS[k]
-    val = rows == ROWS[(k + 1) % 5] if validation else np.zeros(len(rows), dtype=bool)
-    return idx[~test & ~val], idx[val], idx[test]
-
-
 def _logits(model, X, mask, idx, bands, batch: int = 16) -> torch.Tensor:
     """Logits for the given leaves, no augmentation (eval mode)."""
     out = []
@@ -139,10 +111,7 @@ def _logits(model, X, mask, idx, bands, batch: int = 16) -> torch.Tensor:
 
 
 def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed: int) -> dict:
-    """Train one network and score the test row.
-
-    With validation, keep the weights with the lowest validation loss. Without it, train for
-    exactly tc.max_epochs epochs and keep the last weights.
+    """Train one network, keep the weights with the lowest validation loss, and score the test row.
 
     k: the number of test leaves.
 
@@ -181,8 +150,6 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
             opt.step()
             total += loss.item() * len(j)
         hist_tr.append(total / len(tr))
-        if not tc.validation:
-            continue
 
         model.eval()
         vloss = F.cross_entropy(_logits(model, X, mask, va, bands), y[va]).item()
@@ -192,11 +159,10 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
         elif epoch - best[1] >= tc.patience:
             break
 
-    if tc.validation:
-        model.load_state_dict(best[2])
+    model.load_state_dict(best[2])
     model.eval()
     prob = torch.softmax(_logits(model, X, mask, te, bands), 1)
-    return {"prob": prob, "best_epoch": best[1] if tc.validation else len(hist_tr), "epochs": len(hist_tr), "train_loss": hist_tr, "val_loss": hist_va}
+    return {"prob": prob, "best_epoch": best[1], "epochs": len(hist_tr), "train_loss": hist_tr, "val_loss": hist_va}
 
 
 def invariance_check(d: dict, bands: torch.Tensor) -> float:
@@ -242,22 +208,14 @@ def main() -> None:
     """Check, then train every (seed, test row) of one configuration not already on disk."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--bands", choices=BANDS, default=Config.bands, help="all 204 bands, or only the 3 RGB bands")
-    ap.add_argument("--no-validation", action="store_true",
-                    help="train on all 4 non-test rows, no early stopping; needs --epochs")
-    ap.add_argument("--epochs", type=int, help="exact number of epochs of a --no-validation run")
     ap.add_argument("--smoke", action="store_true", help="first test row, seed 0, 3 epochs, into results/smoke/")
     args = ap.parse_args()
-    if args.no_validation and args.epochs is None:
-        ap.error("--no-validation needs --epochs: nothing else can say when to stop")
 
     cfg = Config(args.bands)
     tc = TrainConfig(max_epochs=3, patience=3) if args.smoke else TrainConfig()
-    if args.no_validation:
-        tc = replace(tc, max_epochs=3 if args.smoke else args.epochs, validation=False)
     seeds, folds = ((0,), (0,)) if args.smoke else (SEEDS, range(5))
-    run_name = cfg.name + tc.suffix()
-    root = (RESULTS / "smoke" if args.smoke else RESULTS) / run_name
-    log = get_logger("variety_cnn", log_file=None if args.smoke else LOGS / f"{run_name}.log")
+    root = (RESULTS / "smoke" if args.smoke else RESULTS) / cfg.name
+    log = get_logger("variety_cnn", log_file=None if args.smoke else LOGS / f"{cfg.name}.log")
     check_settings(root, tc)
 
     torch.backends.cudnn.benchmark = False
@@ -268,7 +226,7 @@ def main() -> None:
     d = load(device)
     bands = torch.as_tensor(d["rgb"] if cfg.bands == "rgb" else np.arange(d["X"].shape[1]), device=device)
     rows = d["meta"].row.to_numpy().astype(str)
-    log.info("%s: %d leaves, %d bands, canvas %d", run_name, len(rows), len(bands), d["side"])
+    log.info("%s: %d leaves, %d bands, canvas %d", cfg.name, len(rows), len(bands), d["side"])
     change = invariance_check(d, bands)
     if change > 1e-3:
         raise RuntimeError(f"padding leaks into the prediction: {change}")
@@ -284,7 +242,7 @@ def main() -> None:
             f = out / f"fold{k}.npz"
             if f.exists():
                 continue
-            split = fold_split(rows, k, tc.validation)
+            split = fold_split(rows, k)
             r = train_fold(d, bands, tc, split, 100 * seed + k)
             np.savez(f, test_idx=split[2], prob=np_(r["prob"]), best_epoch=r["best_epoch"], epochs=r["epochs"],
                      train_loss=np.array(r["train_loss"]), val_loss=np.array(r["val_loss"]))

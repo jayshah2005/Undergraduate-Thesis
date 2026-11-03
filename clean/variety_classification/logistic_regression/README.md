@@ -1,6 +1,6 @@
 # Variety prediction with logistic regression
 
-Each leaf is its mean spectrum → SNV (removes brightness) → per-band standardisation (fit on training leaves) → multinomial logistic regression. C is chosen inside each training split by leave-one-row-out log-loss, over 1e-5 … 1000. Evaluation holds out one field row at a time, so every leaf is predicted by a model that never saw its row.
+Each leaf is its mean spectrum → SNV (removes brightness) → per-band standardisation (fit on training leaves) → multinomial logistic regression. It uses the same split as the CNN, so neither model has more data: one field row is the test set, the next is validation, and the other 3 train. Each C over 1e-5 … 1000 is fit on the 3 training rows, and the one with the lowest log-loss on the validation row is kept. Every leaf is predicted by a model that never saw its row.
 
 | setting | choices | meaning |
 |---|---|---|

@@ -16,12 +16,18 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 from cnn_common import augment, band_stats, pad_to_canvas  # noqa: E402, F401
-from data import load_capture_ids  # noqa: E402
 from pca_common import snv  # noqa: E402
 from model import LeafCNN  # noqa: E402
 
 ROWS = ["R1", "R2", "R3", "R4", "R5"]
-TASKS = {"leafroll": "leafroll3", "red_blotch": "red_blotch"}
+# What counts as positive in each task; every other leaf is negative.
+TASKS = {
+    "leafroll": "leafroll present",
+    "red_blotch": "red blotch present",
+    "both": "both diseases present; a leaf with only one counts as negative",
+    "any": "any disease present; healthy leaves are the negatives",
+}
+MIN_PER_CLASS = 5  # a variety with fewer positive or negative leaves sits out that task
 BRIGHTNESS = ("band_z", "snv")
 POOLING = ("mean", "attention")
 
@@ -84,66 +90,92 @@ def preprocess(x: torch.Tensor, m: torch.Tensor, brightness: str, stats, train: 
     return x * m
 
 
-# How leaves are split into 5 folds. Every scheme keeps a photo (the camera image the leaves
-# were cut from) inside one fold, so its shared lighting never spans training and test.
-FOLD_SCHEMES = {
-    "row": "fold k = field row k: the test row is never seen in training (new part of the vineyard)",
-    "photo": "random photos dealt evenly per row (2 per fold; R1 has 13 photos, so 3 or 2): "
-             "new vines in rows seen in training",
-    "block": "fold k = the photos of each row whose first vine is in 10k+1 to 10k+10: like photo, but the "
-             "held-out vines are neighbours of each other, not of the training vines (except at block edges)",
-}
-FOLD_SEED = 0  # fixes the random photo assignment of the "photo" scheme
+def fold_of(meta) -> np.ndarray:
+    """Give every leaf its fold 0-4: fold k holds field row k of every variety.
 
-
-def fold_of(meta, scheme: str) -> np.ndarray:
-    """Give every leaf its fold 0-4 under one fold scheme.
-
-    Photo = the camera image a leaf was cut from, from :func:`data.load_capture_ids`.
-    Rows R2-R5 have 10 photos of 5 leaves; R1 has 12 of 4 and one of 2.
-
-    :param meta: Leaf table with row and vine, n rows.
+    :param meta: Leaf table with row, n rows.
     :type meta: pandas.DataFrame
-    :param scheme: "row", "photo" or "block" (see FOLD_SCHEMES).
-    :type scheme: str
     :return: Fold per leaf, length n.
     :rtype: np.ndarray
     """
-    rows = meta.row.to_numpy()
-    if scheme == "row":
-        return np.array([ROWS.index(r) for r in rows])
-    photo = load_capture_ids(meta.path)
-    if scheme == "block":
-        # A photo goes where its first vine falls, so about 10 consecutive vines per fold.
-        first_vine = meta.vine.groupby(photo).transform("min").to_numpy()
-        return (first_vine - 1) // 10
-    if scheme == "photo":
-        # Inside each row, shuffle the photos and deal them out in turn, so every fold
-        # holds about the same number of photos from every row.
-        g = torch.Generator().manual_seed(FOLD_SEED)
-        fold = np.zeros(len(meta), dtype=int)
-        for r in ROWS:
-            row_photos = np.unique(photo[rows == r])
-            order = torch.randperm(len(row_photos), generator=g).numpy()
-            for pos, i in enumerate(order):
-                fold[photo == row_photos[i]] = pos % 5
-        return fold
-    raise ValueError(f"unknown fold scheme {scheme!r}; choose from {list(FOLD_SCHEMES)}")
+    return np.array([ROWS.index(r) for r in meta.row.to_numpy()])
 
 
-def fold_split(fold: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Test = fold k, validation (early stopping) = fold k+1, train = the other 3 folds.
+def task_labels(meta, task: str) -> np.ndarray:
+    """Give every leaf its 0/1 label for one task (see TASKS).
+
+    :param meta: Leaf table with red_blotch and leafroll3, n rows.
+    :type meta: pandas.DataFrame
+    :param task: A key of TASKS.
+    :type task: str
+    :return: 0/1 label per leaf, length n.
+    :rtype: np.ndarray
+    """
+    leafroll, red_blotch = meta.leafroll3.to_numpy() == 1, meta.red_blotch.to_numpy() == 1
+    positive = {"leafroll": leafroll, "red_blotch": red_blotch,
+                "both": leafroll & red_blotch, "any": leafroll | red_blotch}[task]
+    return positive.astype(int)
+
+
+def usable_leaves(meta, y: np.ndarray) -> np.ndarray:
+    """Keep the varieties with at least MIN_PER_CLASS positive and negative leaves.
+
+    Below that a variety can't be scored, and in a pooled model its leaves would only teach
+    "this variety means this class". Cab Franc has 1 leaf with leafroll, for example.
+
+    :param meta: Leaf table with variety, n rows.
+    :type meta: pandas.DataFrame
+    :param y: 0/1 label per leaf, length n.
+    :type y: np.ndarray
+    :return: True for the leaves this task uses, length n.
+    :rtype: np.ndarray
+    """
+    varieties = meta.variety.to_numpy()
+    keep = np.zeros(len(y), dtype=bool)
+    for v in np.unique(varieties):
+        in_variety = varieties == v
+        if min(y[in_variety].sum(), (1 - y[in_variety]).sum()) >= MIN_PER_CLASS:
+            keep |= in_variety
+    return keep
+
+
+def fold_split(fold: np.ndarray, k: int, keep: np.ndarray | None = None) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Test = row k, validation (early stopping) = row k+1, train = the other 3 rows.
 
     :param fold: Fold per leaf from :func:`fold_of`, length n.
     :type fold: np.ndarray
     :param k: Fold number 0-4.
     :type k: int
+    :param keep: Leaves to split, from :func:`usable_leaves`; None means all of them.
+    :type keep: np.ndarray | None
     :return: train, validation, test leaf indices.
     :rtype: tuple
     """
-    idx = np.arange(len(fold))
-    val = (k + 1) % 5
-    return idx[(fold != k) & (fold != val)], idx[fold == val], idx[fold == k]
+    idx = np.arange(len(fold)) if keep is None else np.flatnonzero(keep)
+    f, val = fold[idx], (k + 1) % 5
+    return idx[(f != k) & (f != val)], idx[f == val], idx[f == k]
+
+
+def check_task(meta, fold: np.ndarray, task: str) -> None:
+    """Stop before training if a task can't be run on these leaves and folds.
+
+    :param meta: Leaf table with variety and labels, n rows.
+    :type meta: pandas.DataFrame
+    :param fold: Fold per leaf from :func:`fold_of`, length n.
+    :type fold: np.ndarray
+    :param task: A key of TASKS.
+    :type task: str
+    :raises ValueError: if no variety is usable, or a fold's train, validation or test set lacks a class.
+    """
+    y = task_labels(meta, task)
+    keep = usable_leaves(meta, y)
+    if not keep.any():
+        raise ValueError(f"{task}: every variety here has fewer than {MIN_PER_CLASS} positive or negative leaves")
+    for k in range(5):
+        for name, part in zip(("train", "validation", "test"), fold_split(fold, k, keep)):
+            if len(np.unique(y[part])) < 2:
+                raise ValueError(f"{task}: the {name} set of test row {ROWS[k]} has only one class; "
+                                 "try another variety")
 
 
 def _predict(model, X, mask, idx, brightness, stats, cfg, g, batch: int = 16):
@@ -167,7 +199,7 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, brig
     cross-entropy as training): 50 leaves give a noisy AUC but a steadier loss.
     The weights from the epoch with the lowest validation loss are restored.
 
-    n: leaves of the variety. S4: side of the last feature map.
+    n: leaves loaded. S4: side of the last feature map.
 
     :param X: Reflectance canvas, shape (n, 204, S, S) float16.
     :type X: torch.Tensor

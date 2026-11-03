@@ -1,7 +1,6 @@
 """Score the variety CNN configurations against each other and against logistic regression."""
 from __future__ import annotations
 
-import json
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -16,11 +15,10 @@ from sklearn.metrics import balanced_accuracy_score  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from run_experiments import RESULTS, ROWS, SEEDS, VARIETIES, fold_split  # noqa: E402  (also sets sys.path)
+from run_experiments import RESULTS, ROWS, SEEDS, VARIETIES  # noqa: E402  (also sets sys.path)
 from data import load_leaf_sizes  # noqa: E402
-from logistic_regression import (BANDS, INK, MUTED, N_BOOT, SEED, choose_C, evaluate, get_device,  # noqa: E402
-                                 get_logger, load_dataset, load_features, make_model, nested_row_cv,
-                                 plot_confusion)
+from logistic_regression import (BANDS, INK, MUTED, N_BOOT, SEED, evaluate, get_device, get_logger,  # noqa: E402
+                                 load_features, plot_confusion, row_cv)
 from logistic_regression import Config as LRConfig  # noqa: E402
 
 FIG = HERE / "figures"
@@ -33,7 +31,7 @@ def load_ensemble(run: str, n: int) -> tuple[np.ndarray, np.ndarray]:
 
     n: the number of leaves. s: the number of seeds.
 
-    :param run: Results folder name, e.g. all or rgb_no_val_e37.
+    :param run: Results folder name, all or rgb.
     :type run: str
     :param n: Number of leaves.
     :type n: int
@@ -49,28 +47,6 @@ def load_ensemble(run: str, n: int) -> tuple[np.ndarray, np.ndarray]:
     return P.mean(0), P
 
 
-def lr_three_rows(X: np.ndarray, y: np.ndarray, rows: np.ndarray) -> np.ndarray:
-    """Logistic regression on the same 3 training rows as the CNN, so neither has more data.
-
-    n: the number of leaves. d: the number of features.
-
-    :param X: Features, shape (n, d).
-    :type X: np.ndarray
-    :param y: Variety codes, length n.
-    :type y: np.ndarray
-    :param rows: Field row per leaf, length n.
-    :type rows: np.ndarray
-    :return: Out-of-fold probabilities, shape (n, 4).
-    :rtype: np.ndarray
-    """
-    P = np.empty((len(y), 4))
-    for k in range(5):
-        tr, _va, te = fold_split(rows, k)
-        best = choose_C(X[tr], y[tr], rows[tr])
-        P[te] = make_model(best).fit(X[tr], y[tr]).predict_proba(X[te])
-    return P
-
-
 def leaf_size_control(device: torch.device) -> float:
     """Score logistic regression on leaf size alone: how far could leaf size carry a CNN?
 
@@ -83,7 +59,7 @@ def leaf_size_control(device: torch.device) -> float:
     """
     meta, sizes = load_leaf_sizes()
     y = meta.variety.map({v: k for k, v in enumerate(VARIETIES)}).to_numpy()
-    P, _folds = nested_row_cv(sizes, y, meta.row.to_numpy().astype(str))
+    P, _folds = row_cv(sizes, y, meta.row.to_numpy().astype(str))
     return evaluate(y, P, device)["balanced_accuracy"]
 
 
@@ -124,7 +100,7 @@ def score_run(run: str, y: np.ndarray, rows: np.ndarray, device: torch.device) -
 
     n: the number of leaves.
 
-    :param run: Results folder name, e.g. all or rgb_no_val_e37.
+    :param run: Results folder name, all or rgb.
     :type run: str
     :param y: True variety codes, length n.
     :type y: np.ndarray
@@ -139,54 +115,31 @@ def score_run(run: str, y: np.ndarray, rows: np.ndarray, device: torch.device) -
     m = evaluate(y, ens, device)
     m["seed_scores"] = [evaluate(y, p, device)["balanced_accuracy"] for p in seeds]
     m["per_row"] = {r: balanced_accuracy_score(y[rows == r], ens[rows == r].argmax(1)) for r in ROWS}
-    # The nested experiment's headline: the 5 row scores averaged, for each single model.
-    m["seed_row_means"] = [float(np.mean([balanced_accuracy_score(y[rows == r], p[rows == r].argmax(1)) for r in ROWS]))
-                           for p in seeds]
     m["median_best_epoch"] = float(np.median([np.load(RESULTS / run / f"seed{s}" / f"fold{k}.npz")["best_epoch"]
                                               for s in SEEDS for k in range(5)]))
     return m
 
 
 def compute(device: torch.device) -> dict:
-    """Score the CNN on each input, its logistic-regression partners and the size control.
+    """Score the CNN on each input and its logistic-regression partner, with paired differences.
 
     :param device: Where the bootstrap runs.
     :type device: torch.device
-    :return: {"cnn": per configuration, "lr3": logistic regression on the CNN's 3 rows, "lr4": on 4 rows,
-        "deltas": paired differences}.
+    :return: {"cnn": per input, "lr": per input, "deltas": paired differences}.
     :rtype: dict
     """
-    meta, _w, _m, _g = load_dataset()
-    rows = meta.row.to_numpy().astype(str)
-    out = {"cnn": {}, "lr3": {}, "lr4": {}, "deltas": {}, "chosen_epochs": {}}
+    out = {"cnn": {}, "lr": {}}
     for b in BANDS:
         d = load_features(LRConfig(b), device)
-        y = d["y"]
-        out["lr3"][b] = evaluate(y, lr_three_rows(d["X"], y, rows), device)
-        out["lr4"][b] = evaluate(y, nested_row_cv(d["X"], y, rows)[0], device)
+        y, rows = d["y"], d["rows"]
+        out["lr"][b] = evaluate(y, row_cv(d["X"], y, rows)[0], device)
         out["cnn"][b] = score_run(b, y, rows, device)
-        out["cnn"][f"{b}_no_val_e37"] = score_run(f"{b}_no_val_e37", y, rows, device)
-        out["cnn"][f"{b}_nested"] = score_run(f"{b}_nested", y, rows, device)
-        out["chosen_epochs"][b] = json.loads((RESULTS / f"{b}_nested" / "chosen_epochs.json").read_text())
-    cnn, lr3, lr4 = out["cnn"], out["lr3"], out["lr4"]
+    cnn, lr = out["cnn"], out["lr"]
     out["deltas"] = {
         "CNN: 204 bands − RGB": paired_delta(y, cnn["all"]["pred"], cnn["rgb"]["pred"], device),
-        "Logistic regression (3 rows): 204 bands − RGB": paired_delta(y, lr3["all"]["pred"], lr3["rgb"]["pred"], device),
-        "204 bands: CNN − logistic regression (3 rows)": paired_delta(y, cnn["all"]["pred"], lr3["all"]["pred"], device),
-        "RGB: CNN − logistic regression (3 rows)": paired_delta(y, cnn["rgb"]["pred"], lr3["rgb"]["pred"], device),
-        "CNN without validation, 37 epochs each: 204 bands − RGB": paired_delta(
-            y, cnn["all_no_val_e37"]["pred"], cnn["rgb_no_val_e37"]["pred"], device),
-        "CNN, epochs chosen inside each split: 204 bands − RGB": paired_delta(
-            y, cnn["all_nested"]["pred"], cnn["rgb_nested"]["pred"], device),
-        "204 bands: CNN, epochs chosen inside each split − logistic regression (4 rows)": paired_delta(
-            y, cnn["all_nested"]["pred"], lr4["all"]["pred"], device),
-        "RGB: CNN, epochs chosen inside each split − logistic regression (4 rows)": paired_delta(
-            y, cnn["rgb_nested"]["pred"], lr4["rgb"]["pred"], device),
-        "Logistic regression (4 rows): 204 bands − RGB": paired_delta(y, lr4["all"]["pred"], lr4["rgb"]["pred"], device),
-        "204 bands: CNN, 37 epochs, no validation − logistic regression (4 rows)": paired_delta(
-            y, cnn["all_no_val_e37"]["pred"], lr4["all"]["pred"], device),
-        "RGB: CNN, 37 epochs, no validation − logistic regression (4 rows)": paired_delta(
-            y, cnn["rgb_no_val_e37"]["pred"], lr4["rgb"]["pred"], device),
+        "Logistic regression: 204 bands − RGB": paired_delta(y, lr["all"]["pred"], lr["rgb"]["pred"], device),
+        "204 bands: CNN − logistic regression": paired_delta(y, cnn["all"]["pred"], lr["all"]["pred"], device),
+        "RGB: CNN − logistic regression": paired_delta(y, cnn["rgb"]["pred"], lr["rgb"]["pred"], device),
     }
     return out
 
@@ -205,25 +158,17 @@ def to_markdown(r: dict) -> str:
         return f"| {label} | {m['balanced_accuracy']:.3f} ({lo:.3f}–{hi:.3f}) |"
 
     lines = ["# Variety CNN: metrics", "", "Balanced accuracy, chance 0.25; held-out field rows; 95% bootstrap interval. "
-             "Every model uses SNV; CNN scores are 3-seed ensembles. `_no_val_e<N>` = trained on 4 rows for exactly N "
-             "epochs, with no validation row. `_nested` = the same, with N chosen inside each training split.", "",
+             "Every model uses SNV, trains on 3 rows and is selected on a fourth: the CNN its checkpoint, logistic "
+             "regression its C. CNN scores are 3-seed ensembles.", "",
              "| model | balanced accuracy |", "|---|---|"]
     lines += [line(f"CNN `{k}`", m) for k, m in r["cnn"].items()]
-    lines += [line(f"logistic regression `{k}`, same 3 rows", m) for k, m in r["lr3"].items()]
-    lines += [line(f"logistic regression `{k}`, 4 rows", m) for k, m in r["lr4"].items()]
+    lines += [line(f"logistic regression `{k}`", m) for k, m in r["lr"].items()]
     lines += ["", f"Leaf size alone (pixel count, height, width), logistic regression: {r['leaf_size']:.3f}.", "",
               "## Paired differences (same resampled leaves)", "", "| comparison | Δ balanced accuracy [95% CI] |", "|---|---|"]
     lines += [f"| {k} | {v[0]:+.3f} [{v[1]:+.3f}, {v[2]:+.3f}] |" for k, v in r["deltas"].items()]
-    lines += ["", "## Epochs chosen inside each training split", "",
-              "Average of the 5 row scores for each of the 3 single models, and the epoch count each test row got.", "",
-              "| input | row average per seed | mean | " + " | ".join(ROWS) + " |", "|---|---|---|" + "---|" * len(ROWS)]
-    for b, chosen in r["chosen_epochs"].items():
-        means = r["cnn"][f"{b}_nested"]["seed_row_means"]
-        lines.append(f"| `{b}` | {', '.join(f'{x:.3f}' for x in means)} | {np.mean(means):.3f} | "
-                     + " | ".join(str(chosen[x]) for x in ROWS) + " |")
-    lines += ["", "## CNN detail", "", "| configuration | seeds | " + " | ".join(ROWS) + " | median best epoch |",
-              "|---|---|" + "---|" * (len(ROWS) + 1)]
-    lines += [f"| `{k}` | {', '.join(f'{s:.3f}' for s in m['seed_scores'])} | "
+    lines += ["", "## CNN detail", "", "| input | seeds | seed mean | " + " | ".join(ROWS) + " | median best epoch |",
+              "|---|---|---|" + "---|" * (len(ROWS) + 1)]
+    lines += [f"| `{k}` | {', '.join(f'{s:.3f}' for s in m['seed_scores'])} | {np.mean(m['seed_scores']):.3f} | "
               + " | ".join(f"{m['per_row'][x]:.3f}" for x in ROWS) + f" | {m['median_best_epoch']:.0f} |"
               for k, m in r["cnn"].items()]
     return "\n".join(lines) + "\n"
@@ -238,12 +183,9 @@ def plot_scores(r: dict, path: Path) -> None:
     :type path: Path
     """
     # Each row is (label, 204-band result, RGB result).
-    groups = [("CNN, 4 rows, epochs chosen in each split", r["cnn"]["all_nested"], r["cnn"]["rgb_nested"]),
-              ("CNN, 4 rows, 37 epochs", r["cnn"]["all_no_val_e37"], r["cnn"]["rgb_no_val_e37"]),
-              ("CNN, 3 rows, early stopping", r["cnn"]["all"], r["cnn"]["rgb"]),
-              ("Logistic regression, same 3 rows", r["lr3"]["all"], r["lr3"]["rgb"]),
-              ("Logistic regression, 4 rows", r["lr4"]["all"], r["lr4"]["rgb"])]
-    fig, ax = plt.subplots(figsize=(9, 4.2))
+    groups = [("CNN", r["cnn"]["all"], r["cnn"]["rgb"]),
+              ("Logistic regression", r["lr"]["all"], r["lr"]["rgb"])]
+    fig, ax = plt.subplots(figsize=(9, 2.6))
     for i, (_label, a, b) in enumerate(groups):
         for off, m, bands in ((-0.14, a, "all"), (0.14, b, "rgb")):
             lo, hi = m["balanced_accuracy_ci95"]
@@ -275,8 +217,7 @@ def write_outputs(r: dict) -> None:
     FIG.mkdir(exist_ok=True)
     (RESULTS / "metrics.md").write_text(to_markdown(r))
     plot_scores(r, FIG / "scores.png")
-    for name in ("all_no_val_e37", "rgb_no_val_e37"):
-        m = r["cnn"][name]
+    for name, m in r["cnn"].items():
         plot_confusion(m["confusion"], SimpleNamespace(name=name), m["balanced_accuracy"], FIG / f"confusion_{name}.png")
 
 
