@@ -14,26 +14,25 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
 from sklearn.linear_model import LogisticRegression  # noqa: E402
-from sklearn.metrics import (balanced_accuracy_score, confusion_matrix, log_loss, recall_score,  # noqa: E402
-                             roc_auc_score)
+from sklearn.metrics import balanced_accuracy_score, log_loss  # noqa: E402
 from sklearn.pipeline import make_pipeline  # noqa: E402
 from sklearn.preprocessing import StandardScaler  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 CLEAN_ROOT = HERE.parents[1]
-for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA"):
+for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 from data import load_dataset  # noqa: E402
 from log import get_logger  # noqa: E402
 from pca_common import VARIETIES, get_device, np_, snv  # noqa: E402
+from scoring import evaluate  # noqa: E402
 
 RES, FIG = HERE / "results", HERE / "figures"
 ROWS = ["R1", "R2", "R3", "R4", "R5"]
 BANDS = ("all", "rgb")
 RGB_NM = {"R": 640.0, "G": 550.0, "B": 460.0}  # the pseudo-RGB picks of the earlier ResNet runs
 C_GRID = (1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10.0, 100.0, 1000.0)
-N_BOOT, SEED = 2000, 0
 INK, MUTED = "#0b0b0b", "#52514e"
 
 
@@ -168,64 +167,12 @@ def row_cv(X: np.ndarray, y: np.ndarray, rows: np.ndarray) -> tuple[np.ndarray, 
     return P, folds
 
 
-def bootstrap_balanced_accuracy(y: np.ndarray, pred: np.ndarray, device: torch.device) -> list[float]:
-    """Compute a 95% interval by resampling leaves with replacement.
-
-    B: the number of resamples. n: the number of leaves.
-
-    :param y: True variety codes, length n.
-    :type y: np.ndarray
-    :param pred: Predicted variety codes, length n.
-    :type pred: np.ndarray
-    :param device: Where the resampling runs.
-    :type device: torch.device
-    :return: Lower and upper bound.
-    :rtype: list[float]
-    """
-    g = torch.Generator(device=device).manual_seed(SEED)
-    yt, pt = torch.tensor(y, device=device), torch.tensor(pred, device=device)
-    idx = torch.randint(len(y), (N_BOOT, len(y)), generator=g, device=device)  # (B, n)
-    y_boot, hit = yt[idx], (pt == yt)[idx]
-    # Balanced accuracy = mean recall over the 4 varieties.
-    recalls = torch.stack([((y_boot == k) & hit).sum(1) / (y_boot == k).sum(1)
-                           for k in range(len(VARIETIES))])
-    return torch.quantile(recalls.mean(0).double(), torch.tensor([0.025, 0.975], device=device,
-                                                                dtype=torch.float64)).tolist()
-
-
-def evaluate(y: np.ndarray, P: np.ndarray, device: torch.device) -> dict:
-    """Score out-of-fold probabilities.
-
-    n: the number of leaves.
-
-    :param y: True variety codes, length n.
-    :type y: np.ndarray
-    :param P: Out-of-fold probabilities, shape (n, 4).
-    :type P: np.ndarray
-    :param device: Where the bootstrap runs.
-    :type device: torch.device
-    :return: pred (n,), balanced accuracy and its CI, per-variety recall and ROC AUC, confusion (4, 4).
-    :rtype: dict
-    """
-    pred = P.argmax(1)
-    labels = range(len(VARIETIES))
-    return {
-        "pred": pred,
-        "balanced_accuracy": balanced_accuracy_score(y, pred),
-        "balanced_accuracy_ci95": bootstrap_balanced_accuracy(y, pred, device),
-        "recall": recall_score(y, pred, labels=labels, average=None),
-        # One-vs-rest AUC: how well P(this variety) ranks its leaves above the other three.
-        "auc_ovr": [roc_auc_score((y == k).astype(int), P[:, k]) for k in labels],
-        "confusion": confusion_matrix(y, pred, labels=labels),
-    }
-
-
 def metrics_markdown(cfg: Config, m: dict, folds: dict) -> str:
     """Build metrics.md: balanced accuracy, confusion matrix, per-variety and per-row scores.
 
     :param cfg: The configuration that was run.
     :type cfg: Config
-    :param m: Output of :func:`evaluate`.
+    :param m: Output of scoring.evaluate.
     :type m: dict
     :param folds: Per-row results of :func:`row_cv`.
     :type folds: dict
@@ -251,7 +198,7 @@ def write_metrics_json(path: Path, cfg: Config, m: dict, folds: dict) -> None:
     :type path: Path
     :param cfg: The configuration that was run.
     :type cfg: Config
-    :param m: Output of :func:`evaluate`.
+    :param m: Output of scoring.evaluate.
     :type m: dict
     :param folds: Per-row results of :func:`row_cv`.
     :type folds: dict
@@ -326,7 +273,7 @@ def write_outputs(cfg: Config, m: dict, folds: dict) -> None:
 
     :param cfg: The configuration that was run.
     :type cfg: Config
-    :param m: Output of :func:`evaluate`.
+    :param m: Output of scoring.evaluate.
     :type m: dict
     :param folds: Per-row results of :func:`row_cv`.
     :type folds: dict

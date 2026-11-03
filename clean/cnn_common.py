@@ -100,13 +100,13 @@ def pad_to_canvas(cubes: list[np.ndarray], device: torch.device) -> tuple[torch.
 def band_stats(X: torch.Tensor, mask: torch.Tensor, idx: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
     """Mean and SD of each band over the leaf pixels of the given (training) leaves.
 
-    :param X: Canvas, shape (n, 204, S, S).
+    :param X: Canvas, shape (n, d, S, S), d bands.
     :type X: torch.Tensor
     :param mask: Leaf mask, shape (n, 1, S, S).
     :type mask: torch.Tensor
     :param idx: Indices of the leaves to use, length k.
     :type idx: torch.Tensor
-    :return: mean (204,) and SD (204,).
+    :return: mean (d,) and SD (d,).
     :rtype: tuple[torch.Tensor, torch.Tensor]
     """
     s1 = torch.zeros(X.shape[1], dtype=torch.float64, device=X.device)
@@ -126,7 +126,7 @@ def augment(x: torch.Tensor, m: torch.Tensor, g: torch.Generator) -> tuple[torch
     Rotation by 90° maps the square canvas onto itself. A moved leaf can sit 1-3 px off
     the pooling grid (training only; test leaves stay on it), which adds a little variety.
 
-    :param x: Input, shape (B, 204, S, S).
+    :param x: Input, shape (B, d, S, S).
     :type x: torch.Tensor
     :param m: Mask, shape (B, 1, S, S).
     :type m: torch.Tensor

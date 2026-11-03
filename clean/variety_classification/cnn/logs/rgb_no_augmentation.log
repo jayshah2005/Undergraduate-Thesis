@@ -1,0 +1,5 @@
+rgb: 998 leaves, 3 bands, canvas 212
+seed 0: 5 folds, median best epoch 76, 147 s
+seed 1: 5 folds, median best epoch 70, 146 s
+seed 2: 5 folds, median best epoch 41, 131 s
+[done] results/rgb

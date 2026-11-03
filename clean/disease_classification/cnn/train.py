@@ -1,0 +1,164 @@
+"""Preprocessing, augmentation and training for the whole-leaf CNN. No brightness or band jitter."""
+from __future__ import annotations
+
+import copy
+import sys
+from dataclasses import dataclass
+from pathlib import Path
+
+import torch
+import torch.nn.functional as F
+
+HERE = Path(__file__).resolve().parent
+CLEAN_ROOT = HERE.parents[1]
+for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE):
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
+from cnn_common import augment, band_stats  # noqa: E402
+from model import LeafCNN  # noqa: E402
+
+BRIGHTNESS = ("band_z", "snv")
+POOLING = ("mean", "attention")
+
+
+@dataclass
+class TrainConfig:
+    """Training settings shared by every run (none were tuned on the test rows)."""
+
+    batch: int = 8             # leaves per step
+    lr: float = 1e-3
+    weight_decay: float = 1e-2
+    max_epochs: int = 80
+    patience: int = 15         # epochs without a lower validation loss
+    dropout: float = 0.5       # before the last linear layer
+    augment: bool = True       # random 90° rotations and flips while training
+
+
+def preprocess(x: torch.Tensor, m: torch.Tensor, brightness: str, stats) -> torch.Tensor:
+    """Turn a batch of reflectance canvases into network input; background stays 0.
+
+    band_z: each band standardised with training-leaf statistics. The network
+            still sees absolute brightness.
+    snv:    each pixel's spectrum centred and scaled over its own d bands (SNV),
+            which removes brightness (light, leaf angle) and keeps spectral shape.
+
+    B: batch size. d: input bands (204, or 3 for RGB). S: canvas side.
+
+    :param x: Reflectance, shape (B, d, S, S).
+    :type x: torch.Tensor
+    :param m: Leaf mask, shape (B, 1, S, S).
+    :type m: torch.Tensor
+    :param brightness: "band_z" or "snv".
+    :type brightness: str
+    :param stats: (mean, SD) per band from :func:`band_stats`; used by band_z.
+    :type stats: tuple
+    :return: Input, shape (B, d, S, S) float32.
+    :rtype: torch.Tensor
+    """
+    x = x.float()
+    if brightness == "band_z":
+        mean, sd = stats
+        x = (x - mean[None, :, None, None]) / sd[None, :, None, None]
+    else:
+        # SNV per pixel; background pixels have SD 0, so clamp and re-mask afterwards.
+        mu = x.mean(1, keepdim=True)
+        sd = x.std(1, keepdim=True, unbiased=False).clamp_min(1e-6)
+        x = (x - mu) / sd
+    return x * m
+
+
+def _predict(model, X, mask, idx, brightness, stats, batch: int = 16):
+    """Logits and pooling weights for the given leaves (eval mode)."""
+    logits, att = [], []
+    with torch.no_grad():
+        for s in range(0, len(idx), batch):
+            j = idx[s:s + batch]
+            x = preprocess(X[j], mask[j], brightness, stats)
+            lo, a = model(x, mask[j])
+            logits.append(lo)
+            att.append(a)
+    return torch.cat(logits), torch.cat(att)
+
+
+def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, brightness: str,
+               pooling: str, seed: int, cfg: TrainConfig) -> dict:
+    """Train one CNN on one fold split and score its validation and test leaves.
+
+    Early stopping uses the validation row's loss (the same class-weighted binary
+    cross-entropy as training): 50 leaves give a noisy AUC but a steadier loss.
+    The weights from the epoch with the lowest validation loss are restored.
+
+    n: leaves loaded. d: input bands. S4: side of the last feature map.
+
+    :param X: Reflectance canvas, shape (n, d, S, S) float16.
+    :type X: torch.Tensor
+    :param mask: Leaf mask, shape (n, 1, S, S).
+    :type mask: torch.Tensor
+    :param y: 0/1 label per leaf, shape (n,) float32.
+    :type y: torch.Tensor
+    :param split: (train, validation, test) index arrays from logistic_regression.fold_split.
+    :type split: tuple
+    :param brightness: "band_z" or "snv".
+    :type brightness: str
+    :param pooling: "mean" or "attention".
+    :type pooling: str
+    :param seed: Seed for initial weights, batch order and augmentation.
+    :type seed: int
+    :param cfg: Training settings.
+    :type cfg: TrainConfig
+    :return: test probabilities (n_test,), test pooling weights (n_test, S4, S4),
+        best epoch, epochs run, per-epoch train and validation losses.
+    :rtype: dict
+    """
+    dev = X.device
+    tr, va, te = (torch.as_tensor(s, device=dev) for s in split)
+    # Seed everything this run draws from: weights (global seed), batch order and augmentation (g).
+    torch.manual_seed(seed)
+    g = torch.Generator(device=dev).manual_seed(seed)
+    stats = band_stats(X, mask, tr) if brightness == "band_z" else None
+
+    model = LeafCNN(X.shape[1], pooling, cfg.dropout).to(dev)
+    opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
+    n_pos = y[tr].sum()
+    # Up-weight the positive class by #neg / #pos so both classes count equally.
+    pos_weight = (len(tr) - n_pos) / n_pos
+
+    best = (float("inf"), 0, None)
+    hist_tr, hist_va = [], []
+    for epoch in range(1, cfg.max_epochs + 1):
+        model.train()
+        order = tr[torch.randperm(len(tr), generator=g, device=dev)]
+        total = 0.0
+        for s in range(0, len(order), cfg.batch):
+            j = order[s:s + cfg.batch]
+            x, m = preprocess(X[j], mask[j], brightness, stats), mask[j]
+            if cfg.augment:
+                x, m = augment(x, m, g)
+            logit, _ = model(x, m)
+            loss = F.binary_cross_entropy_with_logits(logit, y[j], pos_weight=pos_weight)
+            opt.zero_grad(set_to_none=True)
+            loss.backward()
+            opt.step()
+            total += loss.item() * len(j)
+        hist_tr.append(total / len(tr))
+
+        model.eval()
+        lv, _ = _predict(model, X, mask, va, brightness, stats)
+        vloss = F.binary_cross_entropy_with_logits(lv, y[va], pos_weight=pos_weight).item()
+        hist_va.append(vloss)
+        if vloss < best[0]:
+            best = (vloss, epoch, copy.deepcopy(model.state_dict()))
+        elif epoch - best[1] >= cfg.patience:
+            break
+
+    model.load_state_dict(best[2])
+    model.eval()
+    lt, att = _predict(model, X, mask, te, brightness, stats)
+    return {
+        "prob": torch.sigmoid(lt),
+        "attention": att,
+        "best_epoch": best[1],
+        "epochs": len(hist_tr),
+        "train_loss": hist_tr,
+        "val_loss": hist_va,
+    }

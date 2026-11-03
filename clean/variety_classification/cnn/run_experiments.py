@@ -7,7 +7,7 @@ import json
 import os
 import sys
 import time
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 
 # Needed by cuBLAS for deterministic matrix products; must be set before CUDA starts.
@@ -48,7 +48,7 @@ class Config:
 
 @dataclass(frozen=True)
 class TrainConfig:
-    """Training settings shared by every configuration; the same as the disease CNN, without jitter."""
+    """Training settings shared by every configuration; the same as the disease CNN."""
 
     batch: int = 8
     lr: float = 1e-3
@@ -56,6 +56,7 @@ class TrainConfig:
     max_epochs: int = 80
     patience: int = 15     # epochs without a lower validation loss
     dropout: float = 0.5
+    augment: bool = True   # random 90° rotations and flips while training; no brightness or band jitter
 
 
 def load(device: torch.device) -> dict:
@@ -101,7 +102,7 @@ def preprocess(x: torch.Tensor, m: torch.Tensor) -> torch.Tensor:
 
 
 def _logits(model, X, mask, idx, bands, batch: int = 16) -> torch.Tensor:
-    """Logits for the given leaves, no augmentation (eval mode)."""
+    """Logits for the given leaves (eval mode)."""
     out = []
     with torch.no_grad():
         for s in range(0, len(idx), batch):
@@ -143,7 +144,9 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
         total = 0.0
         for s in range(0, len(order), tc.batch):
             j = order[s:s + tc.batch]
-            x, m = augment(preprocess(X[j][:, bands], mask[j]), mask[j], g)
+            x, m = preprocess(X[j][:, bands], mask[j]), mask[j]
+            if tc.augment:
+                x, m = augment(x, m, g)
             loss = F.cross_entropy(model(x, m), y[j])
             opt.zero_grad(set_to_none=True)
             loss.backward()
@@ -188,6 +191,11 @@ def invariance_check(d: dict, bands: torch.Tensor) -> float:
                    for p in ((8, 0, 8, 0), (16, 16, 16, 16), (0, 32, 0, 32)))
 
 
+def run_name(bands: str, augment: bool = True) -> str:
+    """Results folder of one run: the bands, plus _no_augmentation when trained without rotations and flips."""
+    return bands + ("" if augment else "_no_augmentation")
+
+
 def check_settings(root: Path, tc: TrainConfig) -> None:
     """Refuse to resume into a folder whose runs used other training settings.
 
@@ -209,13 +217,17 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--bands", choices=BANDS, default=Config.bands, help="all 204 bands, or only the 3 RGB bands")
     ap.add_argument("--smoke", action="store_true", help="first test row, seed 0, 3 epochs, into results/smoke/")
+    ap.add_argument("--no-augmentation", action="store_true",
+                    help="train without rotations and flips; results go to results/<bands>_no_augmentation/")
     args = ap.parse_args()
 
     cfg = Config(args.bands)
     tc = TrainConfig(max_epochs=3, patience=3) if args.smoke else TrainConfig()
+    tc = replace(tc, augment=not args.no_augmentation)
     seeds, folds = ((0,), (0,)) if args.smoke else (SEEDS, range(5))
-    root = (RESULTS / "smoke" if args.smoke else RESULTS) / cfg.name
-    log = get_logger("variety_cnn", log_file=None if args.smoke else LOGS / f"{cfg.name}.log")
+    name = run_name(cfg.bands, tc.augment)
+    root = (RESULTS / "smoke" if args.smoke else RESULTS) / name
+    log = get_logger("variety_cnn", log_file=None if args.smoke else LOGS / f"{name}.log")
     check_settings(root, tc)
 
     torch.backends.cudnn.benchmark = False
@@ -226,7 +238,7 @@ def main() -> None:
     d = load(device)
     bands = torch.as_tensor(d["rgb"] if cfg.bands == "rgb" else np.arange(d["X"].shape[1]), device=device)
     rows = d["meta"].row.to_numpy().astype(str)
-    log.info("%s: %d leaves, %d bands, canvas %d", cfg.name, len(rows), len(bands), d["side"])
+    log.info("%s: %d leaves, %d bands, canvas %d", name, len(rows), len(bands), d["side"])
     change = invariance_check(d, bands)
     if change > 1e-3:
         raise RuntimeError(f"padding leaks into the prediction: {change}")

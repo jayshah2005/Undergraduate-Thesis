@@ -15,11 +15,12 @@ from sklearn.metrics import balanced_accuracy_score  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from run_experiments import RESULTS, ROWS, SEEDS, VARIETIES  # noqa: E402  (also sets sys.path)
+from run_experiments import RESULTS, ROWS, SEEDS, VARIETIES, run_name  # noqa: E402  (also sets sys.path)
 from data import load_leaf_sizes  # noqa: E402
-from logistic_regression import (BANDS, INK, MUTED, N_BOOT, SEED, evaluate, get_device, get_logger,  # noqa: E402
-                                 load_features, plot_confusion, row_cv)
+from logistic_regression import (BANDS, INK, MUTED, get_device, get_logger, load_features,  # noqa: E402
+                                 plot_confusion, row_cv)
 from logistic_regression import Config as LRConfig  # noqa: E402
+from scoring import N_BOOT, SEED, evaluate  # noqa: E402
 
 FIG = HERE / "figures"
 BAND_COLOR = {"all": "#2a78d6", "rgb": "#eb6834"}
@@ -120,11 +121,13 @@ def score_run(run: str, y: np.ndarray, rows: np.ndarray, device: torch.device) -
     return m
 
 
-def compute(device: torch.device) -> dict:
+def compute(device: torch.device, augment: bool = True) -> dict:
     """Score the CNN on each input and its logistic-regression partner, with paired differences.
 
     :param device: Where the bootstrap runs.
     :type device: torch.device
+    :param augment: Score the CNN runs trained with rotations and flips (the default), or those without.
+    :type augment: bool
     :return: {"cnn": per input, "lr": per input, "deltas": paired differences}.
     :rtype: dict
     """
@@ -133,7 +136,7 @@ def compute(device: torch.device) -> dict:
         d = load_features(LRConfig(b), device)
         y, rows = d["y"], d["rows"]
         out["lr"][b] = evaluate(y, row_cv(d["X"], y, rows)[0], device)
-        out["cnn"][b] = score_run(b, y, rows, device)
+        out["cnn"][b] = score_run(run_name(b, augment), y, rows, device)
     cnn, lr = out["cnn"], out["lr"]
     out["deltas"] = {
         "CNN: 204 bands − RGB": paired_delta(y, cnn["all"]["pred"], cnn["rgb"]["pred"], device),
@@ -144,11 +147,13 @@ def compute(device: torch.device) -> dict:
     return out
 
 
-def to_markdown(r: dict) -> str:
+def to_markdown(r: dict, augment: bool = True) -> str:
     """Build metrics.md.
 
     :param r: Output of :func:`compute`.
     :type r: dict
+    :param augment: Whether the CNN runs were trained with rotations and flips.
+    :type augment: bool
     :return: Markdown text.
     :rtype: str
     """
@@ -157,7 +162,7 @@ def to_markdown(r: dict) -> str:
         lo, hi = m["balanced_accuracy_ci95"]
         return f"| {label} | {m['balanced_accuracy']:.3f} ({lo:.3f}–{hi:.3f}) |"
 
-    lines = ["# Variety CNN: metrics", "", "Balanced accuracy, chance 0.25; held-out field rows; 95% bootstrap interval. "
+    lines = ["# Variety CNN: metrics" + ("" if augment else ", trained without augmentation"), "", "Balanced accuracy, chance 0.25; held-out field rows; 95% bootstrap interval. "
              "Every model uses SNV, trains on 3 rows and is selected on a fourth: the CNN its checkpoint, logistic "
              "regression its C. CNN scores are 3-seed ensembles.", "",
              "| model | balanced accuracy |", "|---|---|"]
@@ -208,25 +213,39 @@ def plot_scores(r: dict, path: Path) -> None:
     plt.close(fig)
 
 
-def write_outputs(r: dict) -> None:
-    """Write metrics.md and the figures.
+def write_outputs(r: dict, augment: bool = True) -> str:
+    """Write metrics.md and the figures; runs without augmentation get a _no_augmentation suffix.
 
     :param r: Output of :func:`compute`.
     :type r: dict
+    :param augment: Whether the CNN runs were trained with rotations and flips.
+    :type augment: bool
+    :return: Name of the metrics file.
+    :rtype: str
     """
+    suffix = "" if augment else "_no_augmentation"
     FIG.mkdir(exist_ok=True)
-    (RESULTS / "metrics.md").write_text(to_markdown(r))
-    plot_scores(r, FIG / "scores.png")
+    (RESULTS / f"metrics{suffix}.md").write_text(to_markdown(r, augment))
+    plot_scores(r, FIG / f"scores{suffix}.png")
     for name, m in r["cnn"].items():
-        plot_confusion(m["confusion"], SimpleNamespace(name=name), m["balanced_accuracy"], FIG / f"confusion_{name}.png")
+        plot_confusion(m["confusion"], SimpleNamespace(name=name), m["balanced_accuracy"],
+                       FIG / f"confusion_{name}{suffix}.png")
+    return f"metrics{suffix}.md"
 
 
 def main() -> None:
     """Load every run → metrics → write files."""
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--no-augmentation", action="store_true",
+                    help="report the runs from run_experiments.py --no-augmentation")
+    args = ap.parse_args()
     log = get_logger("variety_cnn_report")
     device = get_device()
-    write_outputs({**compute(device), "leaf_size": leaf_size_control(device)})
-    log.info("[saved] results/metrics.md, figures/")
+    augment = not args.no_augmentation
+    md = write_outputs({**compute(device, augment), "leaf_size": leaf_size_control(device)}, augment)
+    log.info("[saved] results/%s, figures/", md)
 
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ Does a small CNN that sees the whole leaf do better than logistic regression on 
 
 - **Input:** each pixel gets SNV over its own bands, which removes brightness. Each leaf is centred on one 212 × 212 canvas (the largest leaf side, rounded up to a multiple of 4). Padding is 0 and a mask marks leaf pixels. Normalisation and pooling use leaf positions only, so padding can't change a prediction; each run checks this at start-up.
 - **Splits:** one field row is the test set, the next is validation (early stopping), and the other 3 train. 5 test rows × 3 seeds = 15 trainings per configuration.
-- **Training:** batch 8, AdamW (lr 1e-3, weight decay 1e-2), dropout 0.5, cross-entropy, up to 80 epochs with patience 15. Augmentation is 90° rotations and flips, with no brightness or band jitter.
+- **Training:** batch 8, AdamW (lr 1e-3, weight decay 1e-2), dropout 0.5, cross-entropy, up to 80 epochs with patience 15. Augmentation is 90° rotations and flips, with no brightness or band jitter. `--no-augmentation` (on both `run_experiments.py` and `report.py`) trains without it, into `results/<bands>_no_augmentation/`, and the report files get the same suffix.
 - **Comparison:** logistic regression with the same split: it fits on the same 3 rows and chooses C on the validation row, so neither model has more data.
 
 ```bash

@@ -1,0 +1,8 @@
+all_rgb: 998 leaves, 3 bands, canvas 212
+AUC = 3-seed ensemble on held-out rows, comparing only leaves of the same variety and row (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
+any (772 + / 226 −): baseline AUC 0.554; R1 0.61 R2 0.57 R3 0.61 R4 0.47 R5 0.54; Baco 0.46 Cab Franc 0.57 Chardonnay 0.59 Vidal 0.59
+any | band_z + mean: AUC 0.513 (-0.041 vs baseline); seeds 0.47 0.53 0.50; R1 0.59 R2 0.51 R3 0.63 R4 0.39 R5 0.51; Baco 0.43 Cab Franc 0.55 Chardonnay 0.54 Vidal 0.55; median best epoch 8; 177 s
+any | band_z + attention: AUC 0.528 (-0.026 vs baseline); seeds 0.52 0.53 0.54; R1 0.61 R2 0.55 R3 0.63 R4 0.39 R5 0.52; Baco 0.44 Cab Franc 0.52 Chardonnay 0.58 Vidal 0.55; median best epoch 9; 175 s
+any | snv + mean: AUC 0.521 (-0.034 vs baseline); seeds 0.53 0.53 0.53; R1 0.54 R2 0.55 R3 0.52 R4 0.45 R5 0.55; Baco 0.43 Cab Franc 0.54 Chardonnay 0.55 Vidal 0.56; median best epoch 21; 253 s
+any | snv + attention: AUC 0.528 (-0.026 vs baseline); seeds 0.53 0.52 0.51; R1 0.54 R2 0.56 R3 0.53 R4 0.45 R5 0.58; Baco 0.45 Cab Franc 0.61 Chardonnay 0.57 Vidal 0.53; median best epoch 11; 199 s
+[done] results/all_rgb. For intervals, tables and figures: report.py --variety all --bands rgb
