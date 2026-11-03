@@ -1,33 +1,33 @@
 # Whole-leaf CNN on all varieties, RGB bands only: metrics
 
-Each row is tested once; the next row is validation and the other 3 train, for the CNN and the baseline. AUC compares leaves of the same variety and row only (0.5 = chance). Δ: paired difference to the baseline. Bal. acc. isn't compared within a variety, so recognising a variety can raise it.
+Each row is tested once; the next row is validation and the other 3 train, for the CNN and the baseline. Balanced accuracy over all test rows (0.5 = chance); a leaf counts as positive at P ≥ 0.5. CNN = mean P of 3 seeds. Δ: paired difference to the baseline. Pooled over varieties, so recognising a variety can raise it; see the per-variety table.
 
 ## Any disease vs healthy (772 + / 226 −)
 
-| model | AUC seeds (mean ± SD) | AUC ensemble [95% CI] | Δ vs baseline [95% CI] | bal. acc. |
-|---|---|---|---|---|
-| baseline | — | 0.554 [0.510, 0.598] | — | 0.584 |
-| band z-score + mean pool | 0.499 ± 0.027 | 0.513 [0.467, 0.558] | -0.041 [-0.087, +0.005] | 0.595 |
-| band z-score + attention | 0.529 ± 0.009 | 0.528 [0.484, 0.573] | -0.026 [-0.076, +0.024] | 0.592 |
-| pixel SNV + mean pool | 0.531 ± 0.003 | 0.521 [0.476, 0.566] | -0.034 [-0.081, +0.013] | 0.614 |
-| pixel SNV + attention | 0.521 ± 0.012 | 0.528 [0.485, 0.573] | -0.026 [-0.076, +0.024] | 0.597 |
+| model | bal. acc. [95% CI] | Δ vs baseline [95% CI] | single seeds (mean ± SD) |
+|---|---|---|---|
+| baseline | 0.584 [0.558, 0.612] | — | — |
+| band z-score + mean pool | 0.595 [0.571, 0.619] | +0.011 [-0.021, +0.042] | 0.574 ± 0.023 |
+| band z-score + attention | 0.592 [0.567, 0.616] | +0.008 [-0.027, +0.042] | 0.591 ± 0.026 |
+| pixel SNV + mean pool | 0.614 [0.592, 0.635] | +0.030 [+0.001, +0.056] | 0.611 ± 0.006 |
+| pixel SNV + attention | 0.597 [0.575, 0.619] | +0.013 [-0.016, +0.041] | 0.600 ± 0.002 |
 
-AUC per test row (ensemble):
+Balanced accuracy per test row:
 
 | model | R1 | R2 | R3 | R4 | R5 |
 |---|---|---|---|---|---|
-| baseline | 0.611 | 0.572 | 0.613 | 0.474 | 0.545 |
-| band z-score + mean pool | 0.586 | 0.513 | 0.626 | 0.393 | 0.507 |
-| band z-score + attention | 0.611 | 0.546 | 0.634 | 0.393 | 0.522 |
-| pixel SNV + mean pool | 0.544 | 0.552 | 0.522 | 0.454 | 0.554 |
-| pixel SNV + attention | 0.543 | 0.555 | 0.527 | 0.452 | 0.583 |
+| baseline | 0.581 | 0.523 | 0.673 | 0.598 | 0.567 |
+| band z-score + mean pool | 0.543 | 0.567 | 0.650 | 0.577 | 0.639 |
+| band z-score + attention | 0.550 | 0.540 | 0.649 | 0.565 | 0.623 |
+| pixel SNV + mean pool | 0.527 | 0.567 | 0.606 | 0.645 | 0.651 |
+| pixel SNV + attention | 0.491 | 0.543 | 0.606 | 0.627 | 0.618 |
 
-AUC per variety (ensemble):
+Balanced accuracy per variety:
 
 | model | Baco | Cab Franc | Chardonnay | Vidal |
 |---|---|---|---|---|
-| baseline | 0.463 | 0.568 | 0.588 | 0.592 |
-| band z-score + mean pool | 0.431 | 0.550 | 0.539 | 0.547 |
-| band z-score + attention | 0.435 | 0.524 | 0.577 | 0.551 |
-| pixel SNV + mean pool | 0.426 | 0.536 | 0.553 | 0.562 |
-| pixel SNV + attention | 0.451 | 0.615 | 0.571 | 0.530 |
+| baseline | 0.449 | 0.495 | 0.542 | 0.541 |
+| band z-score + mean pool | 0.432 | 0.483 | 0.504 | 0.564 |
+| band z-score + attention | 0.446 | 0.461 | 0.524 | 0.515 |
+| pixel SNV + mean pool | 0.487 | 0.563 | 0.500 | 0.536 |
+| pixel SNV + attention | 0.521 | 0.538 | 0.500 | 0.493 |

@@ -5,12 +5,13 @@
   "max_epochs": 80,
   "patience": 15,
   "dropout": 0.5,
+  "augment": false,
   "seeds": [
     0,
     1,
     2
   ],
   "variety": "all",
-  "canvas": 212,
-  "augment": false
+  "bands": "all",
+  "canvas": 212
 }

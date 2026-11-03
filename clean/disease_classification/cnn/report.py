@@ -19,12 +19,12 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE.parent / "l
         sys.path.insert(0, str(p))
 from data import load_dataset  # noqa: E402
 from log import get_logger  # noqa: E402
-from logistic_regression import (ALL_VARIETIES, BANDS, DEFAULT_VARIETY, ROWS, TASKS, auc_groups,  # noqa: E402
-                                 bands_label, fold_of, load_meta, load_means, rgb_bands, run_baselines,
+from logistic_regression import (ALL_VARIETIES, BANDS, DEFAULT_VARIETY, ROWS, TASKS, bands_label,  # noqa: E402
+                                 fold_of, load_meta, load_means, rgb_bands, row_groups, run_baselines,
                                  task_labels, usable_leaves)
 from pca_common import VARIETIES, get_device  # noqa: E402
 from run_experiments import SEEDS, load_cube_list, results_root, run_dir  # noqa: E402
-from scoring import bootstrap_weights, within_row_auc  # noqa: E402
+from scoring import balanced_accuracy, bootstrap_weights  # noqa: E402
 from cnn_common import pad_to_canvas  # noqa: E402
 from train import BRIGHTNESS, POOLING, TrainConfig  # noqa: E402
 
@@ -90,7 +90,7 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
     """
     base = run_baselines(meta, load_means(variety, device, bands), tasks_in(root))
     fold = fold_of(meta)
-    group = auc_groups(meta)
+    group = row_groups(meta)
     variety = meta.variety.to_numpy()   # from here on: variety per leaf
     out = {}
     for task in tasks_in(root):
@@ -120,56 +120,50 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
 # Metrics
 # --------------------------------------------------------------------------
 def compute_metrics(preds: dict, device: torch.device) -> dict:
-    """Score every arm and the baseline for each task.
+    """Score every arm and the baseline for each task by balanced accuracy.
 
-    Seed-ensemble = the mean probability over the 3 seeds. Its 95% interval and
-    the paired difference to the baseline come from the same 2000 resamples.
+    Seed ensemble = the mean probability over the 3 seeds, called positive at P >= 0.5.
+    Its 95% interval and the paired difference to the baseline come from the same 2000
+    resamples.
 
     :param preds: Output of :func:`load_predictions`.
     :type preds: dict
     :param device: GPU or CPU.
     :type device: torch.device
     :return: {task: {name: {metric: value}}} with names "baseline" and the arm labels;
-        plus per-row AUCs, and per-variety AUCs when a task uses several varieties.
+        plus per-row values, and per-variety values when a task uses several varieties.
     :rtype: dict
     """
-    from sklearn.metrics import balanced_accuracy_score, roc_auc_score  # standard metric code
-
     out = {}
     for task, t in preds.items():
-        y = torch.tensor(t["y"], dtype=torch.float64, device=device)
-        group = torch.tensor(t["group"], device=device)     # AUC groups: variety × row
-        fk = t["fold"]
-        varieties = sorted(set(t["variety"]))
-        w = bootstrap_weights(y, group)
         tt = lambda a: torch.tensor(a, dtype=torch.float64, device=device)  # noqa: E731
-        base_boot = within_row_auc(tt(t["base"]), y, group, w)
+        y = tt(t["y"])
+        w = bootstrap_weights(y, torch.tensor(t["group"], device=device))   # resample within variety × row
+        base = tt(t["base"])
+        base_boot = balanced_accuracy(base, y, w)
+        varieties = sorted(set(t["variety"]))
+
+        def part(p: torch.Tensor, mask: np.ndarray) -> float:
+            """Balanced accuracy over the leaves in mask."""
+            m = torch.tensor(mask, device=device)
+            return balanced_accuracy(p[m], y[m]).item()
 
         def score(p_seeds: np.ndarray) -> dict:
-            ens = p_seeds.mean(0)
-            boot = within_row_auc(tt(ens), y, group, w)
+            ens = tt(p_seeds).mean(0)
+            boot = balanced_accuracy(ens, y, w)
             diff = boot - base_boot
-            per_seed = [within_row_auc(tt(p), y, group).item() for p in p_seeds]
-            per_fold = [within_row_auc(tt(ens)[tt(fk) == k], y[tt(fk) == k], group[tt(fk) == k]).item()
-                        for k in range(5)]
-            by_variety = {}
-            for v in varieties if len(varieties) > 1 else []:
-                in_v = torch.tensor(t["variety"] == v, device=device)
-                by_variety[v] = within_row_auc(tt(ens)[in_v], y[in_v], group[in_v]).item()
+            per_seed = [balanced_accuracy(tt(p), y).item() for p in p_seeds]
+            q = torch.tensor([0.025, 0.975], dtype=torch.float64, device=device)
             return {
-                **({"per_variety_auc": by_variety} if by_variety else {}),
-                "auc_seed_mean": float(np.mean(per_seed)), "auc_seed_sd": float(np.std(per_seed, ddof=1))
-                if len(per_seed) > 1 else 0.0, "auc_seeds": per_seed,
-                "auc_ens": within_row_auc(tt(ens), y, group).item(),
-                "auc_ens_lo": torch.quantile(boot, 0.025).item(),
-                "auc_ens_hi": torch.quantile(boot, 0.975).item(),
-                "pooled_auc_ens": float(roc_auc_score(t["y"], ens)),
-                "bal_acc_ens": float(balanced_accuracy_score(t["y"], ens >= 0.5)),
-                "diff_vs_base": (within_row_auc(tt(ens), y, group) - within_row_auc(tt(t["base"]), y, group)).item(),
-                "diff_lo": torch.quantile(diff, 0.025).item(),
-                "diff_hi": torch.quantile(diff, 0.975).item(),
-                "p_better": (diff > 0).double().mean().item(),
-                "per_fold_auc": per_fold,
+                "bal_acc": balanced_accuracy(ens, y).item(),
+                "ci95": torch.quantile(boot, q).tolist(),
+                "diff_vs_base": (balanced_accuracy(ens, y) - balanced_accuracy(base, y)).item(),
+                "diff_ci95": torch.quantile(diff, q).tolist(),
+                "seeds": per_seed,
+                "seed_mean": float(np.mean(per_seed)),
+                "seed_sd": float(np.std(per_seed, ddof=1)) if len(per_seed) > 1 else 0.0,
+                "per_fold": [part(ens, t["fold"] == k) for k in range(5)],
+                "per_variety": {v: part(ens, t["variety"] == v) for v in varieties} if len(varieties) > 1 else {},
             }
 
         res = {"baseline": score(t["base"][None])}
@@ -199,32 +193,32 @@ def to_markdown(metrics: dict, labels: dict, variety: str, bands: str) -> str:
     """
     pooled = variety == ALL_VARIETIES
     title = "all varieties" if pooled else variety
-    same = "variety and row" if pooled else "row"
-    note = " Bal. acc. isn't compared within a variety, so recognising a variety can raise it." if pooled else ""
+    note = " Pooled over varieties, so recognising a variety can raise it; see the per-variety table." if pooled else ""
     lines = [f"# Whole-leaf CNN on {title}, {bands_label(bands)}: metrics", "",
-             f"Each row is tested once; the next row is validation and the other 3 train, for the CNN and the baseline. "
-             f"AUC compares leaves of the same {same} only (0.5 = chance). Δ: paired difference to the baseline.{note}", ""]
+             "Each row is tested once; the next row is validation and the other 3 train, for the CNN and the baseline. "
+             "Balanced accuracy over all test rows (0.5 = chance); a leaf counts as positive at P ≥ 0.5. "
+             f"CNN = mean P of 3 seeds. Δ: paired difference to the baseline.{note}", ""]
     for task, res in metrics.items():
         lines += [f"## {labels[task]}", "",
-                  "| model | AUC seeds (mean ± SD) | AUC ensemble [95% CI] | Δ vs baseline [95% CI] | bal. acc. |",
-                  "|---|---|---|---|---|"]
+                  "| model | bal. acc. [95% CI] | Δ vs baseline [95% CI] | single seeds (mean ± SD) |",
+                  "|---|---|---|---|"]
         for name, m in res.items():
-            seeds = f"{m['auc_seed_mean']:.3f} ± {m['auc_seed_sd']:.3f}" if "baseline" not in name else "—"
+            lo, hi = m["ci95"]
             delta = "—" if name == "baseline" else \
-                f"{m['diff_vs_base']:+.3f} [{m['diff_lo']:+.3f}, {m['diff_hi']:+.3f}]"
-            lines.append(f"| {name} | {seeds} | {m['auc_ens']:.3f} [{m['auc_ens_lo']:.3f}, {m['auc_ens_hi']:.3f}] "
-                         f"| {delta} | {m['bal_acc_ens']:.3f} |")
-        lines += ["", "AUC per test row (ensemble):", "",
+                f"{m['diff_vs_base']:+.3f} [{m['diff_ci95'][0]:+.3f}, {m['diff_ci95'][1]:+.3f}]"
+            seeds = "—" if name == "baseline" else f"{m['seed_mean']:.3f} ± {m['seed_sd']:.3f}"
+            lines.append(f"| {name} | {m['bal_acc']:.3f} [{lo:.3f}, {hi:.3f}] | {delta} | {seeds} |")
+        lines += ["", "Balanced accuracy per test row:", "",
                   "| model | " + " | ".join(ROWS) + " |", "|---|" + "---|" * 5]
         for name, m in res.items():
-            lines.append(f"| {name} | " + " | ".join(f"{a:.3f}" for a in m["per_fold_auc"]) + " |")
+            lines.append(f"| {name} | " + " | ".join(f"{a:.3f}" for a in m["per_fold"]) + " |")
         lines.append("")
-        by_variety = next(iter(res.values())).get("per_variety_auc", {})
+        by_variety = res["baseline"]["per_variety"]
         if by_variety:
-            lines += ["AUC per variety (ensemble):", "", "| model | " + " | ".join(by_variety) + " |",
+            lines += ["Balanced accuracy per variety:", "", "| model | " + " | ".join(by_variety) + " |",
                       "|---|" + "---|" * len(by_variety)]
             for name, m in res.items():
-                lines.append(f"| {name} | " + " | ".join(f"{a:.3f}" for a in m["per_variety_auc"].values()) + " |")
+                lines.append(f"| {name} | " + " | ".join(f"{a:.3f}" for a in m["per_variety"].values()) + " |")
             lines.append("")
     return "\n".join(lines)
 
@@ -232,8 +226,8 @@ def to_markdown(metrics: dict, labels: dict, variety: str, bands: str) -> str:
 # --------------------------------------------------------------------------
 # Figures
 # --------------------------------------------------------------------------
-def fig_auc(metrics: dict, labels: dict, path: Path) -> None:
-    """Dot plot: ensemble within-row AUC with 95% CI, seeds as small dots, per task.
+def fig_balanced_accuracy(metrics: dict, labels: dict, path: Path) -> None:
+    """Dot plot: ensemble balanced accuracy with 95% CI, seeds as small ticks, per task.
 
     :param metrics: Output of :func:`compute_metrics`.
     :type metrics: dict
@@ -252,14 +246,14 @@ def fig_auc(metrics: dict, labels: dict, path: Path) -> None:
             m = res[name]
             y = len(names) - 1 - i
             color = BASE_COLOR if "baseline" in name else CNN_COLOR
-            ax.plot([m["auc_ens_lo"], m["auc_ens_hi"]], [y, y], color=color, lw=2, solid_capstyle="round")
-            ax.plot(m["auc_ens"], y, "o", color=color, ms=8, mec="white", mew=1.5, zorder=3)
+            ax.plot(m["ci95"], [y, y], color=color, lw=2, solid_capstyle="round")
+            ax.plot(m["bal_acc"], y, "o", color=color, ms=8, mec="white", mew=1.5, zorder=3)
             if "baseline" not in name:
-                ax.plot(m["auc_seeds"], [y - 0.22] * len(m["auc_seeds"]), "|", color=color, ms=7, alpha=0.8)
+                ax.plot(m["seeds"], [y - 0.22] * len(m["seeds"]), "|", color=color, ms=7, alpha=0.8)
         ax.axvline(0.5, color=MUTED, lw=1, ls=(0, (4, 3)), zorder=0)
         ax.set_title(labels[task], fontsize=11, color=INK, loc="left")
-        ax.set_xlabel("within-row ROC AUC", fontsize=10, color=INK_2)
-        _set_auc_limits(ax)
+        ax.set_xlabel("balanced accuracy", fontsize=10, color=INK_2)
+        _set_limits(ax)
         ax.grid(axis="x", color=GRID, lw=0.8)
         ax.set_axisbelow(True)
         for s in ("top", "right", "left"):
@@ -274,8 +268,8 @@ def fig_auc(metrics: dict, labels: dict, path: Path) -> None:
     plt.close(fig)
 
 
-def _set_auc_limits(ax) -> None:
-    """Use the usual AUC axis, widened if a point or interval would fall outside it."""
+def _set_limits(ax) -> None:
+    """Use a fixed axis around chance, widened if a point or interval would fall outside it."""
     lo, hi = ax.get_xlim()
     ax.set_xlim(min(0.3, lo), max(0.85, hi))
 
@@ -329,7 +323,7 @@ def fig_attention(preds: dict, metrics: dict, meta, variety: str, path: Path, de
     shown = {}
     for r, (task, t) in enumerate(preds.items()):
         att_arms = [a for a in ARMS if a[1] == "attention"]
-        arm = max(att_arms, key=lambda a: metrics[task][ARM_LABEL[a]]["auc_ens"])
+        arm = max(att_arms, key=lambda a: metrics[task][ARM_LABEL[a]]["bal_acc"])
         p = t["cnn"][arm][0]
         pos = np.flatnonzero(t["y"] == 1)
         neg = np.flatnonzero(t["y"] == 0)
@@ -394,7 +388,7 @@ def main() -> None:
 
     (root / "metrics.md").write_text(to_markdown(metrics, labels, args.variety, args.bands))
     fig_dir.mkdir(parents=True, exist_ok=True)
-    fig_auc(metrics, labels, fig_dir / "auc_comparison.png")
+    fig_balanced_accuracy(metrics, labels, fig_dir / "balanced_accuracy.png")
     fig_attention(preds, metrics, meta, args.variety, fig_dir / "attention_maps.png", device)
     log.info("[saved] results/%s/metrics.md", root.name)
 

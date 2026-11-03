@@ -1,8 +1,8 @@
 all_rgb: 998 leaves, 3 bands, canvas 212
-AUC = 3-seed ensemble on held-out rows, comparing only leaves of the same variety and row (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
-any (772 + / 226 −): baseline AUC 0.554; R1 0.61 R2 0.57 R3 0.61 R4 0.47 R5 0.54; Baco 0.46 Cab Franc 0.57 Chardonnay 0.59 Vidal 0.59
-any | band_z + mean: AUC 0.513 (-0.041 vs baseline); seeds 0.47 0.53 0.50; R1 0.59 R2 0.51 R3 0.63 R4 0.39 R5 0.51; Baco 0.43 Cab Franc 0.55 Chardonnay 0.54 Vidal 0.55; median best epoch 8; 177 s
-any | band_z + attention: AUC 0.528 (-0.026 vs baseline); seeds 0.52 0.53 0.54; R1 0.61 R2 0.55 R3 0.63 R4 0.39 R5 0.52; Baco 0.44 Cab Franc 0.52 Chardonnay 0.58 Vidal 0.55; median best epoch 9; 175 s
-any | snv + mean: AUC 0.521 (-0.034 vs baseline); seeds 0.53 0.53 0.53; R1 0.54 R2 0.55 R3 0.52 R4 0.45 R5 0.55; Baco 0.43 Cab Franc 0.54 Chardonnay 0.55 Vidal 0.56; median best epoch 21; 253 s
-any | snv + attention: AUC 0.528 (-0.026 vs baseline); seeds 0.53 0.52 0.51; R1 0.54 R2 0.56 R3 0.53 R4 0.45 R5 0.58; Baco 0.45 Cab Franc 0.61 Chardonnay 0.57 Vidal 0.53; median best epoch 11; 199 s
+Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
+any (772 + / 226 −): baseline bal. acc. 0.584; R1 0.58 R2 0.52 R3 0.67 R4 0.60 R5 0.57; Baco 0.45 Cab Franc 0.49 Chardonnay 0.54 Vidal 0.54
+any | band_z + mean: bal. acc. 0.595 (+0.011 vs baseline); seeds 0.57 0.60 0.55; R1 0.54 R2 0.57 R3 0.65 R4 0.58 R5 0.64; Baco 0.43 Cab Franc 0.48 Chardonnay 0.50 Vidal 0.56; median best epoch 8; saved earlier
+any | band_z + attention: bal. acc. 0.592 (+0.008 vs baseline); seeds 0.57 0.58 0.62; R1 0.55 R2 0.54 R3 0.65 R4 0.57 R5 0.62; Baco 0.45 Cab Franc 0.46 Chardonnay 0.52 Vidal 0.52; median best epoch 9; saved earlier
+any | snv + mean: bal. acc. 0.614 (+0.030 vs baseline); seeds 0.62 0.60 0.61; R1 0.53 R2 0.57 R3 0.61 R4 0.65 R5 0.65; Baco 0.49 Cab Franc 0.56 Chardonnay 0.50 Vidal 0.54; median best epoch 21; saved earlier
+any | snv + attention: bal. acc. 0.597 (+0.013 vs baseline); seeds 0.60 0.60 0.60; R1 0.49 R2 0.54 R3 0.61 R4 0.63 R5 0.62; Baco 0.52 Cab Franc 0.54 Chardonnay 0.50 Vidal 0.49; median best epoch 11; saved earlier
 [done] results/all_rgb. For intervals, tables and figures: report.py --variety all --bands rgb

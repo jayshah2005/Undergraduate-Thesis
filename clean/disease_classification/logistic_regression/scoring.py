@@ -1,64 +1,44 @@
-"""Within-group ROC AUC and its bootstrap, shared by the baseline, the CNN's training log and the CNN report."""
+"""Balanced accuracy and its bootstrap, shared by the baseline, the CNN's training log and the CNN report."""
 from __future__ import annotations
 
 import numpy as np
 import torch
 
 N_BOOT, BOOT_SEED = 2000, 0
+THRESHOLD = 0.5  # a leaf is called positive when P(positive) >= 0.5; fixed in advance, never tuned
 
 
-def _pair_tables(p: torch.Tensor, y: torch.Tensor, group: torch.Tensor) -> list:
-    """Per group: 1 / 0.5 / 0 for each (positive, negative) pair, by who scores higher."""
-    tabs = []
-    for k in torch.unique(group).tolist():
-        pk, yk = p[group == k], y[group == k]
-        pos, neg = pk[yk == 1], pk[yk == 0]
-        tabs.append((k, (pos[:, None] > neg[None, :]).double() + 0.5 * (pos[:, None] == neg[None, :]).double()))
-    return tabs
+def balanced_accuracy(p: torch.Tensor, y: torch.Tensor, w: torch.Tensor | None = None) -> torch.Tensor:
+    """Mean of the recall on positive leaves and the recall on negative leaves, at THRESHOLD.
 
+    With bootstrap weights w (B, n), returns one balanced accuracy per resample.
 
-def within_row_auc(p: torch.Tensor, y: torch.Tensor, group: torch.Tensor,
-                   w: torch.Tensor | None = None) -> torch.Tensor:
-    """ROC AUC that only compares leaves of the same group (same variety and row).
+    n: the number of leaves. B: the number of resamples.
 
-    This builds on the archived study's "within-variety AUC":
-    a leaf is compared only with leaves scored by the same model, so differences
-    between the five models (e.g. a shifted threshold) cannot help or hurt; and only
-    with leaves of its own variety and row, so neither recognising a variety nor a
-    row's disease rate can help.
-    Groups with no positive or no negative leaf contribute no pairs.
-    With bootstrap weights w (B, n), returns one AUC per bootstrap sample.
-
-    :param p: Probabilities, shape (n,).
+    :param p: P(positive), shape (n,).
     :type p: torch.Tensor
     :param y: 0/1 labels, shape (n,).
     :type y: torch.Tensor
-    :param group: Group id per leaf (variety × row), shape (n,).
-    :type group: torch.Tensor
     :param w: Optional resampling counts, shape (B, n).
     :type w: torch.Tensor | None
-    :return: AUC, shape () or (B,).
+    :return: Balanced accuracy, shape () or (B,).
     :rtype: torch.Tensor
     """
-    num = den = 0.0
-    for k, tab in _pair_tables(p, y, group):
-        mk = group == k
-        if w is None:
-            num, den = num + tab.sum(), den + tab.numel()
-        else:
-            wk, yk = w[:, mk], y[mk]
-            wp, wn = wk[:, yk == 1], wk[:, yk == 0]
-            num = num + ((wp @ tab) * wn).sum(1)
-            den = den + wp.sum(1) * wn.sum(1)
-    return num / den
+    pos = (y == 1).double()
+    hit = ((p >= THRESHOLD).double() == pos).double()
+    if w is None:
+        w = torch.ones_like(pos)
+    recall_pos = (w * hit * pos).sum(-1) / (w * pos).sum(-1)
+    recall_neg = (w * hit * (1 - pos)).sum(-1) / (w * (1 - pos)).sum(-1)
+    return (recall_pos + recall_neg) / 2
 
 
 def bootstrap_weights(y: torch.Tensor, group: torch.Tensor, n_boot: int = N_BOOT, seed: int = BOOT_SEED) -> torch.Tensor:
     """Resample leaves with replacement within each (group, class) cell.
 
-    Keeping each cell's size fixed keeps every bootstrap AUC defined and leaves
-    the group structure intact. Seeded so every model sees the same resamples, which
-    makes the model-minus-baseline differences paired.
+    Keeping each cell's size fixed keeps both recalls defined in every resample and keeps
+    each row's class balance. Seeded so every model sees the same resamples, which makes
+    the model-minus-baseline differences paired.
 
     :param y: 0/1 labels, shape (n,).
     :type y: torch.Tensor
@@ -83,9 +63,11 @@ def bootstrap_weights(y: torch.Tensor, group: torch.Tensor, n_boot: int = N_BOOT
     return w
 
 
-def auc_summary(p_seeds: np.ndarray, y: np.ndarray, group: np.ndarray, fold: np.ndarray, variety: np.ndarray,
-                device: torch.device) -> dict:
+def summary(p_seeds: np.ndarray, y: np.ndarray, fold: np.ndarray, variety: np.ndarray,
+            device: torch.device) -> dict:
     """Score one model on the leaves it predicted: its seed ensemble, each seed, each fold and each variety.
+
+    The ensemble averages P(positive) over the seeds, then applies THRESHOLD.
 
     n: the leaves given. s: the number of seeds.
 
@@ -93,29 +75,27 @@ def auc_summary(p_seeds: np.ndarray, y: np.ndarray, group: np.ndarray, fold: np.
     :type p_seeds: np.ndarray
     :param y: 0/1 labels, length n.
     :type y: np.ndarray
-    :param group: AUC group per leaf (variety × row), length n.
-    :type group: np.ndarray
     :param fold: Fold per leaf, length n.
     :type fold: np.ndarray
     :param variety: Variety per leaf, length n.
     :type variety: np.ndarray
     :param device: GPU or CPU.
     :type device: torch.device
-    :return: auc (ensemble), seeds (list), by_fold ({fold: AUC}) and by_variety ({variety: AUC}, empty for one variety).
+    :return: bal_acc (ensemble), seeds (list), by_fold ({fold: value}) and by_variety
+        ({variety: value}, empty for one variety).
     :rtype: dict
     """
     p = torch.tensor(p_seeds, dtype=torch.float64, device=device)
     labels = torch.tensor(y, dtype=torch.float64, device=device)
-    groups = torch.tensor(group, device=device)
     ens = p.mean(0)
 
-    def auc(mask: np.ndarray) -> float:
-        """Ensemble AUC over the leaves in mask."""
+    def part(mask: np.ndarray) -> float:
+        """Ensemble balanced accuracy over the leaves in mask."""
         m = torch.tensor(mask, device=device)
-        return within_row_auc(ens[m], labels[m], groups[m]).item()
+        return balanced_accuracy(ens[m], labels[m]).item()
 
     varieties = sorted(set(variety))
-    return {"auc": within_row_auc(ens, labels, groups).item(),
-            "seeds": [within_row_auc(s, labels, groups).item() for s in p],
-            "by_fold": {int(k): auc(fold == k) for k in np.unique(fold)},
-            "by_variety": {v: auc(variety == v) for v in varieties} if len(varieties) > 1 else {}}
+    return {"bal_acc": balanced_accuracy(ens, labels).item(),
+            "seeds": [balanced_accuracy(s, labels).item() for s in p],
+            "by_fold": {int(k): part(fold == k) for k in np.unique(fold)},
+            "by_variety": {v: part(variety == v) for v in varieties} if len(varieties) > 1 else {}}

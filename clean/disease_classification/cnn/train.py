@@ -85,7 +85,7 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, brig
     """Train one CNN on one fold split and score its validation and test leaves.
 
     Early stopping uses the validation row's loss (the same class-weighted binary
-    cross-entropy as training): 50 leaves give a noisy AUC but a steadier loss.
+    cross-entropy as training): 50 leaves give a noisy accuracy but a steadier loss.
     The weights from the epoch with the lowest validation loss are restored.
 
     n: leaves loaded. d: input bands. S4: side of the last feature map.

@@ -16,7 +16,7 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE):
 from data import load_dataset  # noqa: E402
 from log import get_logger  # noqa: E402
 from pca_common import VARIETIES, get_device, snv  # noqa: E402
-from scoring import auc_summary, bootstrap_weights, within_row_auc  # noqa: E402
+from scoring import balanced_accuracy, bootstrap_weights, summary  # noqa: E402
 
 RES = HERE / "results"
 ROWS = ["R1", "R2", "R3", "R4", "R5"]
@@ -99,7 +99,7 @@ def load_means(variety: str, device: torch.device, bands: str = "all") -> torch.
     meta, _w, means, _g = load_dataset()
     keep = meta.variety.isin(varieties_of(variety)).to_numpy()
     # Row-major like the unsliced array: a column-major copy makes SNV sum in another order, and the
-    # pooled fit turns that 1e-15 change into AUC shifts of up to 0.003.
+    # pooled fit turns that 1e-15 change into visible score shifts.
     return torch.tensor(np.ascontiguousarray(means[keep][:, band_indices(bands)]), dtype=torch.float64, device=device)
 
 
@@ -152,12 +152,11 @@ def fold_of(meta) -> np.ndarray:
     return np.array([ROWS.index(r) for r in meta.row.to_numpy()])
 
 
-def auc_groups(meta) -> np.ndarray:
-    """Give every leaf its AUC group: variety × row.
+def row_groups(meta) -> np.ndarray:
+    """Give every leaf its group: variety × row.
 
-    AUCs only compare leaves of one group, i.e. leaves of the same variety, scored by the
-    same model because they share a test row, so neither recognising a variety nor a row's
-    disease rate can help. For one variety, a group is simply the test row.
+    The bootstrap resamples leaves within each group and class, so every resample keeps
+    each row's size and disease rate. For one variety, a group is simply the row.
 
     :param meta: Leaf table with variety and row, n rows.
     :type meta: pandas.DataFrame
@@ -283,7 +282,7 @@ def runnable_tasks(meta) -> list[str]:
 
 
 def score_baselines(meta, base: dict, device: torch.device) -> dict:
-    """Within-row AUC of the baseline for each task: overall with a 95% interval, per row and per variety.
+    """Balanced accuracy of the baseline for each task: overall with a 95% interval, per row and per variety.
 
     The interval uses the same seeded resamples as the CNN report, so the two reports give the
     baseline the same interval.
@@ -294,19 +293,19 @@ def score_baselines(meta, base: dict, device: torch.device) -> dict:
     :type base: dict
     :param device: GPU or CPU.
     :type device: torch.device
-    :return: {task: output of :func:`scoring.auc_summary` plus ci95, n_pos, n_neg and left_out}.
+    :return: {task: output of :func:`scoring.summary` plus ci95, n_pos, n_neg and left_out}.
     :rtype: dict
     """
-    fold, group, varieties = fold_of(meta), auc_groups(meta), meta.variety.to_numpy()
+    fold, group, varieties = fold_of(meta), row_groups(meta), meta.variety.to_numpy()
     out = {}
     for task, p in base.items():
         y = task_labels(meta, task)
         keep = usable_leaves(meta, y)
-        s = auc_summary(p[keep][None], y[keep], group[keep], fold[keep], varieties[keep], device)
+        s = summary(p[keep][None], y[keep], fold[keep], varieties[keep], device)
         yt = torch.tensor(y[keep], dtype=torch.float64, device=device)
         gt = torch.tensor(group[keep], device=device)
-        boot = within_row_auc(torch.tensor(p[keep], dtype=torch.float64, device=device), yt, gt,
-                              bootstrap_weights(yt, gt))
+        boot = balanced_accuracy(torch.tensor(p[keep], dtype=torch.float64, device=device), yt,
+                                 bootstrap_weights(yt, gt))
         s["ci95"] = torch.quantile(boot, torch.tensor([0.025, 0.975], dtype=torch.float64, device=device)).tolist()
         s["n_pos"], s["n_neg"] = int(y[keep].sum()), int((1 - y[keep]).sum())
         s["left_out"] = sorted(set(varieties[~keep]))
@@ -325,7 +324,7 @@ def bands_label(bands: str) -> str:
 
 
 def metrics_markdown(variety: str, bands: str, scores: dict) -> str:
-    """Build metrics.md: each task's within-row AUC, per row and, when pooled, per variety.
+    """Build metrics.md: each task's balanced accuracy, per row and, when pooled, per variety.
 
     :param variety: A variety name, or ALL_VARIETIES.
     :type variety: str
@@ -339,12 +338,12 @@ def metrics_markdown(variety: str, bands: str, scores: dict) -> str:
     pooled = variety == ALL_VARIETIES
     lines = [f"# Disease logistic regression: {'all varieties' if pooled else variety}, {bands_label(bands)}", "",
              "Each row is tested once; the model trains on 3 other rows (the next row, the CNN's validation row, "
-             f"stays unused). AUC compares leaves of the same {'variety and row' if pooled else 'row'} only "
-             "(0.5 = chance), with a 95% bootstrap interval.", "",
-             "| task | leaves (+ / −) | AUC [95% CI] | " + " | ".join(ROWS) + " |", "|---|---|---|" + "---|" * 5]
+             "stays unused). Balanced accuracy over all test rows (0.5 = chance), P ≥ 0.5 counts as positive, "
+             "with a 95% bootstrap interval.", "",
+             "| task | leaves (+ / −) | bal. acc. [95% CI] | " + " | ".join(ROWS) + " |", "|---|---|---|" + "---|" * 5]
     for task, s in scores.items():
         lo, hi = s["ci95"]
-        lines.append(f"| {task} | {s['n_pos']} / {s['n_neg']} | {s['auc']:.3f} [{lo:.3f}, {hi:.3f}] | "
+        lines.append(f"| {task} | {s['n_pos']} / {s['n_neg']} | {s['bal_acc']:.3f} [{lo:.3f}, {hi:.3f}] | "
                      + " | ".join(f"{a:.3f}" for a in s["by_fold"].values()) + " |")
     left_out = {t: s["left_out"] for t, s in scores.items() if s["left_out"]}
     if left_out:
@@ -353,7 +352,7 @@ def metrics_markdown(variety: str, bands: str, scores: dict) -> str:
     by_variety = {t: s["by_variety"] for t, s in scores.items() if s["by_variety"]}
     if by_variety:
         names = sorted({v for b in by_variety.values() for v in b})
-        lines += ["", "AUC per variety:", "", "| task | " + " | ".join(names) + " |", "|---|" + "---|" * len(names)]
+        lines += ["", "Balanced accuracy per variety:", "", "| task | " + " | ".join(names) + " |", "|---|" + "---|" * len(names)]
         lines += [f"| {t} | " + " | ".join(f"{b[v]:.3f}" if v in b else "—" for v in names) + " |"
                   for t, b in by_variety.items()]
     return "\n".join(lines) + "\n"
@@ -378,7 +377,7 @@ def main() -> None:
     res.mkdir(parents=True, exist_ok=True)
     (res / "metrics.md").write_text(metrics_markdown(args.variety, args.bands, scores))
     log.info("%s: %s | results/%s/metrics.md", args.variety,
-             ", ".join(f"{t} {s['auc']:.3f}" for t, s in scores.items()), res.name)
+             ", ".join(f"{t} {s['bal_acc']:.3f}" for t, s in scores.items()), res.name)
 
 
 if __name__ == "__main__":

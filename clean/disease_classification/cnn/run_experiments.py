@@ -22,12 +22,12 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE.parent / "l
         sys.path.insert(0, str(p))
 from data import load_cubes  # noqa: E402
 from log import get_logger  # noqa: E402
-from logistic_regression import (ALL_VARIETIES, BANDS, DEFAULT_VARIETY, ROWS, TASKS, auc_groups,  # noqa: E402
-                                 band_indices, check_task, fold_of, fold_split, load_meta, load_means,
-                                 results_name, run_baselines, task_labels, usable_leaves, varieties_of)
+from logistic_regression import (ALL_VARIETIES, BANDS, DEFAULT_VARIETY, ROWS, TASKS, band_indices,  # noqa: E402
+                                 check_task, fold_of, fold_split, load_meta, load_means, results_name,
+                                 run_baselines, task_labels, usable_leaves, varieties_of)
 from model import LeafCNN  # noqa: E402
 from pca_common import VARIETIES, get_device, np_  # noqa: E402
-from scoring import auc_summary  # noqa: E402
+from scoring import summary  # noqa: E402
 from cnn_common import pad_to_canvas  # noqa: E402
 from train import BRIGHTNESS, POOLING, TrainConfig, preprocess, train_fold  # noqa: E402
 
@@ -223,7 +223,7 @@ def load_arm(task: str, brightness: str, pooling: str, seeds: tuple, folds, n: i
 def format_scores(s: dict) -> str:
     """Write one model's scores on one log line.
 
-    :param s: Output of :func:`scoring.auc_summary`.
+    :param s: Output of :func:`scoring.summary`.
     :type s: dict
     :return: e.g. "R1 0.52 R2 0.61 ...; Baco 0.58 Vidal 0.60".
     :rtype: str
@@ -245,7 +245,7 @@ def report_command(args: argparse.Namespace) -> str:
 
 
 def main() -> None:
-    """Check, then train every (task, arm, seed, fold) not already on disk, logging each arm's test AUC."""
+    """Check, then train every (task, arm, seed, fold) not already on disk, logging each arm's test balanced accuracy."""
 
     # parse arguments
     # --variety: one variety, or all to pool them (default: Chardonnay)
@@ -295,7 +295,7 @@ def main() -> None:
 
     # Log system information
     log.info("%s: %d leaves, %d bands, canvas %d", root.name, len(d["meta"]), d["X"].shape[1], d["side"])
-    log.info("AUC = 3-seed ensemble on held-out rows, comparing only leaves of the same variety and row (0.5 = chance). "
+    log.info("Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). "
              "CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.")
 
     chk = invariance_check(d)
@@ -309,7 +309,6 @@ def main() -> None:
     (root / "config.json").write_text(json.dumps({**asdict(cfg), "seeds": list(seeds), "variety": args.variety,
                                                   "bands": args.bands, "canvas": d["side"]}, indent=2))
 
-    groups = auc_groups(meta)
     varieties = meta.variety.to_numpy()
 
     # Train the CNN
@@ -319,10 +318,9 @@ def main() -> None:
 
         # Log the task and the score to beat
         left_out = sorted(set(varieties[~keep]))
-        base_scores = auc_summary(base[task][keep][None], y[keep], groups[keep], fold_ids[keep],
-                                  varieties[keep], device)
-        log.info("%s (%d + / %d −%s): baseline AUC %.3f; %s", task, y[keep].sum(), (1 - y[keep]).sum(),
-                 f", left out {', '.join(left_out)}" if left_out else "", base_scores["auc"],
+        base_scores = summary(base[task][keep][None], y[keep], fold_ids[keep], varieties[keep], device)
+        log.info("%s (%d + / %d −%s): baseline bal. acc. %.3f; %s", task, y[keep].sum(), (1 - y[keep]).sum(),
+                 f", left out {', '.join(left_out)}" if left_out else "", base_scores["bal_acc"],
                  format_scores(base_scores))
 
         for brightness in BRIGHTNESS:
@@ -349,9 +347,9 @@ def main() -> None:
                 # Score the arm on the leaves tested so far (only part of them in a smoke run)
                 probs, epochs = load_arm(task, brightness, pooling, seeds, folds, len(y), root)
                 tested = ~np.isnan(probs).any(0)
-                s = auc_summary(probs[:, tested], y[tested], groups[tested], fold_ids[tested], varieties[tested], device)
-                log.info("%s | %s + %s: AUC %.3f (%+.3f vs baseline); seeds %s; %s; median best epoch %.0f; %s",
-                         task, brightness, pooling, s["auc"], s["auc"] - base_scores["auc"],
+                s = summary(probs[:, tested], y[tested], fold_ids[tested], varieties[tested], device)
+                log.info("%s | %s + %s: bal. acc. %.3f (%+.3f vs baseline); seeds %s; %s; median best epoch %.0f; %s",
+                         task, brightness, pooling, s["bal_acc"], s["bal_acc"] - base_scores["bal_acc"],
                          " ".join(f"{a:.2f}" for a in s["seeds"]), format_scores(s), np.median(epochs),
                          f"{seconds:.0f} s" if seconds else "saved earlier")
 
