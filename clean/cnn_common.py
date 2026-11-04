@@ -69,11 +69,12 @@ def min_pool(mask: torch.Tensor, k: int, stride: int, pad: int = 0) -> torch.Ten
     return -F.max_pool2d(-mask, k, stride)
 
 
-def pad_to_canvas(cubes: list[np.ndarray], device: torch.device) -> tuple[torch.Tensor, torch.Tensor, int]:
+def pad_to_canvas(cubes: list[np.ndarray], device: torch.device,
+                  side: int | None = None) -> tuple[torch.Tensor, torch.Tensor, int]:
     """Centre every leaf on one square canvas; background and padding are 0.
 
-    The canvas side is the largest leaf height or width, rounded up to a multiple
-    of 4 (two 2x2 pools). Square so a 90° rotation keeps the leaf on the canvas.
+    By default the canvas side is the largest leaf height or width, rounded up to a
+    multiple of 4 (two 2x2 pools). Square so a 90° rotation keeps the leaf on the canvas.
     Offsets are multiples of 4 too, so the pooling grid lines up the same way
     for every leaf.
 
@@ -83,11 +84,16 @@ def pad_to_canvas(cubes: list[np.ndarray], device: torch.device) -> tuple[torch.
     :type cubes: list[np.ndarray]
     :param device: Where to keep the canvas.
     :type device: torch.device
+    :param side: Fixed canvas side (a multiple of 4, at least the largest leaf); None fits these leaves.
+    :type side: int | None
     :return: X (n, 204, S, S) float16 reflectance, mask (n, 1, S, S) float32, S.
     :rtype: tuple[torch.Tensor, torch.Tensor, int]
     """
-    side = max(max(c.shape[1], c.shape[2]) for c in cubes)
-    side = -(-side // 4) * 4
+    fit = -(-max(max(c.shape[1], c.shape[2]) for c in cubes) // 4) * 4
+    if side is None:
+        side = fit
+    elif side < fit or side % 4:
+        raise ValueError(f"canvas {side} must be a multiple of 4 and at least {fit}")
     X = torch.zeros(len(cubes), cubes[0].shape[0], side, side, dtype=torch.float16, device=device)
     for i, c in enumerate(cubes):
         _, h, w = c.shape
@@ -95,29 +101,6 @@ def pad_to_canvas(cubes: list[np.ndarray], device: torch.device) -> tuple[torch.
         X[i, :, top:top + h, left:left + w] = torch.from_numpy(c).to(device, torch.float16)
     mask = (X != 0).any(dim=1, keepdim=True).float()
     return X, mask, side
-
-
-def band_stats(X: torch.Tensor, mask: torch.Tensor, idx: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-    """Mean and SD of each band over the leaf pixels of the given (training) leaves.
-
-    :param X: Canvas, shape (n, d, S, S), d bands.
-    :type X: torch.Tensor
-    :param mask: Leaf mask, shape (n, 1, S, S).
-    :type mask: torch.Tensor
-    :param idx: Indices of the leaves to use, length k.
-    :type idx: torch.Tensor
-    :return: mean (d,) and SD (d,).
-    :rtype: tuple[torch.Tensor, torch.Tensor]
-    """
-    s1 = torch.zeros(X.shape[1], dtype=torch.float64, device=X.device)
-    s2, n = torch.zeros_like(s1), torch.zeros((), dtype=torch.float64, device=X.device)
-    for i in idx.tolist():                 # one leaf at a time keeps memory small
-        x, m = X[i].double(), mask[i].double()
-        s1 += (x * m).sum((1, 2))
-        s2 += (x * x * m).sum((1, 2))
-        n += m.sum()
-    mean = s1 / n
-    return mean.float(), torch.sqrt(s2 / n - mean ** 2).float()
 
 
 def augment(x: torch.Tensor, m: torch.Tensor, g: torch.Generator) -> tuple[torch.Tensor, torch.Tensor]:

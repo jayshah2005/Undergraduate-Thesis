@@ -15,6 +15,7 @@ Shared code, used by the folders above:
 | `data.py` | leaf mean spectra (cached in `cache/`), whole-leaf cubes, leaf sizes, and which camera image each leaf came from |
 | `cnn_common.py` | masked batch norm, mask erosion, canvas padding, augmentation for the whole-leaf CNNs |
 | `log.py` | terminal + log-file output |
+| `diagram.py` | drawing pieces (cubes, boxes, arrows, legend) for the poster schematics: pipeline and both CNN architectures |
 | `leaf_sources.csv` | leaf → camera image, matched by exact pixel values; read by `data.load_capture_ids` |
 
 How code here must be written: `../.claude/skills/clean-analysis/`. Each folder's README says how to run it.

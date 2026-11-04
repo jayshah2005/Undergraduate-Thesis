@@ -1,0 +1,9 @@
+baco_rgb: 248 leaves, 3 bands, canvas 212
+Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
+leafroll (107 + / 141 −): baseline bal. acc. 0.418; R1 0.52 R2 0.41 R3 0.50 R4 0.35 R5 0.53
+leafroll | mean pooling: bal. acc. 0.370 (-0.049 vs baseline); seeds 0.41 0.43 0.36; R1 0.50 R2 0.52 R3 0.30 R4 0.40 R5 0.52; median best epoch 3; 33 s
+leafroll | attention pooling: bal. acc. 0.440 (+0.022 vs baseline); seeds 0.51 0.37 0.44; R1 0.50 R2 0.50 R3 0.36 R4 0.43 R5 0.54; median best epoch 2; 35 s
+red_blotch (135 + / 113 −): baseline bal. acc. 0.543; R1 0.50 R2 0.48 R3 0.55 R4 0.62 R5 0.44
+red_blotch | mean pooling: bal. acc. 0.525 (-0.018 vs baseline); seeds 0.51 0.55 0.52; R1 0.65 R2 0.52 R3 0.50 R4 0.50 R5 0.40; median best epoch 6; 36 s
+red_blotch | attention pooling: bal. acc. 0.548 (+0.005 vs baseline); seeds 0.54 0.56 0.54; R1 0.65 R2 0.51 R3 0.55 R4 0.50 R5 0.45; median best epoch 5; 38 s
+[done] results/baco_rgb. For intervals, tables and figures: report_within_variety.py --bands rgb

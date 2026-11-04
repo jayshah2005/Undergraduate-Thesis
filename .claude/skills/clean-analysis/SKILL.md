@@ -14,7 +14,7 @@ Analyses in `clean/` have their own loaders. They do not import `claude runs/`,
 
 ## Isolation
 
-- Import only from `clean/` (`data.py`, `log.py`, `cnn_common.py`, `leaf_sources.csv`, `spectral_analysis/PCA/pca_common.py`) and third-party libraries.
+- Import only from `clean/` (`data.py`, `log.py`, `cnn_common.py`, `diagram.py`, `leaf_sources.csv`, `spectral_analysis/PCA/pca_common.py`) and third-party libraries.
 - Never `sys.path` into `claude runs/` or `from common import …` / `from spectra import …` / `from vine_data import …`.
 - The only file outside `clean/` that code may read is `vine_hsi.h5`, through `clean/data.py`.
 - One topic folder per kind of work: `variety_classification/`, `spectral_analysis/`, `disease_classification/`.

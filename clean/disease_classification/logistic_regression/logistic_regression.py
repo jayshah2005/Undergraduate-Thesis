@@ -20,7 +20,10 @@ from scoring import balanced_accuracy, bootstrap_weights, summary  # noqa: E402
 
 RES = HERE / "results"
 ROWS = ["R1", "R2", "R3", "R4", "R5"]
-DEFAULT_VARIETY, ALL_VARIETIES = "Chardonnay", "all"
+DEFAULT_VARIETY = "Chardonnay"
+# Pooled choices: one model over several varieties' leaves.
+POOLS = {"all": list(VARIETIES), "baco_chardonnay_vidal": ["Baco", "Chardonnay", "Vidal"]}
+VARIETY_CHOICES = [*VARIETIES, *POOLS]
 # What counts as positive in each task; every other leaf is negative.
 TASKS = {
     "leafroll": "leafroll present",
@@ -39,18 +42,30 @@ RGB_NM = {"R": 640.0, "G": 550.0, "B": 460.0}  # the same picks as the variety m
 def varieties_of(variety: str) -> list[str]:
     """Varieties covered by a --variety choice.
 
-    :param variety: A variety name, or ALL_VARIETIES.
+    :param variety: A variety name, or a key of POOLS.
     :type variety: str
     :return: Variety names.
     :rtype: list[str]
     """
-    return list(VARIETIES) if variety == ALL_VARIETIES else [variety]
+    return POOLS.get(variety, [variety])
+
+
+def is_pooled(variety: str) -> bool:
+    """True when a --variety choice pools several varieties into one model."""
+    return variety in POOLS
+
+
+def variety_label(variety: str) -> str:
+    """How titles name a --variety choice, e.g. "Chardonnay", "all varieties", "Baco + Chardonnay + Vidal"."""
+    if variety == "all":
+        return "all varieties"
+    return " + ".join(varieties_of(variety))
 
 
 def load_meta(variety: str):
     """Load the leaf table of a --variety choice, without the cubes.
 
-    :param variety: A variety name, or ALL_VARIETIES.
+    :param variety: A variety name, or a key of POOLS.
     :type variety: str
     :return: Leaf table (path, variety, row, vine, labels) with a fresh index.
     :rtype: pandas.DataFrame
@@ -87,7 +102,7 @@ def load_means(variety: str, device: torch.device, bands: str = "all") -> torch.
 
     n: leaves of the chosen varieties. d: bands kept (204 or 3).
 
-    :param variety: A variety name, or ALL_VARIETIES.
+    :param variety: A variety name, or a key of POOLS.
     :type variety: str
     :param device: GPU or CPU.
     :type device: torch.device
@@ -326,7 +341,7 @@ def bands_label(bands: str) -> str:
 def metrics_markdown(variety: str, bands: str, scores: dict) -> str:
     """Build metrics.md: each task's balanced accuracy, per row and, when pooled, per variety.
 
-    :param variety: A variety name, or ALL_VARIETIES.
+    :param variety: A variety name, or a key of POOLS.
     :type variety: str
     :param bands: A value of BANDS.
     :type bands: str
@@ -335,8 +350,7 @@ def metrics_markdown(variety: str, bands: str, scores: dict) -> str:
     :return: Markdown text.
     :rtype: str
     """
-    pooled = variety == ALL_VARIETIES
-    lines = [f"# Disease logistic regression: {'all varieties' if pooled else variety}, {bands_label(bands)}", "",
+    lines = [f"# Disease logistic regression: {variety_label(variety)}, {bands_label(bands)}", "",
              "Each row is tested once; the model trains on 3 other rows (the next row, the CNN's validation row, "
              "stays unused). Balanced accuracy over all test rows (0.5 = chance), P ≥ 0.5 counts as positive, "
              "with a 95% bootstrap interval.", "",
@@ -361,8 +375,8 @@ def metrics_markdown(variety: str, bands: str, scores: dict) -> str:
 def main() -> None:
     """Parse --variety and --bands → load → baseline on every runnable task → metrics → write metrics.md."""
     ap = argparse.ArgumentParser()
-    ap.add_argument("--variety", choices=[*VARIETIES, ALL_VARIETIES], default=DEFAULT_VARIETY,
-                    help="one variety, or all to pool them")
+    ap.add_argument("--variety", choices=VARIETY_CHOICES, default=DEFAULT_VARIETY,
+                    help="one variety, or a pool (all, baco_chardonnay_vidal)")
     ap.add_argument("--bands", choices=BANDS, default="all",
                     help="all 204 bands, or only the 3 RGB bands; rgb adds _rgb to the folder name")
     args = ap.parse_args()

@@ -1,9 +1,12 @@
 # Disease classification
 
-Detecting disease inside one variety, or across all of them, on held-out field rows.
+Detecting leafroll and red blotch on held-out field rows, one variety at a time or with varieties pooled.
 
 | path | what it is |
 |---|---|
-| [`logistic_regression/`](logistic_regression/) | Logistic regression on the leaf's mean spectrum (the baseline), plus the leaves, labels, row folds and scoring both models use |
-| [`cnn/`](cnn/) | Whole-leaf CNN with mean or attention pooling, for any variety or all of them, and any disease task |
-| [`REPORT.md`](REPORT.md) | short summary: CNN vs logistic regression, full spectrum vs RGB, by balanced accuracy |
+| [`logistic_regression/`](logistic_regression/) | logistic regression on the leaf's mean spectrum (the baseline), plus the leaves, labels, row folds and scoring every model uses |
+| [`within_variety_disease_cnn/`](within_variety_disease_cnn/) | one whole-leaf CNN per variety (Baco, Chardonnay, Vidal), trained on that variety only |
+| [`cnn/`](cnn/) | one whole-leaf CNN for pooled varieties (all 998 leaves, or Baco + Chardonnay + Vidal); holds the network and training code both CNN folders use |
+| [`REPORT.md`](REPORT.md) | short summary: CNN vs logistic regression, within-variety vs pooled, full spectrum vs RGB |
+
+Every CNN sees a 212 × 212 canvas (the largest leaf, rounded up) with 204 bands or 3 RGB bands.

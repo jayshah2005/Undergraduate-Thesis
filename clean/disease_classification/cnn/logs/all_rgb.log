@@ -1,8 +1,9 @@
 all_rgb: 998 leaves, 3 bands, canvas 212
 Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
-any (772 + / 226 −): baseline bal. acc. 0.584; R1 0.58 R2 0.52 R3 0.67 R4 0.60 R5 0.57; Baco 0.45 Cab Franc 0.49 Chardonnay 0.54 Vidal 0.54
-any | band_z + mean: bal. acc. 0.595 (+0.011 vs baseline); seeds 0.57 0.60 0.55; R1 0.54 R2 0.57 R3 0.65 R4 0.58 R5 0.64; Baco 0.43 Cab Franc 0.48 Chardonnay 0.50 Vidal 0.56; median best epoch 8; saved earlier
-any | band_z + attention: bal. acc. 0.592 (+0.008 vs baseline); seeds 0.57 0.58 0.62; R1 0.55 R2 0.54 R3 0.65 R4 0.57 R5 0.62; Baco 0.45 Cab Franc 0.46 Chardonnay 0.52 Vidal 0.52; median best epoch 9; saved earlier
-any | snv + mean: bal. acc. 0.614 (+0.030 vs baseline); seeds 0.62 0.60 0.61; R1 0.53 R2 0.57 R3 0.61 R4 0.65 R5 0.65; Baco 0.49 Cab Franc 0.56 Chardonnay 0.50 Vidal 0.54; median best epoch 21; saved earlier
-any | snv + attention: bal. acc. 0.597 (+0.013 vs baseline); seeds 0.60 0.60 0.60; R1 0.49 R2 0.54 R3 0.61 R4 0.63 R5 0.62; Baco 0.52 Cab Franc 0.54 Chardonnay 0.50 Vidal 0.49; median best epoch 11; saved earlier
+leafroll (254 + / 494 −, left out Cab Franc): baseline bal. acc. 0.544; R1 0.59 R2 0.53 R3 0.56 R4 0.54 R5 0.55; Baco 0.46 Chardonnay 0.43 Vidal 0.47
+leafroll | mean pooling: bal. acc. 0.565 (+0.021 vs baseline); seeds 0.58 0.55 0.56; R1 0.56 R2 0.63 R3 0.55 R4 0.55 R5 0.58; Baco 0.46 Chardonnay 0.44 Vidal 0.49; median best epoch 6; 118 s
+leafroll | attention pooling: bal. acc. 0.580 (+0.036 vs baseline); seeds 0.57 0.57 0.59; R1 0.58 R2 0.63 R3 0.57 R4 0.56 R5 0.57; Baco 0.54 Chardonnay 0.42 Vidal 0.50; median best epoch 2; 127 s
+red_blotch (633 + / 365 −): baseline bal. acc. 0.641; R1 0.62 R2 0.62 R3 0.72 R4 0.64 R5 0.63; Baco 0.46 Cab Franc 0.50 Chardonnay 0.57 Vidal 0.54
+red_blotch | mean pooling: bal. acc. 0.650 (+0.009 vs baseline); seeds 0.68 0.66 0.66; R1 0.64 R2 0.63 R3 0.65 R4 0.68 R5 0.66; Baco 0.50 Cab Franc 0.49 Chardonnay 0.52 Vidal 0.47; median best epoch 15; 229 s
+red_blotch | attention pooling: bal. acc. 0.667 (+0.026 vs baseline); seeds 0.66 0.67 0.67; R1 0.66 R2 0.65 R3 0.67 R4 0.69 R5 0.67; Baco 0.50 Cab Franc 0.50 Chardonnay 0.53 Vidal 0.50; median best epoch 11; 201 s
 [done] results/all_rgb. For intervals, tables and figures: report.py --variety all --bands rgb

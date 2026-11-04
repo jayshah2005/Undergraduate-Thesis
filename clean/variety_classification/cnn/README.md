@@ -7,6 +7,7 @@ Does a small CNN that sees the whole leaf do better than logistic regression on 
 | `model.py` | `VarietyCNN`: 1×1 spectral conv → four 3×3 conv layers with masked batch norm → masked mean pooling → 4 logits |
 | `run_experiments.py` | padding check → train every (seed, test row) of one configuration; skips fold files already on disk |
 | `report.py` | metrics, paired differences and figures for both inputs, with logistic regression as the comparison |
+| `plot_architecture.py` | poster schematic of the network → `figures/architecture.png` |
 
 | setting | choices | meaning |
 |---|---|---|
@@ -25,6 +26,7 @@ cd clean/variety_classification/cnn
 ../../../.venv/bin/python -u run_experiments.py --bands all           # resumable
 ../../../.venv/bin/python -u run_experiments.py --bands rgb
 ../../../.venv/bin/python -u report.py                                # results/metrics.md + figures/; needs both runs
+../../../.venv/bin/python -u plot_architecture.py                     # figures/architecture.png
 ```
 
 | output | what it is |

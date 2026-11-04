@@ -1,4 +1,4 @@
-"""Preprocessing, augmentation and training for the whole-leaf CNN. No brightness or band jitter."""
+"""Preprocessing (SNV per pixel), augmentation and training for the whole-leaf CNN."""
 from __future__ import annotations
 
 import copy
@@ -14,11 +14,13 @@ CLEAN_ROOT = HERE.parents[1]
 for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
-from cnn_common import augment, band_stats  # noqa: E402
+from cnn_common import augment  # noqa: E402
 from model import LeafCNN  # noqa: E402
 
-BRIGHTNESS = ("band_z", "snv")
 POOLING = ("mean", "attention")
+# Canvas side for every disease model: the largest of all 998 leaves (211 px) rounded up to a
+# multiple of 4, so every model, pooled or one variety, sees 212 × 212 × d inputs.
+CANVAS = 212
 
 
 @dataclass
@@ -34,13 +36,11 @@ class TrainConfig:
     augment: bool = True       # random 90° rotations and flips while training
 
 
-def preprocess(x: torch.Tensor, m: torch.Tensor, brightness: str, stats) -> torch.Tensor:
-    """Turn a batch of reflectance canvases into network input; background stays 0.
+def preprocess(x: torch.Tensor, m: torch.Tensor) -> torch.Tensor:
+    """Apply SNV to each pixel over its own d bands, as in the variety CNN; background stays 0.
 
-    band_z: each band standardised with training-leaf statistics. The network
-            still sees absolute brightness.
-    snv:    each pixel's spectrum centred and scaled over its own d bands (SNV),
-            which removes brightness (light, leaf angle) and keeps spectral shape.
+    SNV centres and scales each pixel's spectrum, which removes brightness (light,
+    leaf angle) and keeps spectral shape.
 
     B: batch size. d: input bands (204, or 3 for RGB). S: canvas side.
 
@@ -48,40 +48,31 @@ def preprocess(x: torch.Tensor, m: torch.Tensor, brightness: str, stats) -> torc
     :type x: torch.Tensor
     :param m: Leaf mask, shape (B, 1, S, S).
     :type m: torch.Tensor
-    :param brightness: "band_z" or "snv".
-    :type brightness: str
-    :param stats: (mean, SD) per band from :func:`band_stats`; used by band_z.
-    :type stats: tuple
     :return: Input, shape (B, d, S, S) float32.
     :rtype: torch.Tensor
     """
     x = x.float()
-    if brightness == "band_z":
-        mean, sd = stats
-        x = (x - mean[None, :, None, None]) / sd[None, :, None, None]
-    else:
-        # SNV per pixel; background pixels have SD 0, so clamp and re-mask afterwards.
-        mu = x.mean(1, keepdim=True)
-        sd = x.std(1, keepdim=True, unbiased=False).clamp_min(1e-6)
-        x = (x - mu) / sd
-    return x * m
+    # Background pixels have SD 0, so clamp and re-mask afterwards.
+    mu = x.mean(1, keepdim=True)
+    sd = x.std(1, keepdim=True, unbiased=False).clamp_min(1e-6)
+    return (x - mu) / sd * m
 
 
-def _predict(model, X, mask, idx, brightness, stats, batch: int = 16):
+def _predict(model, X, mask, idx, batch: int = 16):
     """Logits and pooling weights for the given leaves (eval mode)."""
     logits, att = [], []
     with torch.no_grad():
         for s in range(0, len(idx), batch):
             j = idx[s:s + batch]
-            x = preprocess(X[j], mask[j], brightness, stats)
+            x = preprocess(X[j], mask[j])
             lo, a = model(x, mask[j])
             logits.append(lo)
             att.append(a)
     return torch.cat(logits), torch.cat(att)
 
 
-def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, brightness: str,
-               pooling: str, seed: int, cfg: TrainConfig) -> dict:
+def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, pooling: str, seed: int,
+               cfg: TrainConfig) -> dict:
     """Train one CNN on one fold split and score its validation and test leaves.
 
     Early stopping uses the validation row's loss (the same class-weighted binary
@@ -98,8 +89,6 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, brig
     :type y: torch.Tensor
     :param split: (train, validation, test) index arrays from logistic_regression.fold_split.
     :type split: tuple
-    :param brightness: "band_z" or "snv".
-    :type brightness: str
     :param pooling: "mean" or "attention".
     :type pooling: str
     :param seed: Seed for initial weights, batch order and augmentation.
@@ -115,7 +104,6 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, brig
     # Seed everything this run draws from: weights (global seed), batch order and augmentation (g).
     torch.manual_seed(seed)
     g = torch.Generator(device=dev).manual_seed(seed)
-    stats = band_stats(X, mask, tr) if brightness == "band_z" else None
 
     model = LeafCNN(X.shape[1], pooling, cfg.dropout).to(dev)
     opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
@@ -131,7 +119,7 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, brig
         total = 0.0
         for s in range(0, len(order), cfg.batch):
             j = order[s:s + cfg.batch]
-            x, m = preprocess(X[j], mask[j], brightness, stats), mask[j]
+            x, m = preprocess(X[j], mask[j]), mask[j]
             if cfg.augment:
                 x, m = augment(x, m, g)
             logit, _ = model(x, m)
@@ -143,7 +131,7 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, brig
         hist_tr.append(total / len(tr))
 
         model.eval()
-        lv, _ = _predict(model, X, mask, va, brightness, stats)
+        lv, _ = _predict(model, X, mask, va)
         vloss = F.binary_cross_entropy_with_logits(lv, y[va], pos_weight=pos_weight).item()
         hist_va.append(vloss)
         if vloss < best[0]:
@@ -153,7 +141,7 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, brig
 
     model.load_state_dict(best[2])
     model.eval()
-    lt, att = _predict(model, X, mask, te, brightness, stats)
+    lt, att = _predict(model, X, mask, te)
     return {
         "prob": torch.sigmoid(lt),
         "attention": att,

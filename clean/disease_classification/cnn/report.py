@@ -1,4 +1,7 @@
-"""Score every arm against the mean-spectrum baseline and draw the report figures."""
+"""Score both CNN models against the mean-spectrum baseline and draw the report figures.
+
+`write_report` is shared with ../within_variety_disease_cnn.
+"""
 from __future__ import annotations
 
 import sys
@@ -19,21 +22,17 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE.parent / "l
         sys.path.insert(0, str(p))
 from data import load_dataset  # noqa: E402
 from log import get_logger  # noqa: E402
-from logistic_regression import (ALL_VARIETIES, BANDS, DEFAULT_VARIETY, ROWS, TASKS, bands_label,  # noqa: E402
-                                 fold_of, load_meta, load_means, rgb_bands, row_groups, run_baselines,
-                                 task_labels, usable_leaves)
-from pca_common import VARIETIES, get_device  # noqa: E402
-from run_experiments import SEEDS, load_cube_list, results_root, run_dir  # noqa: E402
+from logistic_regression import (BANDS, POOLS, ROWS, TASKS, bands_label, fold_of, is_pooled,  # noqa: E402
+                                 load_meta, load_means, rgb_bands, row_groups, run_baselines, task_labels,
+                                 usable_leaves, variety_label)
+from pca_common import get_device  # noqa: E402
+from run_experiments import DEFAULT_POOL, SEEDS, load_cube_list, results_root, run_dir  # noqa: E402
 from scoring import balanced_accuracy, bootstrap_weights  # noqa: E402
 from cnn_common import pad_to_canvas  # noqa: E402
-from train import BRIGHTNESS, POOLING, TrainConfig  # noqa: E402
+from train import CANVAS, POOLING, TrainConfig  # noqa: E402
 
 FIG = HERE / "figures"
-ARMS = [(b, p) for b in BRIGHTNESS for p in POOLING]
-ARM_LABEL = {("band_z", "mean"): "band z-score + mean pool",
-             ("band_z", "attention"): "band z-score + attention",
-             ("snv", "mean"): "pixel SNV + mean pool",
-             ("snv", "attention"): "pixel SNV + attention"}
+ARM_LABEL = {"mean": "CNN, mean pool", "attention": "CNN, attention pool"}   # every CNN uses pixel SNV
 TASK_NAME = {"leafroll": "Leafroll", "red_blotch": "Red blotch", "both": "Both diseases", "any": "Any disease vs healthy"}
 INK, INK_2, MUTED, GRID = "#0b0b0b", "#52514e", "#898781", "#e1e0d9"
 CNN_COLOR, BASE_COLOR = "#2a78d6", "#898781"
@@ -66,7 +65,7 @@ def tasks_in(root: Path) -> list[str]:
 
 
 def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.device) -> dict:
-    """Collect out-of-fold probabilities for every task, arm and seed, plus the baselines.
+    """Collect out-of-fold probabilities for every task, pooling and seed, plus the baselines.
 
     The baseline is refitted here (it takes seconds and is deterministic), as in the variety CNN report,
     on the same bands as the CNN.
@@ -77,14 +76,14 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
     :type meta: pandas.DataFrame
     :param root: Results folder, from :func:`results_root`.
     :type root: Path
-    :param variety: A variety name, or ALL_VARIETIES.
+    :param variety: A variety name, or a key of POOLS.
     :type variety: str
     :param bands: A value of BANDS.
     :type bands: str
     :param device: GPU or CPU.
     :type device: torch.device
     :return: {task: {"y": (n,), "fold": (n,), "group": (n,), "variety": (n,), "leaf_idx": (n,) position in meta,
-        "base": (n,), "cnn": {(brightness, pooling): (n_seeds, n)}, "att": {arm: (n, S4, S4)} (seed 0),
+        "base": (n,), "cnn": {pooling: (n_seeds, n)}, "att": {arm: (n, S4, S4)} (seed 0),
         "epochs": {arm: list of best epochs}}}.
     :rtype: dict
     """
@@ -98,11 +97,11 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
         keep = usable_leaves(meta, y)
         t = {"y": y[keep], "fold": fold[keep], "group": group[keep], "variety": variety[keep],
              "leaf_idx": np.flatnonzero(keep), "base": base[task][keep], "cnn": {}, "att": {}, "epochs": {}}
-        for arm in ARMS:
+        for arm in POOLING:
             probs, epochs = np.full((len(SEEDS), len(meta)), np.nan), []
             for s in SEEDS:
                 for k in range(5):
-                    f = np.load(run_dir(task, *arm, s, root) / f"fold{k}.npz")
+                    f = np.load(run_dir(task, arm, s, root) / f"fold{k}.npz")
                     probs[s, f["test_idx"]] = f["prob"]
                     epochs.append(int(f["best_epoch"]))
                     if s == 0:
@@ -120,7 +119,7 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
 # Metrics
 # --------------------------------------------------------------------------
 def compute_metrics(preds: dict, device: torch.device) -> dict:
-    """Score every arm and the baseline for each task by balanced accuracy.
+    """Score both CNN models and the baseline for each task by balanced accuracy.
 
     Seed ensemble = the mean probability over the 3 seeds, called positive at P >= 0.5.
     Its 95% interval and the paired difference to the baseline come from the same 2000
@@ -130,7 +129,7 @@ def compute_metrics(preds: dict, device: torch.device) -> dict:
     :type preds: dict
     :param device: GPU or CPU.
     :type device: torch.device
-    :return: {task: {name: {metric: value}}} with names "baseline" and the arm labels;
+    :return: {task: {name: {metric: value}}} with names "baseline" and the ARM_LABEL values;
         plus per-row values, and per-variety values when a task uses several varieties.
     :rtype: dict
     """
@@ -167,7 +166,7 @@ def compute_metrics(preds: dict, device: torch.device) -> dict:
             }
 
         res = {"baseline": score(t["base"][None])}
-        for arm in ARMS:
+        for arm in POOLING:
             res[ARM_LABEL[arm]] = score(t["cnn"][arm])
             res[ARM_LABEL[arm]]["median_best_epoch"] = float(np.median(t["epochs"][arm]))
         out[task] = res
@@ -184,15 +183,15 @@ def to_markdown(metrics: dict, labels: dict, variety: str, bands: str) -> str:
     :type metrics: dict
     :param labels: {task: title from :func:`task_label`}.
     :type labels: dict
-    :param variety: A variety name, or ALL_VARIETIES.
+    :param variety: A variety name, or a key of POOLS.
     :type variety: str
     :param bands: A value of BANDS.
     :type bands: str
     :return: Markdown text.
     :rtype: str
     """
-    pooled = variety == ALL_VARIETIES
-    title = "all varieties" if pooled else variety
+    pooled = is_pooled(variety)
+    title = variety_label(variety)
     note = " Pooled over varieties, so recognising a variety can raise it; see the per-variety table." if pooled else ""
     lines = [f"# Whole-leaf CNN on {title}, {bands_label(bands)}: metrics", "",
              "Each row is tested once; the next row is validation and the other 3 train, for the CNN and the baseline. "
@@ -237,7 +236,7 @@ def fig_balanced_accuracy(metrics: dict, labels: dict, path: Path) -> None:
     :type path: Path
     """
     plt.rcParams.update({"font.family": ["Noto Sans", "DejaVu Sans"]})
-    names = ["baseline"] + [ARM_LABEL[a] for a in ARMS]
+    names = ["baseline"] + [ARM_LABEL[a] for a in POOLING]
     # One task keeps the width of two panels, so its title and the model names still fit.
     fig, axes = plt.subplots(1, len(metrics), figsize=(5.5 * max(len(metrics), 2), 3.6), sharey=True, squeeze=False)
     axes = axes[0]
@@ -295,35 +294,32 @@ def false_colour(X: torch.Tensor, mask: torch.Tensor, w: np.ndarray) -> np.ndarr
     return rgb.permute(0, 2, 3, 1).cpu().numpy()
 
 
-def fig_attention(preds: dict, metrics: dict, meta, variety: str, path: Path, device: torch.device) -> dict:
-    """Attention maps of the best attention arm per task, on false-colour leaves (seed 0).
+def fig_attention(preds: dict, meta, variety: str, path: Path, device: torch.device) -> dict:
+    """Attention maps of the attention-pooling CNN per task, on false-colour leaves (seed 0).
 
     Shows the 4 positive test leaves the model scored highest and the 2 negatives it
     scored lowest. Each map cell covers 4 × 4 pixels; its receptive field is ~26 px.
 
     :param preds: Output of :func:`load_predictions`.
     :type preds: dict
-    :param metrics: Output of :func:`compute_metrics`.
-    :type metrics: dict
     :param meta: Leaf table from load_meta.
     :type meta: pandas.DataFrame
-    :param variety: A variety name, or ALL_VARIETIES.
+    :param variety: A variety name, or a key of POOLS.
     :type variety: str
     :param path: Output PNG.
     :type path: Path
     :param device: GPU or CPU.
     :type device: torch.device
-    :return: {task: (arm label, leaf paths shown)}.
+    :return: {task: leaf paths shown}.
     :rtype: dict
     """
-    X, mask, side = pad_to_canvas(load_cube_list(variety), device)
+    X, mask, side = pad_to_canvas(load_cube_list(variety), device, CANVAS)   # the canvas the maps came from
     _m, w, _x, _g = load_dataset()
     plt.rcParams.update({"font.family": ["Noto Sans", "DejaVu Sans"]})
     fig, axes = plt.subplots(len(preds), 6, figsize=(13, 2.5 * len(preds)), squeeze=False)
     shown = {}
     for r, (task, t) in enumerate(preds.items()):
-        att_arms = [a for a in ARMS if a[1] == "attention"]
-        arm = max(att_arms, key=lambda a: metrics[task][ARM_LABEL[a]]["bal_acc"])
+        arm = "attention"
         p = t["cnn"][arm][0]
         pos = np.flatnonzero(t["y"] == 1)
         neg = np.flatnonzero(t["y"] == 0)
@@ -346,11 +342,11 @@ def fig_attention(preds: dict, metrics: dict, meta, variety: str, path: Path, de
             ax.set_ylim(ys.max() + pad, ys.min() - pad)
             ax.axis("off")
             lab = "+" if t["y"][i] == 1 else "−"
-            name = meta.path[leaves[c]] if variety == ALL_VARIETIES else meta.path[leaves[c]].split("/", 1)[1]
+            name = meta.path[leaves[c]] if is_pooled(variety) else meta.path[leaves[c]].split("/", 1)[1]
             ax.set_title(f"{name}  ({lab})\nP = {p[i]:.2f}", fontsize=8.5, color=INK_2)
         axes[r, 0].text(-0.15, 0.5, f"{task.replace('_', ' ')}\n{ARM_LABEL[arm]}", transform=axes[r, 0].transAxes,
                         ha="right", va="center", fontsize=9.5, color=INK, rotation=90)
-        shown[task] = (ARM_LABEL[arm], [meta.path[i] for i in leaves])
+        shown[task] = [meta.path[i] for i in leaves]
     fig.text(0.99, 0.01, "attention weight relative to uniform (1 = same as mean pooling; uncoloured rim = "
              "excluded margin), seed 0 test predictions; left 4 = highest-scored positives, "
              "right 2 = lowest-scored negatives", ha="right", va="bottom", fontsize=8, color=MUTED)
@@ -362,12 +358,37 @@ def fig_attention(preds: dict, metrics: dict, meta, variety: str, path: Path, de
     return shown
 
 
+def write_report(variety: str, bands: str, root: Path, fig_dir: Path, device: torch.device) -> None:
+    """Load one run's predictions → metrics → root/metrics.md and the figures in fig_dir.
+
+    :param variety: A variety name, or a key of POOLS.
+    :type variety: str
+    :param bands: A value of BANDS.
+    :type bands: str
+    :param root: Results folder of the run.
+    :type root: Path
+    :param fig_dir: Folder for balanced_accuracy.png and attention_maps.png.
+    :type fig_dir: Path
+    :param device: GPU or CPU.
+    :type device: torch.device
+    """
+    meta = load_meta(variety)
+    labels = {t: task_label(meta, t) for t in tasks_in(root)}
+    preds = load_predictions(meta, root, variety, bands, device)
+    metrics = compute_metrics(preds, device)
+
+    (root / "metrics.md").write_text(to_markdown(metrics, labels, variety, bands))
+    fig_dir.mkdir(parents=True, exist_ok=True)
+    fig_balanced_accuracy(metrics, labels, fig_dir / "balanced_accuracy.png")
+    fig_attention(preds, meta, variety, fig_dir / "attention_maps.png", device)
+
+
 def main() -> None:
-    """Load predictions → metrics → tables and figures."""
+    """Report one pooled run: metrics.md in its results folder, figures in figures/<run>/."""
     import argparse
 
     ap = argparse.ArgumentParser()
-    ap.add_argument("--variety", choices=[*VARIETIES, ALL_VARIETIES], default=DEFAULT_VARIETY,
+    ap.add_argument("--variety", choices=list(POOLS), default=DEFAULT_POOL,
                     help="report the runs from run_experiments.py --variety <value>")
     ap.add_argument("--bands", choices=BANDS, default="all",
                     help="report the runs from run_experiments.py --bands <value>")
@@ -378,18 +399,8 @@ def main() -> None:
     args = ap.parse_args()
     log = get_logger("disease_cnn_report")
 
-    meta = load_meta(args.variety)
     root = results_root(False, args.dropout, args.variety, not args.no_augmentation, args.bands)
-    labels = {t: task_label(meta, t) for t in tasks_in(root)}
-    fig_dir = FIG / root.name
-    device = get_device()
-    preds = load_predictions(meta, root, args.variety, args.bands, device)
-    metrics = compute_metrics(preds, device)
-
-    (root / "metrics.md").write_text(to_markdown(metrics, labels, args.variety, args.bands))
-    fig_dir.mkdir(parents=True, exist_ok=True)
-    fig_balanced_accuracy(metrics, labels, fig_dir / "balanced_accuracy.png")
-    fig_attention(preds, metrics, meta, args.variety, fig_dir / "attention_maps.png", device)
+    write_report(args.variety, args.bands, root, FIG / root.name, get_device())
     log.info("[saved] results/%s/metrics.md", root.name)
 
 

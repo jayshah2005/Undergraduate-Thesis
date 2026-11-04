@@ -1,0 +1,9 @@
+vidal: 250 leaves, 204 bands, canvas 212
+Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
+leafroll (25 + / 225 −): baseline bal. acc. 0.544; R1 0.59 R2 0.49 R3 0.47 R4 0.49 R5 0.42
+leafroll | mean pooling: bal. acc. 0.387 (-0.158 vs baseline); seeds 0.52 0.35 0.39; R1 0.59 R2 0.41 R3 0.51 R4 0.50 R5 0.50; median best epoch 5; 69 s
+leafroll | attention pooling: bal. acc. 0.478 (-0.067 vs baseline); seeds 0.43 0.48 0.44; R1 0.50 R2 0.48 R3 0.54 R4 0.50 R5 0.79; median best epoch 6; 76 s
+red_blotch (169 + / 81 −): baseline bal. acc. 0.552; R1 0.47 R2 0.61 R3 0.56 R4 0.57 R5 0.57
+red_blotch | mean pooling: bal. acc. 0.531 (-0.022 vs baseline); seeds 0.55 0.54 0.52; R1 0.64 R2 0.54 R3 0.57 R4 0.51 R5 0.55; median best epoch 9; 76 s
+red_blotch | attention pooling: bal. acc. 0.493 (-0.060 vs baseline); seeds 0.55 0.50 0.47; R1 0.53 R2 0.49 R3 0.50 R4 0.53 R5 0.58; median best epoch 9; 80 s
+[done] results/vidal. For intervals, tables and figures: report_within_variety.py
