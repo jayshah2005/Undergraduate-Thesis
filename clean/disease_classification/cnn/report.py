@@ -22,18 +22,20 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE.parent / "l
         sys.path.insert(0, str(p))
 from data import load_dataset  # noqa: E402
 from log import get_logger  # noqa: E402
-from logistic_regression import (BANDS, POOLS, ROWS, TASKS, bands_label, fold_of, is_pooled,  # noqa: E402
+from logistic_regression import (BANDS, POOLS, TASKS, bands_label, fold_of, is_pooled,  # noqa: E402
                                  load_meta, load_means, rgb_bands, row_groups, run_baselines, task_labels,
-                                 usable_leaves, variety_label)
+                                 usable_leaves, variety_label, varieties_of, TASK_NAME, MACRO_NOTE,
+                                 MACRO_TITLE, macro_labels)
 from pca_common import get_device  # noqa: E402
 from run_experiments import DEFAULT_POOL, SEEDS, load_cube_list, results_root, run_dir  # noqa: E402
-from scoring import balanced_accuracy, bootstrap_weights  # noqa: E402
+from report_tables import BASELINE, column_table, fold_note, main_table, seed_table  # noqa: E402
+from scoring import (MACRO_TASKS, balanced_accuracy, bootstrap_weights, macro_score,  # noqa: E402
+                     macro_weights, quantiles)
 from cnn_common import pad_to_canvas  # noqa: E402
 from train import CANVAS, POOLING, TrainConfig  # noqa: E402
 
 FIG = HERE / "figures"
 ARM_LABEL = {"mean": "CNN, mean pool", "attention": "CNN, attention pool"}   # every CNN uses pixel SNV
-TASK_NAME = {"leafroll": "Leafroll", "red_blotch": "Red blotch", "both": "Both diseases", "any": "Any disease vs healthy"}
 INK, INK_2, MUTED, GRID = "#0b0b0b", "#52514e", "#898781", "#e1e0d9"
 CNN_COLOR, BASE_COLOR = "#2a78d6", "#898781"
 # Attention relative to uniform: blue below 1, gray at 1, red above.
@@ -173,10 +175,48 @@ def compute_metrics(preds: dict, device: torch.device) -> dict:
     return out
 
 
+def macro_metrics(preds: dict, meta, device: torch.device) -> dict | None:
+    """Score every model by its macro average: the mean of its leafroll and red-blotch balanced accuracies.
+
+    All models are scored on the same resamples (scoring.macro_weights), so the differences
+    to the baseline are paired, as in :func:`compute_metrics`.
+
+    :param preds: Output of :func:`load_predictions`.
+    :type preds: dict
+    :param meta: Leaf table from load_meta.
+    :type meta: pandas.DataFrame
+    :param device: GPU or CPU.
+    :type device: torch.device
+    :return: {name: output of scoring.macro_score plus ci95 and, for the CNNs, delta and
+        delta_ci95}, or None when a macro task did not run.
+    :rtype: dict | None
+    """
+    if not all(t in preds for t in MACRO_TASKS):
+        return None
+    labels = macro_labels(meta)
+    w = macro_weights(labels, row_groups(meta), device)
+
+    def full(task: str, p: np.ndarray) -> np.ndarray:
+        """Spread (seeds, kept leaves) probabilities over every leaf of meta; left-out leaves get 0."""
+        out = np.zeros((p.shape[0], len(meta)))
+        out[:, preds[task]["leaf_idx"]] = p
+        return out
+
+    models = {"baseline": [full(t, preds[t]["base"][None]) for t in MACRO_TASKS]}
+    models.update({ARM_LABEL[arm]: [full(t, preds[t]["cnn"][arm]) for t in MACRO_TASKS] for arm in POOLING})
+    res = {k: macro_score(p, labels, fold_of(meta), meta.variety.to_numpy(), w, device) for k, p in models.items()}
+    for k, m in res.items():
+        m["ci95"] = quantiles(m["boot"])
+        if k != "baseline":
+            m["delta"] = m["bal_acc"] - res["baseline"]["bal_acc"]
+            m["delta_ci95"] = quantiles(m["boot"] - res["baseline"]["boot"])
+    return res
+
+
 # --------------------------------------------------------------------------
 # Tables
 # --------------------------------------------------------------------------
-def to_markdown(metrics: dict, labels: dict, variety: str, bands: str) -> str:
+def to_markdown(metrics: dict, labels: dict, variety: str, bands: str, macro: dict | None = None) -> str:
     """Write the metric tables as Markdown.
 
     :param metrics: Output of :func:`compute_metrics`.
@@ -187,38 +227,44 @@ def to_markdown(metrics: dict, labels: dict, variety: str, bands: str) -> str:
     :type variety: str
     :param bands: A value of BANDS.
     :type bands: str
+    :param macro: Output of :func:`macro_metrics`, or None.
+    :type macro: dict | None
     :return: Markdown text.
     :rtype: str
     """
     pooled = is_pooled(variety)
-    title = variety_label(variety)
     note = " Pooled over varieties, so recognising a variety can raise it; see the per-variety table." if pooled else ""
-    lines = [f"# Whole-leaf CNN on {title}, {bands_label(bands)}: metrics", "",
-             "Each row is tested once; the next row is validation and the other 3 train, for the CNN and the baseline. "
-             "Balanced accuracy over all test rows (0.5 = chance); a leaf counts as positive at P ≥ 0.5. "
-             f"CNN = mean P of 3 seeds. Δ: paired difference to the baseline.{note}", ""]
+    lines = [f"# Disease: whole-leaf CNN on {variety_label(variety)}, {bands_label(bands)}", "",
+             "Every model uses SNV and trains on the 3 training rows; the CNN picks its checkpoint on the validation "
+             "row. Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% bootstrap interval. "
+             f"CNN = mean probability of 3 seeds. Δ: paired difference to logistic regression.{note}", ""]
+    name = {"baseline": BASELINE}
+    if macro:
+        lines += [MACRO_TITLE, "", MACRO_NOTE, ""]
+        lines += main_table([{"name": name.get(k, k), "bal_acc": m["bal_acc"], "ci95": m["ci95"],
+                              "folds": m["by_fold"], **({"delta": m["delta"], "delta_ci95": m["delta_ci95"]}
+                                                       if "delta" in m else {})} for k, m in macro.items()])
+        lines += ["", fold_note(varieties_of(variety)), ""]
+        if macro["baseline"]["by_variety"]:
+            lines += column_table("Macro average per variety:", list(macro["baseline"]["by_variety"]),
+                                  {name.get(k, k): m["by_variety"] for k, m in macro.items()}) + [""]
+        lines += seed_table({k: m["seeds"] for k, m in macro.items() if k != "baseline"}) + [""]
     for task, res in metrics.items():
-        lines += [f"## {labels[task]}", "",
-                  "| model | bal. acc. [95% CI] | Δ vs baseline [95% CI] | single seeds (mean ± SD) |",
-                  "|---|---|---|---|"]
-        for name, m in res.items():
-            lo, hi = m["ci95"]
-            delta = "—" if name == "baseline" else \
-                f"{m['diff_vs_base']:+.3f} [{m['diff_ci95'][0]:+.3f}, {m['diff_ci95'][1]:+.3f}]"
-            seeds = "—" if name == "baseline" else f"{m['seed_mean']:.3f} ± {m['seed_sd']:.3f}"
-            lines.append(f"| {name} | {m['bal_acc']:.3f} [{lo:.3f}, {hi:.3f}] | {delta} | {seeds} |")
-        lines += ["", "Balanced accuracy per test row:", "",
-                  "| model | " + " | ".join(ROWS) + " |", "|---|" + "---|" * 5]
-        for name, m in res.items():
-            lines.append(f"| {name} | " + " | ".join(f"{a:.3f}" for a in m["per_fold"]) + " |")
-        lines.append("")
-        by_variety = res["baseline"]["per_variety"]
-        if by_variety:
-            lines += ["Balanced accuracy per variety:", "", "| model | " + " | ".join(by_variety) + " |",
-                      "|---|" + "---|" * len(by_variety)]
-            for name, m in res.items():
-                lines.append(f"| {name} | " + " | ".join(f"{a:.3f}" for a in m["per_variety"].values()) + " |")
-            lines.append("")
+        models = []
+        for key, m in res.items():
+            line = {"name": name.get(key, key), "bal_acc": m["bal_acc"], "ci95": m["ci95"], "folds": m["per_fold"]}
+            if key != "baseline":
+                line["delta"], line["delta_ci95"] = m["diff_vs_base"], m["diff_ci95"]
+            models.append(line)
+        lines += [f"## {labels[task]}", ""] + main_table(models)
+        lines += ["", fold_note(list(res["baseline"]["per_variety"]) or varieties_of(variety)), ""]
+        if res["baseline"]["per_variety"]:
+            lines += column_table("Balanced accuracy per variety:", list(res["baseline"]["per_variety"]),
+                                  {name.get(k, k): m["per_variety"] for k, m in res.items()}) + [""]
+        cnns = {k: m for k, m in res.items() if k != "baseline"}
+        lines += seed_table({k: m["seeds"] for k, m in cnns.items()}) + [""]
+        lines += ["Median best epoch: " + ", ".join(f"{k} {m['median_best_epoch']:.0f}" for k, m in cnns.items())
+                  + ".", ""]
     return "\n".join(lines)
 
 
@@ -376,8 +422,9 @@ def write_report(variety: str, bands: str, root: Path, fig_dir: Path, device: to
     labels = {t: task_label(meta, t) for t in tasks_in(root)}
     preds = load_predictions(meta, root, variety, bands, device)
     metrics = compute_metrics(preds, device)
+    macro = macro_metrics(preds, meta, device)
 
-    (root / "metrics.md").write_text(to_markdown(metrics, labels, variety, bands))
+    (root / "metrics.md").write_text(to_markdown(metrics, labels, variety, bands, macro))
     fig_dir.mkdir(parents=True, exist_ok=True)
     fig_balanced_accuracy(metrics, labels, fig_dir / "balanced_accuracy.png")
     fig_attention(preds, meta, variety, fig_dir / "attention_maps.png", device)

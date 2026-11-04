@@ -5,6 +5,7 @@ import numpy as np
 import torch
 
 N_BOOT, BOOT_SEED = 2000, 0
+MACRO_TASKS = ("leafroll", "red_blotch")  # the macro average is the mean of these two balanced accuracies
 THRESHOLD = 0.5  # a leaf is called positive when P(positive) >= 0.5; fixed in advance, never tuned
 
 
@@ -40,7 +41,7 @@ def bootstrap_weights(y: torch.Tensor, group: torch.Tensor, n_boot: int = N_BOOT
     each row's class balance. Seeded so every model sees the same resamples, which makes
     the model-minus-baseline differences paired.
 
-    :param y: 0/1 labels, shape (n,).
+    :param y: Class per leaf (0/1, or a joint code), shape (n,).
     :type y: torch.Tensor
     :param group: Group per leaf (variety × row), shape (n,).
     :type group: torch.Tensor
@@ -54,7 +55,7 @@ def bootstrap_weights(y: torch.Tensor, group: torch.Tensor, n_boot: int = N_BOOT
     g = torch.Generator(device=y.device).manual_seed(seed)
     w = torch.zeros(n_boot, len(y), dtype=torch.float64, device=y.device)
     for k in torch.unique(group).tolist():
-        for c in (0, 1):
+        for c in torch.unique(y).tolist():   # 0 and 1, or the joint codes of macro_weights
             idx = torch.nonzero((group == k) & (y == c)).squeeze(1)
             if len(idx) == 0:
                 continue
@@ -99,3 +100,80 @@ def summary(p_seeds: np.ndarray, y: np.ndarray, fold: np.ndarray, variety: np.nd
             "seeds": [balanced_accuracy(s, labels).item() for s in p],
             "by_fold": {int(k): part(fold == k) for k in np.unique(fold)},
             "by_variety": {v: part(variety == v) for v in varieties} if len(varieties) > 1 else {}}
+
+
+def macro_weights(labels: list[np.ndarray], group: np.ndarray, device: torch.device) -> torch.Tensor:
+    """Resamples shared by every task of the macro average, so its interval resamples leaves, not tasks.
+
+    Each leaf gets one joint class (its label in every task, or "left out"), and leaves are
+    resampled within each (group, joint class) cell, so every resample keeps each row's size
+    and the rate of every disease combination.
+
+    n: the number of leaves.
+
+    :param labels: Per task, the 0/1 label per leaf or -1 where the task leaves the leaf out, length n each.
+    :type labels: list[np.ndarray]
+    :param group: Group per leaf (variety × row), length n.
+    :type group: np.ndarray
+    :param device: GPU or CPU.
+    :type device: torch.device
+    :return: Counts, shape (B, n) float64.
+    :rtype: torch.Tensor
+    """
+    code = np.zeros(len(group), dtype=np.int64)
+    for y in labels:
+        code = code * 3 + (y + 1)
+    return bootstrap_weights(torch.tensor(code, device=device), torch.tensor(group, device=device))
+
+
+def macro_score(p_seeds: list[np.ndarray], labels: list[np.ndarray], fold: np.ndarray, variety: np.ndarray,
+                w: torch.Tensor, device: torch.device) -> dict:
+    """Score one model by the mean of its balanced accuracies over the tasks.
+
+    Each task's balanced accuracy uses only the leaves that task keeps; the macro value is
+    their plain mean, so each task counts equally whatever its size.
+
+    n: the number of leaves. s: the number of seeds. B: the number of resamples.
+
+    :param p_seeds: Per task, P(positive) per seed and leaf, shape (s, n) each.
+    :type p_seeds: list[np.ndarray]
+    :param labels: Per task, the 0/1 label per leaf or -1 where the task leaves the leaf out.
+    :type labels: list[np.ndarray]
+    :param fold: Fold per leaf, length n.
+    :type fold: np.ndarray
+    :param variety: Variety per leaf, length n.
+    :type variety: np.ndarray
+    :param w: Output of :func:`macro_weights`, shape (B, n).
+    :type w: torch.Tensor
+    :param device: GPU or CPU.
+    :type device: torch.device
+    :return: bal_acc (ensemble), boot (B,), seeds (list), by_fold (5 values) and by_variety
+        ({variety: value} for varieties every task keeps; empty for one variety).
+    :rtype: dict
+    """
+    def mean_over_tasks(fn) -> torch.Tensor:
+        """Average fn(ensemble P, labels, kept leaves, seeds P) over the tasks."""
+        vals = []
+        for p, y in zip(p_seeds, labels):
+            keep = torch.tensor(y >= 0, device=device)
+            pt = torch.tensor(p, dtype=torch.float64, device=device)[:, keep]
+            vals.append(fn(pt.mean(0), torch.tensor(y, dtype=torch.float64, device=device)[keep], keep, pt))
+        return torch.stack(vals).mean(0)
+
+    def part(mask: np.ndarray) -> float:
+        """Macro value over the leaves in mask."""
+        m = torch.tensor(mask, device=device)
+        return mean_over_tasks(lambda e, y, keep, _p: balanced_accuracy(e[m[keep]], y[m[keep]])).item()
+
+    varieties = sorted(set(variety))
+    shared = [v for v in varieties if all(((variety == v) & (y >= 0)).any() for y in labels)]
+    return {"bal_acc": mean_over_tasks(lambda e, y, keep, _p: balanced_accuracy(e, y)).item(),
+            "boot": mean_over_tasks(lambda e, y, keep, _p: balanced_accuracy(e, y, w[:, keep])),
+            "seeds": mean_over_tasks(lambda e, y, keep, p: torch.stack([balanced_accuracy(s, y) for s in p])).tolist(),
+            "by_fold": [part(fold == k) for k in range(5)],
+            "by_variety": {v: part(variety == v) for v in shared} if len(varieties) > 1 else {}}
+
+
+def quantiles(boot: torch.Tensor) -> list[float]:
+    """The 95% interval of a bootstrap distribution."""
+    return torch.quantile(boot, torch.tensor([0.025, 0.975], dtype=torch.float64, device=boot.device)).tolist()

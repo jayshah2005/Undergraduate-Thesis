@@ -16,7 +16,9 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE):
 from data import load_dataset  # noqa: E402
 from log import get_logger  # noqa: E402
 from pca_common import VARIETIES, get_device, snv  # noqa: E402
-from scoring import balanced_accuracy, bootstrap_weights, summary  # noqa: E402
+from report_tables import BASELINE, column_table, fold_note, main_table  # noqa: E402
+from scoring import (MACRO_TASKS, balanced_accuracy, bootstrap_weights, macro_score, macro_weights,  # noqa: E402
+                     quantiles, summary)
 
 RES = HERE / "results"
 ROWS = ["R1", "R2", "R3", "R4", "R5"]
@@ -31,6 +33,11 @@ TASKS = {
     "both": "both diseases present; a leaf with only one counts as negative",
     "any": "any disease present; healthy leaves are the negatives",
 }
+TASK_NAME = {"leafroll": "Leafroll", "red_blotch": "Red blotch", "both": "Both diseases",
+             "any": "Any disease vs healthy"}  # section titles in reports
+MACRO_TITLE = "## Macro average: leafroll and red blotch"
+MACRO_NOTE = ("The mean of the two balanced accuracies below (0.5 = chance); each disease counts equally. Its "
+              "interval resamples leaves, keeping each row's mix of disease combinations.")
 MIN_PER_CLASS = 5  # a variety with fewer positive or negative leaves sits out that task
 BANDS = ("all", "rgb")  # full spectrum (204 bands), or only the 3 bands nearest RGB
 RGB_NM = {"R": 640.0, "G": 550.0, "B": 460.0}  # the same picks as the variety models
@@ -328,6 +335,32 @@ def score_baselines(meta, base: dict, device: torch.device) -> dict:
     return out
 
 
+def macro_labels(meta) -> list[np.ndarray]:
+    """Per macro task, the 0/1 label per leaf, or -1 where the task leaves the leaf out."""
+    return [np.where(usable_leaves(meta, y), y, -1) for y in (task_labels(meta, t) for t in MACRO_TASKS)]
+
+
+def score_macro(meta, base: dict, device: torch.device) -> dict | None:
+    """The baseline's macro average: the mean of its leafroll and red-blotch balanced accuracies.
+
+    :param meta: Leaf table from :func:`load_meta`.
+    :type meta: pandas.DataFrame
+    :param base: Output of :func:`run_baselines`.
+    :type base: dict
+    :param device: GPU or CPU.
+    :type device: torch.device
+    :return: Output of :func:`scoring.macro_score` plus ci95, or None when a macro task did not run.
+    :rtype: dict | None
+    """
+    if not all(t in base for t in MACRO_TASKS):
+        return None
+    labels = macro_labels(meta)
+    w = macro_weights(labels, row_groups(meta), device)
+    m = macro_score([base[t][None] for t in MACRO_TASKS], labels, fold_of(meta), meta.variety.to_numpy(), w, device)
+    m["ci95"] = quantiles(m["boot"])
+    return m
+
+
 def results_name(variety: str, bands: str = "all") -> str:
     """Folder name for a --variety and --bands choice, e.g. "chardonnay", "all" or "chardonnay_rgb"."""
     return variety.lower().replace(" ", "_") + ("_rgb" if bands == "rgb" else "")
@@ -338,8 +371,8 @@ def bands_label(bands: str) -> str:
     return "RGB bands only" if bands == "rgb" else "full spectrum"
 
 
-def metrics_markdown(variety: str, bands: str, scores: dict) -> str:
-    """Build metrics.md: each task's balanced accuracy, per row and, when pooled, per variety.
+def metrics_markdown(variety: str, bands: str, scores: dict, macro: dict | None = None) -> str:
+    """Build metrics.md in the shared format (report_tables): one section per task.
 
     :param variety: A variety name, or a key of POOLS.
     :type variety: str
@@ -347,29 +380,35 @@ def metrics_markdown(variety: str, bands: str, scores: dict) -> str:
     :type bands: str
     :param scores: Output of :func:`score_baselines`.
     :type scores: dict
+    :param macro: Output of :func:`score_macro`, or None.
+    :type macro: dict | None
     :return: Markdown text.
     :rtype: str
     """
-    lines = [f"# Disease logistic regression: {variety_label(variety)}, {bands_label(bands)}", "",
-             "Each row is tested once; the model trains on 3 other rows (the next row, the CNN's validation row, "
-             "stays unused). Balanced accuracy over all test rows (0.5 = chance), P ≥ 0.5 counts as positive, "
-             "with a 95% bootstrap interval.", "",
-             "| task | leaves (+ / −) | bal. acc. [95% CI] | " + " | ".join(ROWS) + " |", "|---|---|---|" + "---|" * 5]
+    lines = [f"# Disease: logistic regression on {variety_label(variety)}, {bands_label(bands)}", "",
+             "Leaf mean spectrum → SNV → logistic regression, trained on the 3 training rows (the validation row is "
+             "used only by the CNN). Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% "
+             "bootstrap interval.", ""]
+    if macro:
+        lines += [MACRO_TITLE, "", MACRO_NOTE, ""]
+        lines += main_table([{"name": BASELINE, "bal_acc": macro["bal_acc"], "ci95": macro["ci95"],
+                              "folds": macro["by_fold"]}])
+        lines += ["", fold_note(varieties_of(variety)), ""]
+        if macro["by_variety"]:
+            lines += column_table("Macro average per variety:", list(macro["by_variety"]),
+                                  {BASELINE: macro["by_variety"]}) + [""]
     for task, s in scores.items():
-        lo, hi = s["ci95"]
-        lines.append(f"| {task} | {s['n_pos']} / {s['n_neg']} | {s['bal_acc']:.3f} [{lo:.3f}, {hi:.3f}] | "
-                     + " | ".join(f"{a:.3f}" for a in s["by_fold"].values()) + " |")
-    left_out = {t: s["left_out"] for t, s in scores.items() if s["left_out"]}
-    if left_out:
-        lines += ["", "Left out (fewer than 5 positive or negative leaves): "
-                  + "; ".join(f"{t}: {', '.join(v)}" for t, v in left_out.items()) + "."]
-    by_variety = {t: s["by_variety"] for t, s in scores.items() if s["by_variety"]}
-    if by_variety:
-        names = sorted({v for b in by_variety.values() for v in b})
-        lines += ["", "Balanced accuracy per variety:", "", "| task | " + " | ".join(names) + " |", "|---|" + "---|" * len(names)]
-        lines += [f"| {t} | " + " | ".join(f"{b[v]:.3f}" if v in b else "—" for v in names) + " |"
-                  for t, b in by_variety.items()]
-    return "\n".join(lines) + "\n"
+        lines += [f"## {TASK_NAME[task]} ({s['n_pos']} + / {s['n_neg']} −)", ""]
+        lines += main_table([{"name": BASELINE, "bal_acc": s["bal_acc"], "ci95": s["ci95"],
+                              "folds": list(s["by_fold"].values())}])
+        lines += ["", fold_note(list(s["by_variety"]) or varieties_of(variety)), ""]
+        if s["left_out"]:
+            lines += [f"Left out (fewer than {MIN_PER_CLASS} positive or negative leaves): "
+                      + ", ".join(s["left_out"]) + ".", ""]
+        if s["by_variety"]:
+            lines += column_table("Balanced accuracy per variety:", list(s["by_variety"]),
+                                  {BASELINE: s["by_variety"]}) + [""]
+    return "\n".join(lines)
 
 
 def main() -> None:
@@ -386,10 +425,11 @@ def main() -> None:
     meta = load_meta(args.variety)
     base = run_baselines(meta, load_means(args.variety, device, args.bands), runnable_tasks(meta))
     scores = score_baselines(meta, base, device)
+    macro = score_macro(meta, base, device)
 
     res = RES / results_name(args.variety, args.bands)
     res.mkdir(parents=True, exist_ok=True)
-    (res / "metrics.md").write_text(metrics_markdown(args.variety, args.bands, scores))
+    (res / "metrics.md").write_text(metrics_markdown(args.variety, args.bands, scores, macro))
     log.info("%s: %s | results/%s/metrics.md", args.variety,
              ", ".join(f"{t} {s['bal_acc']:.3f}" for t, s in scores.items()), res.name)
 

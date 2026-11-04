@@ -26,6 +26,7 @@ for p in (CLEAN_ROOT, CLEAN_ROOT / "spectral_analysis" / "PCA", HERE):
 from data import load_dataset  # noqa: E402
 from log import get_logger  # noqa: E402
 from pca_common import VARIETIES, get_device, np_, snv  # noqa: E402
+from report_tables import BASELINE, BANDS_TITLE, column_table, fold_note, main_table  # noqa: E402
 from scoring import evaluate  # noqa: E402
 
 RES, FIG = HERE / "results", HERE / "figures"
@@ -154,7 +155,7 @@ def row_cv(X: np.ndarray, y: np.ndarray, rows: np.ndarray) -> tuple[np.ndarray, 
     :type y: np.ndarray
     :param rows: Field row per leaf, length n.
     :type rows: np.ndarray
-    :return: Out-of-fold probabilities (n, 4) and per-row {chosen_C, score}.
+    :return: Out-of-fold probabilities (n, 4) and per-fold {chosen_C, score}, keyed by test row.
     :rtype: tuple
     """
     P = np.empty((len(y), len(VARIETIES)))
@@ -167,32 +168,8 @@ def row_cv(X: np.ndarray, y: np.ndarray, rows: np.ndarray) -> tuple[np.ndarray, 
     return P, folds
 
 
-def metrics_markdown(cfg: Config, m: dict, folds: dict) -> str:
-    """Build metrics.md: balanced accuracy, confusion matrix, per-variety and per-row scores.
-
-    :param cfg: The configuration that was run.
-    :type cfg: Config
-    :param m: Output of scoring.evaluate.
-    :type m: dict
-    :param folds: Per-row results of :func:`row_cv`.
-    :type folds: dict
-    :return: Markdown text.
-    :rtype: str
-    """
-    cm, ci = m["confusion"], m["balanced_accuracy_ci95"]
-    lines = [f"# Variety logistic regression: `{cfg.name}` bands", "",
-             f"**Balanced accuracy: {m['balanced_accuracy']:.3f}** (95% CI {ci[0]:.3f}-{ci[1]:.3f}; chance 0.25)", "",
-             "| true \\ predicted | " + " | ".join(VARIETIES) + " |", "|---|" + "---|" * len(VARIETIES)]
-    lines += [f"| **{v}** | " + " | ".join(str(c) for c in cm[k]) + " |" for k, v in enumerate(VARIETIES)]
-    lines += ["", "| variety | recall | ROC AUC (one vs rest) |", "|---|---|---|"]
-    lines += [f"| {v} | {m['recall'][k]:.3f} | {m['auc_ovr'][k]:.3f} |" for k, v in enumerate(VARIETIES)]
-    lines += ["", "| test row | chosen C | balanced accuracy |", "|---|---|---|"]
-    lines += [f"| {r} | {f['chosen_C']:g} | {f['test_balanced_accuracy']:.3f} |" for r, f in folds.items()]
-    return "\n".join(lines) + "\n"
-
-
 def write_metrics_json(path: Path, cfg: Config, m: dict, folds: dict) -> None:
-    """Write metrics.json, which the comparison table reads.
+    """Write metrics.json, which results/metrics.md is built from.
 
     :param path: Output file.
     :type path: Path
@@ -200,7 +177,7 @@ def write_metrics_json(path: Path, cfg: Config, m: dict, folds: dict) -> None:
     :type cfg: Config
     :param m: Output of scoring.evaluate.
     :type m: dict
-    :param folds: Per-row results of :func:`row_cv`.
+    :param folds: Per-fold results of :func:`row_cv`.
     :type folds: dict
     """
     payload = {
@@ -246,60 +223,55 @@ def plot_confusion(cm: np.ndarray, cfg: Config, bacc: float, path: Path) -> None
     plt.close(fig)
 
 
-def comparison_markdown(metrics: dict) -> str:
-    """Build comparison.md: one line per configuration.
+def metrics_markdown(metrics: dict) -> str:
+    """Build results/metrics.md in the shared format (report_tables): one section per input.
 
     :param metrics: {configuration name: parsed metrics.json}.
     :type metrics: dict
     :return: Markdown text.
     :rtype: str
     """
-    lines = ["# Variety prediction: configurations compared", "",
-             "Balanced accuracy = the mean of the 4 recalls shown here; chance is 0.25. Every score comes from the "
-             "same 5 held-out field rows, each model trained on 3 rows with C chosen on a fourth.", "",
-             "| configuration | balanced accuracy (95% CI) | " + " | ".join(f"{v} recall" for v in VARIETIES)
-             + " | per-row range |", "|---|---|" + "---|" * (len(VARIETIES) + 1)]
-    for name, m in sorted(metrics.items(), key=lambda kv: -kv[1]["balanced_accuracy"]):
-        lo, hi = m["balanced_accuracy_ci95"]
-        per_row = [f["test_balanced_accuracy"] for f in m["folds"].values()]
-        recalls = " | ".join(f"{m['per_variety'][v]['recall']:.3f}" for v in VARIETIES)
-        lines.append(f"| `{name}` | {m['balanced_accuracy']:.3f} ({lo:.3f}–{hi:.3f}) | {recalls} | "
-                     f"{min(per_row):.2f}–{max(per_row):.2f} |")
-    return "\n".join(lines) + "\n"
+    lines = ["# Variety: logistic regression", "",
+             "Leaf mean spectrum → SNV → logistic regression, C chosen on the validation row. Balanced accuracy = "
+             "the mean of the 4 recalls (chance 0.25), with a 95% bootstrap interval.", ""]
+    for name in (b for b in BANDS if b in metrics):
+        m = metrics[name]
+        folds = m["folds"].values()
+        lines += [f"## {BANDS_TITLE[name]}", ""]
+        lines += main_table([{"name": BASELINE, "bal_acc": m["balanced_accuracy"],
+                              "ci95": m["balanced_accuracy_ci95"],
+                              "folds": [f["test_balanced_accuracy"] for f in folds]}])
+        lines += ["", fold_note(VARIETIES), ""]
+        lines += column_table("Recall per variety:", VARIETIES,
+                              {BASELINE: {v: m["per_variety"][v]["recall"] for v in VARIETIES}})
+        lines += ["", "Chosen C per fold: " + ", ".join(f"{f['chosen_C']:g}" for f in folds) + ".", ""]
+    return "\n".join(lines)
 
 
 def write_outputs(cfg: Config, m: dict, folds: dict) -> None:
-    """Write the configuration's tables and confusion matrix.
+    """Write the configuration's metrics.json and confusion matrix, then rebuild results/metrics.md.
 
     :param cfg: The configuration that was run.
     :type cfg: Config
     :param m: Output of scoring.evaluate.
     :type m: dict
-    :param folds: Per-row results of :func:`row_cv`.
+    :param folds: Per-fold results of :func:`row_cv`.
     :type folds: dict
     """
     res, fig = RES / cfg.name, FIG / cfg.name
     res.mkdir(parents=True, exist_ok=True)
     fig.mkdir(parents=True, exist_ok=True)
-    (res / "metrics.md").write_text(metrics_markdown(cfg, m, folds))
     write_metrics_json(res / "metrics.json", cfg, m, folds)
     plot_confusion(m["confusion"], cfg, m["balanced_accuracy"], fig / "confusion_matrix.png")
+    metrics = {p.parent.name: json.loads(p.read_text()) for p in RES.glob("*/metrics.json")}
+    (RES / "metrics.md").write_text(metrics_markdown(metrics))
 
 
 def main() -> None:
-    """Parse config → log → load → row CV → metrics → write files, or compare finished runs."""
+    """Parse config → log → load → row CV → metrics → write files."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--bands", choices=BANDS, default=Config.bands, help="all 204 bands, or only the 3 RGB bands")
-    ap.add_argument("--compare", action="store_true", help="table of every finished configuration, no fitting")
     args = ap.parse_args()
-
-    if args.compare:
-        metrics = {p.parent.name: json.loads(p.read_text()) for p in RES.glob("*/metrics.json")}
-        md = comparison_markdown(metrics)
-        (RES / "comparison.md").write_text(md)
-        get_logger("variety_logreg_compare").info(md)
-        return
-
     cfg = Config(args.bands)
     log = get_logger("variety_logreg")
 
@@ -308,7 +280,7 @@ def main() -> None:
     P, folds = row_cv(d["X"], d["y"], d["rows"])
     m = evaluate(d["y"], P, device)
     write_outputs(cfg, m, folds)
-    log.info("%s bands: balanced accuracy %.3f | results/%s/metrics.md", cfg.name, m["balanced_accuracy"], cfg.name)
+    log.info("%s bands: balanced accuracy %.3f | results/metrics.md", cfg.name, m["balanced_accuracy"])
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ Does a small CNN that sees the whole leaf do better than logistic regression on 
 | path | what it is |
 |---|---|
 | `model.py` | `VarietyCNN`: 1×1 spectral conv → four 3×3 conv layers with masked batch norm → masked mean pooling → 4 logits |
-| `run_experiments.py` | padding check → train every (seed, test row) of one configuration; skips fold files already on disk |
+| `run_experiments.py` | padding check → train every (seed, fold) of one configuration; skips fold files already on disk |
 | `report.py` | metrics, paired differences and figures for both inputs, with logistic regression as the comparison |
 | `plot_architecture.py` | poster schematic of the network → `figures/architecture.png` |
 
@@ -16,7 +16,7 @@ Does a small CNN that sees the whole leaf do better than logistic regression on 
 ## Set-up
 
 - **Input:** each pixel gets SNV over its own bands, which removes brightness. Each leaf is centred on one 212 × 212 canvas (the largest leaf side, rounded up to a multiple of 4). Padding is 0 and a mask marks leaf pixels. Normalisation and pooling use leaf positions only, so padding can't change a prediction; each run checks this at start-up.
-- **Splits:** one field row is the test set, the next is validation (early stopping), and the other 3 train. 5 test rows × 3 seeds = 15 trainings per configuration.
+- **Splits:** fold k tests on row Rk of every variety (each variety has its own rows R1–R5), the next row is validation (early stopping), and the other 3 train. 5 folds × 3 seeds = 15 trainings per configuration.
 - **Training:** batch 8, AdamW (lr 1e-3, weight decay 1e-2), dropout 0.5, cross-entropy, up to 80 epochs with patience 15. Augmentation is 90° rotations and flips, with no brightness or band jitter. `--no-augmentation` (on both `run_experiments.py` and `report.py`) trains without it, into `results/<bands>_no_augmentation/`, and the report files get the same suffix.
 - **Comparison:** logistic regression with the same split: it fits on the same 3 rows and chooses C on the validation row, so neither model has more data.
 
@@ -33,7 +33,7 @@ cd clean/variety_classification/cnn
 |---|---|
 | `results/<bands>/seed<s>/fold<k>.npz` | test probabilities and loss curves of one training |
 | `results/<bands>/config.json` | settings; a folder only resumes runs made with the same ones |
-| `results/metrics.md` | every model, paired differences, per-seed and per-row scores |
+| `results/metrics.md` | shared format: every model with 95% CI, Δ vs logistic regression and per-fold scores; recall per variety, single seeds, 204 bands − RGB |
 | `figures/scores.png`, `figures/confusion_<bands>.png` | all models compared; the CNN's confusion matrices |
 | `logs/<bands>.log` | progress of the last training: one line per seed |
 

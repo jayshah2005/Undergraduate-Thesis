@@ -456,7 +456,7 @@ def attention_map(ax, x0: float, yc: float, s: float = 0.5) -> None:
             quad(ax, [(bx, by), (bx + s, by), (bx + s, by + s), (bx, by + s)], face)
 
 
-def fig_disease_cnn(r: dict, path) -> None:
+def fig_disease_cnn(r: dict, path, header: bool = True) -> None:
     """Draw the disease CNN left to right, forking into its two pooling options, and save it.
 
     The backbone is the variety CNN's. After it the figure splits into mean pooling and
@@ -468,7 +468,7 @@ def fig_disease_cnn(r: dict, path) -> None:
     :param path: PNG path.
     :type path: pathlib.Path
     """
-    fig, ax = new_axes(12, 3.6)
+    fig, ax = new_axes(12, 3.6)  # the same size either way, so the drawing keeps its scale
     yc, y_cap = 3.2, -1.0
     y_up, y_dn = yc + 2.2, yc - 2.2     # the mean-pool and attention-pool branches
     b = draw_backbone(ax, r["stages"], r["canvas"], r["n_bands"], yc)
@@ -506,8 +506,10 @@ def fig_disease_cnn(r: dict, path) -> None:
         ax.text(xo + 1.0, y - 0.55, name, ha="left", va="top", fontsize=8, color=INK_2,
                 style="italic")
 
-    ax.text(0.0, b["top"] + 0.9, r["header"], ha="left", va="bottom", fontsize=10, color=INK,
-            fontweight="bold")
+    if header:
+        ax.text(0.0, b["top"] + 0.9, r["header"], ha="left", va="bottom", fontsize=10, color=INK,
+                fontweight="bold")
+
     c0, c1 = b["cube"]
     caption(ax, (c0 + c1) / 2, y_cap, "Leaf cube, SNV per pixel")
     ax.text((c0 + c1) / 2, y_cap - 0.95, r["cube_note"], ha="center", va="top", fontsize=8,
@@ -527,5 +529,7 @@ def fig_disease_cnn(r: dict, path) -> None:
 
     ax.set_aspect("equal")
     ax.set_xlim(-0.5, xo + 5.2)
-    ax.set_ylim(-4.1, b["top"] + 2.0)
+    # The saved image is cropped to the axes and any text past them, so without a header the
+    # limit drops to the top of the drawing and no empty band is left where the header was.
+    ax.set_ylim(-4.1, b["top"] + (2.0 if header else 0.0))
     save(fig, path)

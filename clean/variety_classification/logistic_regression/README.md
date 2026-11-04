@@ -1,6 +1,6 @@
 # Variety prediction with logistic regression
 
-Each leaf is its mean spectrum → SNV (removes brightness) → per-band standardisation (fit on training leaves) → multinomial logistic regression. It uses the same split as the CNN, so neither model has more data: one field row is the test set, the next is validation, and the other 3 train. Each C over 1e-5 … 1000 is fit on the 3 training rows, and the one with the lowest log-loss on the validation row is kept. Every leaf is predicted by a model that never saw its row.
+Each leaf is its mean spectrum → SNV (removes brightness) → per-band standardisation (fit on training leaves) → multinomial logistic regression. It uses the same split as the CNN, so neither model has more data: fold k tests on row Rk of every variety (each variety has its own rows R1–R5), the next row is validation, and the other 3 train. Each C over 1e-5 … 1000 is fit on the 3 training rows, and the one with the lowest log-loss on the validation row is kept. Every leaf is predicted by a model that never saw its row.
 
 | file | what it is |
 |---|---|
@@ -13,15 +13,13 @@ Each leaf is its mean spectrum → SNV (removes brightness) → per-band standar
 
 ```bash
 cd clean/variety_classification/logistic_regression
-../../../.venv/bin/python -u logistic_regression.py --bands rgb   # one configuration, ~10 s
-../../../.venv/bin/python -u logistic_regression.py --compare    # table of every finished configuration
+../../../.venv/bin/python -u logistic_regression.py --bands rgb   # one configuration, ~10 s; rebuilds results/metrics.md
 ```
 
 | output | what it is |
 |---|---|
-| `results/<bands>/metrics.md` | balanced accuracy with 95% CI, confusion matrix, per-variety recall and ROC AUC, per-row scores |
-| `results/<bands>/metrics.json` | the same numbers, read by `--compare` |
-| `results/comparison.md` | both configurations side by side: balanced accuracy with 95% CI, the recall of each variety, per-row range |
+| `results/metrics.md` | every finished configuration in the shared format: balanced accuracy with 95% CI, per-fold scores, recall per variety, chosen C |
+| `results/<bands>/metrics.json` | one configuration's numbers (also confusion matrix and ROC AUC), read to build `metrics.md` |
 | `figures/<bands>/` | `confusion_matrix.png` |
 
 Ported from `claude runs/variety_logistic_regression` and `claude runs/variety_logistic_regression_rgb`. The earlier runs also tried raw reflectance, which is not ported. With SNV it gives the same predicted variety for every leaf. Confidence intervals differ by up to 0.003 because the bootstrap now runs in PyTorch.

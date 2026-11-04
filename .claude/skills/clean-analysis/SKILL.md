@@ -14,7 +14,7 @@ Analyses in `clean/` have their own loaders. They do not import `claude runs/`,
 
 ## Isolation
 
-- Import only from `clean/` (`data.py`, `log.py`, `cnn_common.py`, `diagram.py`, `leaf_sources.csv`, `spectral_analysis/PCA/pca_common.py`) and third-party libraries.
+- Import only from `clean/` (`data.py`, `log.py`, `cnn_common.py`, `diagram.py`, `report_tables.py`, `leaf_sources.csv`, `spectral_analysis/PCA/pca_common.py`) and third-party libraries.
 - Never `sys.path` into `claude runs/` or `from common import …` / `from spectra import …` / `from vine_data import …`.
 - The only file outside `clean/` that code may read is `vine_hsi.h5`, through `clean/data.py`.
 - One topic folder per kind of work: `variety_classification/`, `spectral_analysis/`, `disease_classification/`.
@@ -36,6 +36,19 @@ Analyses in `clean/` have their own loaders. They do not import `claude runs/`,
 - Reports and figures are separate functions, called after `compute()`.
 - `logs/`, `results/`, `figures/` stay separate.
 
+## Result files
+
+Every `metrics.md` (variety and disease, logistic regression and CNN) uses one format, built with `clean/report_tables.py`, so any two can be read side by side:
+
+- Title `# <Variety|Disease>: <model> [on <varieties>, <bands>]`, then one paragraph: split, score, chance, interval.
+- One `##` section per task (disease) or per input (variety), e.g. `## Red blotch (88 + / 162 −)`, `## Full spectrum (204 bands)`.
+- Each section opens with `main_table`: `model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) … Fold 5 (R5)`, logistic regression first. Then `fold_note`.
+- Disease reports open with the macro-average section (mean of leafroll and red-blotch balanced accuracy, `scoring.macro_score`), then one section per task.
+- Extra tables follow in this order, only when they apply: per variety (`column_table`), single seeds (`seed_table`), anything else.
+- Same names everywhere: `logistic regression`, `CNN, mean pool`, `CNN, attention pool`. Three decimals, intervals as `[lo, hi]`.
+- Folds are named `Fold k (Rk)`, never `Rk` alone: each variety has its own rows R1–R5, so a pooled fold tests several field rows.
+- One `results/metrics.md` per model folder (or per run), not a separate comparison file.
+
 ## Numbers
 
 - PyTorch on the GPU for math (PCA, SNV, sums of squares, permutations). NumPy only at the I/O / plot boundary, with a one-line why.
@@ -48,3 +61,4 @@ Analyses in `clean/` have their own loaders. They do not import `claude runs/`,
 - [ ] File + function docstrings; non-obvious decisions have a why comment
 - [ ] Computation silent; logs only from `main()`
 - [ ] Folder named for the question it answers
+- [ ] Every `metrics.md` built with `report_tables.py` in the shared format

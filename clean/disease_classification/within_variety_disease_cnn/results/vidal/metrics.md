@@ -1,35 +1,60 @@
-# Whole-leaf CNN on Vidal, full spectrum: metrics
+# Disease: whole-leaf CNN on Vidal, full spectrum
 
-Each row is tested once; the next row is validation and the other 3 train, for the CNN and the baseline. Balanced accuracy over all test rows (0.5 = chance); a leaf counts as positive at P ≥ 0.5. CNN = mean P of 3 seeds. Δ: paired difference to the baseline.
+Every model uses SNV and trains on the 3 training rows; the CNN picks its checkpoint on the validation row. Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% bootstrap interval. CNN = mean probability of 3 seeds. Δ: paired difference to logistic regression.
+
+## Macro average: leafroll and red blotch
+
+The mean of the two balanced accuracies below (0.5 = chance); each disease counts equally. Its interval resamples leaves, keeping each row's mix of disease combinations.
+
+| model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
+|---|---|---|---|---|---|---|---|
+| logistic regression | 0.548 [0.511, 0.585] | — | 0.532 | 0.548 | 0.516 | 0.527 | 0.493 |
+| CNN, mean pool | 0.459 [0.424, 0.493] | -0.090 [-0.137, -0.040] | 0.611 | 0.475 | 0.543 | 0.504 | 0.527 |
+| CNN, attention pool | 0.485 [0.461, 0.511] | -0.063 [-0.109, -0.017] | 0.514 | 0.484 | 0.521 | 0.516 | 0.687 |
+
+Fold k tests on row Rk of Vidal; the next row (R1 after R5) is validation and the other 3 train.
+
+Single seeds (the ensemble above averages their probabilities):
+
+| model | seeds | mean ± SD |
+|---|---|---|
+| CNN, mean pool | 0.534, 0.448, 0.453 | 0.478 ± 0.048 |
+| CNN, attention pool | 0.488, 0.491, 0.457 | 0.479 ± 0.019 |
 
 ## Leafroll (25 + / 225 −)
 
-| model | bal. acc. [95% CI] | Δ vs baseline [95% CI] | single seeds (mean ± SD) |
-|---|---|---|---|
-| baseline | 0.544 [0.491, 0.596] | — | — |
-| CNN, mean pool | 0.387 [0.333, 0.442] | -0.158 [-0.231, -0.087] | 0.421 ± 0.089 |
-| CNN, attention pool | 0.478 [0.460, 0.496] | -0.067 [-0.120, -0.011] | 0.449 ± 0.028 |
+| model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
+|---|---|---|---|---|---|---|---|
+| logistic regression | 0.544 [0.491, 0.596] | — | 0.593 | 0.489 | 0.469 | 0.488 | 0.417 |
+| CNN, mean pool | 0.387 [0.333, 0.442] | -0.158 [-0.231, -0.087] | 0.586 | 0.409 | 0.510 | 0.500 | 0.500 |
+| CNN, attention pool | 0.478 [0.460, 0.496] | -0.067 [-0.120, -0.011] | 0.500 | 0.477 | 0.542 | 0.500 | 0.792 |
 
-Balanced accuracy per test row:
+Fold k tests on row Rk of Vidal; the next row (R1 after R5) is validation and the other 3 train.
 
-| model | R1 | R2 | R3 | R4 | R5 |
-|---|---|---|---|---|---|
-| baseline | 0.593 | 0.489 | 0.469 | 0.488 | 0.417 |
-| CNN, mean pool | 0.586 | 0.409 | 0.510 | 0.500 | 0.500 |
-| CNN, attention pool | 0.500 | 0.477 | 0.542 | 0.500 | 0.792 |
+Single seeds (the ensemble above averages their probabilities):
+
+| model | seeds | mean ± SD |
+|---|---|---|
+| CNN, mean pool | 0.522, 0.353, 0.389 | 0.421 ± 0.089 |
+| CNN, attention pool | 0.427, 0.480, 0.440 | 0.449 ± 0.028 |
+
+Median best epoch: CNN, mean pool 5, CNN, attention pool 6.
 
 ## Red blotch (169 + / 81 −)
 
-| model | bal. acc. [95% CI] | Δ vs baseline [95% CI] | single seeds (mean ± SD) |
-|---|---|---|---|
-| baseline | 0.552 [0.494, 0.610] | — | — |
-| CNN, mean pool | 0.531 [0.479, 0.579] | -0.022 [-0.092, +0.050] | 0.535 ± 0.015 |
-| CNN, attention pool | 0.493 [0.447, 0.537] | -0.060 [-0.133, +0.017] | 0.509 ± 0.038 |
+| model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
+|---|---|---|---|---|---|---|---|
+| logistic regression | 0.552 [0.494, 0.610] | — | 0.471 | 0.608 | 0.562 | 0.566 | 0.570 |
+| CNN, mean pool | 0.531 [0.479, 0.579] | -0.022 [-0.092, +0.050] | 0.635 | 0.542 | 0.575 | 0.508 | 0.553 |
+| CNN, attention pool | 0.493 [0.447, 0.537] | -0.060 [-0.133, +0.017] | 0.527 | 0.492 | 0.500 | 0.532 | 0.583 |
 
-Balanced accuracy per test row:
+Fold k tests on row Rk of Vidal; the next row (R1 after R5) is validation and the other 3 train.
 
-| model | R1 | R2 | R3 | R4 | R5 |
-|---|---|---|---|---|---|
-| baseline | 0.471 | 0.608 | 0.562 | 0.566 | 0.570 |
-| CNN, mean pool | 0.635 | 0.542 | 0.575 | 0.508 | 0.553 |
-| CNN, attention pool | 0.527 | 0.492 | 0.500 | 0.532 | 0.583 |
+Single seeds (the ensemble above averages their probabilities):
+
+| model | seeds | mean ± SD |
+|---|---|---|
+| CNN, mean pool | 0.545, 0.543, 0.518 | 0.535 ± 0.015 |
+| CNN, attention pool | 0.550, 0.502, 0.475 | 0.509 ± 0.038 |
+
+Median best epoch: CNN, mean pool 9, CNN, attention pool 9.

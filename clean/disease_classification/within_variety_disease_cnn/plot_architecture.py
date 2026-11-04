@@ -44,7 +44,7 @@ def main() -> None:
     """Write figures/architecture.png."""
     FIG.mkdir(exist_ok=True)
     log = get_logger("plot_architecture")
-    fig_disease_cnn(compute(), FIG / "architecture.png")
+    fig_disease_cnn(compute(), FIG / "architecture.png", header=False)
     log.info("[saved] figures/architecture.png")
 
 

@@ -20,6 +20,7 @@ from data import load_leaf_sizes  # noqa: E402
 from logistic_regression import (BANDS, INK, MUTED, get_device, get_logger, load_features,  # noqa: E402
                                  plot_confusion, row_cv)
 from logistic_regression import Config as LRConfig  # noqa: E402
+from report_tables import BANDS_TITLE, BASELINE, column_table, fold_note, main_table, seed_table  # noqa: E402
 from scoring import N_BOOT, SEED, evaluate  # noqa: E402
 
 FIG = HERE / "figures"
@@ -128,27 +129,27 @@ def compute(device: torch.device, augment: bool = True) -> dict:
     :type device: torch.device
     :param augment: Score the CNN runs trained with rotations and flips (the default), or those without.
     :type augment: bool
-    :return: {"cnn": per input, "lr": per input, "deltas": paired differences}.
+    :return: {"cnn": per input, "lr": per input, "vs_lr": CNN − LR per input, "deltas": 204 bands − RGB}.
     :rtype: dict
     """
     out = {"cnn": {}, "lr": {}}
     for b in BANDS:
         d = load_features(LRConfig(b), device)
         y, rows = d["y"], d["rows"]
-        out["lr"][b] = evaluate(y, row_cv(d["X"], y, rows)[0], device)
+        P, folds = row_cv(d["X"], y, rows)
+        out["lr"][b] = {**evaluate(y, P, device), "per_row": {r: f["test_balanced_accuracy"] for r, f in folds.items()}}
         out["cnn"][b] = score_run(run_name(b, augment), y, rows, device)
     cnn, lr = out["cnn"], out["lr"]
+    out["vs_lr"] = {b: paired_delta(y, cnn[b]["pred"], lr[b]["pred"], device) for b in BANDS}
     out["deltas"] = {
-        "CNN: 204 bands − RGB": paired_delta(y, cnn["all"]["pred"], cnn["rgb"]["pred"], device),
-        "Logistic regression: 204 bands − RGB": paired_delta(y, lr["all"]["pred"], lr["rgb"]["pred"], device),
-        "204 bands: CNN − logistic regression": paired_delta(y, cnn["all"]["pred"], lr["all"]["pred"], device),
-        "RGB: CNN − logistic regression": paired_delta(y, cnn["rgb"]["pred"], lr["rgb"]["pred"], device),
+        "CNN, mean pool": paired_delta(y, cnn["all"]["pred"], cnn["rgb"]["pred"], device),
+        BASELINE: paired_delta(y, lr["all"]["pred"], lr["rgb"]["pred"], device),
     }
     return out
 
 
 def to_markdown(r: dict, augment: bool = True) -> str:
-    """Build metrics.md.
+    """Build metrics.md in the shared format (report_tables): one section per input.
 
     :param r: Output of :func:`compute`.
     :type r: dict
@@ -157,26 +158,33 @@ def to_markdown(r: dict, augment: bool = True) -> str:
     :return: Markdown text.
     :rtype: str
     """
-    def line(label: str, m: dict) -> str:
-        """One table row: score with interval."""
-        lo, hi = m["balanced_accuracy_ci95"]
-        return f"| {label} | {m['balanced_accuracy']:.3f} ({lo:.3f}–{hi:.3f}) |"
+    def model(name: str, m: dict, vs_lr: list[float] | None = None) -> dict:
+        """One line of the main table."""
+        line = {"name": name, "bal_acc": m["balanced_accuracy"], "ci95": m["balanced_accuracy_ci95"],
+                "folds": [m["per_row"][x] for x in ROWS]}
+        if vs_lr is not None:
+            line["delta"], line["delta_ci95"] = vs_lr[0], vs_lr[1:]
+        return line
 
-    lines = ["# Variety CNN: metrics" + ("" if augment else ", trained without augmentation"), "", "Balanced accuracy, chance 0.25; held-out field rows; 95% bootstrap interval. "
-             "Every model uses SNV, trains on 3 rows and is selected on a fourth: the CNN its checkpoint, logistic "
-             "regression its C. CNN scores are 3-seed ensembles.", "",
-             "| model | balanced accuracy |", "|---|---|"]
-    lines += [line(f"CNN `{k}`", m) for k, m in r["cnn"].items()]
-    lines += [line(f"logistic regression `{k}`", m) for k, m in r["lr"].items()]
-    lines += ["", f"Leaf size alone (pixel count, height, width), logistic regression: {r['leaf_size']:.3f}.", "",
-              "## Paired differences (same resampled leaves)", "", "| comparison | Δ balanced accuracy [95% CI] |", "|---|---|"]
+    lines = ["# Variety: whole-leaf CNN" + ("" if augment else ", trained without augmentation"), "",
+             "Balanced accuracy = the mean of the 4 recalls (chance 0.25), with a 95% bootstrap interval. Every model "
+             "uses SNV, trains on 3 rows and is selected on the validation row: the CNN its checkpoint, logistic "
+             "regression its C. CNN = mean probability of 3 seeds. Δ: paired difference to logistic regression on "
+             "the same input.", ""]
+    for b in BANDS:
+        cnn, lr = r["cnn"][b], r["lr"][b]
+        lines += [f"## {BANDS_TITLE[b]}", ""]
+        lines += main_table([model(BASELINE, lr), model("CNN, mean pool", cnn, r["vs_lr"][b])])
+        lines += ["", fold_note(VARIETIES), ""]
+        lines += column_table("Recall per variety:", VARIETIES,
+                              {BASELINE: dict(zip(VARIETIES, lr["recall"])),
+                               "CNN, mean pool": dict(zip(VARIETIES, cnn["recall"]))})
+        lines += [""] + seed_table({"CNN, mean pool": cnn["seed_scores"]})
+        lines += ["", f"Median best epoch: {cnn['median_best_epoch']:.0f}.", ""]
+    lines += ["## 204 bands − RGB (same resampled leaves)", "", "| model | Δ balanced accuracy [95% CI] |", "|---|---|"]
     lines += [f"| {k} | {v[0]:+.3f} [{v[1]:+.3f}, {v[2]:+.3f}] |" for k, v in r["deltas"].items()]
-    lines += ["", "## CNN detail", "", "| input | seeds | seed mean | " + " | ".join(ROWS) + " | median best epoch |",
-              "|---|---|---|" + "---|" * (len(ROWS) + 1)]
-    lines += [f"| `{k}` | {', '.join(f'{s:.3f}' for s in m['seed_scores'])} | {np.mean(m['seed_scores']):.3f} | "
-              + " | ".join(f"{m['per_row'][x]:.3f}" for x in ROWS) + f" | {m['median_best_epoch']:.0f} |"
-              for k, m in r["cnn"].items()]
-    return "\n".join(lines) + "\n"
+    lines += ["", f"Leaf size alone (pixel count, height, width), logistic regression: {r['leaf_size']:.3f}.", ""]
+    return "\n".join(lines)
 
 
 def plot_scores(r: dict, path: Path) -> None:

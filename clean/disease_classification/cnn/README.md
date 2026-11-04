@@ -35,6 +35,3 @@ cd clean/disease_classification/cnn
 ../../../.venv/bin/python -u plot_architecture.py                                   # figures/architecture.png
 # also: --task any both, --no-augmentation (no rotations/flips), --dropout <value>, --smoke (quick check)
 ```
-
-`results/chardonnay*` and `results/all_no_augmentation` are older runs from when this folder also trained single
-varieties (Chardonnay on a 136 px canvas); the within-variety runs replace them.
