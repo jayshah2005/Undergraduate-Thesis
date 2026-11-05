@@ -7,6 +7,7 @@ The disease baseline: logistic regression on each leaf's average spectrum (SNV, 
 |---|---|
 | `logistic_regression.py` | leaves, labels and folds (shared with the CNN), the model, `metrics.md` |
 | `scoring.py` | balanced accuracy and its bootstrap interval |
+| `plot_architecture.py` | poster schematic of the model → `figures/architecture.png` |
 | `results/<variety>[_rgb]/metrics.md` | shared format: the macro average (mean of leafroll and red-blotch balanced accuracy), then each task, with 95% CI, per-fold scores and (for a pool) per variety |
 
 **Folds.** Fold k tests on row Rk; in a pool that is Rk of every variety, since each variety has its own rows R1–R5. The model trains on 3 other rows; the remaining row is the CNN's
@@ -28,4 +29,5 @@ with fewer than 5 positive or 5 negative leaves sits out that task (e.g. Cab Fra
 cd clean/disease_classification/logistic_regression
 ../../../.venv/bin/python -u logistic_regression.py                          # Chardonnay → results/chardonnay/
 ../../../.venv/bin/python -u logistic_regression.py --variety all --bands rgb # all leaves, RGB → results/all_rgb/
+../../../.venv/bin/python -u plot_architecture.py                             # figures/architecture.png
 ```

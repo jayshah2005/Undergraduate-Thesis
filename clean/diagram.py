@@ -327,6 +327,7 @@ H_MAX = 4.2     # drawn height of a full-canvas feature map
 W_PER_CH = 0.2  # drawn width per sqrt(channel)
 DEPTH_X, DEPTH_Y = 0.30, 0.22
 CHAR_W = 0.34   # rough width of one 8 pt character in drawing units, to space the legend
+FILTER_LABEL_H = 0.9  # drawn height of a two-line 7 pt filter label
 
 
 def backbone_stages(widths: tuple, canvas: int) -> list[tuple[str, int, int]]:
@@ -353,6 +354,7 @@ def draw_backbone(ax, stages: list, canvas: int, n_bands: int, yc: float,
     Box height and depth grow with sqrt(map side) and width with sqrt(channels), so
     the 16-channel full-size map does not dwarf the rest; the labels give exact sizes.
     Arrows carry no text: a box's colour names the operation that made it (legend).
+    Under each box: the number of filters and each filter's k × k × depth shape.
 
     :param ax: Axes to draw on.
     :type ax: matplotlib.axes.Axes
@@ -367,7 +369,8 @@ def draw_backbone(ax, stages: list, canvas: int, n_bands: int, yc: float,
     :param gap: Arrow length between boxes.
     :type gap: float
     :return: x of the last box's right edge ("x_end"), top of the tallest drawing
-        ("top"), x span of the input cube ("cube") and of the boxes ("boxes").
+        ("top"), x span of the input cube ("cube") and of the boxes ("boxes"), and the
+        lowest y the filter labels reach ("bottom").
     :rtype: dict
     """
     n = len(LEAF_MASK)
@@ -376,6 +379,8 @@ def draw_backbone(ax, stages: list, canvas: int, n_bands: int, yc: float,
     ax.text(cw / 2, yc - n / 2 + ch + 0.25, f"{canvas} × {canvas} × {n_bands}", ha="center",
             va="bottom", fontsize=8.5, color=INK, fontweight="bold")
     x, x_box0 = cw, None
+    c_in = n_bands   # channels coming into the next layer = how deep its filters are
+    y_filters = yc - n / 2 - 0.2   # one line for every filter label, level with the cube's base
     for op, c, s in stages:
         h = H_MAX * (s / canvas) ** 0.5
         w = W_PER_CH * c ** 0.5
@@ -383,10 +388,37 @@ def draw_backbone(ax, stages: list, canvas: int, n_bands: int, yc: float,
         x += gap
         x_box0 = x if x_box0 is None else x_box0
         box(ax, x, yc, w, h, h, OP_COLOR[op], DEPTH_X, DEPTH_Y)
-        ax.text(x + (w + h * DEPTH_X) / 2, yc + h / 2 + h * DEPTH_Y + 0.2, f"{s}×{s}×{c}",
+        xm = x + (w + h * DEPTH_X) / 2
+        ax.text(xm, yc + h / 2 + h * DEPTH_Y + 0.2, f"{s}×{s}×{c}",
                 ha="center", va="bottom", fontsize=7.5, color=INK_2)
+        ax.text(xm, y_filters, filter_label(op, c, c_in), ha="center", va="top", fontsize=7,
+                color=INK_2, linespacing=1.2)
+        c_in = c
         x += w + h * DEPTH_X
-    return {"x_end": x, "top": yc - n / 2 + ch + 0.9, "cube": (0.0, cw), "boxes": (x_box0, x)}
+    return {"x_end": x, "top": yc - n / 2 + ch + 0.9, "cube": (0.0, cw), "boxes": (x_box0, x),
+            "bottom": y_filters - FILTER_LABEL_H}
+
+
+def filter_label(op: str, c_out: int, c_in: int) -> str:
+    """Text under a feature map: how many filters made it and the shape of each one.
+
+    A k×k conv filter spans every incoming channel, so it is k × k × c_in; its depth is the
+    number of channels of the map before it (204 bands for the first, band-mixing conv).
+    Max pooling has no filters; it works on each channel alone.
+
+    :param op: Operation name, a key of OP_COLOR.
+    :type op: str
+    :param c_out: Channels made (= number of filters).
+    :type c_out: int
+    :param c_in: Channels coming in (= filter depth).
+    :type c_in: int
+    :return: Two-line label.
+    :rtype: str
+    """
+    if op == "max pool":
+        return "2×2 window\nper channel"
+    k = op.split("×")[0]
+    return f"{c_out} filters\n{k}×{k}×{c_in}"
 
 
 def vector_cells(n: int = 8) -> list:
@@ -468,8 +500,8 @@ def fig_disease_cnn(r: dict, path, header: bool = True) -> None:
     :param path: PNG path.
     :type path: pathlib.Path
     """
-    fig, ax = new_axes(12, 3.6)  # the same size either way, so the drawing keeps its scale
-    yc, y_cap = 3.2, -1.0
+    fig, ax = new_axes(12, 3.7)  # the same size either way, so the drawing keeps its scale
+    yc, y_cap = 3.2, -1.1
     y_up, y_dn = yc + 2.2, yc - 2.2     # the mean-pool and attention-pool branches
     b = draw_backbone(ax, r["stages"], r["canvas"], r["n_bands"], yc)
     vec = vector_cells(VEC_CELLS)
@@ -523,13 +555,114 @@ def fig_disease_cnn(r: dict, path, header: bool = True) -> None:
     items = [(LEAF_GREEN, "leaf pixel (padding = 0)")] + \
         [(OP_COLOR[op], text) for op, text in OP_LEGEND.items()] + \
         [(shade(ATTN_COLOR, 0.3), "attention weight")]
-    x_end = legend(ax, 0.0, -3.6, items)
-    ax.text(x_end, -3.6, "BN and pooling use leaf positions only", ha="left", va="center",
+    x_end = legend(ax, 0.0, -3.7, items)
+    ax.text(x_end, -3.7, "BN and pooling use leaf positions only", ha="left", va="center",
             fontsize=8, color=INK_2, style="italic")
 
     ax.set_aspect("equal")
     ax.set_xlim(-0.5, xo + 5.2)
     # The saved image is cropped to the axes and any text past them, so without a header the
     # limit drops to the top of the drawing and no empty band is left where the header was.
-    ax.set_ylim(-4.1, b["top"] + (2.0 if header else 0.0))
+    ax.set_ylim(-4.2, b["top"] + (2.0 if header else 0.0))
+    save(fig, path)
+
+
+# ---- Logistic regression figure (variety and disease) ----------------------------
+# A made-up leaf spectrum, one value per drawn cell, short wavelengths first: low in the blue,
+# a green bump, low in the red, then the high near-infrared plateau of a healthy leaf.
+EXAMPLE_SPECTRUM = [0.05, 0.08, 0.16, 0.09, 0.05, 0.28, 0.46, 0.50, 0.50, 0.48]
+# Made-up values after per-band standardisation (each band centred on the training leaves).
+EXAMPLE_STANDARDISED = [-0.4, 0.9, -1.2, 0.3, 1.5, -0.8, 0.2, -1.6, 0.7, 1.1]
+SPEC_S = 0.45   # cell size of the drawn spectra
+LR_STEP = 5.6   # distance from one spectrum to the next, wide enough for the captions
+
+
+def fig_logistic_regression(r: dict, path) -> None:
+    """Draw the logistic-regression pipeline left to right, in the CNN figures' style, and save it.
+
+    Leaf cube → mean over leaf pixels → SNV → per-band standardisation → linear → softmax
+    (several classes) or sigmoid (one disease). The weights have the depth of the spectrum,
+    as a CNN filter has the depth of the map it reads, and the label under the linear arrow
+    says so.
+
+    :param r: n_bands, classes (names, or None for one yes/no disease), example_p (one made-up
+        probability per class, ignored when classes is None), cube_note (line under the cube
+        caption), fit_note (line under the output caption).
+    :type r: dict
+    :param path: PNG path.
+    :type path: pathlib.Path
+    """
+    fig, ax = new_axes(8.6, 3.2)
+    yc = 2.5
+    n = len(LEAF_MASK)
+    y_cap = yc - n / 2 - 0.6
+
+    front = [[LEAF_GREEN if m else FRONT for m in row_] for row_ in LEAF_MASK]
+    cw, ch = voxel_cube(ax, 0.0, yc - n / 2, n, n, CUBE_NB, CUBE_DX, CUBE_DY, front)
+    ax.text(cw / 2, yc - n / 2 + ch + 0.25, f"leaf pixels × {r['n_bands']}", ha="center",
+            va="bottom", fontsize=8.5, color=INK, fontweight="bold")
+
+    # The three spectra: reflectance, SNV (centred and scaled over its own bands), standardised.
+    spec = np.array(EXAMPLE_SPECTRUM)
+    snv_ = (spec - spec.mean()) / spec.std()
+    spectra = [[REFLECT(float(np.clip(v / 0.55, 0, 1))) for v in spec],
+               [SNV_MAP(float(np.clip((v + 2) / 4, 0, 1))) for v in snv_],
+               [SNV_MAP(float(np.clip((v + 2) / 4, 0, 1))) for v in EXAMPLE_STANDARDISED]]
+    steps = [("mean over\nleaf pixels", "Mean spectrum", "one per leaf"),
+             ("SNV", "SNV", "over the leaf's\nown bands"),
+             ("standardise\nper band", "Standardised", "mean, sd from\ntraining leaves")]
+    x_prev, x = cw, cw + 4.5
+    for cells, (verb, name, note) in zip(spectra, steps):
+        arrow(ax, x_prev + 0.3, x - 0.3, yc, verb, fontsize=8)
+        _lo, hi = column(ax, x, yc, cells, SPEC_S)
+        ax.text(x + SPEC_S / 2, hi + 0.15, f"{r['n_bands']}", ha="center", va="bottom",
+                fontsize=7.5, color=INK_2)
+        caption(ax, x + SPEC_S / 2, y_cap, name)
+        ax.text(x + SPEC_S / 2, y_cap - 0.95, note, ha="center", va="top", fontsize=8, color=INK_2,
+                linespacing=1.15)
+        x_prev, x = x + SPEC_S, x + SPEC_S + LR_STEP - SPEC_S
+
+    # Linear layer: one weight per band for each class (one class for a yes/no disease).
+    classes = r["classes"]
+    k = len(classes) if classes else 1
+    xo = x + 0.6
+    arrow(ax, x_prev + 0.3, xo - 0.3, yc, "linear", fontsize=8,
+          below="softmax" if classes else "sigmoid")
+    weights = f"{k} × {r['n_bands']} weights\n+ {k} biases" if k > 1 else \
+        f"{r['n_bands']} weights\n+ 1 bias"
+    ax.text((x_prev + xo) / 2, yc - 1.25, weights, ha="center", va="top", fontsize=7,
+            color=INK_2, linespacing=1.2)
+
+    s = 0.75
+    if classes:
+        _lo, hi = column(ax, xo, yc, [shade(INK, 1 - 0.85 * p) for p in r["example_p"]], s)
+        for j, name in enumerate(classes):
+            ax.text(xo + s + 0.25, hi - (j + 0.5) * s, name, ha="left", va="center",
+                    fontsize=8, color=INK)
+        ax.text(xo + s / 2, hi + 0.2, f"{k}", ha="center", va="bottom", fontsize=7.5,
+                color=INK_2)
+        out_name, x_out = "Variety", xo + s + 1.3
+    else:
+        column(ax, xo, yc, [shade(INK, 0.45)], s)
+        ax.text(xo + s + 0.25, yc, "P(disease)", ha="left", va="center", fontsize=8.5, color=INK)
+        out_name, x_out = "Prediction", xo + 1.8
+    caption(ax, (0 + cw) / 2, y_cap, "Leaf cube")
+    ax.text(cw / 2, y_cap - 0.95, r["cube_note"], ha="center", va="top", fontsize=8, color=INK_2)
+    caption(ax, x_out, y_cap, out_name)
+    ax.text(x_out, y_cap - 0.95, r["fit_note"], ha="center", va="top", fontsize=8, color=INK_2,
+            linespacing=1.15)
+
+    # Legend: leaf pixels, then the two colour scales the spectra use.
+    y_leg = y_cap - 3.0
+    bx = legend(ax, 0.0, y_leg, [(LEAF_GREEN, "leaf pixel")])
+    for title, cmap, labels in (("reflectance", REFLECT, ("low", "", "high")),
+                                ("SNV, standardised", SNV_MAP, ("below", "0", "above"))):
+        ax.text(bx, y_leg, title, ha="left", va="center", fontsize=8, color=INK_2)
+        bx += CHAR_W * len(title) + 0.6
+        key(ax, bx + 2.0, y_leg - 0.17, cmap, labels)
+        bx += 4.0 + 1.4
+
+    ax.set_aspect("equal")
+    ax.set_xlim(-0.5, max(xo + s + 5.0, bx))
+    ax.set_ylim(y_leg - 0.9, yc - n / 2 + ch + 1.0)
     save(fig, path)

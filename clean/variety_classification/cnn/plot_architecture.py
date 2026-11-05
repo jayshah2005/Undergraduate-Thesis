@@ -49,8 +49,8 @@ def fig_architecture(r: dict) -> Path:
     :return: Path written.
     :rtype: Path
     """
-    fig, ax = new_axes(12, 2.9)
-    yc, y_cap = 2.5, -0.6
+    fig, ax = new_axes(12, 3.2)
+    yc, y_cap = 2.5, -1.6
     b = draw_backbone(ax, r["stages"], r["canvas"], r["n_bands"], yc)
 
     # Leaf pooling: average the last map over interior leaf positions → one vector.
@@ -81,13 +81,13 @@ def fig_architecture(r: dict) -> Path:
 
     items = [(LEAF_GREEN, "leaf pixel (padding = 0)")] + \
         [(OP_COLOR[op], text) for op, text in OP_LEGEND.items()]
-    x_end = legend(ax, 0.0, -3.2, items)
-    ax.text(x_end, -3.2, "BN and pooling use leaf positions only", ha="left", va="center",
+    x_end = legend(ax, 0.0, -4.2, items)
+    ax.text(x_end, -4.2, "BN and pooling use leaf positions only", ha="left", va="center",
             fontsize=8, color=INK_2, style="italic")
 
     ax.set_aspect("equal")
     ax.set_xlim(-0.5, xo + s + 4.6)
-    ax.set_ylim(-3.7, b["top"] + 0.3)
+    ax.set_ylim(-4.7, b["top"] + 0.3)
     path = FIG / "architecture.png"
     save(fig, path)
     return path

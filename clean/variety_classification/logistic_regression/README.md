@@ -6,6 +6,7 @@ Each leaf is its mean spectrum → SNV (removes brightness) → per-band standar
 |---|---|
 | `logistic_regression.py` | features, the row split both models use, fitting, tables and the confusion figure |
 | `scoring.py` | balanced accuracy and its bootstrap interval, recall, ROC AUC, confusion matrix; used here and in `../cnn/report.py` |
+| `plot_architecture.py` | poster schematic of the model → `figures/architecture.png` |
 
 | setting | choices | meaning |
 |---|---|---|
@@ -14,6 +15,7 @@ Each leaf is its mean spectrum → SNV (removes brightness) → per-band standar
 ```bash
 cd clean/variety_classification/logistic_regression
 ../../../.venv/bin/python -u logistic_regression.py --bands rgb   # one configuration, ~10 s; rebuilds results/metrics.md
+../../../.venv/bin/python -u plot_architecture.py                  # figures/architecture.png
 ```
 
 | output | what it is |
@@ -21,6 +23,7 @@ cd clean/variety_classification/logistic_regression
 | `results/metrics.md` | every finished configuration in the shared format: balanced accuracy with 95% CI, per-fold scores, recall per variety, chosen C |
 | `results/<bands>/metrics.json` | one configuration's numbers (also confusion matrix and ROC AUC), read to build `metrics.md` |
 | `figures/<bands>/` | `confusion_matrix.png` |
+| `figures/architecture.png` | the model, drawn in the same style as the CNN's |
 
 Ported from `claude runs/variety_logistic_regression` and `claude runs/variety_logistic_regression_rgb`. The earlier runs also tried raw reflectance, which is not ported. With SNV it gives the same predicted variety for every leaf. Confidence intervals differ by up to 0.003 because the bootstrap now runs in PyTorch.
 
