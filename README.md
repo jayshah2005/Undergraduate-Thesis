@@ -1,8 +1,6 @@
 # Grapevine hyperspectral disease classification
 
-Classify red blotch and leafroll-3 on Specim IQ leaf cut-outs (998 leaves, 4 varieties, 204 bands, 397–1004 nm). Labels are binary per disease; a leaf can have both, either, or neither (healthy).
-
-This repo holds the raw HDF5, shared loaders, exploratory analysis, and paper re-implementations under `claude runs/` (index: `claude runs/README.md`). An earlier 47-run transfer-learning study is archived in `claude runs/cache/transfer_learning_study/` (weak within-variety signal; variety alone explains much of the pooled AUC).
+Classify red blotch and leafroll-3 on Specim IQ leaf cut-outs (998 leaves, 4 varieties, 204 bands, 397–1004 nm). Labels are binary per disease; a leaf can have both, either, or neither (healthy). Each vine is one leaf from `vine_hsi.h5`.
 
 ---
 
@@ -38,34 +36,34 @@ This repo holds the raw HDF5, shared loaders, exploratory analysis, and paper re
 | Vidal | 157 (62.8%) | 13 (5.2%) | 12 (4.8%) | 68 (27.2%) |
 | **All** | **517** | **139** | **116** | **226** |
 
-Cab Franc has essentially no leafroll positives, so leafroll training/scoring excludes that variety (still used for red blotch).
+Cab Franc has essentially no leafroll positives, so leafroll training and scoring leave that variety out (it is still used for red blotch).
 
-Shared metadata loader (notebooks): `vine_data.py` — `open_h5`, `load_wavelengths`, `index_vines`.
+`data analysis.ipynb` builds these tables with the small loader `vine_data.py`; the analyses below use `helpers/data.py`.
 
 ---
 
 ## Layout
 
-```
-Classification/
-├── vine_hsi.h5              # raw cubes + labels
-├── vine_data.py             # thin H5 index/loaders for notebooks
-├── data analysis.ipynb      # EDA / label tables
-├── plan.md                  # plan of the controlled PMMFNet experiments
-├── requirements.txt
-├── Knowledge Base.txt       # short notes / paper list
-├── research_notes/          # longer write-ups
-├── clean/                   # variety classification, spectral analysis, disease classification
-└── claude runs/             # all code, results and reports (index: claude runs/README.md)
-    ├── shared/                      # data cache + code every pipeline uses (folds, labels, metrics)
-    ├── pmmfnet/                     # PMMFNet paper: original run, controlled experiments, your own runs
-    ├── gmkl/                        # GMKL paper
-    ├── spectra_exploration/         # do the spectra separate by variety or by disease?
-    ├── disease_differences/         # healthy vs red blotch vs leafroll inside each variety
-    ├── variety_logistic_regression/ # predicting the variety from the spectrum
-    └── cache/transfer_learning_study/   # archived first 47-run study
-```
+Analyses are grouped by what they ask:
 
-Eval protocol (all scripts): 5 folds = whole vineyard **rows** held out together (neighbours look alike). Prefer **within-variety** ROC AUC (0.5 = chance; variety recognition does not help) over pooled AUC.
+| path | what it is |
+|---|---|
+| [`variety_classification/`](variety_classification/) | predict a leaf's variety: logistic regression and a whole-leaf CNN, each with all 204 bands or RGB only |
+| [`spectral_analysis/`](spectral_analysis/) | what the spectra look like: PCA by variety and by disease class, plus the poster's normalisation figure |
+| [`disease_classification/`](disease_classification/) | detect a disease within a variety: whole-leaf CNN with attention pooling vs the mean-spectrum baseline |
 
-Each folder has a README with how to run it and a REPORT (or results section) with what it found. The setup is in `requirements.txt`; scripts run with `../../.venv/bin/python` from inside their folder.
+Shared code, in [`helpers/`](helpers/):
+
+| file | what it is |
+|---|---|
+| `data.py` | leaf mean spectra (cached in `cache/`), whole-leaf cubes, leaf sizes, and which camera image each leaf came from |
+| `pca_common.py` | SNV, PCA, the R² test, variety names and colours |
+| `cnn_common.py` | masked batch norm, mask erosion, canvas padding, augmentation for the whole-leaf CNNs |
+| `log.py` | terminal + log-file output |
+| `report_tables.py` | the shared report format: every run gets `final_report.md` (balanced accuracy, Δ vs logistic regression, Fold 1 (R1) … Fold 5 (R5)) and `metrics.md` (every metric) |
+| `diagram.py` | drawing pieces (cubes, boxes, arrows, legend) for the poster schematics: pipeline and the model architectures |
+| `leaf_sources.csv` | leaf → camera image, matched by exact pixel values; read by `data.load_capture_ids` |
+
+Evaluation: 5 folds by vineyard row, since neighbouring vines look alike. Fold k tests on row Rk of every variety, the next row is validation and the other 3 train. Disease models are scored by balanced accuracy, leafroll and red blotch separately.
+
+Setup is in `requirements.txt`. Each folder's README says how to run it; scripts run with the repo's `.venv` from inside their folder. How code here is written: `.claude/skills/clean-analysis/`.

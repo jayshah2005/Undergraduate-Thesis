@@ -11,11 +11,11 @@ description: Use whenever writing or refactoring any script in this repo. Keeps 
   results (numbers, arrays, dicts, dataclasses). A function that trains, scores or transforms data
   must be callable silently from a notebook or a test.
 - **Progress messages go through `logging`**, set up once in the script's entry point with the
-  shared helper `claude runs/shared/logs.py`:
+  shared helper `helpers/log.py`:
 
   ```python
-  from logs import get_logger
-  log = get_logger("pmmfnet", log_file=out / "log.txt")   # terminal + file
+  from helpers.log import get_logger
+  log = get_logger("cnn", log_file=LOGS / "train.log")   # terminal + file
   log.info("fold %d: test bal. acc. %.3f", fold, bacc)
   ```
 

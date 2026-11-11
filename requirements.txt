@@ -19,11 +19,7 @@ tqdm>=4.66
 # Optional but useful for H5 / array inspection
 seaborn>=0.13
 
-# Added for experiments/07_foundation_models.py (DOFA + DINOv2 transformers).
-# scipy is already pulled in by scikit-learn (used for Savitzky-Golay filtering).
+# Used only by the removed paper re-implementations (foundation models, GMKL); nothing imports them now.
 timm>=1.0
-
-# Added for claude runs/experiments/12_gmkl.py (graph-based multiple kernel learning):
-# attribute-profile filters (max-tree) and the DBSCAN superpixel loop.
 scikit-image>=0.24
 numba>=0.60

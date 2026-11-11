@@ -1,25 +1,21 @@
 ---
 name: clean-analysis
 description: >-
-  Write and refactor code under clean/. Keep clean/ independent of claude runs/
-  and other experiment folders; require readable, well-documented scripts a
-  newcomer can follow. Use when creating or editing files in clean/, its three topic folders,
-  or when the user mentions the clean folder.
+  Write and refactor the analysis code in this repo (variety_classification/,
+  spectral_analysis/, disease_classification/, helpers/); require readable,
+  well-documented scripts a newcomer can follow and the shared report format.
+  Use when creating or editing any script, README or report in the repo.
 ---
 
-# clean/ analysis
+# Analysis code
 
-Analyses in `clean/` have their own loaders. They do not import `claude runs/`,
-`vine_data.py`, or other experiment folders.
+## Layout
 
-## Isolation
-
-- Import only from `clean/` (`data.py`, `log.py`, `cnn_common.py`, `diagram.py`, `report_tables.py`, `leaf_sources.csv`, `spectral_analysis/PCA/pca_common.py`) and third-party libraries.
-- Never `sys.path` into `claude runs/` or `from common import …` / `from spectra import …` / `from vine_data import …`.
-- The only file outside `clean/` that code may read is `vine_hsi.h5`, through `clean/data.py`.
-- One topic folder per kind of work: `variety_classification/`, `spectral_analysis/`, `disease_classification/`.
-- Cache leaf means in `clean/cache/`, not in `claude runs/shared/cache/`.
-- Do not add experiment code under `claude runs/` while working on `clean/`.
+- Shared code lives in the `helpers/` package: `data.py`, `log.py`, `pca_common.py`, `cnn_common.py`, `diagram.py`, `report_tables.py`, `leaf_sources.csv`. Helpers import each other relatively (`from .data import …`).
+- Scripts put the repo root on `sys.path` (`ROOT = HERE.parents[1]`) and import `from helpers.<module> import …`. Code from a sibling folder (e.g. `disease_classification/logistic_regression`) is added to `sys.path` by folder.
+- Analysis code reads `vine_hsi.h5` only through `helpers/data.py`, never through `vine_data.py` (kept for `data analysis.ipynb`).
+- One topic folder per kind of work: `variety_classification/`, `spectral_analysis/`, `disease_classification/`. New helpers go in `helpers/`, not in a topic folder.
+- Leaf means are cached in `cache/` at the repo root.
 
 ## Code a newcomer can follow
 
@@ -31,34 +27,39 @@ Analyses in `clean/` have their own loaders. They do not import `claude runs/`,
 ## Logs vs logic
 
 - Computation returns values. It never prints and never writes logs.
-- Logging uses `clean/log.py` `get_logger`, set up once in `main()`.
+- Logging uses `helpers/log.py` `get_logger`, set up once in `main()`.
 - Keep output short. Analysis and report scripts print one line and keep no log file. Only training keeps a log (latest run, one line per seed or arm), and passing checks stay silent. Never copy a report into a log, or write a file nothing reads.
 - Reports and figures are separate functions, called after `compute()`.
 - `logs/`, `results/`, `figures/` stay separate.
 
 ## Result files
 
-Every `metrics.md` (variety and disease, logistic regression and CNN) uses one format, built with `clean/report_tables.py`, so any two can be read side by side:
+Every run folder (`results/<run>/`, variety and disease, logistic regression and CNN) gets two files, built with `helpers/report_tables.py`, so any two runs can be read side by side:
+
+- `final_report.md`: balanced accuracy only, in the format below.
+- `metrics.md`: every metric (balanced accuracy, accuracy, sensitivity (= recall), specificity, precision, F1) with 95% intervals, then confusion counts, then per variety. Same sections as `final_report.md`, tables built with `report_tables.table`.
+
+`final_report.md` format:
 
 - Title `# <Variety|Disease>: <model> [on <varieties>, <bands>]`, then one paragraph: split, score, chance, interval.
 - One `##` section per task (disease) or per input (variety), e.g. `## Red blotch (88 + / 162 −)`, `## Full spectrum (204 bands)`.
 - Each section opens with `main_table`: `model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) … Fold 5 (R5)`, logistic regression first. Then `fold_note`.
-- Disease reports open with the macro-average section (mean of leafroll and red-blotch balanced accuracy, `scoring.macro_score`), then one section per task.
+- Disease: one section per task; leafroll and red blotch are always scored separately, never averaged into one number.
 - Extra tables follow in this order, only when they apply: per variety (`column_table`), single seeds (`seed_table`), anything else.
 - Same names everywhere: `logistic regression`, `CNN, mean pool`, `CNN, attention pool`. Three decimals, intervals as `[lo, hi]`.
 - Folds are named `Fold k (Rk)`, never `Rk` alone: each variety has its own rows R1–R5, so a pooled fold tests several field rows.
-- One `results/metrics.md` per model folder (or per run), not a separate comparison file.
+- One pair per run folder; no separate comparison file.
 
 ## Numbers
 
 - PyTorch on the GPU for math (PCA, SNV, sums of squares, permutations). NumPy only at the I/O / plot boundary, with a one-line why.
-- Spectral PCA in `clean/` is SNV first unless the user asks for raw.
+- Spectral PCA is SNV first unless the user asks for raw.
 - Average leaf pixels, then SNV the 204-vector, then PCA. Do not SNV each pixel first.
 
 ## Checklist
 
-- [ ] No imports from `claude runs/` or `vine_data.py`
+- [ ] Shared code imported from `helpers/`; nothing imports `vine_data.py`
 - [ ] File + function docstrings; non-obvious decisions have a why comment
 - [ ] Computation silent; logs only from `main()`
 - [ ] Folder named for the question it answers
-- [ ] Every `metrics.md` built with `report_tables.py` in the shared format
+- [ ] Every run has `final_report.md` and `metrics.md`, built with `report_tables.py` in the shared format
