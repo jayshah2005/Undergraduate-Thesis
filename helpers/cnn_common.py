@@ -128,3 +128,52 @@ def augment(x: torch.Tensor, m: torch.Tensor, g: torch.Generator) -> tuple[torch
         xs.append(xi)
         ms.append(mi)
     return torch.stack(xs), torch.stack(ms)
+
+
+class LeafPool(nn.Module):
+    """Turn a feature map into one vector per leaf: masked mean or gated-attention pooling.
+
+    Positions whose 3x3 neighbourhood touches the background are left out, so the leaf
+    margin cannot drive the prediction; a leaf too small to keep any falls back to its full mask.
+
+    pooling="mean": every leaf position gets the same weight.
+    pooling="attention": gated attention (Ilse et al. 2018, "Attention-based Deep Multiple
+    Instance Learning", ICML) learns one weight per position, so a few symptomatic patches
+    can decide the leaf.
+    """
+
+    def __init__(self, channels: int, pooling: str = "mean", hidden: int = 32):
+        super().__init__()
+        assert pooling in ("mean", "attention")
+        self.pooling = pooling
+        if pooling == "attention":
+            self.att_v = nn.Linear(channels, hidden)
+            self.att_u = nn.Linear(channels, hidden)
+            self.att_w = nn.Linear(hidden, 1)
+
+    def forward(self, h: torch.Tensor, mask: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        """Pool each leaf's positions.
+
+        B: batch size. C: channels. H, W: map size.
+
+        :param h: Features, shape (B, C, H, W).
+        :type h: torch.Tensor
+        :param mask: 1 on leaf positions, shape (B, 1, H, W).
+        :type mask: torch.Tensor
+        :return: pooled vectors (B, C) and the weight of each position (B, H, W), summing to 1 per leaf.
+        :rtype: tuple[torch.Tensor, torch.Tensor]
+        """
+        valid = min_pool(mask, 3, 1, pad=1)
+        empty = valid.flatten(1).sum(1) == 0
+        valid = torch.where(empty[:, None, None, None], mask, valid)
+
+        b, c, hh, ww = h.shape
+        feats = h.flatten(2).transpose(1, 2)                  # (B, positions, C)
+        keep = valid.flatten(1) > 0                           # (B, positions)
+        if self.pooling == "attention":
+            s = self.att_w(torch.tanh(self.att_v(feats)) * torch.sigmoid(self.att_u(feats)))
+            s = s.squeeze(-1).masked_fill(~keep, float("-inf"))
+            a = torch.softmax(s, dim=1)
+        else:
+            a = keep.float() / keep.float().sum(1, keepdim=True)
+        return (a.unsqueeze(-1) * feats).sum(1), a.view(b, hh, ww)

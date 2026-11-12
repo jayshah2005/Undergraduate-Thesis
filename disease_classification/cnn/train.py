@@ -14,6 +14,7 @@ ROOT = HERE.parents[1]
 for p in (ROOT, HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
+from helpers.backbones import DEFAULT_BACKBONE  # noqa: E402
 from helpers.cnn_common import augment  # noqa: E402
 from model import LeafCNN  # noqa: E402
 
@@ -34,6 +35,7 @@ class TrainConfig:
     patience: int = 15         # epochs without a lower validation loss
     dropout: float = 0.5       # before the last linear layer
     augment: bool = True       # random 90° rotations and flips while training
+    backbone: str = DEFAULT_BACKBONE   # a key of helpers.backbones.BACKBONES; the same settings for every backbone
 
 
 def preprocess(x: torch.Tensor, m: torch.Tensor) -> torch.Tensor:
@@ -95,8 +97,9 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, pool
     :type seed: int
     :param cfg: Training settings.
     :type cfg: TrainConfig
-    :return: test probabilities (n_test,), test pooling weights (n_test, S4, S4),
-        best epoch, epochs run, per-epoch train and validation losses.
+    :return: test probabilities (n_test,), test pooling weights (n_test, S4, S4), validation
+        probabilities (n_val,) from the kept weights, best epoch, epochs run, per-epoch train
+        and validation losses.
     :rtype: dict
     """
     dev = X.device
@@ -105,7 +108,7 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, pool
     torch.manual_seed(seed)
     g = torch.Generator(device=dev).manual_seed(seed)
 
-    model = LeafCNN(X.shape[1], pooling, cfg.dropout).to(dev)
+    model = LeafCNN(X.shape[1], pooling, cfg.dropout, cfg.backbone).to(dev)
     opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
     n_pos = y[tr].sum()
     # Up-weight the positive class by #neg / #pos so both classes count equally.
@@ -142,9 +145,11 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, pool
     model.load_state_dict(best[2])
     model.eval()
     lt, att = _predict(model, X, mask, te)
+    lv, _ = _predict(model, X, mask, va)   # kept so backbones can be compared without the test rows
     return {
         "prob": torch.sigmoid(lt),
         "attention": att,
+        "val_prob": torch.sigmoid(lv),
         "best_epoch": best[1],
         "epochs": len(hist_tr),
         "train_loss": hist_tr,

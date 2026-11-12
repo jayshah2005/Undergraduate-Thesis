@@ -23,6 +23,7 @@ ROOT = HERE.parents[1]
 for p in (ROOT, HERE.parent / "logistic_regression", HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
+from helpers.backbones import BACKBONES, DEFAULT_BACKBONE, masked_norms  # noqa: E402
 from helpers.cnn_common import augment, pad_to_canvas  # noqa: E402
 from helpers.data import load_cubes, load_dataset  # noqa: E402
 from helpers.log import get_logger  # noqa: E402
@@ -57,6 +58,7 @@ class TrainConfig:
     patience: int = 15     # epochs without a lower validation loss
     dropout: float = 0.5
     augment: bool = True   # random 90° rotations and flips while training; no brightness or band jitter
+    backbone: str = DEFAULT_BACKBONE   # a key of helpers.backbones.BACKBONES; the same settings for every backbone
 
 
 def load(device: torch.device) -> dict:
@@ -126,7 +128,8 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
     :type split: tuple
     :param seed: Seed for weights, batch order and augmentation.
     :type seed: int
-    :return: test probabilities (k, 4), best epoch, epochs run, per-epoch train and validation losses.
+    :return: test probabilities (k, 4), validation probabilities (from the kept weights), best epoch,
+        epochs run, per-epoch train and validation losses.
     :rtype: dict
     """
     X, mask, y = d["X"], d["mask"], d["y"]
@@ -135,7 +138,7 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
     torch.manual_seed(seed)
     g = torch.Generator(device=dev).manual_seed(seed)
 
-    model = VarietyCNN(len(bands), tc.dropout).to(dev)
+    model = VarietyCNN(len(bands), tc.dropout, tc.backbone).to(dev)
     opt = torch.optim.AdamW(model.parameters(), lr=tc.lr, weight_decay=tc.weight_decay)
     best, hist_tr, hist_va = (float("inf"), 0, None), [], []
     for epoch in range(1, tc.max_epochs + 1):
@@ -165,24 +168,29 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
     model.load_state_dict(best[2])
     model.eval()
     prob = torch.softmax(_logits(model, X, mask, te, bands), 1)
-    return {"prob": prob, "best_epoch": best[1], "epochs": len(hist_tr), "train_loss": hist_tr, "val_loss": hist_va}
+    # Kept so backbones can be compared without the test rows.
+    val_prob = torch.softmax(_logits(model, X, mask, va, bands), 1)
+    return {"prob": prob, "val_prob": val_prob, "best_epoch": best[1], "epochs": len(hist_tr),
+            "train_loss": hist_tr, "val_loss": hist_va}
 
 
-def invariance_check(d: dict, bands: torch.Tensor) -> float:
+def invariance_check(d: dict, bands: torch.Tensor, backbone: str = DEFAULT_BACKBONE) -> float:
     """Check that padding and position don't change a leaf's score (untrained network, eval mode).
 
     :param d: Output of :func:`load`.
     :type d: dict
     :param bands: Indices of the input bands, length d.
     :type bands: torch.Tensor
+    :param backbone: A key of BACKBONES.
+    :type backbone: str
     :return: Largest logit change from shifting a leaf by 8 px or enlarging the canvas by 32 px.
     :rtype: float
     """
     torch.manual_seed(0)
     m = d["mask"][:4]
     x = preprocess(d["X"][:4][:, bands], m)
-    model = VarietyCNN(len(bands)).to(x.device).eval()
-    for bn in model.bn:   # non-trivial running statistics, so eval mode is exercised
+    model = VarietyCNN(len(bands), backbone=backbone).to(x.device).eval()
+    for bn in masked_norms(model):   # non-trivial running statistics, so eval mode is exercised
         bn.running_mean.normal_()
         bn.running_var.uniform_(0.5, 2.0)
     with torch.no_grad():
@@ -191,9 +199,10 @@ def invariance_check(d: dict, bands: torch.Tensor) -> float:
                    for p in ((8, 0, 8, 0), (16, 16, 16, 16), (0, 32, 0, 32)))
 
 
-def run_name(bands: str, augment: bool = True) -> str:
-    """Results folder of one run: the bands, plus _no_augmentation when trained without rotations and flips."""
-    return bands + ("" if augment else "_no_augmentation")
+def run_name(bands: str, augment: bool = True, backbone: str = DEFAULT_BACKBONE) -> str:
+    """Results folder of one run: the bands, plus _no_augmentation when trained without rotations and flips,
+    plus _<backbone> for a backbone other than the default."""
+    return bands + ("" if augment else "_no_augmentation") + ("" if backbone == DEFAULT_BACKBONE else f"_{backbone}")
 
 
 def check_settings(root: Path, tc: TrainConfig) -> None:
@@ -212,22 +221,22 @@ def check_settings(root: Path, tc: TrainConfig) -> None:
             raise RuntimeError(f"{root} holds runs made with {old}, not {asdict(tc)}; move or delete it first")
 
 
-def main() -> None:
-    """Check, then train every (seed, test row) of one configuration not already on disk."""
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--bands", choices=BANDS, default=Config.bands, help="all 204 bands, or only the 3 RGB bands")
-    ap.add_argument("--smoke", action="store_true", help="first test row, seed 0, 3 epochs, into results/smoke/")
-    ap.add_argument("--no-augmentation", action="store_true",
-                    help="train without rotations and flips; results go to results/<bands>_no_augmentation/")
-    args = ap.parse_args()
+def run(cfg: Config, tc: TrainConfig, root: Path, log, seeds: tuple = SEEDS, folds=range(5)) -> None:
+    """Check, then train every (seed, test row) of one configuration not already on disk.
 
-    cfg = Config(args.bands)
-    tc = TrainConfig(max_epochs=3, patience=3) if args.smoke else TrainConfig()
-    tc = replace(tc, augment=not args.no_augmentation)
-    seeds, folds = ((0,), (0,)) if args.smoke else (SEEDS, range(5))
-    name = run_name(cfg.bands, tc.augment)
-    root = (RESULTS / "smoke" if args.smoke else RESULTS) / name
-    log = get_logger("variety_cnn", log_file=None if args.smoke else LOGS / f"{name}.log")
+    :param cfg: Input bands.
+    :type cfg: Config
+    :param tc: Training settings, including the backbone.
+    :type tc: TrainConfig
+    :param root: Results folder of this run.
+    :type root: Path
+    :param log: Logger from get_logger.
+    :type log: logging.Logger
+    :param seeds: Seeds to train.
+    :type seeds: tuple
+    :param folds: Test folds to train.
+    :type folds: Iterable[int]
+    """
     check_settings(root, tc)
 
     torch.backends.cudnn.benchmark = False
@@ -238,8 +247,8 @@ def main() -> None:
     d = load(device)
     bands = torch.as_tensor(d["rgb"] if cfg.bands == "rgb" else np.arange(d["X"].shape[1]), device=device)
     rows = d["meta"].row.to_numpy().astype(str)
-    log.info("%s: %d leaves, %d bands, canvas %d", name, len(rows), len(bands), d["side"])
-    change = invariance_check(d, bands)
+    log.info("%s: %d leaves, %d bands, canvas %d", root.name, len(rows), len(bands), d["side"])
+    change = invariance_check(d, bands, tc.backbone)
     if change > 1e-3:
         raise RuntimeError(f"padding leaks into the prediction: {change}")
 
@@ -256,12 +265,35 @@ def main() -> None:
                 continue
             split = fold_split(rows, k)
             r = train_fold(d, bands, tc, split, 100 * seed + k)
-            np.savez(f, test_idx=split[2], prob=np_(r["prob"]), best_epoch=r["best_epoch"], epochs=r["epochs"],
+            np.savez(f, test_idx=split[2], prob=np_(r["prob"]), val_idx=split[1], val_prob=np_(r["val_prob"]),
+                     best_epoch=r["best_epoch"], epochs=r["epochs"],
                      train_loss=np.array(r["train_loss"]), val_loss=np.array(r["val_loss"]))
             epochs.append(r["best_epoch"])
         if epochs:
             log.info("seed %d: %d folds, median best epoch %.0f, %.0f s", seed, len(epochs), np.median(epochs),
                      time.time() - t_seed)
+
+
+def main() -> None:
+    """Train one configuration (bands, augmentation, backbone) into results/<run>/."""
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--bands", choices=BANDS, default=Config.bands, help="all 204 bands, or only the 3 RGB bands")
+    ap.add_argument("--smoke", action="store_true", help="first test row, seed 0, 3 epochs, into results/smoke/")
+    ap.add_argument("--no-augmentation", action="store_true",
+                    help="train without rotations and flips; results go to results/<bands>_no_augmentation/")
+    ap.add_argument("--backbone", choices=list(BACKBONES), default=DEFAULT_BACKBONE,
+                    help="the CNN before the pooling (helpers/backbones.py); another than the default adds "
+                         "_<backbone> to the folder name")
+    args = ap.parse_args()
+
+    cfg = Config(args.bands)
+    tc = TrainConfig(max_epochs=3, patience=3) if args.smoke else TrainConfig()
+    tc = replace(tc, augment=not args.no_augmentation, backbone=args.backbone)
+    seeds, folds = ((0,), (0,)) if args.smoke else (SEEDS, range(5))
+    name = run_name(cfg.bands, tc.augment, tc.backbone)
+    root = (RESULTS / "smoke" if args.smoke else RESULTS) / name
+    log = get_logger("variety_cnn", log_file=None if args.smoke else LOGS / f"{name}.log")
+    run(cfg, tc, root, log, seeds, folds)
     log.info("[done] %s", root.relative_to(HERE))
 
 

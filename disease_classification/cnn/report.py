@@ -1,4 +1,4 @@
-"""Score both CNN models against the mean-spectrum baseline and draw the report figures.
+"""Score the CNN models (default backbone, and SECOND_BACKBONE when run) against the mean-spectrum baseline and draw the figures.
 
 `write_report` is shared with ../within_variety_disease_cnn.
 """
@@ -20,6 +20,7 @@ ROOT = HERE.parents[1]
 for p in (ROOT, HERE.parent / "logistic_regression", HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
+from helpers.backbones import DEFAULT_BACKBONE, LABEL  # noqa: E402
 from helpers.data import load_dataset  # noqa: E402
 from helpers.log import get_logger  # noqa: E402
 from logistic_regression import (BANDS, POOLS, TASKS, bands_label, fold_of, is_pooled,  # noqa: E402
@@ -30,10 +31,18 @@ from run_experiments import DEFAULT_POOL, SEEDS, load_cube_list, results_root, r
 from helpers.report_tables import BASELINE, METRICS_INTRO, column_table, fold_note, main_table, seed_table  # noqa: E402
 from scoring import all_metrics, balanced_accuracy, bootstrap_weights, per_variety_metrics  # noqa: E402
 from helpers.cnn_common import pad_to_canvas  # noqa: E402
+from model import SECOND_BACKBONE  # noqa: E402
 from train import CANVAS, POOLING, TrainConfig  # noqa: E402
 
 FIG = HERE / "figures"
-ARM_LABEL = {"mean": "CNN, mean pool", "attention": "CNN, attention pool"}   # every CNN uses pixel SNV
+
+
+def model_label(backbone: str, pooling: str) -> str:
+    """Report name of one CNN, e.g. "CNN, mean pool" (default backbone) or "small ResNet, attention pool"."""
+    return f"{LABEL[backbone]}, {pooling} pool"
+
+
+ARM_LABEL = {a: model_label(DEFAULT_BACKBONE, a) for a in POOLING}   # every CNN uses pixel SNV
 INK, INK_2, MUTED, GRID = "#0b0b0b", "#52514e", "#898781", "#e1e0d9"
 CNN_COLOR, BASE_COLOR = "#2a78d6", "#898781"
 # Attention relative to uniform: blue below 1, gray at 1, red above.
@@ -64,11 +73,12 @@ def tasks_in(root: Path) -> list[str]:
     return [t for t in TASKS if (root / "runs" / t).exists()]
 
 
-def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.device) -> dict:
-    """Collect out-of-fold probabilities for every task, pooling and seed, plus the baselines.
+def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.device,
+                     second: Path | None = None, backbone: str = DEFAULT_BACKBONE) -> dict:
+    """Collect out-of-fold probabilities for every task, backbone, pooling and seed, plus the baselines.
 
     The baseline is refitted here (it takes seconds and is deterministic), as in the variety CNN report,
-    on the same bands as the CNN.
+    on the same bands as the CNN. The second backbone joins every task it has runs for.
 
     n: leaves the task uses. S4: side of the last feature map.
 
@@ -82,9 +92,13 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
     :type bands: str
     :param device: GPU or CPU.
     :type device: torch.device
+    :param second: Results folder of SECOND_BACKBONE's run on the same leaves, or None.
+    :type second: Path | None
+    :param backbone: The backbone whose runs are in root.
+    :type backbone: str
     :return: {task: {"y": (n,), "fold": (n,), "group": (n,), "variety": (n,), "leaf_idx": (n,) position in meta,
-        "base": (n,), "cnn": {pooling: (n_seeds, n)}, "att": {arm: (n, S4, S4)} (seed 0),
-        "epochs": {arm: list of best epochs}}}.
+        "base": (n,), "cnn": {model label: (n_seeds, n)}, "att": {pooling: (n, S4, S4)} (default backbone, seed 0),
+        "epochs": {model label: list of best epochs}}}.
     :rtype: dict
     """
     base = run_baselines(meta, load_means(variety, device, bands), tasks_in(root))
@@ -97,20 +111,26 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
         keep = usable_leaves(meta, y)
         t = {"y": y[keep], "fold": fold[keep], "group": group[keep], "variety": variety[keep],
              "leaf_idx": np.flatnonzero(keep), "base": base[task][keep], "cnn": {}, "att": {}, "epochs": {}}
-        for arm in POOLING:
-            probs, epochs = np.full((len(SEEDS), len(meta)), np.nan), []
-            for s in SEEDS:
-                for k in range(5):
-                    f = np.load(run_dir(task, arm, s, root) / f"fold{k}.npz")
-                    probs[s, f["test_idx"]] = f["prob"]
-                    epochs.append(int(f["best_epoch"]))
-                    if s == 0:
-                        if arm not in t["att"]:
-                            t["att"][arm] = np.zeros((len(meta),) + f["attention"].shape[1:], np.float32)
-                        t["att"][arm][f["test_idx"]] = f["attention"]
-            assert not np.isnan(probs[:, keep]).any(), f"missing folds for {task} {arm}"
-            t["cnn"][arm], t["epochs"][arm] = probs[:, keep], epochs
-            t["att"][arm] = t["att"][arm][keep]
+        sources = [(backbone, root)] + ([(SECOND_BACKBONE, second)] if second else [])
+        for bb, folder in sources:
+            if not (folder / "runs" / task).exists():
+                continue
+            for arm in POOLING:
+                label = model_label(bb, arm)
+                probs, epochs = np.full((len(SEEDS), len(meta)), np.nan), []
+                for s in SEEDS:
+                    for k in range(5):
+                        f = np.load(run_dir(task, arm, s, folder) / f"fold{k}.npz")
+                        probs[s, f["test_idx"]] = f["prob"]
+                        epochs.append(int(f["best_epoch"]))
+                        # The attention figure shows the default backbone only.
+                        if s == 0 and bb == DEFAULT_BACKBONE:
+                            if arm not in t["att"]:
+                                t["att"][arm] = np.zeros((len(meta),) + f["attention"].shape[1:], np.float32)
+                            t["att"][arm][f["test_idx"]] = f["attention"]
+                assert not np.isnan(probs[:, keep]).any(), f"missing folds for {task} {label}"
+                t["cnn"][label], t["epochs"][label] = probs[:, keep], epochs
+        t["att"] = {arm: a[keep] for arm, a in t["att"].items()}
         out[task] = t
     return out
 
@@ -119,7 +139,7 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
 # Metrics
 # --------------------------------------------------------------------------
 def compute_metrics(preds: dict, device: torch.device) -> dict:
-    """Score both CNN models and the baseline for each task by balanced accuracy.
+    """Score every CNN model and the baseline for each task by balanced accuracy.
 
     Seed ensemble = the mean probability over the 3 seeds, called positive at P >= 0.5.
     Its 95% interval and the paired difference to the baseline come from the same 2000
@@ -168,9 +188,9 @@ def compute_metrics(preds: dict, device: torch.device) -> dict:
             }
 
         res = {"baseline": score(t["base"][None])}
-        for arm in POOLING:
-            res[ARM_LABEL[arm]] = score(t["cnn"][arm])
-            res[ARM_LABEL[arm]]["median_best_epoch"] = float(np.median(t["epochs"][arm]))
+        for label, p in t["cnn"].items():
+            res[label] = score(p)
+            res[label]["median_best_epoch"] = float(np.median(t["epochs"][label]))
         out[task] = res
     return out
 
@@ -256,12 +276,15 @@ def fig_balanced_accuracy(metrics: dict, labels: dict, path: Path) -> None:
     :type path: Path
     """
     plt.rcParams.update({"font.family": ["Noto Sans", "DejaVu Sans"]})
-    names = ["baseline"] + [ARM_LABEL[a] for a in POOLING]
+    # Every model of any task, in report order; a task without one of them leaves its line empty.
+    names = list(dict.fromkeys(k for res in metrics.values() for k in res))
     # One task keeps the width of two panels, so its title and the model names still fit.
     fig, axes = plt.subplots(1, len(metrics), figsize=(5.5 * max(len(metrics), 2), 3.6), sharey=True, squeeze=False)
     axes = axes[0]
     for ax, (task, res) in zip(axes, metrics.items()):
         for i, name in enumerate(names):
+            if name not in res:
+                continue
             m = res[name]
             y = len(names) - 1 - i
             color = BASE_COLOR if "baseline" in name else CNN_COLOR
@@ -340,7 +363,7 @@ def fig_attention(preds: dict, meta, variety: str, path: Path, device: torch.dev
     shown = {}
     for r, (task, t) in enumerate(preds.items()):
         arm = "attention"
-        p = t["cnn"][arm][0]
+        p = t["cnn"][ARM_LABEL[arm]][0]
         pos = np.flatnonzero(t["y"] == 1)
         neg = np.flatnonzero(t["y"] == 0)
         pick = list(pos[np.argsort(-p[pos])][:4]) + list(neg[np.argsort(p[neg])][:2])
@@ -378,8 +401,12 @@ def fig_attention(preds: dict, meta, variety: str, path: Path, device: torch.dev
     return shown
 
 
-def write_report(variety: str, bands: str, root: Path, fig_dir: Path, device: torch.device) -> None:
+def write_report(variety: str, bands: str, root: Path, fig_dir: Path, device: torch.device,
+                 backbone: str = DEFAULT_BACKBONE) -> None:
     """Load one run's predictions → metrics → root/final_report.md, root/metrics.md and the figures in fig_dir.
+
+    The default backbone's report also holds SECOND_BACKBONE's rows; that backbone's own folder then gets
+    a report of its own (no figures).
 
     :param variety: A variety name, or a key of POOLS.
     :type variety: str
@@ -391,17 +418,27 @@ def write_report(variety: str, bands: str, root: Path, fig_dir: Path, device: to
     :type fig_dir: Path
     :param device: GPU or CPU.
     :type device: torch.device
+    :param backbone: The backbone whose runs are in root.
+    :type backbone: str
     """
     meta = load_meta(variety)
     labels = {t: task_label(meta, t) for t in tasks_in(root)}
-    preds = load_predictions(meta, root, variety, bands, device)
+    default = backbone == DEFAULT_BACKBONE
+    # results_root puts the backbone last in the folder name, e.g. vidal → vidal_small_resnet.
+    second = root.parent / f"{root.name}_{SECOND_BACKBONE}" if SECOND_BACKBONE and default else None
+    second = second if second and second.exists() else None
+    preds = load_predictions(meta, root, variety, bands, device, second, backbone)
     metrics = compute_metrics(preds, device)
 
     (root / "final_report.md").write_text(to_markdown(metrics, labels, variety, bands))
     (root / "metrics.md").write_text(metrics_markdown(metrics, labels, variety, bands))
+    if not default:
+        return
     fig_dir.mkdir(parents=True, exist_ok=True)
     fig_balanced_accuracy(metrics, labels, fig_dir / "balanced_accuracy.png")
     fig_attention(preds, meta, variety, fig_dir / "attention_maps.png", device)
+    if second:
+        write_report(variety, bands, second, fig_dir, device, SECOND_BACKBONE)
 
 
 def main() -> None:

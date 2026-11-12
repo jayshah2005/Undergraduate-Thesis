@@ -23,6 +23,7 @@ ROOT = HERE.parents[1]
 for p in (ROOT, HERE.parent / "logistic_regression", HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
+from helpers.backbones import BACKBONES, DEFAULT_BACKBONE, masked_norms  # noqa: E402
 from helpers.data import load_cubes  # noqa: E402
 from helpers.log import get_logger  # noqa: E402
 from logistic_regression import (BANDS, POOLS, ROWS, TASKS, band_indices, check_task, fold_of,  # noqa: E402
@@ -81,7 +82,7 @@ def load(variety: str, bands: str, device: torch.device) -> dict:
             "means": load_means(variety, device, bands)}
 
 
-def invariance_check(d: dict) -> dict:
+def invariance_check(d: dict, backbone: str = DEFAULT_BACKBONE) -> dict:
     """Check that padding and position do not change a leaf's score.
 
     The same leaf goes through an untrained network in eval mode three ways: on
@@ -91,6 +92,8 @@ def invariance_check(d: dict) -> dict:
 
     :param d: Output of :func:`load`.
     :type d: dict
+    :param backbone: A key of BACKBONES.
+    :type backbone: str
     :return: largest logit difference and whether the background stayed 0.
     :rtype: dict
     """
@@ -99,9 +102,9 @@ def invariance_check(d: dict) -> dict:
     x = preprocess(X, mask)
     out = {"max_logit_diff": 0.0, "background_zero": bool((x * (1 - mask)).abs().max() == 0)}
     for pooling in POOLING:
-        model = LeafCNN(X.shape[1], pooling).to(X.device).eval()
+        model = LeafCNN(X.shape[1], pooling, backbone=backbone).to(X.device).eval()
         # Give the running statistics non-trivial values so eval mode is exercised.
-        for bn in model.bn:
+        for bn in masked_norms(model):
             bn.running_mean.normal_()
             bn.running_var.uniform_(0.5, 2.0)
         pad = torch.nn.functional.pad
@@ -115,14 +118,17 @@ def invariance_check(d: dict) -> dict:
 
 
 def results_root(smoke: bool, dropout: float = TrainConfig.dropout, variety: str = DEFAULT_POOL,
-                 augment: bool = True, bands: str = "all", results: Path = RESULTS) -> Path:
+                 augment: bool = True, bands: str = "all", results: Path = RESULTS,
+                 backbone: str = DEFAULT_BACKBONE) -> Path:
     """Folder for one run's results, named like the baseline's (e.g. all, baco_chardonnay_vidal_rgb, vidal).
 
-    Smoke runs, RGB-only runs, another dropout and runs without augmentation are kept apart,
-    e.g. all_rgb_no_augmentation. results is the results/ folder of the calling script.
+    Smoke runs, RGB-only runs, another dropout, runs without augmentation and other backbones are
+    kept apart, e.g. all_rgb_no_augmentation or vidal_small_resnet. results is the results/ folder
+    of the calling script.
     """
     name = results_name(variety, bands) + ("" if dropout == TrainConfig.dropout else f"_dropout{dropout:g}")
     name += "" if augment else "_no_augmentation"
+    name += "" if backbone == DEFAULT_BACKBONE else f"_{backbone}"
     return results / "smoke" / name if smoke else results / name
 
 
@@ -175,7 +181,7 @@ def run_cnn(d: dict, fold_ids: np.ndarray, task: str, pooling: str, seed: int, f
     :type fold: int
     :param cfg: Training settings.
     :type cfg: TrainConfig
-    :return: test indices, probabilities, pooling weights and training history.
+    :return: test and validation indices and probabilities, test pooling weights and training history.
     :rtype: dict
     """
     labels = task_labels(d["meta"], task)
@@ -185,6 +191,7 @@ def run_cnn(d: dict, fold_ids: np.ndarray, task: str, pooling: str, seed: int, f
     r = train_fold(d["X"], d["mask"], y, split, pooling, 100 * seed + fold, cfg)
     return {
         "test_idx": split[2], "prob": np_(r["prob"]), "attention": np_(r["attention"]).astype(np.float16),
+        "val_idx": split[1], "val_prob": np_(r["val_prob"]),
         "best_epoch": r["best_epoch"], "epochs": r["epochs"],
         "train_loss": np.array(r["train_loss"]), "val_loss": np.array(r["val_loss"]),
         "seconds": time.time() - t0,
@@ -235,7 +242,10 @@ def format_scores(s: dict) -> str:
 
 
 def report_command(args: argparse.Namespace) -> str:
-    """The report.py command that gives this run's intervals, tables and figures."""
+    """The report.py command that gives this run's intervals, tables and figures.
+
+    Another backbone's rows appear in the default run's report (SECOND_BACKBONE), so there is no --backbone flag.
+    """
     flags = f"--variety {args.variety}"
     flags += " --bands rgb" if args.bands == "rgb" else ""
     flags += f" --dropout {args.dropout:g}" if args.dropout != TrainConfig.dropout else ""
@@ -287,7 +297,7 @@ def run(variety: str, bands: str, tasks: list[str], root: Path, log, cfg: TrainC
     log.info("Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). "
              "CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.")
 
-    chk = invariance_check(d)
+    chk = invariance_check(d, cfg.backbone)
     if chk["max_logit_diff"] > 1e-3 or not chk["background_zero"]:
         raise RuntimeError(f"padding leaks into the prediction: {chk}")
 
@@ -366,13 +376,16 @@ def parse_args(choices: list[str], default, description: str) -> argparse.Namesp
                     help="dropout before the last linear layer; a non-default value adds _dropout<value> to the folder")
     ap.add_argument("--no-augmentation", action="store_true",
                     help="train without rotations and flips; adds _no_augmentation to the folder name")
+    ap.add_argument("--backbone", choices=list(BACKBONES), default=DEFAULT_BACKBONE,
+                    help="the CNN before the pooling (helpers/backbones.py); another than the default adds "
+                         "_<backbone> to the folder name")
     return ap.parse_args()
 
 
 def run_settings(args: argparse.Namespace) -> tuple[TrainConfig, tuple, range]:
     """Training settings, seeds and folds for the parsed flags (a smoke run is 1 fold, 1 seed, 3 epochs)."""
     cfg = TrainConfig(max_epochs=3, patience=3) if args.smoke else TrainConfig()
-    cfg = replace(cfg, dropout=args.dropout, augment=not args.no_augmentation)
+    cfg = replace(cfg, dropout=args.dropout, augment=not args.no_augmentation, backbone=args.backbone)
     seeds, folds = ((0,), range(1)) if args.smoke else (SEEDS, range(5))
     return cfg, seeds, folds
 
@@ -380,7 +393,8 @@ def run_settings(args: argparse.Namespace) -> tuple[TrainConfig, tuple, range]:
 def main() -> None:
     """Train one pool of varieties (default: all 998 leaves) and log each model's test balanced accuracy."""
     args = parse_args(list(POOLS), DEFAULT_POOL, "which varieties to pool into one model; results go to results/<pool>/")
-    root = results_root(args.smoke, args.dropout, args.variety, not args.no_augmentation, args.bands)
+    root = results_root(args.smoke, args.dropout, args.variety, not args.no_augmentation, args.bands,
+                        backbone=args.backbone)
     log = get_logger(f"disease_cnn_{root.name}", log_file=None if args.smoke else LOGS / f"{root.name}.log")
     cfg, seeds, folds = run_settings(args)
     run(args.variety, args.bands, args.task, root, log, cfg, seeds, folds)

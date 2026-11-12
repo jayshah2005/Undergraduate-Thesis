@@ -27,7 +27,8 @@ def main() -> None:
     args = parse_args(WITHIN, list(WITHIN), "varieties to train, each on its own; results go to results/<variety>/")
     cfg, seeds, folds = run_settings(args)
     for variety in args.variety:
-        root = results_root(args.smoke, args.dropout, variety, not args.no_augmentation, args.bands, RESULTS)
+        root = results_root(args.smoke, args.dropout, variety, not args.no_augmentation, args.bands, RESULTS,
+                            args.backbone)
         # One logger per variety, so each log file gets only its own variety's lines.
         log = get_logger(f"within_cnn_{root.name}", log_file=None if args.smoke else LOGS / f"{root.name}.log")
         run(variety, args.bands, args.task, root, log, cfg, seeds, folds)
