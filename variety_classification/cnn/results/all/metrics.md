@@ -8,6 +8,7 @@
 |---|---|---|---|
 | logistic regression | 0.874 [0.853, 0.894] | 0.874 [0.853, 0.894] | 0.875 [0.855, 0.894] |
 | CNN, mean pool | 0.898 [0.880, 0.916] | 0.898 [0.880, 0.916] | 0.897 [0.879, 0.915] |
+| small ResNet, mean pool | 0.907 [0.890, 0.924] | 0.907 [0.890, 0.924] | 0.907 [0.891, 0.925] |
 
 Per variety, against the other three:
 
@@ -21,6 +22,10 @@ Per variety, against the other three:
 | CNN, mean pool | Cab Franc | 0.856 | 0.977 | 0.926 | 0.890 |
 | CNN, mean pool | Chardonnay | 0.992 | 0.945 | 0.858 | 0.920 |
 | CNN, mean pool | Vidal | 0.812 | 0.965 | 0.886 | 0.848 |
+| small ResNet, mean pool | Baco | 0.988 | 1.000 | 1.000 | 0.994 |
+| small ResNet, mean pool | Cab Franc | 0.836 | 0.936 | 0.813 | 0.824 |
+| small ResNet, mean pool | Chardonnay | 0.996 | 0.999 | 0.996 | 0.996 |
+| small ResNet, mean pool | Vidal | 0.808 | 0.941 | 0.821 | 0.815 |
 
 Confusion counts (rows = true variety, columns = predicted):
 
@@ -34,3 +39,7 @@ Confusion counts (rows = true variety, columns = predicted):
 | CNN, mean pool | Cab Franc | 0 | 214 | 17 | 19 |
 | CNN, mean pool | Chardonnay | 0 | 0 | 248 | 2 |
 | CNN, mean pool | Vidal | 18 | 17 | 12 | 203 |
+| small ResNet, mean pool | Baco | 245 | 0 | 0 | 3 |
+| small ResNet, mean pool | Cab Franc | 0 | 209 | 1 | 40 |
+| small ResNet, mean pool | Chardonnay | 0 | 0 | 249 | 1 |
+| small ResNet, mean pool | Vidal | 0 | 48 | 0 | 202 |

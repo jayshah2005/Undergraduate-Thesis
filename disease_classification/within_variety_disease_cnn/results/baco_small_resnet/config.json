@@ -1,0 +1,18 @@
+{
+  "batch": 8,
+  "lr": 0.001,
+  "weight_decay": 0.01,
+  "max_epochs": 80,
+  "patience": 15,
+  "dropout": 0.5,
+  "augment": true,
+  "backbone": "small_resnet",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "variety": "Baco",
+  "bands": "all",
+  "canvas": 212
+}

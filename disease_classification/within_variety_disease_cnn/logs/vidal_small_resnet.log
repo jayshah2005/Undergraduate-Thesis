@@ -1,0 +1,9 @@
+vidal_small_resnet: 250 leaves, 204 bands, canvas 212
+Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
+leafroll (25 + / 225 −): baseline bal. acc. 0.544; R1 0.59 R2 0.49 R3 0.47 R4 0.49 R5 0.42
+leafroll | mean pooling: bal. acc. 0.458 (-0.087 vs baseline); seeds 0.43 0.51 0.45; R1 0.51 R2 0.50 R3 0.62 R4 0.50 R5 0.58; median best epoch 13; saved earlier
+leafroll | attention pooling: bal. acc. 0.453 (-0.091 vs baseline); seeds 0.47 0.37 0.48; R1 0.50 R2 0.43 R3 0.52 R4 0.49 R5 0.75; median best epoch 2; saved earlier
+red_blotch (169 + / 81 −): baseline bal. acc. 0.552; R1 0.47 R2 0.61 R3 0.56 R4 0.57 R5 0.57
+red_blotch | mean pooling: bal. acc. 0.536 (-0.016 vs baseline); seeds 0.44 0.59 0.52; R1 0.69 R2 0.58 R3 0.49 R4 0.54 R5 0.54; median best epoch 17; saved earlier
+red_blotch | attention pooling: bal. acc. 0.493 (-0.060 vs baseline); seeds 0.48 0.49 0.53; R1 0.64 R2 0.57 R3 0.48 R4 0.48 R5 0.48; median best epoch 6; saved earlier
+[done] results/vidal_small_resnet. For intervals, tables and figures: report_within_variety.py

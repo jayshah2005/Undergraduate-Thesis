@@ -9,6 +9,8 @@ A leaf counts as positive (diseased) at P ≥ 0.5; CNN = mean probability of 3 s
 | logistic regression | 0.544 [0.513, 0.575] | 0.545 [0.515, 0.574] | 0.539 [0.492, 0.591] | 0.549 [0.514, 0.581] | 0.381 [0.351, 0.410] | 0.446 [0.411, 0.480] |
 | CNN, mean pool | 0.565 [0.535, 0.593] | 0.560 [0.533, 0.587] | 0.579 [0.531, 0.626] | 0.551 [0.518, 0.581] | 0.398 [0.372, 0.424] | 0.472 [0.439, 0.503] |
 | CNN, attention pool | 0.580 [0.552, 0.607] | 0.591 [0.564, 0.616] | 0.547 [0.500, 0.591] | 0.613 [0.583, 0.642] | 0.421 [0.392, 0.449] | 0.476 [0.443, 0.508] |
+| small ResNet, mean pool | 0.585 [0.556, 0.614] | 0.598 [0.570, 0.624] | 0.547 [0.500, 0.594] | 0.623 [0.591, 0.656] | 0.428 [0.398, 0.458] | 0.480 [0.445, 0.514] |
+| small ResNet, attention pool | 0.564 [0.535, 0.590] | 0.563 [0.536, 0.588] | 0.567 [0.520, 0.610] | 0.561 [0.530, 0.591] | 0.399 [0.372, 0.424] | 0.468 [0.436, 0.498] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
@@ -17,6 +19,8 @@ Confusion counts (positive = called diseased at P ≥ 0.5):
 | logistic regression | 137 | 117 | 223 | 271 |
 | CNN, mean pool | 147 | 107 | 222 | 272 |
 | CNN, attention pool | 139 | 115 | 191 | 303 |
+| small ResNet, mean pool | 139 | 115 | 186 | 308 |
+| small ResNet, attention pool | 144 | 110 | 217 | 277 |
 
 Per variety:
 
@@ -31,6 +35,12 @@ Per variety:
 | CNN, attention pool | Baco | 0.540 | 0.548 | 0.477 | 0.603 | 0.477 | 0.477 |
 | CNN, attention pool | Chardonnay | 0.423 | 0.416 | 0.697 | 0.148 | 0.438 | 0.538 |
 | CNN, attention pool | Vidal | 0.502 | 0.808 | 0.120 | 0.884 | 0.103 | 0.111 |
+| small ResNet, mean pool | Baco | 0.495 | 0.500 | 0.458 | 0.532 | 0.426 | 0.441 |
+| small ResNet, mean pool | Chardonnay | 0.474 | 0.468 | 0.721 | 0.227 | 0.471 | 0.570 |
+| small ResNet, mean pool | Vidal | 0.493 | 0.824 | 0.080 | 0.907 | 0.087 | 0.083 |
+| small ResNet, attention pool | Baco | 0.483 | 0.488 | 0.449 | 0.518 | 0.414 | 0.430 |
+| small ResNet, attention pool | Chardonnay | 0.412 | 0.404 | 0.762 | 0.062 | 0.437 | 0.555 |
+| small ResNet, attention pool | Vidal | 0.496 | 0.796 | 0.120 | 0.871 | 0.094 | 0.105 |
 
 ## Red blotch (392 + / 356 −)
 
@@ -39,6 +49,8 @@ Per variety:
 | logistic regression | 0.604 [0.579, 0.630] | 0.606 [0.580, 0.631] | 0.630 [0.592, 0.668] | 0.579 [0.542, 0.615] | 0.622 [0.598, 0.646] | 0.626 [0.599, 0.652] |
 | CNN, mean pool | 0.602 [0.576, 0.628] | 0.600 [0.575, 0.627] | 0.569 [0.531, 0.607] | 0.635 [0.601, 0.669] | 0.632 [0.605, 0.659] | 0.599 [0.569, 0.628] |
 | CNN, attention pool | 0.607 [0.582, 0.633] | 0.606 [0.580, 0.631] | 0.569 [0.531, 0.605] | 0.646 [0.612, 0.680] | 0.639 [0.611, 0.666] | 0.602 [0.573, 0.631] |
+| small ResNet, mean pool | 0.608 [0.583, 0.633] | 0.606 [0.580, 0.631] | 0.564 [0.526, 0.602] | 0.652 [0.615, 0.685] | 0.641 [0.613, 0.668] | 0.600 [0.570, 0.629] |
+| small ResNet, attention pool | 0.598 [0.572, 0.625] | 0.598 [0.572, 0.624] | 0.587 [0.551, 0.622] | 0.610 [0.573, 0.646] | 0.623 [0.597, 0.651] | 0.604 [0.576, 0.633] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
@@ -47,6 +59,8 @@ Confusion counts (positive = called diseased at P ≥ 0.5):
 | logistic regression | 247 | 145 | 150 | 206 |
 | CNN, mean pool | 223 | 169 | 130 | 226 |
 | CNN, attention pool | 223 | 169 | 126 | 230 |
+| small ResNet, mean pool | 221 | 171 | 124 | 232 |
+| small ResNet, attention pool | 230 | 162 | 139 | 217 |
 
 Per variety:
 
@@ -61,3 +75,9 @@ Per variety:
 | CNN, attention pool | Baco | 0.483 | 0.480 | 0.452 | 0.513 | 0.526 | 0.486 |
 | CNN, attention pool | Chardonnay | 0.565 | 0.672 | 0.205 | 0.926 | 0.600 | 0.305 |
 | CNN, attention pool | Vidal | 0.562 | 0.664 | 0.852 | 0.272 | 0.709 | 0.774 |
+| small ResNet, mean pool | Baco | 0.473 | 0.468 | 0.415 | 0.531 | 0.514 | 0.459 |
+| small ResNet, mean pool | Chardonnay | 0.583 | 0.688 | 0.227 | 0.938 | 0.667 | 0.339 |
+| small ResNet, mean pool | Vidal | 0.552 | 0.660 | 0.858 | 0.247 | 0.704 | 0.773 |
+| small ResNet, attention pool | Baco | 0.464 | 0.464 | 0.459 | 0.469 | 0.508 | 0.482 |
+| small ResNet, attention pool | Chardonnay | 0.567 | 0.668 | 0.227 | 0.907 | 0.571 | 0.325 |
+| small ResNet, attention pool | Vidal | 0.543 | 0.660 | 0.876 | 0.210 | 0.698 | 0.777 |

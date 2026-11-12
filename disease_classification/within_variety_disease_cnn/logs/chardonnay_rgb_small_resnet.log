@@ -1,0 +1,9 @@
+chardonnay_rgb_small_resnet: 250 leaves, 3 bands, canvas 212
+Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
+leafroll (122 + / 128 −): baseline bal. acc. 0.588; R1 0.45 R2 0.66 R3 0.67 R4 0.51 R5 0.60
+leafroll | mean pooling: bal. acc. 0.580 (-0.007 vs baseline); seeds 0.57 0.58 0.58; R1 0.57 R2 0.50 R3 0.52 R4 0.51 R5 0.55; median best epoch 7; 98 s
+leafroll | attention pooling: bal. acc. 0.562 (-0.026 vs baseline); seeds 0.55 0.59 0.55; R1 0.51 R2 0.50 R3 0.53 R4 0.50 R5 0.50; median best epoch 10; 103 s
+red_blotch (88 + / 162 −): baseline bal. acc. 0.619; R1 0.54 R2 0.50 R3 0.78 R4 0.66 R5 0.57
+red_blotch | mean pooling: bal. acc. 0.578 (-0.041 vs baseline); seeds 0.58 0.58 0.56; R1 0.56 R2 0.53 R3 0.74 R4 0.51 R5 0.46; median best epoch 17; 121 s
+red_blotch | attention pooling: bal. acc. 0.584 (-0.035 vs baseline); seeds 0.56 0.58 0.57; R1 0.58 R2 0.52 R3 0.77 R4 0.54 R5 0.46; median best epoch 7; 92 s
+[done] results/chardonnay_rgb_small_resnet. For intervals, tables and figures: report_within_variety.py --bands rgb

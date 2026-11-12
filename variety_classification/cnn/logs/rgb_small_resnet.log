@@ -1,0 +1,5 @@
+rgb_small_resnet: 998 leaves, 3 bands, canvas 212
+seed 0: 5 folds, median best epoch 54, 308 s
+seed 1: 5 folds, median best epoch 66, 340 s
+seed 2: 5 folds, median best epoch 32, 305 s
+[done] results/rgb_small_resnet
