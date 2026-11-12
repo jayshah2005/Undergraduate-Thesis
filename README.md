@@ -58,7 +58,8 @@ Shared code, in [`helpers/`](helpers/):
 |---|---|
 | `data.py` | leaf mean spectra (cached in `cache/`), whole-leaf cubes, leaf sizes, and which camera image each leaf came from |
 | `pca_common.py` | SNV, PCA, the R² test, variety names and colours |
-| `cnn_common.py` | masked batch norm, mask erosion, canvas padding, augmentation for the whole-leaf CNNs |
+| `cnn_common.py` | masked batch norm, mask erosion, canvas padding, augmentation, leaf pooling for the whole-leaf CNNs |
+| `backbones.py` | the swappable CNN backbones (own small CNN, small ResNet, HybridSN-style 3D CNN, 1D spectral CNN, ImageNet ResNet-18), with their papers |
 | `log.py` | terminal + log-file output |
 | `report_tables.py` | the shared report format: every run gets `final_report.md` (balanced accuracy, Δ vs logistic regression, Fold 1 (R1) … Fold 5 (R5)) and `metrics.md` (every metric) |
 | `diagram.py` | drawing pieces (cubes, boxes, arrows, legend) for the poster schematics: pipeline and the model architectures |

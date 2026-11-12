@@ -46,7 +46,7 @@ Every run folder (`results/<run>/`, variety and disease, logistic regression and
 - Each section opens with `main_table`: `model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) … Fold 5 (R5)`, logistic regression first. Then `fold_note`.
 - Disease: one section per task; leafroll and red blotch are always scored separately, never averaged into one number.
 - Extra tables follow in this order, only when they apply: per variety (`column_table`), single seeds (`seed_table`), anything else.
-- Same names everywhere: `logistic regression`, `CNN, mean pool`, `CNN, attention pool`. Three decimals, intervals as `[lo, hi]`.
+- Same names everywhere: `logistic regression`, `CNN, mean pool`, `CNN, attention pool`; another backbone uses its `helpers/backbones.LABEL`, e.g. `small ResNet, mean pool`. Three decimals, intervals as `[lo, hi]`.
 - Folds are named `Fold k (Rk)`, never `Rk` alone: each variety has its own rows R1–R5, so a pooled fold tests several field rows.
 - One pair per run folder; no separate comparison file.
 
