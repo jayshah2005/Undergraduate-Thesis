@@ -19,7 +19,9 @@ tqdm>=4.66
 # Optional but useful for H5 / array inspection
 seaborn>=0.13
 
-# Used only by the removed paper re-implementations (foundation models, GMKL); nothing imports them now.
+# Used by disease_classification/model_search: DINOv2 embeddings (timm), texture and leaf shape (scikit-image),
+# PROSPECT-D leaf traits (prosail, which needs numba). TabPFN needs scikit-learn < 1.7: see that folder's README.
 timm>=1.0
 scikit-image>=0.24
 numba>=0.60
+prosail>=2.0.5

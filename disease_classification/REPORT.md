@@ -55,5 +55,10 @@ trained on all 998 leaves (`cnn/results/all`), scored on that variety's leaves.
   canvas and is 0.523 now, although the same seeds scored almost the same alone (0.52 / 0.60 / 0.54 then,
   0.52 / 0.56 / 0.54 now).
 
+**Beyond the CNN.** `model_search/` tried over 500 other models (other features, wide tuning, TabPFN, DINOv2,
+leaf-trait inversion) with honest selection on validation rows. None reaches 0.70: within a variety the honest picks score
+0.51–0.52 for leafroll and 0.53–0.57 for red blotch (logistic regression 0.535 / 0.554), and pooled nothing beats
+the variety's infection rate alone (see `model_search/final_report.md`).
+
 Figures: `*/figures/<run>/balanced_accuracy.png`; architecture diagrams in `within_variety_disease_cnn/figures/` and
 `cnn/figures/`. How to rerun: each folder's README.

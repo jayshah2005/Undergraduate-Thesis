@@ -50,7 +50,7 @@ Analyses are grouped by what they ask:
 |---|---|
 | [`variety_classification/`](variety_classification/) | predict a leaf's variety: logistic regression and a whole-leaf CNN, each with all 204 bands or RGB only |
 | [`spectral_analysis/`](spectral_analysis/) | what the spectra look like: PCA by variety and by disease class, plus the poster's normalisation figure |
-| [`disease_classification/`](disease_classification/) | detect a disease within a variety: whole-leaf CNN with attention pooling vs the mean-spectrum baseline |
+| [`disease_classification/`](disease_classification/) | detect a disease within a variety: whole-leaf CNN with attention pooling vs the mean-spectrum baseline, and a search over 500+ other models (`model_search/`) |
 
 Shared code, in [`helpers/`](helpers/):
 
