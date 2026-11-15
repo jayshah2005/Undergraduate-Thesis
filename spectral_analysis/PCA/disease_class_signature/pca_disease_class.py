@@ -403,12 +403,10 @@ def compute(device: torch.device):
     """
     # Set seeds to ensure reproducibility
     torch.manual_seed(SEED) # Set global seed
-    generator = torch.Generator() # Create generator
-    generator.manual_seed(SEED) # Set generator seed
+    generator = torch.Generator() # Seeded CPU generator for the permutation tests
+    generator.manual_seed(SEED)
 
     # Load data
-    generator = torch.Generator()
-    generator.manual_seed(SEED)
     _meta, w, X_raw, _glint, var, cls, row = load_leaf_means(device)
 
     # SNV-normalise spectra

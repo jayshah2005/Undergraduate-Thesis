@@ -50,7 +50,7 @@ Analyses are grouped by what they ask:
 |---|---|
 | [`variety_classification/`](variety_classification/) | predict a leaf's variety: logistic regression and a whole-leaf CNN, each with all 204 bands or RGB only |
 | [`spectral_analysis/`](spectral_analysis/) | what the spectra look like: PCA by variety and by disease class, plus the poster's normalisation figure |
-| [`disease_classification/`](disease_classification/) | detect a disease within a variety: whole-leaf CNN with attention pooling vs the mean-spectrum baseline, and a search over 500+ other models (`model_search/`) |
+| [`disease_classification/`](disease_classification/) | detect a disease within a variety: whole-leaf CNN with attention pooling vs the mean-spectrum baseline |
 
 Shared code, in [`helpers/`](helpers/):
 
@@ -59,7 +59,7 @@ Shared code, in [`helpers/`](helpers/):
 | `data.py` | leaf mean spectra (cached in `cache/`), whole-leaf cubes, leaf sizes, and which camera image each leaf came from |
 | `pca_common.py` | SNV, PCA, the R² test, variety names and colours |
 | `cnn_common.py` | masked batch norm, mask erosion, canvas padding, augmentation, leaf pooling for the whole-leaf CNNs |
-| `backbones.py` | the swappable CNN backbones (own small CNN, small ResNet, HybridSN-style 3D CNN, 1D spectral CNN, ImageNet ResNet-18), with their papers |
+| `backbones.py` | the CNN backbones (own small CNN, small ResNet), chosen with `--backbone` |
 | `log.py` | terminal + log-file output |
 | `report_tables.py` | the shared report format: every run gets `final_report.md` (balanced accuracy, Δ vs logistic regression, Fold 1 (R1) … Fold 5 (R5)) and `metrics.md` (every metric) |
 | `diagram.py` | drawing pieces (cubes, boxes, arrows, legend) for the poster schematics: pipeline and the model architectures |

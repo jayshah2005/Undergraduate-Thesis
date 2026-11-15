@@ -23,15 +23,12 @@ Does a small CNN that sees the whole leaf do better than logistic regression on 
 
 ## Backbones
 
-The layers before the pooling come from `helpers/backbones.py` and are picked with `--backbone`. Every backbone shrinks the map exactly 4× and uses masked batch norm, so the padding check still passes, and all train with the same settings. Reports show the default and `SECOND_BACKBONE` from `model.py`, the best of the others on the validation rows.
+The layers before the pooling come from `helpers/backbones.py` and are picked with `--backbone`. Every backbone shrinks the map exactly 4× and uses masked batch norm, so the padding check still passes, and all train with the same settings. Reports show the default and `SECOND_BACKBONE` from `model.py`. `small_resnet` won a validation-row screen against three other published backbones (HybridSN 3D CNN, 1D spectral CNN, ImageNet ResNet-18), which were then removed; they are in git history at `fb310b9`.
 
 | `--backbone` | from | changed for whole leaves |
 |---|---|---|
 | `small_cnn` (default) | this repo's own design | — |
 | `small_resnet` | residual blocks, He et al. 2016, "Deep Residual Learning for Image Recognition", CVPR | 4 basic blocks (32, 64, 64, 64 channels) instead of ResNet-18's 8 |
-| `conv3d` | HybridSN, Roy et al. 2020, IEEE GRSL 17(2):277–281; a 3D CNN on Specim IQ grapevine leaves: Nguyen et al. 2021, Sensors 21(3):742 | a learned 1×1 mix to 24 bands replaces PCA; map halved after the first 3D layer (HybridSN uses 25×25 patches) |
-| `spectral_1d` | 1D spectral CNN, Hu et al. 2015, "Deep Convolutional Neural Networks for Hyperspectral Image Classification", J. Sensors 2015:258619 | applied at every leaf position after a 2×2 masked average; no spatial layers |
-| `resnet18_imagenet` | ImageNet ResNet-18 (He et al. 2016) behind a linear band adaptor, Pérez & Maji 2021, arXiv:2108.01555 | cut after layer2, no max pool, batch norms masked |
 
 ```bash
 cd variety_classification/cnn
@@ -53,4 +50,4 @@ cd variety_classification/cnn
 | `figures/scores.png`, `figures/confusion_<bands>.png` | all models compared; the CNN's confusion matrices |
 | `logs/<bands>.log` | progress of the last training: one line per seed |
 
-Results and what they mean: [`../REPORT.md`](../REPORT.md).
+Results: `results/<bands>/final_report.md` (balanced accuracy) and `metrics.md` (every metric).

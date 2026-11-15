@@ -27,7 +27,7 @@ from helpers.backbones import BACKBONES, DEFAULT_BACKBONE, masked_norms  # noqa:
 from helpers.cnn_common import augment, pad_to_canvas  # noqa: E402
 from helpers.data import load_cubes, load_dataset  # noqa: E402
 from helpers.log import get_logger  # noqa: E402
-from logistic_regression import BANDS, ROWS, fold_split, rgb_bands  # noqa: E402
+from logistic_regression import BANDS, ROWS, fold_split, rgb_bands  # noqa: E402, F401  (ROWS: re-exported for report.py)
 from model import VarietyCNN  # noqa: E402
 from helpers.pca_common import VARIETIES, get_device, np_  # noqa: E402
 

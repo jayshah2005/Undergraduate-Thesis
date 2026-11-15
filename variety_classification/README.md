@@ -1,6 +1,6 @@
 # Variety classification
 
-Predicting a leaf's variety (Baco / Cab Franc / Chardonnay / Vidal), and how much of the score needs more than a colour photograph. Results: [`REPORT.md`](REPORT.md).
+Predicting a leaf's variety (Baco / Cab Franc / Chardonnay / Vidal), and how much of the score needs more than a colour photograph. Results: each model folder's `results/<bands>/final_report.md`; the CNN report also lists logistic regression.
 
 | path | what it is |
 |---|---|

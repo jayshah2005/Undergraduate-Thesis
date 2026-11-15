@@ -26,4 +26,4 @@ cd variety_classification/logistic_regression
 | `figures/<bands>/` | `confusion_matrix.png` |
 | `figures/architecture.png` | the model, drawn in the same style as the CNN's |
 
-Results and what they mean: [`../REPORT.md`](../REPORT.md).
+Results: `results/<bands>/final_report.md` (balanced accuracy) and `metrics.md` (every metric).
