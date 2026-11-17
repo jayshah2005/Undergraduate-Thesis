@@ -6,7 +6,7 @@ with the same ink, grays, arrows and caption style, so the figures match on a po
 from __future__ import annotations
 
 from matplotlib.colors import LinearSegmentedColormap, to_rgb
-from matplotlib.patches import Polygon, Rectangle
+from matplotlib.patches import Circle, Polygon, Rectangle
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -37,6 +37,44 @@ def new_axes(width: float, height: float):
     ax.set_aspect("equal")
     ax.axis("off")
     return fig, ax
+
+
+def inches_per_unit(fig, ax) -> float:
+    """How many inches one drawing unit takes once the axes limits are set (equal aspect).
+
+    :param fig: Figure.
+    :type fig: matplotlib.figure.Figure
+    :param ax: Its axes, with limits set.
+    :type ax: matplotlib.axes.Axes
+    :return: Inches per unit.
+    :rtype: float
+    """
+    (x0, x1), (y0, y1) = ax.get_xlim(), ax.get_ylim()
+    pos = ax.get_position(original=True)   # the axes box before equal aspect shrinks one side
+    w, h = fig.get_size_inches()
+    return min(w * pos.width / (x1 - x0), h * pos.height / abs(y1 - y0))
+
+
+def match_scale(fig, ax, ipu: float | None) -> float:
+    """Resize the figure so one drawing unit takes ipu inches, as in another figure.
+
+    Text has a fixed size in points, so two figures drawn at the same scale show boxes and
+    labels in the same proportions, however wide each drawing is.
+
+    :param fig: Figure.
+    :type fig: matplotlib.figure.Figure
+    :param ax: Its axes, with limits set.
+    :type ax: matplotlib.axes.Axes
+    :param ipu: Inches per unit to match; None leaves the figure as it is.
+    :type ipu: float | None
+    :return: The figure's inches per unit after resizing.
+    :rtype: float
+    """
+    own = inches_per_unit(fig, ax)
+    if ipu is None:
+        return own
+    fig.set_size_inches(fig.get_size_inches() * ipu / own)
+    return ipu
 
 
 def save(fig, path) -> None:
@@ -328,6 +366,10 @@ W_PER_CH = 0.2  # drawn width per sqrt(channel)
 DEPTH_X, DEPTH_Y = 0.30, 0.22
 CHAR_W = 0.34   # rough width of one 8 pt character in drawing units, to space the legend
 FILTER_LABEL_H = 0.9  # drawn height of a two-line 7 pt filter label
+SKIP_GAP = 1.2  # arrow between the two 3×3 convs of a residual block
+ADD_R = 0.3     # radius of the drawn + where a residual block adds its input back
+RESIDUAL_NOTE = ("residual block (He et al. 2016): the block's input skips both 3×3 convs and is added before the "
+                 "last ReLU; a 1×1 conv + BN on the skip matches the channels when they change")
 
 
 def backbone_stages(widths: tuple, canvas: int) -> list[tuple[str, int, int]]:
@@ -347,6 +389,103 @@ def backbone_stages(widths: tuple, canvas: int) -> list[tuple[str, int, int]]:
             ("3×3 conv", c2, s // 4), ("3×3 conv", c2, s // 4)]
 
 
+def resnet_stages(net, canvas: int) -> list[tuple]:
+    """List the feature maps of a SmallResNet (helpers/backbones.py), in the order of its forward.
+
+    :param net: A SmallResNet: a 1×1 band-mixing conv (spec), then stage1–stage3 of basic
+        blocks with a 2×2 max-pool before stage2 and stage3.
+    :type net: helpers.backbones.SmallResNet
+    :param canvas: Canvas side S in pixels.
+    :type canvas: int
+    :return: (operation, channels, map side) per feature map; a residual block is
+        ("block", channels, map side, whether its skip has a 1×1 conv).
+    :rtype: list[tuple]
+    """
+    s, c = canvas, net.spec.out_channels
+    out = [("1×1 conv", c, s)]
+    for i, stage in enumerate((net.stage1, net.stage2, net.stage3)):
+        if i:
+            s //= 2
+            out.append(("max pool", c, s))
+        for block in stage:
+            assert block.stride == 1, "the drawing assumes blocks keep the map size"
+            c = block.conv1.out_channels
+            out.append(("block", c, s, block.down is not None))
+    return out
+
+
+def residual_block(ax, x: float, yc: float, stage: tuple, c_in: int, canvas: int, gap: float,
+                   y_filters: float) -> float:
+    """Draw one residual basic block (He et al. 2016) after the arrow that starts at x.
+
+    Two 3×3 conv maps, then a + where the block's input is added back; the skip line leaves
+    the incoming arrow, runs over both maps and joins at the +. When the channels change it
+    carries a 1×1 conv + BN.
+
+    :param ax: Axes to draw on.
+    :type ax: matplotlib.axes.Axes
+    :param x: Tail x of the incoming arrow, as in :func:`draw_backbone`.
+    :type x: float
+    :param yc: Centre line of the drawing.
+    :type yc: float
+    :param stage: ("block", channels, map side, skip has a 1×1 conv).
+    :type stage: tuple
+    :param c_in: Channels coming into the block.
+    :type c_in: int
+    :param canvas: Canvas side S in pixels.
+    :type canvas: int
+    :param gap: Arrow length between steps.
+    :type gap: float
+    :param y_filters: Top of the filter labels.
+    :type y_filters: float
+    :return: x for the tail of the next arrow.
+    :rtype: float
+    """
+    _op, c, s, proj = stage
+    h = H_MAX * (s / canvas) ** 0.5
+    w = W_PER_CH * c ** 0.5
+    span = w + h * DEPTH_X                     # drawn width of one box, depth included
+    x1 = x + gap
+    x2 = x1 + span + SKIP_GAP
+    xa = x2 + span + 0.5 + ADD_R               # centre of the +
+    top = yc + h / 2 + h * DEPTH_Y             # top of the boxes, depth included
+    for xb, depth in ((x1, c_in), (x2, c)):
+        box(ax, xb, yc, w, h, h, OP_COLOR["3×3 conv"], DEPTH_X, DEPTH_Y)
+        ax.text(xb + span / 2, y_filters, filter_label("3×3 conv", c, depth), ha="center", va="top",
+                fontsize=7, color=INK_2, linespacing=1.2)
+    # Both maps have the same size: one label sits on them, under the skip line, so it does not
+    # read as an operation on the skip.
+    ax.text((x1 + x2 + span) / 2, top + 0.2, f"{s}×{s}×{c}", ha="center", va="bottom", fontsize=7.5,
+            color=INK_2)
+    arrow(ax, x1 + span + 0.2, x2 - 0.2, yc, size="small")
+    arrow(ax, x2 + span + 0.15, xa - ADD_R - 0.05, yc, size="small")
+    ax.add_patch(Circle((xa, yc), ADD_R, facecolor="white", edgecolor=INK, lw=LW_EDGE * 0.8))
+    ax.text(xa, yc, "+", ha="center", va="center", fontsize=9, color=INK)
+
+    xs, ya = x + 1.2, top + 1.2   # the skip leaves the arrow and runs above the size label
+    ax.plot([xs, xs, xa], [yc, ya, ya], color=INK_2, lw=1.1, solid_joinstyle="round")
+    arrow(ax, xa, xa, ya, size="small", y1=yc + ADD_R + 0.03)
+    if proj:
+        ax.text((xs + xa) / 2, ya, "1×1 conv + BN", ha="center", va="center", fontsize=7, color=INK_2,
+                bbox=dict(facecolor="white", edgecolor="none", pad=1.0))
+    return xa + ADD_R - 0.25
+
+
+def residual_note(ax, x: float, y: float) -> None:
+    """Draw the legend line that explains the + and the skip of a residual block.
+
+    :param ax: Axes to draw on.
+    :type ax: matplotlib.axes.Axes
+    :param x: Left x.
+    :type x: float
+    :param y: Centre y.
+    :type y: float
+    """
+    ax.add_patch(Circle((x + 0.3, y), ADD_R, facecolor="white", edgecolor=INK, lw=LW_CELL))
+    ax.text(x + 0.3, y, "+", ha="center", va="center", fontsize=8, color=INK)
+    ax.text(x + 0.9, y, RESIDUAL_NOTE, ha="left", va="center", fontsize=8, color=INK_2)
+
+
 def draw_backbone(ax, stages: list, canvas: int, n_bands: int, yc: float,
                   gap: float = 2.2) -> dict:
     """Draw the input cube and every backbone feature map as boxes joined by arrows.
@@ -355,10 +494,11 @@ def draw_backbone(ax, stages: list, canvas: int, n_bands: int, yc: float,
     the 16-channel full-size map does not dwarf the rest; the labels give exact sizes.
     Arrows carry no text: a box's colour names the operation that made it (legend).
     Under each box: the number of filters and each filter's k × k × depth shape.
+    A residual block (from :func:`resnet_stages`) is drawn by :func:`residual_block`.
 
     :param ax: Axes to draw on.
     :type ax: matplotlib.axes.Axes
-    :param stages: Output of :func:`backbone_stages`.
+    :param stages: Output of :func:`backbone_stages` or :func:`resnet_stages`.
     :type stages: list
     :param canvas: Canvas side S in pixels.
     :type canvas: int
@@ -381,10 +521,16 @@ def draw_backbone(ax, stages: list, canvas: int, n_bands: int, yc: float,
     x, x_box0 = cw, None
     c_in = n_bands   # channels coming into the next layer = how deep its filters are
     y_filters = yc - n / 2 - 0.2   # one line for every filter label, level with the cube's base
-    for op, c, s in stages:
+    for stage in stages:
+        op, c, s = stage[:3]
         h = H_MAX * (s / canvas) ** 0.5
         w = W_PER_CH * c ** 0.5
         arrow(ax, x + 0.3, x + gap - 0.3, yc)
+        if op == "block":
+            x_box0 = x + gap if x_box0 is None else x_box0
+            x = residual_block(ax, x, yc, stage, c_in, canvas, gap, y_filters)
+            c_in = c
+            continue
         x += gap
         x_box0 = x if x_box0 is None else x_box0
         box(ax, x, yc, w, h, h, OP_COLOR[op], DEPTH_X, DEPTH_Y)
@@ -488,17 +634,22 @@ def attention_map(ax, x0: float, yc: float, s: float = 0.5) -> None:
             quad(ax, [(bx, by), (bx + s, by), (bx + s, by + s), (bx, by + s)], face)
 
 
-def fig_disease_cnn(r: dict, path, header: bool = True) -> None:
+def fig_disease_cnn(r: dict, path, header: bool = True) -> float:
     """Draw the disease CNN left to right, forking into its two pooling options, and save it.
 
     The backbone is the variety CNN's. After it the figure splits into mean pooling and
     gated attention pooling (Ilse et al. 2018), each its own model ending in P(disease).
 
-    :param r: canvas, n_bands, stages (from :func:`backbone_stages`), pooled (vector width),
-        header (title line) and cube_note (line under the cube caption).
+    :param r: canvas, n_bands, stages (from :func:`backbone_stages` or :func:`resnet_stages`),
+        pooled (vector width), header (title line), cube_note (line under the cube caption) and,
+        optionally, ipu: inches per drawing unit of another figure to match (see :func:`match_scale`).
     :type r: dict
     :param path: PNG path.
     :type path: pathlib.Path
+    :param header: Draw the title line.
+    :type header: bool
+    :return: Inches per drawing unit, to draw another backbone at the same scale.
+    :rtype: float
     """
     fig, ax = new_axes(12, 3.7)  # the same size either way, so the drawing keeps its scale
     yc, y_cap = 3.2, -1.1
@@ -558,13 +709,19 @@ def fig_disease_cnn(r: dict, path, header: bool = True) -> None:
     x_end = legend(ax, 0.0, -3.7, items)
     ax.text(x_end, -3.7, "BN and pooling use leaf positions only", ha="left", va="center",
             fontsize=8, color=INK_2, style="italic")
+    y_low = -4.2
+    if any(st[0] == "block" for st in r["stages"]):
+        residual_note(ax, 0.0, -4.6)
+        y_low = -5.1
 
     ax.set_aspect("equal")
     ax.set_xlim(-0.5, xo + 5.2)
     # The saved image is cropped to the axes and any text past them, so without a header the
     # limit drops to the top of the drawing and no empty band is left where the header was.
-    ax.set_ylim(-4.2, b["top"] + (2.0 if header else 0.0))
+    ax.set_ylim(y_low, b["top"] + (2.0 if header else 0.0))
+    ipu = match_scale(fig, ax, r.get("ipu"))
     save(fig, path)
+    return ipu
 
 
 # ---- Logistic regression figure (variety and disease) ----------------------------

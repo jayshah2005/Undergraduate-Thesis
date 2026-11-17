@@ -7,7 +7,7 @@ Does a small CNN that sees the whole leaf do better than logistic regression on 
 | `model.py` | `VarietyCNN`: a backbone (below) → masked mean or attention pooling → 4 logits; `SECOND_BACKBONE` picks the second backbone in reports |
 | `run_experiments.py` | padding check → train every (seed, fold) of one configuration; skips fold files already on disk |
 | `report.py` | metrics, paired differences and figures for both inputs, with logistic regression as the comparison |
-| `plot_architecture.py` | poster schematic of the network → `figures/architecture.png` |
+| `plot_architecture.py` | poster schematics of the network → `figures/architecture.png` (small CNN) and `figures/architecture_small_resnet.png`, drawn at the same scale |
 
 | setting | choices | meaning |
 |---|---|---|
@@ -39,7 +39,7 @@ cd variety_classification/cnn
 ../../.venv/bin/python -u run_experiments.py --bands all --backbone small_resnet   # another backbone, results/all_small_resnet/
 ../../.venv/bin/python -u run_experiments.py --bands all --pooling attention      # attention pooling, results/all_attention/
 ../../.venv/bin/python -u report.py                                # results/<bands>/{final_report,metrics}.md + figures/; needs both runs
-../../.venv/bin/python -u plot_architecture.py                     # figures/architecture.png
+../../.venv/bin/python -u plot_architecture.py                     # figures/architecture*.png
 ```
 
 | output | what it is |

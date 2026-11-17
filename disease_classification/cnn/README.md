@@ -10,7 +10,7 @@ training code here are also used by `../within_variety_disease_cnn/`.
 | `train.py` | SNV per pixel, rotations and flips, training one fold (early stopping on the validation row); `CANVAS = 212` |
 | `run_experiments.py` | trains every task × pooling × seed × fold of one pool; skips folds already saved; writes `logs/<run>.log` |
 | `report.py` | `final_report.md`, `metrics.md` and figures for one run |
-| `plot_architecture.py` | poster schematic of the network → `figures/architecture.png` |
+| `plot_architecture.py` | poster schematics of the network → `figures/architecture.png` (small CNN) and `figures/architecture_small_resnet.png`, drawn at the same scale |
 | `results/<run>/` | `final_report.md` (balanced accuracy; the default run's report also has the second backbone's rows), `metrics.md` (every metric), `config.json`, saved test and validation predictions per fold |
 | `figures/<run>/` | `balanced_accuracy.png`, `attention_maps.png` |
 
@@ -43,6 +43,6 @@ cd disease_classification/cnn
 ../../.venv/bin/python -u report.py
 ../../.venv/bin/python -u run_experiments.py --variety baco_chardonnay_vidal --bands rgb
 ../../.venv/bin/python -u report.py --variety baco_chardonnay_vidal --bands rgb
-../../.venv/bin/python -u plot_architecture.py                                   # figures/architecture.png
+../../.venv/bin/python -u plot_architecture.py                                   # figures/architecture*.png
 # also: --task any both, --no-augmentation (no rotations/flips), --dropout <value>, --backbone <name>, --smoke (quick check)
 ```
