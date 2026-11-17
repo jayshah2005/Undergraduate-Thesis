@@ -70,13 +70,13 @@ def min_pool(mask: torch.Tensor, k: int, stride: int, pad: int = 0) -> torch.Ten
 
 
 def pad_to_canvas(cubes: list[np.ndarray], device: torch.device,
-                  side: int | None = None) -> tuple[torch.Tensor, torch.Tensor, int]:
+                  side: int | None = None, align: int = 4) -> tuple[torch.Tensor, torch.Tensor, int]:
     """Centre every leaf on one square canvas; background and padding are 0.
 
     By default the canvas side is the largest leaf height or width, rounded up to a
-    multiple of 4 (two 2x2 pools). Square so a 90° rotation keeps the leaf on the canvas.
-    Offsets are multiples of 4 too, so the pooling grid lines up the same way
-    for every leaf.
+    multiple of align (the backbone's total stride: 4 for two 2x2 pools). Square so a 90°
+    rotation keeps the leaf on the canvas. Offsets are multiples of align too, so the
+    pooling grid lines up the same way for every leaf.
 
     n: the number of leaves. S: canvas side.
 
@@ -84,20 +84,22 @@ def pad_to_canvas(cubes: list[np.ndarray], device: torch.device,
     :type cubes: list[np.ndarray]
     :param device: Where to keep the canvas.
     :type device: torch.device
-    :param side: Fixed canvas side (a multiple of 4, at least the largest leaf); None fits these leaves.
+    :param side: Fixed canvas side (a multiple of align, at least the largest leaf); None fits these leaves.
     :type side: int | None
+    :param align: The backbone's total stride; canvas side and leaf offsets are multiples of it.
+    :type align: int
     :return: X (n, 204, S, S) float16 reflectance, mask (n, 1, S, S) float32, S.
     :rtype: tuple[torch.Tensor, torch.Tensor, int]
     """
-    fit = -(-max(max(c.shape[1], c.shape[2]) for c in cubes) // 4) * 4
+    fit = -(-max(max(c.shape[1], c.shape[2]) for c in cubes) // align) * align
     if side is None:
         side = fit
-    elif side < fit or side % 4:
-        raise ValueError(f"canvas {side} must be a multiple of 4 and at least {fit}")
+    elif side < fit or side % align:
+        raise ValueError(f"canvas {side} must be a multiple of {align} and at least {fit}")
     X = torch.zeros(len(cubes), cubes[0].shape[0], side, side, dtype=torch.float16, device=device)
     for i, c in enumerate(cubes):
         _, h, w = c.shape
-        top, left = ((side - h) // 2) // 4 * 4, ((side - w) // 2) // 4 * 4
+        top, left = ((side - h) // 2) // align * align, ((side - w) // 2) // align * align
         X[i, :, top:top + h, left:left + w] = torch.from_numpy(c).to(device, torch.float16)
     mask = (X != 0).any(dim=1, keepdim=True).float()
     return X, mask, side
@@ -106,8 +108,9 @@ def pad_to_canvas(cubes: list[np.ndarray], device: torch.device,
 def augment(x: torch.Tensor, m: torch.Tensor, g: torch.Generator) -> tuple[torch.Tensor, torch.Tensor]:
     """Random 90° rotations and flips, the same for a leaf's cube and mask.
 
-    Rotation by 90° maps the square canvas onto itself. A moved leaf can sit 1-3 px off
-    the pooling grid (training only; test leaves stay on it), which adds a little variety.
+    Rotation by 90° maps the square canvas onto itself. A moved leaf can sit off the pooling
+    grid by up to the backbone's stride − 1 px (3 px, or 31 px for ResNet-18; training only,
+    test leaves stay on it), which adds a little variety.
 
     :param x: Input, shape (B, d, S, S).
     :type x: torch.Tensor

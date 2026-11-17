@@ -1,4 +1,4 @@
-"""Score the CNN models (default backbone, and SECOND_BACKBONE when run) against the mean-spectrum baseline and draw the figures.
+"""Score the CNN models (default backbone, and every other backbone that was run) against the mean-spectrum baseline and draw the figures.
 
 `write_report` is shared with ../within_variety_disease_cnn.
 """
@@ -20,7 +20,7 @@ ROOT = HERE.parents[1]
 for p in (ROOT, HERE.parent / "logistic_regression", HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
-from helpers.backbones import DEFAULT_BACKBONE, LABEL  # noqa: E402
+from helpers.backbones import BACKBONES, DEFAULT_BACKBONE, LABEL  # noqa: E402
 from helpers.data import load_dataset  # noqa: E402
 from helpers.log import get_logger  # noqa: E402
 from logistic_regression import (BANDS, POOLS, TASKS, bands_label, fold_of, is_pooled,  # noqa: E402
@@ -74,11 +74,11 @@ def tasks_in(root: Path) -> list[str]:
 
 
 def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.device,
-                     second: Path | None = None, backbone: str = DEFAULT_BACKBONE) -> dict:
+                     others: list[tuple[str, Path]] = (), backbone: str = DEFAULT_BACKBONE) -> dict:
     """Collect out-of-fold probabilities for every task, backbone, pooling and seed, plus the baselines.
 
     The baseline is refitted here (it takes seconds and is deterministic), as in the variety CNN report,
-    on the same bands as the CNN. The second backbone joins every task it has runs for.
+    on the same bands as the CNN. Every other backbone joins every task it has runs for.
 
     n: leaves the task uses. S4: side of the last feature map.
 
@@ -92,8 +92,8 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
     :type bands: str
     :param device: GPU or CPU.
     :type device: torch.device
-    :param second: Results folder of SECOND_BACKBONE's run on the same leaves, or None.
-    :type second: Path | None
+    :param others: (backbone, results folder) of the other backbones' runs on the same leaves.
+    :type others: list[tuple[str, Path]]
     :param backbone: The backbone whose runs are in root.
     :type backbone: str
     :return: {task: {"y": (n,), "fold": (n,), "group": (n,), "variety": (n,), "leaf_idx": (n,) position in meta,
@@ -111,7 +111,7 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
         keep = usable_leaves(meta, y)
         t = {"y": y[keep], "fold": fold[keep], "group": group[keep], "variety": variety[keep],
              "leaf_idx": np.flatnonzero(keep), "base": base[task][keep], "cnn": {}, "att": {}, "epochs": {}}
-        sources = [(backbone, root)] + ([(SECOND_BACKBONE, second)] if second else [])
+        sources = [(backbone, root), *others]
         for bb, folder in sources:
             if not (folder / "runs" / task).exists():
                 continue
@@ -279,7 +279,9 @@ def fig_balanced_accuracy(metrics: dict, labels: dict, path: Path) -> None:
     # Every model of any task, in report order; a task without one of them leaves its line empty.
     names = list(dict.fromkeys(k for res in metrics.values() for k in res))
     # One task keeps the width of two panels, so its title and the model names still fit.
-    fig, axes = plt.subplots(1, len(metrics), figsize=(5.5 * max(len(metrics), 2), 3.6), sharey=True, squeeze=False)
+    # 3.6 in tall for the baseline and 4 CNNs, taller as more models join.
+    fig, axes = plt.subplots(1, len(metrics), figsize=(5.5 * max(len(metrics), 2), max(3.6, 1.0 + 0.52 * len(names))),
+                             sharey=True, squeeze=False)
     axes = axes[0]
     for ax, (task, res) in zip(axes, metrics.items()):
         for i, name in enumerate(names):
@@ -405,8 +407,8 @@ def write_report(variety: str, bands: str, root: Path, fig_dir: Path, device: to
                  backbone: str = DEFAULT_BACKBONE) -> None:
     """Load one run's predictions → metrics → root/final_report.md, root/metrics.md and the figures in fig_dir.
 
-    The default backbone's report also holds SECOND_BACKBONE's rows; that backbone's own folder then gets
-    a report of its own (no figures).
+    The default backbone's report also holds every other backbone's rows (SECOND_BACKBONE first); each of
+    those backbones' own folders then gets a report of its own (no figures).
 
     :param variety: A variety name, or a key of POOLS.
     :type variety: str
@@ -425,9 +427,13 @@ def write_report(variety: str, bands: str, root: Path, fig_dir: Path, device: to
     labels = {t: task_label(meta, t) for t in tasks_in(root)}
     default = backbone == DEFAULT_BACKBONE
     # results_root puts the backbone last in the folder name, e.g. vidal → vidal_small_resnet.
-    second = root.parent / f"{root.name}_{SECOND_BACKBONE}" if SECOND_BACKBONE and default else None
-    second = second if second and second.exists() else None
-    preds = load_predictions(meta, root, variety, bands, device, second, backbone)
+    others = []
+    if default:
+        for bb in dict.fromkeys([*([SECOND_BACKBONE] if SECOND_BACKBONE else []), *BACKBONES]):
+            folder = root.parent / f"{root.name}_{bb}"
+            if bb != DEFAULT_BACKBONE and folder.exists():
+                others.append((bb, folder))
+    preds = load_predictions(meta, root, variety, bands, device, others, backbone)
     metrics = compute_metrics(preds, device)
 
     (root / "final_report.md").write_text(to_markdown(metrics, labels, variety, bands))
@@ -437,8 +443,8 @@ def write_report(variety: str, bands: str, root: Path, fig_dir: Path, device: to
     fig_dir.mkdir(parents=True, exist_ok=True)
     fig_balanced_accuracy(metrics, labels, fig_dir / "balanced_accuracy.png")
     fig_attention(preds, meta, variety, fig_dir / "attention_maps.png", device)
-    if second:
-        write_report(variety, bands, second, fig_dir, device, SECOND_BACKBONE)
+    for bb, folder in others:
+        write_report(variety, bands, folder, fig_dir, device, bb)
 
 
 def main() -> None:

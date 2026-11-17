@@ -30,12 +30,14 @@ flags as `run_experiments.py`, without `--backbone`: the default run's report al
 
 ## Backbones
 
-The layers before the pooling come from `helpers/backbones.py` and are picked with `--backbone`. Every backbone shrinks the map exactly 4× and uses masked batch norm, so the padding check still passes, and all train with the same settings. Reports show the default and `SECOND_BACKBONE` from `model.py`. `small_resnet` won a validation-row screen against three other published backbones (HybridSN 3D CNN, 1D spectral CNN, ImageNet ResNet-18), which were then removed; they are in git history at `fb310b9`.
+The layers before the pooling come from `helpers/backbones.py` and are picked with `--backbone`. Every backbone uses masked batch norm and puts leaves on a grid of its own total stride (4×; 32× for `resnet18`, on a 224 canvas), so the padding check still passes; the check runs in float64 so it tests the masking, not rounding. All train with the same settings. The default backbone's report also shows every other backbone that was run, `SECOND_BACKBONE` from `model.py` first. `small_resnet` won a validation-row screen against three other published backbones (HybridSN 3D CNN, 1D spectral CNN, ImageNet ResNet-18), which were then removed; they are in git history at `fb310b9`.
 
 | `--backbone` | from | changed for whole leaves |
 |---|---|---|
 | `small_cnn` (default) | this repo's own design | — |
 | `small_resnet` | residual blocks, He et al. 2016, "Deep Residual Learning for Image Recognition", CVPR | 4 basic blocks (32, 64, 64, 64 channels) instead of ResNet-18's 8 |
+| `small_resnet_strided` | `small_resnet` without max pooling: stride-2 first convs, as He et al. downsample; Springenberg et al. 2015, "Striving for Simplicity: The All Convolutional Net", ICLR workshop | the two max pools become stride-2 convs, with a 1×1 stride-2 conv + BN on those blocks' skips |
+| `resnet18` | the full 18-layer network of He et al. 2016 (Table 1), from scratch | the fewest changes: the first conv reads the bands, masked BN, leaf pooling; it shrinks the leaf 32×, so leaves sit on a 224 canvas at offsets that are multiples of 32, and a position stays leaf if any of it is leaf (all-leaf would leave 212 of 998 leaves with none) |
 
 ```bash
 cd disease_classification/cnn

@@ -14,7 +14,7 @@ ROOT = HERE.parents[1]
 for p in (ROOT, HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
-from helpers.backbones import DEFAULT_BACKBONE  # noqa: E402
+from helpers.backbones import BACKBONES, DEFAULT_BACKBONE  # noqa: E402
 from helpers.cnn_common import augment  # noqa: E402
 from model import LeafCNN  # noqa: E402
 
@@ -22,6 +22,16 @@ POOLING = ("mean", "attention")
 # Canvas side for every disease model: the largest of all 998 leaves (211 px) rounded up to a
 # multiple of 4, so every model, pooled or one variety, sees 212 × 212 × d inputs.
 CANVAS = 212
+
+
+def canvas_for(backbone: str) -> int:
+    """Canvas side for one backbone: CANVAS rounded up to a multiple of its total stride (224 for ResNet-18).
+
+    Leaves must sit on the backbone's downsampling grid, so the side and the leaf offsets are
+    multiples of its stride; for the stride-4 backbones this is CANVAS itself.
+    """
+    stride = BACKBONES[backbone].stride
+    return -(-CANVAS // stride) * stride
 
 
 @dataclass

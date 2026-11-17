@@ -33,7 +33,7 @@ from model import LeafCNN  # noqa: E402
 from helpers.pca_common import get_device, np_  # noqa: E402
 from scoring import summary  # noqa: E402
 from helpers.cnn_common import pad_to_canvas  # noqa: E402
-from train import CANVAS, POOLING, TrainConfig, preprocess, train_fold  # noqa: E402
+from train import POOLING, TrainConfig, canvas_for, preprocess, train_fold  # noqa: E402
 
 DEFAULT_POOL = "all"
 DEFAULT_TASKS = ("leafroll", "red_blotch")
@@ -58,8 +58,8 @@ def load_cube_list(variety: str) -> list[np.ndarray]:
     return cubes
 
 
-def load(variety: str, bands: str, device: torch.device) -> dict:
-    """Load the chosen leaves onto the CANVAS × CANVAS canvas, plus labels, rows and leaf means, keeping the chosen bands.
+def load(variety: str, bands: str, device: torch.device, backbone: str = DEFAULT_BACKBONE) -> dict:
+    """Load the chosen leaves onto the backbone's canvas (canvas_for), plus labels, rows and leaf means, keeping the chosen bands.
 
     The mask comes from all 204 bands before any are dropped, so a leaf covers the same
     pixels whichever bands the network sees.
@@ -75,7 +75,8 @@ def load(variety: str, bands: str, device: torch.device) -> dict:
     :return: meta, X (n, d, S, S) float16, mask (n, 1, S, S), S, means (n, d).
     :rtype: dict
     """
-    X, mask, side = pad_to_canvas(load_cube_list(variety), device, CANVAS)
+    stride = BACKBONES[backbone].stride
+    X, mask, side = pad_to_canvas(load_cube_list(variety), device, canvas_for(backbone), align=stride)
     if bands != "all":
         X = X[:, torch.as_tensor(band_indices(bands), device=device)]   # a copy; the 204-band canvas is freed
     return {"meta": load_meta(variety), "X": X, "mask": mask, "side": side,
@@ -86,7 +87,7 @@ def invariance_check(d: dict, backbone: str = DEFAULT_BACKBONE) -> dict:
     """Check that padding and position do not change a leaf's score.
 
     The same leaf goes through an untrained network in eval mode three ways: on
-    its own canvas, shifted by 8 px, and on a canvas 32 px larger. With masked
+    its own canvas, shifted by 2 strides (8 px at stride 4), and on a canvas 8 strides larger. With masked
     normalisation and masked pooling the logits must agree. Also checks that
     SNV leaves the background exactly 0.
 
@@ -101,18 +102,23 @@ def invariance_check(d: dict, backbone: str = DEFAULT_BACKBONE) -> dict:
     X, mask = d["X"][:4].float(), d["mask"][:4]
     x = preprocess(X, mask)
     out = {"max_logit_diff": 0.0, "background_zero": bool((x * (1 - mask)).abs().max() == 0)}
+    # In float64, so the check tests the masking and not rounding: convolutions run in TF32 by default,
+    # which moves ResNet-18's logits by ~0.002 between canvas sizes (float64: ~1e-15).
+    x, mask = x.double(), mask.double()
+    k = BACKBONES[backbone].stride // 4   # shifts must be whole strides, or the downsampling grid moves
     for pooling in POOLING:
         model = LeafCNN(X.shape[1], pooling, backbone=backbone).to(X.device).eval()
         # Give the running statistics non-trivial values so eval mode is exercised.
         for bn in masked_norms(model):
             bn.running_mean.normal_()
             bn.running_var.uniform_(0.5, 2.0)
+        model = model.double()
         pad = torch.nn.functional.pad
         with torch.no_grad():
             base, _ = model(x, mask)
-            # (left, right, top, bottom): shift by 8 px, and a 32 px larger canvas.
+            # (left, right, top, bottom): shift by 8 px, and a 32 px larger canvas (times k).
             diffs = [(model(pad(x, p), pad(mask, p))[0] - base).abs().max().item()
-                     for p in ((8, 0, 8, 0), (16, 16, 16, 16), (0, 32, 0, 32))]
+                     for p in ((8 * k, 0, 8 * k, 0), (16 * k,) * 4, (0, 32 * k, 0, 32 * k))]
         out["max_logit_diff"] = max(out["max_logit_diff"], *diffs)
     return out
 
@@ -147,8 +153,9 @@ def check_settings(root: Path, cfg: TrainConfig) -> None:
     if not (root / "config.json").exists():
         return
     old = json.loads((root / "config.json").read_text())
-    if old.get("canvas") != CANVAS:
-        raise RuntimeError(f"{root} holds runs on a {old.get('canvas')} px canvas, not {CANVAS}; "
+    canvas = canvas_for(cfg.backbone)
+    if old.get("canvas") != canvas:
+        raise RuntimeError(f"{root} holds runs on a {old.get('canvas')} px canvas, not {canvas}; "
                            "move or delete that folder first")
     not_training = ("seeds", "variety", "bands", "canvas")
     # A setting added after a run was made took its default value in that run.
@@ -244,7 +251,7 @@ def format_scores(s: dict) -> str:
 def report_command(args: argparse.Namespace) -> str:
     """The report.py command that gives this run's intervals, tables and figures.
 
-    Another backbone's rows appear in the default run's report (SECOND_BACKBONE), so there is no --backbone flag.
+    Every other backbone's rows appear in the default run's report, so there is no --backbone flag.
     """
     flags = f"--variety {args.variety}"
     flags += " --bands rgb" if args.bands == "rgb" else ""
@@ -290,7 +297,7 @@ def run(variety: str, bands: str, tasks: list[str], root: Path, log, cfg: TrainC
     device = get_device()
 
     # Load data
-    d = load(variety, bands, device)
+    d = load(variety, bands, device, cfg.backbone)
 
     # Log system information
     log.info("%s: %d leaves, %d bands, canvas %d", root.name, len(d["meta"]), d["X"].shape[1], d["side"])
