@@ -1,4 +1,4 @@
-"""Score the variety CNNs (default backbone, and SECOND_BACKBONE when run) against each other and against logistic regression."""
+"""Score the variety CNNs (each backbone and pooling that has runs) against each other and logistic regression."""
 from __future__ import annotations
 
 import sys
@@ -29,6 +29,7 @@ from scoring import N_BOOT, SEED, evaluate  # noqa: E402
 FIG = HERE / "figures"
 BAND_COLOR = {"all": "#2a78d6", "rgb": "#eb6834"}
 CNN = f"{LABEL[DEFAULT_BACKBONE]}, mean pool"   # "CNN, mean pool", as in every earlier report
+POOLINGS = ("mean", "attention")
 GRID = "#e1e0d9"
 
 
@@ -134,26 +135,38 @@ def compute(device: torch.device, augment: bool = True) -> dict:
     :param augment: Score the CNN runs trained with rotations and flips (the default), or those without.
     :type augment: bool
     :return: {"cnns": {model name: per input}, "lr": per input, "vs_lr": {model name: CNN − LR per input},
-        "deltas": {model name: 204 bands − RGB}, "backbones": {model name: backbone}}. SECOND_BACKBONE joins
-        when it has runs on both inputs.
+        "deltas": {model name: 204 bands − RGB}, "pool_deltas": {backbone label: attention − mean per input},
+        "runs": {model name: (backbone, pooling)}}. The default CNN with mean pooling is always there; every
+        other backbone (SECOND_BACKBONE) and pooling joins when it has runs on both inputs.
     :rtype: dict
     """
-    runs = {CNN: DEFAULT_BACKBONE}
-    if SECOND_BACKBONE and all((RESULTS / run_name(b, augment, SECOND_BACKBONE)).exists() for b in BANDS):
-        runs[f"{LABEL[SECOND_BACKBONE]}, mean pool"] = SECOND_BACKBONE
-    out = {"cnns": {name: {} for name in runs}, "lr": {}, "backbones": runs}
+    runs = {}
+    for backbone in [DEFAULT_BACKBONE] + ([SECOND_BACKBONE] if SECOND_BACKBONE else []):
+        for pooling in POOLINGS:
+            name = f"{LABEL[backbone]}, {pooling} pool"
+            if name == CNN or all((RESULTS / run_name(b, augment, backbone, pooling)).exists() for b in BANDS):
+                runs[name] = (backbone, pooling)
+    out = {"cnns": {name: {} for name in runs}, "lr": {}, "runs": runs}
     for b in BANDS:
         d = load_features(LRConfig(b), device)
         y, rows = d["y"], d["rows"]
         P, folds = row_cv(d["X"], y, rows)
         out["lr"][b] = {**evaluate(y, P, device), "per_row": {r: f["test_balanced_accuracy"] for r, f in folds.items()}}
-        for name, backbone in runs.items():
-            out["cnns"][name][b] = score_run(run_name(b, augment, backbone), y, rows, device)
+        for name, (backbone, pooling) in runs.items():
+            out["cnns"][name][b] = score_run(run_name(b, augment, backbone, pooling), y, rows, device)
     lr = out["lr"]
     out["vs_lr"] = {name: {b: paired_delta(y, c[b]["pred"], lr[b]["pred"], device) for b in BANDS}
                     for name, c in out["cnns"].items()}
     out["deltas"] = {name: paired_delta(y, c["all"]["pred"], c["rgb"]["pred"], device) for name, c in out["cnns"].items()}
     out["deltas"][BASELINE] = paired_delta(y, lr["all"]["pred"], lr["rgb"]["pred"], device)
+    # Attention against mean pooling of the same backbone, on the same input and resampled leaves.
+    out["pool_deltas"] = {}
+    for backbone in dict.fromkeys(bb for bb, _ in runs.values()):   # in run order, so the table order is fixed
+        att, mean = f"{LABEL[backbone]}, attention pool", f"{LABEL[backbone]}, mean pool"
+        if att in runs and mean in runs:
+            c = out["cnns"]
+            out["pool_deltas"][LABEL[backbone]] = {b: paired_delta(y, c[att][b]["pred"], c[mean][b]["pred"], device)
+                                                   for b in BANDS}
     return out
 
 
@@ -196,6 +209,10 @@ def to_markdown(r: dict, b: str, augment: bool = True) -> str:
     # The same comparison of inputs goes in both runs' reports, so each report stands alone.
     lines += ["## 204 bands − RGB (same resampled leaves)", "", "| model | Δ balanced accuracy [95% CI] |", "|---|---|"]
     lines += [f"| {k} | {v[0]:+.3f} [{v[1]:+.3f}, {v[2]:+.3f}] |" for k, v in r["deltas"].items()]
+    if r["pool_deltas"]:
+        lines += ["", f"## Attention − mean pool, {BANDS_TITLE[b]} (same resampled leaves)", "",
+                  "| backbone | Δ balanced accuracy [95% CI] |", "|---|---|"]
+        lines += [f"| {k} | {v[b][0]:+.3f} [{v[b][1]:+.3f}, {v[b][2]:+.3f}] |" for k, v in r["pool_deltas"].items()]
     lines += ["", f"Leaf size alone (pixel count, height, width), logistic regression: {r['leaf_size']:.3f}.", ""]
     return "\n".join(lines)
 
@@ -229,7 +246,7 @@ def plot_scores(r: dict, path: Path) -> None:
     :type path: Path
     """
     # Each row is (label, 204-band result, RGB result).
-    groups = [(name.removesuffix(", mean pool"), c["all"], c["rgb"]) for name, c in r["cnns"].items()]
+    groups = [(name, c["all"], c["rgb"]) for name, c in r["cnns"].items()]
     groups.append(("Logistic regression", r["lr"]["all"], r["lr"]["rgb"]))
     fig, ax = plt.subplots(figsize=(9, 1.3 + 0.65 * len(groups)))
     for i, (_label, a, b) in enumerate(groups):
@@ -266,15 +283,17 @@ def write_outputs(r: dict, augment: bool = True) -> str:
     """
     suffix = "" if augment else "_no_augmentation"
     FIG.mkdir(exist_ok=True)
-    # The default runs' reports compare every model; another backbone's folder also gets its own pair.
-    reports = [(DEFAULT_BACKBONE, r)]
-    for name, backbone in r["backbones"].items():
-        if backbone != DEFAULT_BACKBONE:
-            reports.append((backbone, {**r, "cnns": {name: r["cnns"][name]}, "vs_lr": {name: r["vs_lr"][name]},
-                                       "deltas": {name: r["deltas"][name], BASELINE: r["deltas"][BASELINE]}}))
-    for backbone, rr in reports:
+    # The default runs' reports compare every model; every other run's folder also gets its own pair.
+    reports = [((DEFAULT_BACKBONE, "mean"), r)]
+    for name, (backbone, pooling) in r["runs"].items():
+        if name != CNN:
+            pool_deltas = {k: v for k, v in r["pool_deltas"].items() if k == LABEL[backbone]}
+            own = {**r, "cnns": {name: r["cnns"][name]}, "vs_lr": {name: r["vs_lr"][name]},
+                   "deltas": {name: r["deltas"][name], BASELINE: r["deltas"][BASELINE]}, "pool_deltas": pool_deltas}
+            reports.append(((backbone, pooling), own))
+    for (backbone, pooling), rr in reports:
         for b in BANDS:
-            run = RESULTS / run_name(b, augment, backbone)
+            run = RESULTS / run_name(b, augment, backbone, pooling)
             (run / "final_report.md").write_text(to_markdown(rr, b, augment))
             (run / "metrics.md").write_text(metrics_markdown(rr, b, augment))
     plot_scores(r, FIG / f"scores{suffix}.png")

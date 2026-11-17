@@ -1,4 +1,4 @@
-"""Whole-leaf CNN that predicts a leaf's variety: any backbone from helpers/backbones.py → masked mean → 4 logits."""
+"""Whole-leaf CNN that predicts a leaf's variety: a backbone (helpers/backbones.py) → mean or attention pool → 4 logits."""
 from __future__ import annotations
 
 import sys
@@ -18,18 +18,22 @@ SECOND_BACKBONE: str | None = "small_resnet"
 
 
 class VarietyCNN(nn.Module):
-    """Backbone → masked mean over leaf positions → dropout → linear layer with 4 outputs.
+    """Backbone → masked pooling over leaf positions → dropout → linear layer with 4 outputs.
 
     The same network for 204 bands and for RGB; only the input of the first layer changes,
-    so a score difference comes from the bands. Mean pooling over leaf positions means
+    so a score difference comes from the bands. Pooling over leaf positions means
     leaves of any size give the same-length input to the last layer.
+
+    pooling="mean": every leaf position gets the same weight.
+    pooling="attention": gated attention (Ilse et al. 2018, "Attention-based Deep Multiple
+    Instance Learning", ICML) learns one weight per position, as in the disease CNN.
     """
 
-    def __init__(self, n_bands: int, dropout: float = 0.5, backbone: str = DEFAULT_BACKBONE):
+    def __init__(self, n_bands: int, dropout: float = 0.5, backbone: str = DEFAULT_BACKBONE, pooling: str = "mean"):
         super().__init__()
         # Built in this order (backbone, pooling, head) so a seed gives the same weights as before the refactor.
         self.backbone = make_backbone(backbone, n_bands)
-        self.pool = LeafPool(self.backbone.out_channels, "mean")
+        self.pool = LeafPool(self.backbone.out_channels, pooling)
         self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(self.backbone.out_channels, N_VARIETIES))
 
     def forward(self, x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:

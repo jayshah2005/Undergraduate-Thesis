@@ -59,6 +59,7 @@ class TrainConfig:
     dropout: float = 0.5
     augment: bool = True   # random 90° rotations and flips while training; no brightness or band jitter
     backbone: str = DEFAULT_BACKBONE   # a key of helpers.backbones.BACKBONES; the same settings for every backbone
+    pooling: str = "mean"  # "mean" or "attention" (gated attention, Ilse et al. 2018)
 
 
 def load(device: torch.device) -> dict:
@@ -138,7 +139,7 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
     torch.manual_seed(seed)
     g = torch.Generator(device=dev).manual_seed(seed)
 
-    model = VarietyCNN(len(bands), tc.dropout, tc.backbone).to(dev)
+    model = VarietyCNN(len(bands), tc.dropout, tc.backbone, tc.pooling).to(dev)
     opt = torch.optim.AdamW(model.parameters(), lr=tc.lr, weight_decay=tc.weight_decay)
     best, hist_tr, hist_va = (float("inf"), 0, None), [], []
     for epoch in range(1, tc.max_epochs + 1):
@@ -174,7 +175,7 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
             "train_loss": hist_tr, "val_loss": hist_va}
 
 
-def invariance_check(d: dict, bands: torch.Tensor, backbone: str = DEFAULT_BACKBONE) -> float:
+def invariance_check(d: dict, bands: torch.Tensor, backbone: str = DEFAULT_BACKBONE, pooling: str = "mean") -> float:
     """Check that padding and position don't change a leaf's score (untrained network, eval mode).
 
     :param d: Output of :func:`load`.
@@ -183,13 +184,15 @@ def invariance_check(d: dict, bands: torch.Tensor, backbone: str = DEFAULT_BACKB
     :type bands: torch.Tensor
     :param backbone: A key of BACKBONES.
     :type backbone: str
+    :param pooling: "mean" or "attention".
+    :type pooling: str
     :return: Largest logit change from shifting a leaf by 8 px or enlarging the canvas by 32 px.
     :rtype: float
     """
     torch.manual_seed(0)
     m = d["mask"][:4]
     x = preprocess(d["X"][:4][:, bands], m)
-    model = VarietyCNN(len(bands), backbone=backbone).to(x.device).eval()
+    model = VarietyCNN(len(bands), backbone=backbone, pooling=pooling).to(x.device).eval()
     for bn in masked_norms(model):   # non-trivial running statistics, so eval mode is exercised
         bn.running_mean.normal_()
         bn.running_var.uniform_(0.5, 2.0)
@@ -199,10 +202,11 @@ def invariance_check(d: dict, bands: torch.Tensor, backbone: str = DEFAULT_BACKB
                    for p in ((8, 0, 8, 0), (16, 16, 16, 16), (0, 32, 0, 32)))
 
 
-def run_name(bands: str, augment: bool = True, backbone: str = DEFAULT_BACKBONE) -> str:
+def run_name(bands: str, augment: bool = True, backbone: str = DEFAULT_BACKBONE, pooling: str = "mean") -> str:
     """Results folder of one run: the bands, plus _no_augmentation when trained without rotations and flips,
-    plus _<backbone> for a backbone other than the default."""
-    return bands + ("" if augment else "_no_augmentation") + ("" if backbone == DEFAULT_BACKBONE else f"_{backbone}")
+    plus _attention for attention pooling, plus _<backbone> for a backbone other than the default."""
+    return (bands + ("" if augment else "_no_augmentation") + ("" if pooling == "mean" else f"_{pooling}")
+            + ("" if backbone == DEFAULT_BACKBONE else f"_{backbone}"))
 
 
 def check_settings(root: Path, tc: TrainConfig) -> None:
@@ -248,7 +252,7 @@ def run(cfg: Config, tc: TrainConfig, root: Path, log, seeds: tuple = SEEDS, fol
     bands = torch.as_tensor(d["rgb"] if cfg.bands == "rgb" else np.arange(d["X"].shape[1]), device=device)
     rows = d["meta"].row.to_numpy().astype(str)
     log.info("%s: %d leaves, %d bands, canvas %d", root.name, len(rows), len(bands), d["side"])
-    change = invariance_check(d, bands, tc.backbone)
+    change = invariance_check(d, bands, tc.backbone, tc.pooling)
     if change > 1e-3:
         raise RuntimeError(f"padding leaks into the prediction: {change}")
 
@@ -275,7 +279,7 @@ def run(cfg: Config, tc: TrainConfig, root: Path, log, seeds: tuple = SEEDS, fol
 
 
 def main() -> None:
-    """Train one configuration (bands, augmentation, backbone) into results/<run>/."""
+    """Train one configuration (bands, augmentation, pooling, backbone) into results/<run>/."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--bands", choices=BANDS, default=Config.bands, help="all 204 bands, or only the 3 RGB bands")
     ap.add_argument("--smoke", action="store_true", help="first test row, seed 0, 3 epochs, into results/smoke/")
@@ -284,13 +288,16 @@ def main() -> None:
     ap.add_argument("--backbone", choices=list(BACKBONES), default=DEFAULT_BACKBONE,
                     help="the CNN before the pooling (helpers/backbones.py); another than the default adds "
                          "_<backbone> to the folder name")
+    ap.add_argument("--pooling", choices=("mean", "attention"), default=TrainConfig.pooling,
+                    help="pool leaf positions by a plain mean or by gated attention; attention adds _attention "
+                         "to the folder name")
     args = ap.parse_args()
 
     cfg = Config(args.bands)
     tc = TrainConfig(max_epochs=3, patience=3) if args.smoke else TrainConfig()
-    tc = replace(tc, augment=not args.no_augmentation, backbone=args.backbone)
+    tc = replace(tc, augment=not args.no_augmentation, backbone=args.backbone, pooling=args.pooling)
     seeds, folds = ((0,), (0,)) if args.smoke else (SEEDS, range(5))
-    name = run_name(cfg.bands, tc.augment, tc.backbone)
+    name = run_name(cfg.bands, tc.augment, tc.backbone, tc.pooling)
     root = (RESULTS / "smoke" if args.smoke else RESULTS) / name
     log = get_logger("variety_cnn", log_file=None if args.smoke else LOGS / f"{name}.log")
     run(cfg, tc, root, log, seeds, folds)

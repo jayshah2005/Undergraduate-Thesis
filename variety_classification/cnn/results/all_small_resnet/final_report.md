@@ -33,4 +33,10 @@ Median best epoch: 16.
 | small ResNet, mean pool | +0.022 [-0.001, +0.046] |
 | logistic regression | +0.371 [+0.341, +0.404] |
 
+## Attention − mean pool, Full spectrum (204 bands) (same resampled leaves)
+
+| backbone | Δ balanced accuracy [95% CI] |
+|---|---|
+| small ResNet | -0.005 [-0.015, +0.004] |
+
 Leaf size alone (pixel count, height, width), logistic regression: 0.642.

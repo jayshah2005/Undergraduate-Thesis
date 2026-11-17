@@ -8,7 +8,9 @@
 |---|---|---|---|
 | logistic regression | 0.503 [0.472, 0.533] | 0.503 [0.470, 0.535] | 0.493 [0.461, 0.524] |
 | CNN, mean pool | 0.824 [0.799, 0.846] | 0.824 [0.800, 0.848] | 0.823 [0.797, 0.845] |
+| CNN, attention pool | 0.829 [0.806, 0.851] | 0.829 [0.806, 0.852] | 0.829 [0.806, 0.851] |
 | small ResNet, mean pool | 0.885 [0.865, 0.904] | 0.885 [0.865, 0.905] | 0.885 [0.866, 0.905] |
+| small ResNet, attention pool | 0.834 [0.810, 0.856] | 0.834 [0.810, 0.857] | 0.833 [0.809, 0.855] |
 
 Per variety, against the other three:
 
@@ -22,10 +24,18 @@ Per variety, against the other three:
 | CNN, mean pool | Cab Franc | 0.880 | 0.967 | 0.898 | 0.889 |
 | CNN, mean pool | Chardonnay | 0.924 | 0.925 | 0.805 | 0.860 |
 | CNN, mean pool | Vidal | 0.696 | 0.913 | 0.728 | 0.712 |
+| CNN, attention pool | Baco | 0.863 | 0.975 | 0.918 | 0.890 |
+| CNN, attention pool | Cab Franc | 0.816 | 0.973 | 0.911 | 0.861 |
+| CNN, attention pool | Chardonnay | 0.940 | 0.925 | 0.808 | 0.869 |
+| CNN, attention pool | Vidal | 0.696 | 0.898 | 0.696 | 0.696 |
 | small ResNet, mean pool | Baco | 0.871 | 0.988 | 0.960 | 0.913 |
 | small ResNet, mean pool | Cab Franc | 0.900 | 0.988 | 0.962 | 0.930 |
 | small ResNet, mean pool | Chardonnay | 0.960 | 0.922 | 0.805 | 0.876 |
 | small ResNet, mean pool | Vidal | 0.808 | 0.948 | 0.838 | 0.823 |
+| small ResNet, attention pool | Baco | 0.835 | 0.963 | 0.881 | 0.857 |
+| small ResNet, attention pool | Cab Franc | 0.852 | 0.975 | 0.918 | 0.884 |
+| small ResNet, attention pool | Chardonnay | 0.936 | 0.922 | 0.801 | 0.863 |
+| small ResNet, attention pool | Vidal | 0.712 | 0.918 | 0.745 | 0.728 |
 
 Confusion counts (rows = true variety, columns = predicted):
 
@@ -39,7 +49,15 @@ Confusion counts (rows = true variety, columns = predicted):
 | CNN, mean pool | Cab Franc | 2 | 220 | 11 | 17 |
 | CNN, mean pool | Chardonnay | 8 | 0 | 231 | 11 |
 | CNN, mean pool | Vidal | 20 | 25 | 31 | 174 |
+| CNN, attention pool | Baco | 214 | 0 | 4 | 30 |
+| CNN, attention pool | Cab Franc | 6 | 204 | 4 | 36 |
+| CNN, attention pool | Chardonnay | 5 | 0 | 235 | 10 |
+| CNN, attention pool | Vidal | 8 | 20 | 48 | 174 |
 | small ResNet, mean pool | Baco | 216 | 0 | 7 | 25 |
 | small ResNet, mean pool | Cab Franc | 1 | 225 | 17 | 7 |
 | small ResNet, mean pool | Chardonnay | 3 | 0 | 240 | 7 |
 | small ResNet, mean pool | Vidal | 5 | 9 | 34 | 202 |
+| small ResNet, attention pool | Baco | 207 | 0 | 8 | 33 |
+| small ResNet, attention pool | Cab Franc | 7 | 213 | 10 | 20 |
+| small ResNet, attention pool | Chardonnay | 7 | 1 | 234 | 8 |
+| small ResNet, attention pool | Vidal | 14 | 18 | 40 | 178 |

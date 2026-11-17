@@ -4,7 +4,7 @@ Does a small CNN that sees the whole leaf do better than logistic regression on 
 
 | path | what it is |
 |---|---|
-| `model.py` | `VarietyCNN`: a backbone (below) → masked mean pooling → 4 logits; `SECOND_BACKBONE` picks the second one in reports |
+| `model.py` | `VarietyCNN`: a backbone (below) → masked mean or attention pooling → 4 logits; `SECOND_BACKBONE` picks the second backbone in reports |
 | `run_experiments.py` | padding check → train every (seed, fold) of one configuration; skips fold files already on disk |
 | `report.py` | metrics, paired differences and figures for both inputs, with logistic regression as the comparison |
 | `plot_architecture.py` | poster schematic of the network → `figures/architecture.png` |
@@ -13,6 +13,7 @@ Does a small CNN that sees the whole leaf do better than logistic regression on 
 |---|---|---|
 | `--bands` | `all` (default), `rgb` | all 204 bands, or the 3 bands nearest 640 / 550 / 460 nm. Only the input of the first layer changes |
 | `--backbone` | `small_cnn` (default), see below | the layers before the pooling; another adds `_<backbone>` to the run name |
+| `--pooling` | `mean` (default), `attention` | how leaf positions become one vector: a plain mean, or gated attention (Ilse et al. 2018, "Attention-based Deep Multiple Instance Learning", ICML), as in the disease CNN; `attention` adds `_attention` to the run name |
 
 ## Set-up
 
@@ -36,6 +37,7 @@ cd variety_classification/cnn
 ../../.venv/bin/python -u run_experiments.py --bands all           # resumable
 ../../.venv/bin/python -u run_experiments.py --bands rgb
 ../../.venv/bin/python -u run_experiments.py --bands all --backbone small_resnet   # another backbone, results/all_small_resnet/
+../../.venv/bin/python -u run_experiments.py --bands all --pooling attention      # attention pooling, results/all_attention/
 ../../.venv/bin/python -u report.py                                # results/<bands>/{final_report,metrics}.md + figures/; needs both runs
 ../../.venv/bin/python -u plot_architecture.py                     # figures/architecture.png
 ```
@@ -44,8 +46,8 @@ cd variety_classification/cnn
 |---|---|
 | `results/<bands>/seed<s>/fold<k>.npz` | test and validation probabilities and loss curves of one training |
 | `results/<bands>/config.json` | settings; a folder only resumes runs made with the same ones |
-| `results/<bands>_<backbone>/` | another backbone's runs, with its own `final_report.md` and `metrics.md`; its rows also sit in `results/<bands>/`'s reports |
-| `results/<bands>/final_report.md` | balanced accuracy of every model with 95% CI, Δ vs logistic regression, per-fold scores; recall per variety, single seeds, 204 bands − RGB |
+| `results/<bands>[_attention][_<backbone>]/` | another pooling's or backbone's runs, with its own `final_report.md` and `metrics.md`; its rows also sit in `results/<bands>/`'s reports |
+| `results/<bands>/final_report.md` | balanced accuracy of every model with 95% CI, Δ vs logistic regression, per-fold scores; recall per variety, single seeds, 204 bands − RGB, attention − mean pool |
 | `results/<bands>/metrics.md` | every metric of every model (accuracy, macro F1, per-variety sensitivity, specificity, precision, F1, confusion counts) |
 | `figures/scores.png`, `figures/confusion_<bands>.png` | all models compared; the CNN's confusion matrices |
 | `logs/<bands>.log` | progress of the last training: one line per seed |
