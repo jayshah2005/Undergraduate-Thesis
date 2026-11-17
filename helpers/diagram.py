@@ -349,10 +349,15 @@ def caption(ax, x: float, y: float, text: str) -> None:
 
 # ---- CNN architecture figures ---------------------------------------------------
 # One colour per operation; a box is coloured by the operation that made it.
-OP_COLOR = {"1×1 conv": "#4fb37f", "3×3 conv": "#5b9bea", "max pool": "#e9706f"}
-OP_LEGEND = {"1×1 conv": "1×1 conv + BN + ReLU (band mixing)",
+OP_COLOR = {"7×7 conv": "#2f8f8a", "1×1 conv": "#4fb37f", "3×3 conv": "#5b9bea", "3×3 max pool": "#e9706f",
+            "max pool": "#e9706f"}
+# Legend text per operation, in legend order; a figure lists only the operations it draws.
+OP_LEGEND = {"7×7 conv": "7×7 conv, stride 2 + BN + ReLU",
+             "1×1 conv": "1×1 conv + BN + ReLU (band mixing)",
              "3×3 conv": "3×3 conv + BN + ReLU",
+             "3×3 max pool": "3×3 max pool, stride 2",
              "max pool": "2×2 max pool"}
+SKIP_LEGEND = "1×1 conv + BN (on a skip)"   # the green box on a skip, when no band-mixing conv is drawn
 LEAF_GREEN = "#a8dcbc"
 # Leaf mask drawn on the input cube's front face (row 0 at the bottom): 1 = leaf, 0 = padding.
 LEAF_MASK = [[0, 0, 1, 0, 0],
@@ -369,7 +374,8 @@ FILTER_LABEL_H = 0.9  # drawn height of a two-line 7 pt filter label
 SKIP_GAP = 1.2  # arrow between the two 3×3 convs of a residual block
 ADD_R = 0.3     # radius of the drawn + where a residual block adds its input back
 RESIDUAL_NOTE = ("residual block (He et al. 2016): the block's input skips both 3×3 convs and is added before the "
-                 "last ReLU; a 1×1 conv + BN on the skip matches the channels when they change")
+                 "last ReLU; where the block changes the channels or the map size, a 1×1 conv + BN on the skip "
+                 "matches them")
 
 
 def backbone_stages(widths: tuple, canvas: int) -> list[tuple[str, int, int]]:
@@ -390,28 +396,51 @@ def backbone_stages(widths: tuple, canvas: int) -> list[tuple[str, int, int]]:
 
 
 def resnet_stages(net, canvas: int) -> list[tuple]:
-    """List the feature maps of a SmallResNet (helpers/backbones.py), in the order of its forward.
+    """List the feature maps of a residual backbone (helpers/backbones.py), in the order of its forward.
 
-    :param net: A SmallResNet: a 1×1 band-mixing conv (spec), then stage1–stage3 of basic
-        blocks with a 2×2 max-pool before stage2 and stage3.
-    :type net: helpers.backbones.SmallResNet
+    :param net: A SmallResNet or SmallResNetStrided (a 1×1 band-mixing conv, then stage1–stage3),
+        or a ResNet18 (a 7×7 stride-2 conv and a 3×3 stride-2 max pool, then layer1–layer4). A
+        2×2 max pool sits between stages unless the next stage's first block has stride 2.
+    :type net: torch.nn.Module
     :param canvas: Canvas side S in pixels.
     :type canvas: int
     :return: (operation, channels, map side) per feature map; a residual block is
-        ("block", channels, map side, whether its skip has a 1×1 conv).
+        ("block", channels, map side after it, whether its skip has a 1×1 conv, stride).
     :rtype: list[tuple]
     """
-    s, c = canvas, net.spec.out_channels
-    out = [("1×1 conv", c, s)]
-    for i, stage in enumerate((net.stage1, net.stage2, net.stage3)):
-        if i:
+    if hasattr(net, "layer1"):
+        c, s = net.conv1.out_channels, canvas // 2
+        out = [("7×7 conv", c, s), ("3×3 max pool", c, s // 2)]
+        s //= 2
+        stages = (net.layer1, net.layer2, net.layer3, net.layer4)
+    else:
+        c, s = net.spec.out_channels, canvas
+        out = [("1×1 conv", c, s)]
+        stages = (net.stage1, net.stage2, net.stage3)
+    for i, stage in enumerate(stages):
+        if i and stage[0].stride == 1:
             s //= 2
             out.append(("max pool", c, s))
         for block in stage:
-            assert block.stride == 1, "the drawing assumes blocks keep the map size"
+            s //= block.stride
             c = block.conv1.out_channels
-            out.append(("block", c, s, block.down is not None))
+            out.append(("block", c, s, block.down is not None, block.stride))
     return out
+
+
+def op_legend(stages: list) -> list[tuple]:
+    """Legend swatches for the operations a figure draws, in OP_LEGEND order.
+
+    :param stages: Output of :func:`backbone_stages` or :func:`resnet_stages`.
+    :type stages: list
+    :return: (colour, text) pairs.
+    :rtype: list[tuple]
+    """
+    ops = {"3×3 conv" if st[0] == "block" else st[0] for st in stages}
+    items = [(OP_COLOR[op], text) for op, text in OP_LEGEND.items() if op in ops]
+    if "1×1 conv" not in ops and any(st[0] == "block" and st[3] for st in stages):
+        items.append((OP_COLOR["1×1 conv"], SKIP_LEGEND))
+    return items
 
 
 def residual_block(ax, x: float, yc: float, stage: tuple, c_in: int, canvas: int, gap: float,
@@ -428,7 +457,7 @@ def residual_block(ax, x: float, yc: float, stage: tuple, c_in: int, canvas: int
     :type x: float
     :param yc: Centre line of the drawing.
     :type yc: float
-    :param stage: ("block", channels, map side, skip has a 1×1 conv).
+    :param stage: ("block", channels, map side after the block, skip has a 1×1 conv, stride of its first conv).
     :type stage: tuple
     :param c_in: Channels coming into the block.
     :type c_in: int
@@ -441,17 +470,18 @@ def residual_block(ax, x: float, yc: float, stage: tuple, c_in: int, canvas: int
     :return: x for the tail of the next arrow.
     :rtype: float
     """
-    _op, c, s, proj = stage
+    _op, c, s, proj, stride = stage
     h = H_MAX * (s / canvas) ** 0.5
     w = W_PER_CH * c ** 0.5
     span = w + h * DEPTH_X                     # drawn width of one box, depth included
     x1 = x + gap
-    x2 = x1 + span + SKIP_GAP
+    # A stride-2 first conv has a longer filter label ("…, stride 2"), so its block spreads out.
+    x2 = x1 + span + SKIP_GAP + (1.0 if stride > 1 else 0.0)
     xa = x2 + span + 0.5 + ADD_R               # centre of the +
     top = yc + h / 2 + h * DEPTH_Y             # top of the boxes, depth included
-    for xb, depth in ((x1, c_in), (x2, c)):
+    for xb, depth, st in ((x1, c_in, stride), (x2, c, 1)):
         box(ax, xb, yc, w, h, h, OP_COLOR["3×3 conv"], DEPTH_X, DEPTH_Y)
-        ax.text(xb + span / 2, y_filters, filter_label("3×3 conv", c, depth), ha="center", va="top",
+        ax.text(xb + span / 2, y_filters, filter_label("3×3 conv", c, depth, st), ha="center", va="top",
                 fontsize=7, color=INK_2, linespacing=1.2)
     # Both maps have the same size: one label sits on them, under the skip line, so it does not
     # read as an operation on the skip.
@@ -462,12 +492,21 @@ def residual_block(ax, x: float, yc: float, stage: tuple, c_in: int, canvas: int
     ax.add_patch(Circle((xa, yc), ADD_R, facecolor="white", edgecolor=INK, lw=LW_EDGE * 0.8))
     ax.text(xa, yc, "+", ha="center", va="center", fontsize=9, color=INK)
 
-    xs, ya = x + 1.2, top + 1.2   # the skip leaves the arrow and runs above the size label
-    ax.plot([xs, xs, xa], [yc, ya, ya], color=INK_2, lw=1.1, solid_joinstyle="round")
-    arrow(ax, xa, xa, ya, size="small", y1=yc + ADD_R + 0.03)
+    # The skip leaves the incoming arrow and runs above the size label; with a 1×1 conv on it, it runs
+    # higher, through a small green box: the projected map, with its filters written above it.
+    xs, ya = x + 1.2, top + (1.7 if proj else 1.2)
     if proj:
-        ax.text((xs + xa) / 2, ya, "1×1 conv + BN", ha="center", va="center", fontsize=7, color=INK_2,
-                bbox=dict(facecolor="white", edgecolor="none", pad=1.0))
+        bw, bh, bd = W_PER_CH * c ** 0.5 * 0.5, 0.8, 0.8
+        bx = (xs + xa) / 2 - (bw + bd * DEPTH_X) / 2
+        ax.plot([xs, xs, bx], [yc, ya, ya], color=INK_2, lw=1.1, solid_joinstyle="round")
+        ax.plot([bx + bw + bd * DEPTH_X, xa], [ya, ya], color=INK_2, lw=1.1)
+        box(ax, bx, ya, bw, bh, bd, OP_COLOR["1×1 conv"], DEPTH_X, DEPTH_Y)
+        label = f"{c} filters, 1×1×{c_in}" + (f", stride {stride}" if stride > 1 else "") + " + BN"
+        ax.text(bx + (bw + bd * DEPTH_X) / 2, ya + bh / 2 + bd * DEPTH_Y + 0.15, label, ha="center", va="bottom",
+                fontsize=7, color=INK_2)
+    else:
+        ax.plot([xs, xs, xa], [yc, ya, ya], color=INK_2, lw=1.1, solid_joinstyle="round")
+    arrow(ax, xa, xa, ya, size="small", y1=yc + ADD_R + 0.03)
     return xa + ADD_R - 0.25
 
 
@@ -545,7 +584,7 @@ def draw_backbone(ax, stages: list, canvas: int, n_bands: int, yc: float,
             "bottom": y_filters - FILTER_LABEL_H}
 
 
-def filter_label(op: str, c_out: int, c_in: int) -> str:
+def filter_label(op: str, c_out: int, c_in: int, stride: int = 1) -> str:
     """Text under a feature map: how many filters made it and the shape of each one.
 
     A k×k conv filter spans every incoming channel, so it is k × k × c_in; its depth is the
@@ -558,13 +597,18 @@ def filter_label(op: str, c_out: int, c_in: int) -> str:
     :type c_out: int
     :param c_in: Channels coming in (= filter depth).
     :type c_in: int
+    :param stride: The conv's stride; 2 is written after the filter shape (the 7×7 conv always has it).
+    :type stride: int
     :return: Two-line label.
     :rtype: str
     """
     if op == "max pool":
         return "2×2 window\nper channel"
+    if op == "3×3 max pool":
+        return "3×3 window\nstride 2"
     k = op.split("×")[0]
-    return f"{c_out} filters\n{k}×{k}×{c_in}"
+    stride = 2 if op == "7×7 conv" else stride
+    return f"{c_out} filters\n{k}×{k}×{c_in}" + (f", stride {stride}" if stride > 1 else "")
 
 
 def vector_cells(n: int = 8) -> list:
@@ -669,7 +713,7 @@ def fig_disease_cnn(r: dict, path, header: bool = True) -> float:
     attention_map(ax, xa, y_dn)
     ax.text(xa + 1.0, y_dn - 1.15, "weights, sum 1", ha="center", va="top", fontsize=7.5,
             color=INK_2)
-    xv = xa + 2.0 + 3.8
+    xv = xa + 2.0 + 3.8 + (0.5 if r["pooled"] >= 100 else 0.0)   # room for a 3-digit vector width
     arrow(ax, xa + 2.3, xv - 0.3, y_dn, "weighted\nsum", fontsize=8)
 
     # Mean branch: every interior leaf position gets the same weight.
@@ -697,14 +741,13 @@ def fig_disease_cnn(r: dict, path, header: bool = True) -> float:
     caption(ax, (c0 + c1) / 2, y_cap, "Leaf cube, SNV per pixel")
     ax.text((c0 + c1) / 2, y_cap - 0.95, r["cube_note"], ha="center", va="top", fontsize=8,
             color=INK_2)
-    caption(ax, sum(b["boxes"]) / 2, y_cap, "Feature maps (as for variety)")
+    caption(ax, sum(b["boxes"]) / 2, y_cap, r.get("maps_caption", "Feature maps (as for variety)"))
     caption(ax, xv + VEC_S / 2, y_cap, "Leaf vector")
     caption(ax, xo + 2.0, y_cap, "Prediction")
     ax.text(xo + 2.0, y_cap - 0.95, "diseased if P ≥ 0.5", ha="center", va="top", fontsize=8,
             color=INK_2)
 
-    items = [(LEAF_GREEN, "leaf pixel (padding = 0)")] + \
-        [(OP_COLOR[op], text) for op, text in OP_LEGEND.items()] + \
+    items = [(LEAF_GREEN, "leaf pixel (padding = 0)")] + op_legend(r["stages"]) + \
         [(shade(ATTN_COLOR, 0.3), "attention weight")]
     x_end = legend(ax, 0.0, -3.7, items)
     ax.text(x_end, -3.7, "BN and pooling use leaf positions only", ha="left", va="center",

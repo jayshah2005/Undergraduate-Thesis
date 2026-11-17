@@ -10,7 +10,7 @@ training code here are also used by `../within_variety_disease_cnn/`.
 | `train.py` | SNV per pixel, rotations and flips, training one fold (early stopping on the validation row); `CANVAS = 212` |
 | `run_experiments.py` | trains every task × pooling × seed × fold of one pool; skips folds already saved; writes `logs/<run>.log` |
 | `report.py` | `final_report.md`, `metrics.md` and figures for one run |
-| `plot_architecture.py` | poster schematics of the network → `figures/architecture.png` (small CNN) and `figures/architecture_small_resnet.png`, drawn at the same scale |
+| `plot_architecture.py` | poster schematics of the network → `figures/architecture.png` (small CNN) and `figures/architecture_<backbone>.png` for each other backbone, drawn at the same scale |
 | `results/<run>/` | `final_report.md` (balanced accuracy; the default run's report also has the second backbone's rows), `metrics.md` (every metric), `config.json`, saved test and validation predictions per fold |
 | `figures/<run>/` | `balanced_accuracy.png`, `attention_maps.png` |
 

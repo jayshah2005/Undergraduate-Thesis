@@ -18,8 +18,8 @@ matplotlib.use("Agg")
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[1]))
 from helpers.backbones import BACKBONES  # noqa: E402
-from helpers.diagram import (INK, INK_2, LEAF_GREEN, OP_COLOR, OP_LEGEND, arrow, backbone_stages,  # noqa: E402
-                             caption, column, draw_backbone, legend, match_scale, new_axes, resnet_stages,
+from helpers.diagram import (INK, INK_2, LEAF_GREEN, arrow, backbone_stages, caption, column,  # noqa: E402
+                             draw_backbone, legend, match_scale, new_axes, op_legend, resnet_stages,
                              residual_note, save, shade, vector_cells)
 from helpers.log import get_logger  # noqa: E402
 from model import N_VARIETIES, SECOND_BACKBONE, WIDTHS  # noqa: E402
@@ -89,8 +89,7 @@ def fig_architecture(r: dict) -> tuple[Path, float]:
     caption(ax, xv + 0.27, y_cap, "Leaf vector")
     caption(ax, xo + s + 1.3, y_cap, "Variety")
 
-    items = [(LEAF_GREEN, "leaf pixel (padding = 0)")] + \
-        [(OP_COLOR[op], text) for op, text in OP_LEGEND.items()]
+    items = [(LEAF_GREEN, "leaf pixel (padding = 0)")] + op_legend(r["stages"])
     x_end = legend(ax, 0.0, -4.2, items)
     ax.text(x_end, -4.2, "BN and pooling use leaf positions only", ha="left", va="center",
             fontsize=8, color=INK_2, style="italic")
