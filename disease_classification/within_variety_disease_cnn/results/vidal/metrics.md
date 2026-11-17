@@ -11,6 +11,10 @@ A leaf counts as positive (diseased) at P ≥ 0.5; CNN = mean probability of 3 s
 | CNN, attention pool | 0.478 [0.460, 0.496] | 0.508 [0.476, 0.540] | 0.440 [0.440, 0.440] | 0.516 [0.480, 0.551] | 0.092 [0.086, 0.098] | 0.152 [0.144, 0.161] |
 | small ResNet, mean pool | 0.458 [0.440, 0.476] | 0.472 [0.440, 0.504] | 0.440 [0.440, 0.440] | 0.476 [0.440, 0.511] | 0.085 [0.080, 0.091] | 0.143 [0.136, 0.151] |
 | small ResNet, attention pool | 0.453 [0.433, 0.473] | 0.464 [0.428, 0.500] | 0.440 [0.440, 0.440] | 0.467 [0.427, 0.507] | 0.084 [0.079, 0.090] | 0.141 [0.133, 0.150] |
+| small ResNet (no max pool), mean pool | 0.433 [0.384, 0.471] | 0.460 [0.420, 0.504] | 0.400 [0.320, 0.440] | 0.467 [0.422, 0.511] | 0.077 [0.060, 0.089] | 0.129 [0.101, 0.149] |
+| small ResNet (no max pool), attention pool | 0.493 [0.420, 0.567] | 0.568 [0.512, 0.620] | 0.400 [0.280, 0.520] | 0.587 [0.529, 0.644] | 0.097 [0.065, 0.130] | 0.156 [0.105, 0.208] |
+| ResNet-18, mean pool | 0.396 [0.313, 0.484] | 0.456 [0.404, 0.508] | 0.320 [0.160, 0.480] | 0.471 [0.418, 0.524] | 0.063 [0.033, 0.094] | 0.105 [0.054, 0.158] |
+| ResNet-18, attention pool | 0.427 [0.356, 0.504] | 0.512 [0.468, 0.560] | 0.320 [0.200, 0.480] | 0.533 [0.484, 0.582] | 0.071 [0.043, 0.102] | 0.116 [0.071, 0.167] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
@@ -21,6 +25,10 @@ Confusion counts (positive = called diseased at P ≥ 0.5):
 | CNN, attention pool | 11 | 14 | 109 | 116 |
 | small ResNet, mean pool | 11 | 14 | 118 | 107 |
 | small ResNet, attention pool | 11 | 14 | 120 | 105 |
+| small ResNet (no max pool), mean pool | 10 | 15 | 120 | 105 |
+| small ResNet (no max pool), attention pool | 10 | 15 | 93 | 132 |
+| ResNet-18, mean pool | 8 | 17 | 119 | 106 |
+| ResNet-18, attention pool | 8 | 17 | 105 | 120 |
 
 ## Red blotch (169 + / 81 −)
 
@@ -31,6 +39,10 @@ Confusion counts (positive = called diseased at P ≥ 0.5):
 | CNN, attention pool | 0.493 [0.447, 0.537] | 0.440 [0.396, 0.484] | 0.343 [0.290, 0.396] | 0.642 [0.568, 0.716] | 0.667 [0.609, 0.722] | 0.453 [0.395, 0.508] |
 | small ResNet, mean pool | 0.536 [0.484, 0.590] | 0.516 [0.464, 0.568] | 0.479 [0.420, 0.538] | 0.593 [0.506, 0.679] | 0.711 [0.661, 0.762] | 0.572 [0.518, 0.625] |
 | small ResNet, attention pool | 0.493 [0.447, 0.538] | 0.488 [0.448, 0.528] | 0.479 [0.432, 0.527] | 0.506 [0.432, 0.580] | 0.669 [0.628, 0.709] | 0.559 [0.517, 0.601] |
+| small ResNet (no max pool), mean pool | 0.512 [0.467, 0.558] | 0.488 [0.448, 0.532] | 0.444 [0.396, 0.491] | 0.580 [0.506, 0.654] | 0.688 [0.643, 0.735] | 0.540 [0.496, 0.584] |
+| small ResNet (no max pool), attention pool | 0.506 [0.451, 0.558] | 0.484 [0.440, 0.532] | 0.444 [0.391, 0.497] | 0.568 [0.481, 0.655] | 0.682 [0.629, 0.735] | 0.538 [0.489, 0.585] |
+| ResNet-18, mean pool | 0.482 [0.430, 0.534] | 0.500 [0.448, 0.552] | 0.533 [0.467, 0.598] | 0.432 [0.346, 0.519] | 0.662 [0.618, 0.703] | 0.590 [0.537, 0.641] |
+| ResNet-18, attention pool | 0.501 [0.449, 0.556] | 0.512 [0.464, 0.564] | 0.533 [0.473, 0.592] | 0.469 [0.383, 0.556] | 0.677 [0.634, 0.722] | 0.596 [0.547, 0.647] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
@@ -41,3 +53,7 @@ Confusion counts (positive = called diseased at P ≥ 0.5):
 | CNN, attention pool | 58 | 111 | 29 | 52 |
 | small ResNet, mean pool | 81 | 88 | 33 | 48 |
 | small ResNet, attention pool | 81 | 88 | 40 | 41 |
+| small ResNet (no max pool), mean pool | 75 | 94 | 34 | 47 |
+| small ResNet (no max pool), attention pool | 75 | 94 | 35 | 46 |
+| ResNet-18, mean pool | 90 | 79 | 46 | 35 |
+| ResNet-18, attention pool | 90 | 79 | 43 | 38 |

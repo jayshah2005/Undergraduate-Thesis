@@ -24,6 +24,7 @@ Row R1 is the weak fold for every model (about 0.6).
 | CNN pooled (all 998 leaves; Baco + Chardonnay + Vidal) | higher overall (red blotch 0.686) but near chance per variety; the gain is variety disease rates |
 | 204 bands vs RGB | about equal |
 | Small ResNet backbone on every disease run | in each run's `final_report.md` |
+| Small ResNet without max pooling (stride-2 convs, Springenberg et al. 2015) and full ResNet-18 (He et al. 2016), within variety, 204 bands and RGB | no gain: within 0.06 of the small ResNet, ResNet-18 the weakest; the one interval above logistic regression (Baco leafroll) comes from calling whole rows positive or negative |
 | Extra tasks: any disease vs healthy, both diseases | in the logistic regression reports; the pooled CNN (`all`) also runs any disease |
 
 ### Spectral analysis

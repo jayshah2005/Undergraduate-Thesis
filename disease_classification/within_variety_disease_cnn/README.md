@@ -3,15 +3,16 @@
 Does a CNN trained on one variety's leaves only find disease better than that variety's mean-spectrum baseline? One
 model per variety: Baco, Chardonnay and Vidal. Cab Franc sits out (1 leaf with leafroll, 9 without red blotch).
 
-The network, training and scoring are `../cnn/`'s (same 212 × 212 canvas, SNV per pixel, backbones, mean or attention
-pooling, 3 seeds, balanced accuracy at P ≥ 0.5); these scripts only loop over the varieties.
+The network, training and scoring are `../cnn/`'s (same canvas, 212 × 212 or 224 × 224 for ResNet-18; SNV per
+pixel, backbones, mean or attention pooling, 3 seeds, balanced accuracy at P ≥ 0.5); these scripts only loop over the
+varieties.
 
 | file | what it is |
 |---|---|
 | `run_within_variety.py` | trains each variety's task × pooling × seed × fold; skips folds already saved; writes `logs/<run>.log` |
 | `report_within_variety.py` | `final_report.md`, `metrics.md` and figures for each variety |
 | `plot_architecture.py` | poster schematics of the network → `figures/architecture.png` (small CNN) and `figures/architecture_<backbone>.png` for each other backbone, drawn at the same scale |
-| `results/<variety>[_rgb]/` | `final_report.md` (balanced accuracy, both backbones), `metrics.md` (every metric), `config.json`, saved test and validation predictions per fold |
+| `results/<variety>[_rgb]/` | `final_report.md` (balanced accuracy, every backbone), `metrics.md` (every metric), `config.json`, saved test and validation predictions per fold |
 | `results/<variety>[_rgb]_<backbone>/` | another backbone's runs, with its own `final_report.md` and `metrics.md`; its rows also sit in the default folder's reports |
 | `figures/<variety>[_rgb]/` | `balanced_accuracy.png`, `attention_maps.png` |
 
