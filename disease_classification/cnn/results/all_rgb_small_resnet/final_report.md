@@ -2,13 +2,13 @@
 
 Every model uses SNV and trains on the 3 training rows; the CNN picks its checkpoint on the validation row. Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% bootstrap interval. CNN = mean probability of 3 seeds. Δ: paired difference to logistic regression. Pooled over varieties, so recognising a variety can raise it; see the per-variety table. Every metric: `metrics.md`.
 
-## Leafroll (254 + / 494 −)
+## Leafroll (255 + / 493 −)
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.544 [0.513, 0.575] | — | 0.585 | 0.529 | 0.558 | 0.544 | 0.553 |
-| small ResNet, mean pool | 0.585 [0.556, 0.614] | +0.041 [+0.015, +0.069] | 0.579 | 0.615 | 0.549 | 0.586 | 0.552 |
-| small ResNet, attention pool | 0.564 [0.535, 0.590] | +0.020 [-0.006, +0.044] | 0.583 | 0.607 | 0.549 | 0.543 | 0.552 |
+| logistic regression | 0.542 [0.511, 0.573] | — | 0.585 | 0.529 | 0.550 | 0.544 | 0.553 |
+| small ResNet, mean pool | 0.595 [0.568, 0.622] | +0.052 [+0.022, +0.083] | 0.577 | 0.615 | 0.545 | 0.581 | 0.527 |
+| small ResNet, attention pool | 0.564 [0.535, 0.592] | +0.022 [-0.002, +0.046] | 0.568 | 0.607 | 0.544 | 0.584 | 0.533 |
 
 Fold k tests on row Rk of every variety (3 field rows, since each variety has its own rows R1–R5); the next row (R1 after R5) is validation and the other 3 train.
 
@@ -16,26 +16,26 @@ Balanced accuracy per variety:
 
 | model | Baco | Chardonnay | Vidal |
 |---|---|---|---|
-| logistic regression | 0.459 | 0.428 | 0.469 |
-| small ResNet, mean pool | 0.495 | 0.474 | 0.493 |
-| small ResNet, attention pool | 0.483 | 0.412 | 0.496 |
+| logistic regression | 0.459 | 0.428 | 0.466 |
+| small ResNet, mean pool | 0.524 | 0.525 | 0.446 |
+| small ResNet, attention pool | 0.477 | 0.440 | 0.488 |
 
 Single seeds (the ensemble above averages their probabilities):
 
 | model | seeds | mean ± SD |
 |---|---|---|
-| small ResNet, mean pool | 0.598, 0.544, 0.556 | 0.566 ± 0.029 |
-| small ResNet, attention pool | 0.560, 0.554, 0.566 | 0.560 ± 0.006 |
+| small ResNet, mean pool | 0.594, 0.547, 0.567 | 0.569 ± 0.023 |
+| small ResNet, attention pool | 0.572, 0.546, 0.567 | 0.561 ± 0.014 |
 
-Median best epoch: small ResNet, mean pool 7, small ResNet, attention pool 7.
+Median best epoch: small ResNet, mean pool 7, small ResNet, attention pool 4.
 
-## Red blotch (633 + / 365 −)
+## Red blotch (637 + / 361 −)
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.641 [0.619, 0.664] | — | 0.624 | 0.625 | 0.721 | 0.635 | 0.634 |
-| small ResNet, mean pool | 0.662 [0.643, 0.680] | +0.021 [-0.001, +0.043] | 0.653 | 0.657 | 0.644 | 0.679 | 0.689 |
-| small ResNet, attention pool | 0.662 [0.643, 0.680] | +0.022 [+0.001, +0.041] | 0.657 | 0.659 | 0.648 | 0.667 | 0.696 |
+| logistic regression | 0.644 [0.622, 0.667] | — | 0.621 | 0.638 | 0.709 | 0.648 | 0.642 |
+| small ResNet, mean pool | 0.659 [0.641, 0.678] | +0.015 [-0.005, +0.035] | 0.656 | 0.658 | 0.635 | 0.688 | 0.681 |
+| small ResNet, attention pool | 0.668 [0.646, 0.688] | +0.024 [+0.003, +0.043] | 0.640 | 0.642 | 0.699 | 0.681 | 0.687 |
 
 Fold k tests on row Rk of every variety (4 field rows, since each variety has its own rows R1–R5); the next row (R1 after R5) is validation and the other 3 train.
 
@@ -43,26 +43,26 @@ Balanced accuracy per variety:
 
 | model | Baco | Cab Franc | Chardonnay | Vidal |
 |---|---|---|---|---|
-| logistic regression | 0.458 | 0.499 | 0.567 | 0.542 |
-| small ResNet, mean pool | 0.489 | 0.493 | 0.511 | 0.535 |
-| small ResNet, attention pool | 0.512 | 0.491 | 0.531 | 0.506 |
+| logistic regression | 0.461 | 0.499 | 0.573 | 0.540 |
+| small ResNet, mean pool | 0.497 | 0.502 | 0.531 | 0.492 |
+| small ResNet, attention pool | 0.508 | 0.485 | 0.542 | 0.521 |
 
 Single seeds (the ensemble above averages their probabilities):
 
 | model | seeds | mean ± SD |
 |---|---|---|
-| small ResNet, mean pool | 0.649, 0.658, 0.651 | 0.652 ± 0.005 |
-| small ResNet, attention pool | 0.669, 0.655, 0.652 | 0.658 ± 0.009 |
+| small ResNet, mean pool | 0.678, 0.665, 0.649 | 0.664 ± 0.015 |
+| small ResNet, attention pool | 0.669, 0.653, 0.659 | 0.660 ± 0.008 |
 
-Median best epoch: small ResNet, mean pool 15, small ResNet, attention pool 19.
+Median best epoch: small ResNet, mean pool 19, small ResNet, attention pool 17.
 
-## Any disease vs healthy (772 + / 226 −)
+## Any disease vs healthy (776 + / 222 −)
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.584 [0.558, 0.612] | — | 0.581 | 0.523 | 0.673 | 0.598 | 0.567 |
-| small ResNet, mean pool | 0.593 [0.572, 0.616] | +0.009 [-0.019, +0.036] | 0.493 | 0.548 | 0.609 | 0.638 | 0.591 |
-| small ResNet, attention pool | 0.597 [0.577, 0.619] | +0.013 [-0.015, +0.042] | 0.559 | 0.543 | 0.596 | 0.615 | 0.608 |
+| logistic regression | 0.583 [0.555, 0.610] | — | 0.576 | 0.542 | 0.655 | 0.591 | 0.577 |
+| small ResNet, mean pool | 0.597 [0.574, 0.620] | +0.014 [-0.014, +0.041] | 0.484 | 0.567 | 0.590 | 0.623 | 0.618 |
+| small ResNet, attention pool | 0.598 [0.577, 0.619] | +0.015 [-0.012, +0.041] | 0.530 | 0.561 | 0.591 | 0.630 | 0.633 |
 
 Fold k tests on row Rk of every variety (4 field rows, since each variety has its own rows R1–R5); the next row (R1 after R5) is validation and the other 3 train.
 
@@ -70,15 +70,15 @@ Balanced accuracy per variety:
 
 | model | Baco | Cab Franc | Chardonnay | Vidal |
 |---|---|---|---|---|
-| logistic regression | 0.449 | 0.495 | 0.542 | 0.541 |
-| small ResNet, mean pool | 0.497 | 0.541 | 0.497 | 0.499 |
-| small ResNet, attention pool | 0.523 | 0.468 | 0.499 | 0.498 |
+| logistic regression | 0.440 | 0.497 | 0.542 | 0.532 |
+| small ResNet, mean pool | 0.508 | 0.491 | 0.497 | 0.507 |
+| small ResNet, attention pool | 0.492 | 0.470 | 0.505 | 0.521 |
 
 Single seeds (the ensemble above averages their probabilities):
 
 | model | seeds | mean ± SD |
 |---|---|---|
-| small ResNet, mean pool | 0.599, 0.588, 0.603 | 0.597 ± 0.008 |
-| small ResNet, attention pool | 0.591, 0.616, 0.594 | 0.600 ± 0.013 |
+| small ResNet, mean pool | 0.604, 0.597, 0.598 | 0.600 ± 0.003 |
+| small ResNet, attention pool | 0.589, 0.595, 0.611 | 0.598 ± 0.011 |
 
-Median best epoch: small ResNet, mean pool 11, small ResNet, attention pool 18.
+Median best epoch: small ResNet, mean pool 11, small ResNet, attention pool 15.

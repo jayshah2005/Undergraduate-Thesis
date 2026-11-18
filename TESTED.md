@@ -21,10 +21,11 @@ Row R1 is the weak fold for every model (about 0.6).
 |---|---|
 | Logistic regression baseline, per variety (Baco, Chardonnay, Vidal), 204 bands and RGB | 0.42–0.62; Chardonnay red blotch is the clearest (0.605) |
 | CNN within variety, mean vs attention pooling (Ilse et al. 2018) | 0.37–0.59; no reliable gain over logistic regression |
-| CNN pooled (all 998 leaves; Baco + Chardonnay + Vidal) | higher overall (red blotch 0.686) but near chance per variety; the gain is variety disease rates |
+| CNN pooled (all 998 leaves; Baco + Chardonnay + Vidal) | higher overall (red blotch 0.691) but near chance per variety; the gain is variety disease rates |
 | 204 bands vs RGB | about equal |
 | Small ResNet backbone on every disease run | in each run's `final_report.md` |
-| Small ResNet without max pooling (stride-2 convs, Springenberg et al. 2015) and full ResNet-18 (He et al. 2016), within variety and pooled, 204 bands and RGB | no gain: within variety within 0.06 of the small ResNet, ResNet-18 the weakest; the one interval above logistic regression (Baco leafroll) comes from calling whole rows positive or negative. Pooled, within 0.05 of the small CNN |
+| Small ResNet without max pooling (stride-2 convs, Springenberg et al. 2015) and full ResNet-18 (He et al. 2016), within variety and pooled, 204 bands and RGB | no gain: within variety the no-max-pool small ResNet is within 0.03 of the small ResNet and ResNet-18, the weakest, up to 0.05 below it; the one interval above logistic regression (Baco leafroll) comes from calling whole rows positive or negative. Pooled, within 0.05 of the small CNN |
+| Every disease model rerun on the FINAL 2026 virus tests (7 Vidal leaves relabelled) | conclusions unchanged; Baco and Chardonnay within-variety runs bit-identical; pooled CNN scores moved up to 0.04, logistic regression at most 0.01 (old results: tag `interim-labels`) |
 | Extra tasks: any disease vs healthy, both diseases | in the logistic regression reports; the pooled CNN (`all`) also runs any disease |
 
 ### Spectral analysis
