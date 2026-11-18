@@ -8,7 +8,7 @@ trains on the same 3 other rows. Every model uses SNV, as in variety classificat
 canvas (224 × 224 for ResNet-18). CNNs pool over leaf pixels by a plain mean or by attention and average 3 seeds. Score: balanced accuracy at
 P ≥ 0.5 (0.5 = chance); intervals are in each run's `final_report.md`, other metrics (sensitivity, specificity,
 precision, F1) in its `metrics.md`. Labels: the FINAL 2026 virus tests; 7 Vidal leaves differ from the interim labels
-(results on those: `../interim_labels/`).
+(the file with those: `../labelling/vine_hsi_interim_labels.h5`).
 
 **Per variety, full spectrum.** Within = one model per variety (`within_variety_disease_cnn/`). Pooled = the CNN
 trained on all 998 leaves (`cnn/results/all`), scored on that variety's leaves.

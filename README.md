@@ -13,7 +13,7 @@ Classify red blotch and leafroll-3 on Specim IQ leaf cut-outs (998 leaves, 4 var
 | Cubes | `(lines, bands, samples)` as stored in ENVI BIL |
 | Bands | 204, 397–1004 nm (Specim IQ factory calibration, uneven ~3 nm steps) |
 | Unit | one leaf cut-out (“vine”) |
-| Labels | `red_blotch`, `leafroll3` (attrs on each vine group): the FINAL 2026 virus tests after retesting. 7 Vidal leaves differ from the interim labels (results on those: [`interim_labels/`](interim_labels/)). How the labels were made and checked: [`labelling/`](labelling/) |
+| Labels | `red_blotch`, `leafroll3` (attrs on each vine group): the FINAL 2026 virus tests after retesting. 7 Vidal leaves differ from the interim labels, kept as `labelling/vine_hsi_interim_labels.h5`. How the labels were made and checked: [`labelling/`](labelling/) |
 | Varieties | Baco, Cab Franc, Chardonnay, Vidal |
 
 ### Label distribution (overlapping positives; Healthy = neither)
@@ -52,7 +52,6 @@ Analyses are grouped by what they ask:
 | [`spectral_analysis/`](spectral_analysis/) | what the spectra look like: PCA by variety and by disease class, plus the poster's normalisation figure |
 | [`disease_classification/`](disease_classification/) | detect a disease within a variety: whole-leaf CNN with attention pooling vs the mean-spectrum baseline |
 | [`labelling/`](labelling/) | how `vine_hsi.h5` and its virus labels were built, and `review_labels.py` to check the labels by hand (lab sheets and raw data stay out of git) |
-| [`interim_labels/`](interim_labels/) | every disease result on the interim labels, before the FINAL 2026 relabel, for comparison |
 
 Shared code, in [`helpers/`](helpers/):
 
