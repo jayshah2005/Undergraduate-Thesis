@@ -1,0 +1,9 @@
+baco_chardonnay_vidal_rgb_small_resnet_strided: 748 leaves, 3 bands, canvas 212
+Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
+leafroll (254 + / 494 −): baseline bal. acc. 0.544; R1 0.59 R2 0.53 R3 0.56 R4 0.54 R5 0.55; Baco 0.46 Chardonnay 0.43 Vidal 0.47
+leafroll | mean pooling: bal. acc. 0.555 (+0.011 vs baseline); seeds 0.57 0.51 0.57; R1 0.57 R2 0.60 R3 0.52 R4 0.55 R5 0.54; Baco 0.47 Chardonnay 0.43 Vidal 0.49; median best epoch 9; 323 s
+leafroll | attention pooling: bal. acc. 0.574 (+0.030 vs baseline); seeds 0.57 0.56 0.57; R1 0.59 R2 0.61 R3 0.52 R4 0.55 R5 0.58; Baco 0.50 Chardonnay 0.42 Vidal 0.50; median best epoch 7; 307 s
+red_blotch (392 + / 356 −): baseline bal. acc. 0.604; R1 0.62 R2 0.56 R3 0.69 R4 0.54 R5 0.66; Baco 0.43 Chardonnay 0.61 Vidal 0.55
+red_blotch | mean pooling: bal. acc. 0.605 (+0.001 vs baseline); seeds 0.58 0.60 0.60; R1 0.61 R2 0.54 R3 0.68 R4 0.58 R5 0.65; Baco 0.48 Chardonnay 0.58 Vidal 0.55; median best epoch 9; 308 s
+red_blotch | attention pooling: bal. acc. 0.608 (+0.004 vs baseline); seeds 0.60 0.61 0.60; R1 0.60 R2 0.55 R3 0.69 R4 0.58 R5 0.65; Baco 0.47 Chardonnay 0.59 Vidal 0.55; median best epoch 5; 297 s
+[done] results/baco_chardonnay_vidal_rgb_small_resnet_strided. For intervals, tables and figures: report.py --variety baco_chardonnay_vidal --bands rgb

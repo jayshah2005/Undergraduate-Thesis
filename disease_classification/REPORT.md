@@ -53,6 +53,16 @@ Net", ICLR workshop; as ResNet itself downsamples). ResNet-18 is He et al.'s ful
 | Small ResNet, no max pool, mean / attention | 0.504 / 0.543 | 0.475 / 0.521 | 0.538 / 0.531 | 0.550 / 0.529 |
 | ResNet-18, mean / attention | 0.471 / 0.493 | 0.484 / 0.484 | 0.508 / 0.490 | 0.485 / 0.526 |
 
+**Backbones, pooled, 204 bands** (RGB and per-variety scores: `cnn/results/<pool>[_rgb]/final_report.md`).
+
+| Model | Leafroll (748 leaves) | Red blotch, all 998 | Red blotch, Baco + Chardonnay + Vidal |
+|---|---|---|---|
+| Logistic regression | 0.577 | 0.637 | 0.597 |
+| Small CNN, mean / attention | 0.604 / 0.620 | 0.682 / 0.686 | 0.608 / 0.605 |
+| Small ResNet, mean / attention | 0.591 / 0.622 | 0.675 / 0.686 | 0.624 / 0.604 |
+| Small ResNet, no max pool, mean / attention | 0.598 / 0.606 | 0.673 / 0.681 | 0.616 / 0.610 |
+| ResNet-18, mean / attention | 0.601 / 0.577 | 0.670 / 0.669 | 0.590 / 0.577 |
+
 **What it shows**
 - Within a variety, disease is barely detectable: every score is 0.37–0.62. Chardonnay is the clearest case above chance
   (e.g. logistic regression on red blotch 0.605 [0.547, 0.662]); Baco and Vidal stay within about 0.05 of chance or
@@ -67,7 +77,8 @@ Net", ICLR workshop; as ResNet itself downsamples). ResNet-18 is He et al.'s ful
   ResNet-18 (11.8 M weights for about 250 leaves) is the weakest CNN on 204 bands. Of the 48 new comparisons with
   logistic regression, 5 intervals sit above 0: four are Baco RGB leafroll, where logistic regression is below chance
   (0.418), and one is Baco leafroll with no max pool and attention (+0.081 [+0.009, +0.150]). That one calls whole rows
-  positive (R1, R5) or negative (R3, R4, the row with 20% infected); each row alone scores 0.50–0.64.
+  positive (R1, R5) or negative (R3, R4, the row with 20% infected); each row alone scores 0.50–0.64. Pooled, both
+  new backbones land within 0.05 of the small CNN (never more than 0.01 above it), and per variety stay at 0.44–0.64.
 - RGB does about as well as the full spectrum: the extra bands add nothing we can detect at this sample size.
 - The 3-seed ensemble score is fragile to reruns: Chardonnay red blotch (CNN mean) was 0.613 on the earlier 136 px
   canvas and is 0.523 now, although the same seeds scored almost the same alone (0.52 / 0.60 / 0.54 then,
