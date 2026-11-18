@@ -39,6 +39,7 @@ In VS Code, run the script under the debugger instead to see `df` in the variabl
 ## Which labels the models use
 
 The FINAL 2026 columns, the lab's decision after retesting (Baco and Vidal rows R1–R3). The colour of a FINAL cell
-says why it differs from the first 2026 test (legend in row 1 of the sheet). Compared with the interim labels, 7 Vidal
+says why it differs from the first 2026 test (legend in row 1 of the sheet). The retests changed 17 results: 10 Baco
+leafroll results, which the interim sheet already had, and 7 Vidal ones. So compared with the interim labels, 7 Vidal
 leaves differ; each vine keeps its old values as `red_blotch_interim` / `leafroll3_interim`, and
 `vine_hsi_interim_labels.h5` is the whole file as it was before the relabel.

@@ -158,6 +158,13 @@ def print_summary(df: pd.DataFrame, checks: list[tuple[str, list[str]]]) -> None
                    for i in df.index]]
     print("\nVines with a 2026 retest, per variety and row:",
           retested.groupby(["variety", "row"]).size().to_dict())
+    print("\nLabels the retests changed (FINAL 2026 vs the first 2026 test), and whether the interim labels already had them:")
+    for v in COLUMNS:
+        moved = df[(df[f"{v}_final"].str.lower() != df[f"{v}_original"].str.lower())]
+        for r in moved.itertuples():
+            already = getattr(r, f"{v}_interim_sheet") == getattr(r, f"{v}_final_int")
+            print(f"  {r.path:14s} {VIRUS[v]:10s} {getattr(r, f'{v}_original'):8s} -> {getattr(r, f'{v}_final'):8s} "
+                  f"{'already in the interim labels' if already else 'NEW in FINAL 2026'}")
     print(f"\n{int(img.changed.sum())} changed leaves:")
     for r in img[img.changed].itertuples():
         for v in COLUMNS:
