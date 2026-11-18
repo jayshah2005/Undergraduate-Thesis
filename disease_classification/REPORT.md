@@ -78,7 +78,8 @@ Net", ICLR workshop; as ResNet itself downsamples). ResNet-18 is He et al.'s ful
   logistic regression, 5 intervals sit above 0: four are Baco RGB leafroll, where logistic regression is below chance
   (0.418), and one is Baco leafroll with no max pool and attention (+0.081 [+0.009, +0.150]). That one calls whole rows
   positive (R1, R5) or negative (R3, R4, the row with 20% infected); each row alone scores 0.50–0.64. Pooled, both
-  new backbones land within 0.05 of the small CNN (never more than 0.01 above it), and per variety stay at 0.44–0.64.
+  new backbones land within 0.05 of the small CNN (at most 0.02 above it), and their leafroll and red-blotch scores
+  for Baco, Chardonnay and Vidal stay at 0.42–0.59.
 - RGB does about as well as the full spectrum: the extra bands add nothing we can detect at this sample size.
 - The 3-seed ensemble score is fragile to reruns: Chardonnay red blotch (CNN mean) was 0.613 on the earlier 136 px
   canvas and is 0.523 now, although the same seeds scored almost the same alone (0.52 / 0.60 / 0.54 then,
