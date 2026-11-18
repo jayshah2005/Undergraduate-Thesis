@@ -70,11 +70,13 @@ Net", ICLR workshop; as ResNet itself downsamples). ResNet-18 is He et al.'s ful
   fall below it.
 - No CNN beats logistic regression reliably within a variety. Chardonnay leafroll (mean pool 0.591, Δ +0.055
   [−0.014, +0.119]) is the closest; Vidal leafroll, with 26 positive leaves, falls below chance.
-- The pooled CNN scores higher overall (red blotch 0.691, leafroll 0.597; logistic regression 0.647 and 0.572), but its
-  per-variety scores sit near chance (0.42–0.56), so the gain comes from varieties differing in disease rate (Cab Franc
-  is 96% red blotch, Vidal 10% leafroll). Its P ≥ 0.5 cut-off follows the pooled class balance, which also pulls its
-  per-variety scores down. Without Cab Franc the red-blotch gain over logistic regression shrinks to +0.019
-  [−0.009, +0.046] (0.619 vs 0.600).
+- Pooled over all 998 leaves, the CNN beats logistic regression on red blotch (mean pool 0.691 vs 0.647, Δ +0.044
+  [+0.019, +0.070]; 4 of the 8 CNNs clear 0, all 8 did on the interim labels) but not reliably on leafroll (attention
+  pool 0.597 vs 0.572, Δ +0.026 [−0.010, +0.061]; only the small ResNet with attention clears 0, two did before).
+  Its per-variety scores sit near chance (0.42–0.56), so the gain comes from varieties differing in disease rate (Cab
+  Franc is 96% red blotch, Vidal 10% leafroll). Its P ≥ 0.5 cut-off follows the pooled class balance, which also pulls
+  its per-variety scores down. Without Cab Franc the red-blotch gain shrinks to +0.019 [−0.009, +0.046] (mean pool,
+  0.619 vs 0.600).
 - No backbone changes the picture. Removing max pooling moves the small ResNet by −0.03 to +0.03, within the spread
   between seeds; ResNet-18 (11.8 M weights for about 250 leaves) is the weakest CNN on 204 bands. Of the 48 new comparisons with
   logistic regression, 5 intervals sit above 0: four are Baco RGB leafroll, where logistic regression is below chance
@@ -84,9 +86,9 @@ Net", ICLR workshop; as ResNet itself downsamples). ResNet-18 is He et al.'s ful
   Chardonnay and Vidal stay at 0.41–0.60.
 - RGB does about as well as the full spectrum: the extra bands add nothing we can detect at this sample size.
 - CNN scores are fragile. Reruns with the same inputs are bit-identical, yet relabelling 7 of 998 leaves (all Vidal)
-  moved the pooled CNN scores by up to 0.04 (median 0.008), about the size of their gains over logistic regression,
-  and moved their Baco and Chardonnay leafroll and red-blotch scores, whose labels did not change, by up to 0.07;
-  logistic regression moved by at most 0.02. Likewise Chardonnay red blotch (CNN mean) was 0.613 on the earlier
+  moved the pooled CNN scores by up to 0.04 (median 0.008), about the size of their gains over logistic regression
+  (so several gains clear 0 on one set of labels and not the other), and moved their Baco and Chardonnay leafroll
+  and red-blotch scores, whose labels did not change, by up to 0.07; logistic regression moved by at most 0.02. Likewise Chardonnay red blotch (CNN mean) was 0.613 on the earlier
   136 px canvas and is 0.523 now, although the same seeds scored almost the same alone (0.52 / 0.60 / 0.54 then,
   0.52 / 0.56 / 0.54 now).
 
