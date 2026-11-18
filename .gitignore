@@ -12,3 +12,10 @@ vine_hsi.h5
 # Trained model weights (kept on disk, not in git)
 *.pt
 **/checkpoints/
+
+# Labelling (labelling/): the lab sheets name testers and hold unpublished results; the raw camera
+# data and the HDF5 copies are large; the camera datasheet is the vendor's (link in docs/SOURCE.md)
+*.xlsx
+*.h5
+/labelling/Data/
+/labelling/docs/*.pdf

@@ -25,7 +25,7 @@ Row R1 is the weak fold for every model (about 0.6).
 | 204 bands vs RGB | about equal |
 | Small ResNet backbone on every disease run | in each run's `final_report.md` |
 | Small ResNet without max pooling (stride-2 convs, Springenberg et al. 2015) and full ResNet-18 (He et al. 2016), within variety and pooled, 204 bands and RGB | no gain: within variety the no-max-pool small ResNet is within 0.03 of the small ResNet and ResNet-18, the weakest, up to 0.05 below it; the one interval above logistic regression (Baco leafroll) comes from calling whole rows positive or negative. Pooled, within 0.05 of the small CNN |
-| Every disease model rerun on the FINAL 2026 virus tests (7 Vidal leaves relabelled) | headline unchanged (nothing beats logistic regression within a variety; pooled gains come from variety disease rates); Baco and Chardonnay within-variety runs bit-identical; pooled CNN scores moved up to 0.04, logistic regression at most 0.01, so fewer pooled CNNs clear logistic regression on all 998 leaves (red blotch 4 of 8, was 8; leafroll 1 of 8, was 2). Old results: tag `interim-labels` |
+| Every disease model rerun on the FINAL 2026 virus tests (7 Vidal leaves relabelled) | headline unchanged (nothing beats logistic regression within a variety; pooled gains come from variety disease rates); Baco and Chardonnay within-variety runs bit-identical; pooled CNN scores moved up to 0.04, logistic regression at most 0.01, so fewer pooled CNNs clear logistic regression on all 998 leaves (red blotch 4 of 8, was 8; leafroll 1 of 8, was 2). Old results: `interim_labels/` |
 | Extra tasks: any disease vs healthy, both diseases | in the logistic regression reports; the pooled CNN (`all`) also runs any disease |
 
 ### Spectral analysis
