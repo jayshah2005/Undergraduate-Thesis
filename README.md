@@ -13,7 +13,7 @@ Classify red blotch and leafroll-3 on Specim IQ leaf cut-outs (998 leaves, 4 var
 | Cubes | `(lines, bands, samples)` as stored in ENVI BIL |
 | Bands | 204, 397–1004 nm (Specim IQ factory calibration, uneven ~3 nm steps) |
 | Unit | one leaf cut-out (“vine”) |
-| Labels | `red_blotch`, `leafroll3` (attrs on each vine group) |
+| Labels | `red_blotch`, `leafroll3` (attrs on each vine group): the FINAL 2026 virus tests after retesting. 7 Vidal leaves differ from the interim labels used up to git tag `interim-labels` |
 | Varieties | Baco, Cab Franc, Chardonnay, Vidal |
 
 ### Label distribution (overlapping positives; Healthy = neither)
@@ -23,8 +23,8 @@ Classify red blotch and leafroll-3 on Specim IQ leaf cut-outs (998 leaves, 4 var
 | Baco | 248 | 135 (54.4%) | 107 (43.1%) | 59 (23.8%) |
 | Cab Franc | 250 | 241 (96.4%) | 1 (0.4%) | 9 (3.6%) |
 | Chardonnay | 250 | 88 (35.2%) | 122 (48.8%) | 90 (36%) |
-| Vidal | 250 | 169 (67.6%) | 25 (10%) | 68 (27.2%) |
-| **All** | **998** | **633** | **255** | **226** |
+| Vidal | 250 | 173 (69.2%) | 26 (10.4%) | 64 (25.6%) |
+| **All** | **998** | **637** | **256** | **222** |
 
 ### Mutually exclusive status (sums to 100% per variety)
 
@@ -33,8 +33,8 @@ Classify red blotch and leafroll-3 on Specim IQ leaf cut-outs (998 leaves, 4 var
 | Baco | 82 (33.1%) | 54 (21.8%) | 53 (21.4%) | 59 (23.8%) |
 | Cab Franc | 240 (96%) | 0 (0%) | 1 (0.4%) | 9 (3.6%) |
 | Chardonnay | 38 (15.2%) | 72 (28.8%) | 50 (20%) | 90 (36%) |
-| Vidal | 157 (62.8%) | 13 (5.2%) | 12 (4.8%) | 68 (27.2%) |
-| **All** | **517** | **139** | **116** | **226** |
+| Vidal | 160 (64%) | 13 (5.2%) | 13 (5.2%) | 64 (25.6%) |
+| **All** | **520** | **139** | **117** | **222** |
 
 Cab Franc has essentially no leafroll positives, so leafroll training and scoring leave that variety out (it is still used for red blotch).
 

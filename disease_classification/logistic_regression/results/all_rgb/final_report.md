@@ -2,11 +2,11 @@
 
 Leaf mean spectrum → SNV → logistic regression, trained on the 3 training rows (the validation row is used only by the CNN). Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% bootstrap interval. Every metric: `metrics.md`.
 
-## Leafroll (254 + / 494 −)
+## Leafroll (255 + / 493 −)
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.544 [0.513, 0.575] | — | 0.585 | 0.529 | 0.558 | 0.544 | 0.553 |
+| logistic regression | 0.542 [0.511, 0.573] | — | 0.585 | 0.529 | 0.550 | 0.544 | 0.553 |
 
 Fold k tests on row Rk of every variety (3 field rows, since each variety has its own rows R1–R5); the next row (R1 after R5) is validation and the other 3 train.
 
@@ -16,13 +16,13 @@ Balanced accuracy per variety:
 
 | model | Baco | Chardonnay | Vidal |
 |---|---|---|---|
-| logistic regression | 0.459 | 0.428 | 0.469 |
+| logistic regression | 0.459 | 0.428 | 0.466 |
 
-## Red blotch (633 + / 365 −)
+## Red blotch (637 + / 361 −)
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.641 [0.619, 0.664] | — | 0.624 | 0.625 | 0.721 | 0.635 | 0.634 |
+| logistic regression | 0.644 [0.622, 0.667] | — | 0.621 | 0.638 | 0.709 | 0.648 | 0.642 |
 
 Fold k tests on row Rk of every variety (4 field rows, since each variety has its own rows R1–R5); the next row (R1 after R5) is validation and the other 3 train.
 
@@ -30,13 +30,13 @@ Balanced accuracy per variety:
 
 | model | Baco | Cab Franc | Chardonnay | Vidal |
 |---|---|---|---|---|
-| logistic regression | 0.458 | 0.499 | 0.567 | 0.542 |
+| logistic regression | 0.461 | 0.499 | 0.573 | 0.540 |
 
-## Both diseases (115 + / 633 −)
+## Both diseases (116 + / 632 −)
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.492 [0.456, 0.529] | — | 0.503 | 0.527 | 0.470 | 0.511 | 0.407 |
+| logistic regression | 0.499 [0.464, 0.534] | — | 0.545 | 0.527 | 0.461 | 0.511 | 0.404 |
 
 Fold k tests on row Rk of every variety (3 field rows, since each variety has its own rows R1–R5); the next row (R1 after R5) is validation and the other 3 train.
 
@@ -46,13 +46,13 @@ Balanced accuracy per variety:
 
 | model | Baco | Chardonnay | Vidal |
 |---|---|---|---|
-| logistic regression | 0.459 | 0.405 | 0.553 |
+| logistic regression | 0.471 | 0.425 | 0.530 |
 
-## Any disease vs healthy (772 + / 226 −)
+## Any disease vs healthy (776 + / 222 −)
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.584 [0.558, 0.612] | — | 0.581 | 0.523 | 0.673 | 0.598 | 0.567 |
+| logistic regression | 0.583 [0.555, 0.610] | — | 0.576 | 0.542 | 0.655 | 0.591 | 0.577 |
 
 Fold k tests on row Rk of every variety (4 field rows, since each variety has its own rows R1–R5); the next row (R1 after R5) is validation and the other 3 train.
 
@@ -60,4 +60,4 @@ Balanced accuracy per variety:
 
 | model | Baco | Cab Franc | Chardonnay | Vidal |
 |---|---|---|---|---|
-| logistic regression | 0.449 | 0.495 | 0.542 | 0.541 |
+| logistic regression | 0.440 | 0.497 | 0.542 | 0.532 |

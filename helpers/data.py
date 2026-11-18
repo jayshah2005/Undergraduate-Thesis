@@ -127,7 +127,25 @@ def _load_cache() -> tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray] | N
     d = np.load(MEANS_PATH, allow_pickle=True)
     if list(d["path"]) != list(meta.path):
         return None
+    # Labels can change while the cubes stay the same (e.g. virus retests), so check them too.
+    if H5_PATH.exists() and not np.array_equal(_h5_labels(meta.path), meta[["red_blotch", "leafroll3"]].to_numpy()):
+        return None
     return meta, d["wavelengths"], d["mean"], d["glint"]
+
+
+def _h5_labels(paths) -> np.ndarray:
+    """Read each leaf's red_blotch and leafroll3 attributes from the HDF5 (no cubes, so it takes about a second).
+
+    n: the number of leaves asked for.
+
+    :param paths: Leaf paths as in the HDF5, e.g. "Vidal/R1/V1", length n.
+    :type paths: Iterable[str]
+    :return: (n, 2) int labels: red_blotch, leafroll3 (-1 where missing).
+    :rtype: np.ndarray
+    """
+    with h5py.File(H5_PATH, "r") as h5:
+        return np.array([[int(h5[p].attrs.get("red_blotch", -1)), int(h5[p].attrs.get("leafroll3", -1))]
+                         for p in paths])
 
 
 def load_example_cube(path: str = "Baco/R1/V1"):

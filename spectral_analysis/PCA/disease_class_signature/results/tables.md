@@ -51,13 +51,13 @@ PCA eta² of class / row per PC: PC1 0.10/0.08, PC2 0.00/0.02, PC3 0.01/0.02, PC
 
 | target | R² | chance | p |
 |---|---|---|---|
-| class (4) | 0.026 | 0.011 | 0.037 |
-| healthy vs any disease | 0.023 | 0.003 | 0.003 |
-| RB label | 0.020 | 0.003 | 0.004 |
-| LR label | 0.002 | 0.004 | 0.699 |
+| class (4) | 0.027 | 0.011 | 0.033 |
+| healthy vs any disease | 0.024 | 0.004 | 0.003 |
+| RB label | 0.021 | 0.003 | 0.004 |
+| LR label | 0.001 | 0.004 | 0.696 |
 | row (for scale; free permutation) | 0.216 | 0.016 | 0.001 |
 
-PCA eta² of class / row per PC: PC1 0.03/0.12, PC2 0.01/0.65, PC3 0.00/0.10, PC4 0.03/0.05, PC5 0.02/0.01, PC6 0.01/0.01, PC7 0.02/0.09, PC8 0.01/0.01, PC9 0.01/0.10, PC10 0.01/0.10.
+PCA eta² of class / row per PC: PC1 0.03/0.12, PC2 0.02/0.65, PC3 0.00/0.10, PC4 0.03/0.05, PC5 0.01/0.01, PC6 0.01/0.01, PC7 0.02/0.09, PC8 0.01/0.01, PC9 0.01/0.10, PC10 0.01/0.10.
 
 ## Largest per-band effect sizes (Cohen's d, SNV)
 
@@ -73,7 +73,7 @@ PCA eta² of class / row per PC: PC1 0.03/0.12, PC2 0.01/0.65, PC3 0.00/0.10, PC
 | Chardonnay: healthy vs LR only | 0.24 | 694 |
 | Chardonnay: healthy vs both | 0.84 | 703 |
 | Chardonnay: healthy vs any disease | 0.49 | 700 |
-| Vidal: healthy vs RB only | 0.49 | 537 |
-| Vidal: healthy vs LR only | 0.72 | 967 |
-| Vidal: healthy vs both | 0.71 | 640 |
-| Vidal: healthy vs any disease | 0.49 | 534 |
+| Vidal: healthy vs RB only | 0.54 | 658 |
+| Vidal: healthy vs LR only | 0.77 | 967 |
+| Vidal: healthy vs both | 0.73 | 643 |
+| Vidal: healthy vs any disease | 0.54 | 655 |
