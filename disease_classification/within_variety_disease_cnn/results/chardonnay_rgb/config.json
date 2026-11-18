@@ -6,6 +6,7 @@
   "patience": 15,
   "dropout": 0.5,
   "augment": true,
+  "backbone": "small_cnn",
   "seeds": [
     0,
     1,

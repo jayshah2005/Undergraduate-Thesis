@@ -2,34 +2,34 @@
 
 A leaf counts as positive (diseased) at P ≥ 0.5; CNN = mean probability of 3 seeds; 95% bootstrap intervals. Sensitivity (= recall): share of positive leaves called positive. Specificity: share of negative leaves called negative. Precision: share of positive calls that are right. F1: harmonic mean of precision and sensitivity. Balanced accuracy: mean of sensitivity and specificity (for variety, mean sensitivity over the 4 varieties). Balanced accuracy alone, with folds and differences to logistic regression: `final_report.md`.
 
-## Leafroll (25 + / 225 −)
+## Leafroll (26 + / 224 −)
 
 | model | bal. acc. [95% CI] | accuracy [95% CI] | sensitivity (recall) [95% CI] | specificity [95% CI] | precision [95% CI] | F1 [95% CI] |
 |---|---|---|---|---|---|---|
-| logistic regression | 0.544 [0.491, 0.596] | 0.660 [0.616, 0.700] | 0.400 [0.320, 0.480] | 0.689 [0.640, 0.733] | 0.125 [0.096, 0.157] | 0.190 [0.147, 0.235] |
-| ResNet-18, mean pool | 0.396 [0.313, 0.484] | 0.456 [0.404, 0.508] | 0.320 [0.160, 0.480] | 0.471 [0.418, 0.524] | 0.063 [0.033, 0.094] | 0.105 [0.054, 0.158] |
-| ResNet-18, attention pool | 0.427 [0.356, 0.504] | 0.512 [0.468, 0.560] | 0.320 [0.200, 0.480] | 0.533 [0.484, 0.582] | 0.071 [0.043, 0.102] | 0.116 [0.071, 0.167] |
+| logistic regression | 0.557 [0.486, 0.628] | 0.632 [0.588, 0.676] | 0.462 [0.346, 0.577] | 0.652 [0.607, 0.696] | 0.133 [0.097, 0.171] | 0.207 [0.151, 0.264] |
+| ResNet-18, mean pool | 0.440 [0.365, 0.518] | 0.544 [0.492, 0.592] | 0.308 [0.192, 0.462] | 0.571 [0.518, 0.621] | 0.077 [0.044, 0.111] | 0.123 [0.072, 0.179] |
+| ResNet-18, attention pool | 0.440 [0.368, 0.517] | 0.484 [0.440, 0.528] | 0.385 [0.269, 0.538] | 0.496 [0.446, 0.540] | 0.081 [0.055, 0.110] | 0.134 [0.091, 0.183] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
 | model | TP | FN | FP | TN |
 |---|---|---|---|---|
-| logistic regression | 10 | 15 | 70 | 155 |
-| ResNet-18, mean pool | 8 | 17 | 119 | 106 |
-| ResNet-18, attention pool | 8 | 17 | 105 | 120 |
+| logistic regression | 12 | 14 | 78 | 146 |
+| ResNet-18, mean pool | 8 | 18 | 96 | 128 |
+| ResNet-18, attention pool | 10 | 16 | 113 | 111 |
 
-## Red blotch (169 + / 81 −)
+## Red blotch (173 + / 77 −)
 
 | model | bal. acc. [95% CI] | accuracy [95% CI] | sensitivity (recall) [95% CI] | specificity [95% CI] | precision [95% CI] | F1 [95% CI] |
 |---|---|---|---|---|---|---|
-| logistic regression | 0.552 [0.494, 0.610] | 0.612 [0.560, 0.664] | 0.722 [0.651, 0.787] | 0.383 [0.284, 0.481] | 0.709 [0.672, 0.746] | 0.716 [0.669, 0.758] |
-| ResNet-18, mean pool | 0.482 [0.430, 0.534] | 0.500 [0.448, 0.552] | 0.533 [0.467, 0.598] | 0.432 [0.346, 0.519] | 0.662 [0.618, 0.703] | 0.590 [0.537, 0.641] |
-| ResNet-18, attention pool | 0.501 [0.449, 0.556] | 0.512 [0.464, 0.564] | 0.533 [0.473, 0.592] | 0.469 [0.383, 0.556] | 0.677 [0.634, 0.722] | 0.596 [0.547, 0.647] |
+| logistic regression | 0.547 [0.488, 0.606] | 0.608 [0.552, 0.660] | 0.705 [0.642, 0.769] | 0.390 [0.286, 0.481] | 0.722 [0.684, 0.760] | 0.713 [0.669, 0.756] |
+| ResNet-18, mean pool | 0.533 [0.479, 0.586] | 0.508 [0.456, 0.560] | 0.468 [0.410, 0.532] | 0.597 [0.506, 0.688] | 0.723 [0.672, 0.775] | 0.568 [0.513, 0.623] |
+| ResNet-18, attention pool | 0.510 [0.462, 0.559] | 0.516 [0.472, 0.560] | 0.526 [0.474, 0.578] | 0.494 [0.416, 0.571] | 0.700 [0.661, 0.740] | 0.601 [0.556, 0.645] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
 | model | TP | FN | FP | TN |
 |---|---|---|---|---|
-| logistic regression | 122 | 47 | 50 | 31 |
-| ResNet-18, mean pool | 90 | 79 | 46 | 35 |
-| ResNet-18, attention pool | 90 | 79 | 43 | 38 |
+| logistic regression | 122 | 51 | 47 | 30 |
+| ResNet-18, mean pool | 81 | 92 | 31 | 46 |
+| ResNet-18, attention pool | 91 | 82 | 39 | 38 |

@@ -2,13 +2,13 @@
 
 Every model uses SNV and trains on the 3 training rows; the CNN picks its checkpoint on the validation row. Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% bootstrap interval. CNN = mean probability of 3 seeds. Δ: paired difference to logistic regression. Every metric: `metrics.md`.
 
-## Leafroll (25 + / 225 −)
+## Leafroll (26 + / 224 −)
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.544 [0.491, 0.596] | — | 0.593 | 0.489 | 0.469 | 0.488 | 0.417 |
-| small ResNet (no max pool), mean pool | 0.433 [0.384, 0.471] | -0.111 [-0.182, -0.047] | 0.568 | 0.386 | 0.667 | 0.500 | 0.510 |
-| small ResNet (no max pool), attention pool | 0.493 [0.420, 0.567] | -0.051 [-0.118, +0.018] | 0.542 | 0.473 | 0.677 | 0.500 | 0.750 |
+| logistic regression | 0.557 [0.486, 0.628] | — | 0.535 | 0.489 | 0.468 | 0.589 | 0.406 |
+| small ResNet (no max pool), mean pool | 0.448 [0.390, 0.501] | -0.109 [-0.203, -0.025] | 0.611 | 0.409 | 0.670 | 0.500 | 0.510 |
+| small ResNet (no max pool), attention pool | 0.488 [0.437, 0.536] | -0.068 [-0.135, -0.001] | 0.558 | 0.458 | 0.681 | 0.500 | 0.562 |
 
 Fold k tests on row Rk of Vidal; the next row (R1 after R5) is validation and the other 3 train.
 
@@ -16,18 +16,18 @@ Single seeds (the ensemble above averages their probabilities):
 
 | model | seeds | mean ± SD |
 |---|---|---|
-| small ResNet (no max pool), mean pool | 0.500, 0.420, 0.427 | 0.449 ± 0.044 |
-| small ResNet (no max pool), attention pool | 0.480, 0.393, 0.456 | 0.443 ± 0.045 |
+| small ResNet (no max pool), mean pool | 0.463, 0.445, 0.389 | 0.432 ± 0.038 |
+| small ResNet (no max pool), attention pool | 0.458, 0.474, 0.472 | 0.468 ± 0.009 |
 
-Median best epoch: small ResNet (no max pool), mean pool 9, small ResNet (no max pool), attention pool 6.
+Median best epoch: small ResNet (no max pool), mean pool 13, small ResNet (no max pool), attention pool 4.
 
-## Red blotch (169 + / 81 −)
+## Red blotch (173 + / 77 −)
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.552 [0.494, 0.610] | — | 0.471 | 0.608 | 0.562 | 0.566 | 0.570 |
-| small ResNet (no max pool), mean pool | 0.512 [0.467, 0.558] | -0.040 [-0.113, +0.032] | 0.595 | 0.567 | 0.537 | 0.439 | 0.587 |
-| small ResNet (no max pool), attention pool | 0.506 [0.451, 0.558] | -0.046 [-0.117, +0.025] | 0.554 | 0.633 | 0.475 | 0.527 | 0.557 |
+| logistic regression | 0.547 [0.488, 0.606] | — | 0.450 | 0.632 | 0.602 | 0.535 | 0.553 |
+| small ResNet (no max pool), mean pool | 0.509 [0.453, 0.562] | -0.038 [-0.109, +0.035] | 0.586 | 0.620 | 0.505 | 0.467 | 0.498 |
+| small ResNet (no max pool), attention pool | 0.519 [0.467, 0.570] | -0.028 [-0.098, +0.044] | 0.671 | 0.604 | 0.469 | 0.467 | 0.541 |
 
 Fold k tests on row Rk of Vidal; the next row (R1 after R5) is validation and the other 3 train.
 
@@ -35,7 +35,7 @@ Single seeds (the ensemble above averages their probabilities):
 
 | model | seeds | mean ± SD |
 |---|---|---|
-| small ResNet (no max pool), mean pool | 0.499, 0.483, 0.535 | 0.506 ± 0.026 |
-| small ResNet (no max pool), attention pool | 0.497, 0.490, 0.535 | 0.508 ± 0.024 |
+| small ResNet (no max pool), mean pool | 0.514, 0.528, 0.522 | 0.521 ± 0.007 |
+| small ResNet (no max pool), attention pool | 0.539, 0.504, 0.465 | 0.503 ± 0.037 |
 
-Median best epoch: small ResNet (no max pool), mean pool 7, small ResNet (no max pool), attention pool 4.
+Median best epoch: small ResNet (no max pool), mean pool 4, small ResNet (no max pool), attention pool 6.
