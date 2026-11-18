@@ -37,6 +37,8 @@ Row R1 is the weak fold for every model (about 0.6).
 
 ## Removed from the repo (commit `fb310b9`)
 
+Run on the interim labels; not rerun on the FINAL 2026 labels.
+
 | Test | Outcome |
 |---|---|
 | Backbone screen: HybridSN 3D CNN (Roy et al. 2020), 1D spectral CNN (Hu et al. 2015), ImageNet ResNet-18 with a band adaptor | lost to small ResNet on validation rows (the disease ranking is biased by early stopping on the same rows) |
@@ -52,6 +54,8 @@ What the disease search covered:
 - Checks: permutation nulls; Sawyer et al.'s shuffled split, which scores only 0.50–0.63 here (they report 80–87%).
 
 ## Earlier work, before the rewrite (commit `387d886` and earlier)
+
+Run on the interim labels; not rerun on the FINAL 2026 labels.
 
 | Test | Outcome |
 |---|---|

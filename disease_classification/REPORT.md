@@ -92,7 +92,7 @@ Net", ICLR workshop; as ResNet itself downsamples). ResNet-18 is He et al.'s ful
   136 px canvas and is 0.523 now, although the same seeds scored almost the same alone (0.52 / 0.60 / 0.54 then,
   0.52 / 0.56 / 0.54 now).
 
-**Beyond the CNN.** A wider search (over 500 other models: other features, tuning, TabPFN, DINOv2, leaf-trait
+**Beyond the CNN.** A wider search on the interim labels (over 500 other models: other features, tuning, TabPFN, DINOv2, leaf-trait
 inversion) found nothing that reaches 0.70 or beats logistic regression beyond noise within a variety, so it was removed
 from the repo (code at commit `fb310b9`). One finding from it: published leaf-level accuracies of 80–87% (Sawyer et al. 2023) shuffle leaves
 across rows; with that split this data also scores only 0.50–0.63.
