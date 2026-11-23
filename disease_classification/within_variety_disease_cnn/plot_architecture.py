@@ -17,7 +17,7 @@ ROOT = HERE.parents[1]
 for p in (ROOT, HERE.parent / "logistic_regression", HERE.parent / "cnn"):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
-from helpers.backbones import BACKBONES, DEFAULT_BACKBONE  # noqa: E402
+from helpers.backbones import BACKBONES, DEFAULT_BACKBONE, WITHOUT_BLOCK_ATTENTION  # noqa: E402
 from helpers.diagram import backbone_stages, fig_disease_cnn, resnet_stages  # noqa: E402
 from helpers.log import get_logger  # noqa: E402
 from logistic_regression import load_meta  # noqa: E402
@@ -41,7 +41,8 @@ def compute() -> dict:
          "pooled": WIDTHS[-1], "header": f"One CNN per variety, trained on its own leaves ({counts})",
          "cube_note": f"{N_BANDS} bands, or 3 for RGB", "others": {}}
     for bb, cls in BACKBONES.items():
-        if bb == DEFAULT_BACKBONE:
+        # The ECA and CBAM backbones keep their plain backbone's layout, so they get no diagram of their own.
+        if bb == DEFAULT_BACKBONE or bb in WITHOUT_BLOCK_ATTENTION:
             continue
         net, canvas = cls(N_BANDS), canvas_for(bb)
         r["others"][bb] = {**r, "canvas": canvas, "stages": resnet_stages(net, canvas), "pooled": net.out_channels,

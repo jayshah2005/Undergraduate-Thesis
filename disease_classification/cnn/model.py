@@ -1,4 +1,4 @@
-"""Whole-leaf disease CNN: any backbone from helpers/backbones.py → masked mean or attention pooling → 1 logit."""
+"""Whole-leaf disease CNN: any backbone from helpers/backbones.py → masked mean, attention or mean ∥ max pooling → 1 logit."""
 from __future__ import annotations
 
 import sys
@@ -26,6 +26,8 @@ class LeafCNN(nn.Module):
     pooling="mean": every leaf position gets the same weight.
     pooling="attention": gated attention (Ilse et al. 2018) learns one weight per
     position, so a few symptomatic patches can decide the leaf.
+    pooling="meanmax": the leaf's mean and max of each channel side by side (concat pooling,
+    Howard & Ruder 2018), so the last layer gets twice the backbone's channels.
     """
 
     def __init__(self, n_bands: int = 204, pooling: str = "attention", dropout: float = 0.5,
@@ -34,7 +36,7 @@ class LeafCNN(nn.Module):
         # Built in this order (backbone, pooling, head) so a seed gives the same weights as before the refactor.
         self.backbone = make_backbone(backbone, n_bands)
         self.pool = LeafPool(self.backbone.out_channels, pooling)
-        self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(self.backbone.out_channels, 1))
+        self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(self.pool.out_dim, 1))
 
     def forward(self, x: torch.Tensor, mask: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """Score each leaf.

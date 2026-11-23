@@ -4,8 +4,8 @@ Does a CNN trained on one variety's leaves only find disease better than that va
 model per variety: Baco, Chardonnay and Vidal. Cab Franc sits out (1 leaf with leafroll, 9 without red blotch).
 
 The network, training and scoring are `../cnn/`'s (same canvas, 212 × 212 or 224 × 224 for ResNet-18; SNV per
-pixel, backbones, mean or attention pooling, 3 seeds, balanced accuracy at P ≥ 0.5); these scripts only loop over the
-varieties.
+pixel, backbones including ECA and CBAM, mean, attention or mean ∥ max pooling, 3 seeds, balanced accuracy at P ≥ 0.5);
+these scripts only loop over the varieties.
 
 | file | what it is |
 |---|---|
@@ -23,5 +23,7 @@ cd disease_classification/within_variety_disease_cnn
 ../../.venv/bin/python -u run_within_variety.py --bands rgb      # RGB bands only
 ../../.venv/bin/python -u report_within_variety.py --bands rgb
 ../../.venv/bin/python -u plot_architecture.py
-# also: --variety Vidal (one or more), --task any both, --no-augmentation, --dropout <value>, --backbone <name>, --smoke
+../../.venv/bin/python -u run_within_variety.py --backbone small_resnet_cbam  # CBAM inside the small ResNet
+../../.venv/bin/python -u run_within_variety.py --pooling meanmax             # mean ∥ max pooling, into results/<variety>/
+# also: --variety Vidal (one or more), --task any both, --no-augmentation, --dropout <value>, --backbone <name>, --pooling <names>, --smoke
 ```

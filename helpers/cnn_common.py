@@ -1,6 +1,8 @@
 """Masked layers and canvas helpers shared by the whole-leaf CNNs."""
 from __future__ import annotations
 
+import math
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -133,8 +135,126 @@ def augment(x: torch.Tensor, m: torch.Tensor, g: torch.Generator) -> tuple[torch
     return torch.stack(xs), torch.stack(ms)
 
 
+def masked_mean(h: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    """Average each channel over leaf positions only, so the padding never counts.
+
+    B: batch size. C: channels. H, W: map size.
+
+    :param h: Features, shape (B, C, H, W).
+    :type h: torch.Tensor
+    :param mask: 1 on the positions to average, shape (B, 1, H, W).
+    :type mask: torch.Tensor
+    :return: Per-channel means, shape (B, C); 0 for a leaf with no position.
+    :rtype: torch.Tensor
+    """
+    return (h * mask).sum((2, 3)) / mask.sum((2, 3)).clamp_min(1.0)
+
+
+def masked_max(h: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    """Take each channel's largest value over leaf positions only.
+
+    Off-leaf positions are set to -inf before the max, not multiplied by the mask: features can
+    be negative (e.g. a ResNet branch before its ReLU), and a 0 from the padding would then win.
+
+    B: batch size. C: channels. H, W: map size.
+
+    :param h: Features, shape (B, C, H, W).
+    :type h: torch.Tensor
+    :param mask: 1 on the positions to search, shape (B, 1, H, W).
+    :type mask: torch.Tensor
+    :return: Per-channel maxima, shape (B, C); 0 for a leaf with no position (never -inf).
+    :rtype: torch.Tensor
+    """
+    m = h.masked_fill(mask == 0, float("-inf")).amax((2, 3))
+    has_leaf = mask.sum((2, 3)) > 0                     # (B, 1), broadcast over channels
+    return torch.where(has_leaf, m, torch.zeros_like(m))
+
+
+def eca_kernel_size(channels: int, gamma: int = 2, b: int = 1) -> int:
+    """ECA's kernel size k = |log2(C) / gamma + b / gamma|_odd (Wang et al. 2020, Eq. 12; gamma 2, b 1).
+
+    |t|_odd is the nearest odd number to t, computed as in the authors' code. It gives 3 for every
+    width in these backbones (16 to 64 channels).
+    """
+    t = int(abs((math.log2(channels) + b) / gamma))
+    return t if t % 2 else t + 1
+
+
+class MaskedECA(nn.Module):
+    """Efficient Channel Attention: masked average → 1D conv across channels → sigmoid → rescale.
+
+    Wang et al. 2020, "ECA-Net: Efficient Channel Attention for Deep Convolutional Neural Networks",
+    CVPR. One k-wide 1D conv, shared by all channels and without a bias (as in the authors' code),
+    turns the C channel averages into C weights, so each channel's weight depends on its k
+    neighbours; there is no dimension reduction. Changed for whole leaves: the global average is
+    over leaf positions only (masked_mean), so a leaf's padding cannot change its weights.
+    """
+
+    def __init__(self, channels: int):
+        super().__init__()
+        k = eca_kernel_size(channels)
+        self.conv = nn.Conv1d(1, 1, k, padding=(k - 1) // 2, bias=False)
+
+    def forward(self, h: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+        """Reweight each channel of h (B, C, H, W) by its learned weight; the background stays 0."""
+        y = masked_mean(h, mask)                              # (B, C) channel descriptors
+        w = torch.sigmoid(self.conv(y[:, None, :]))[:, 0]     # (B, C) channel weights in (0, 1)
+        return h * w[:, :, None, None]
+
+
+class MaskedCBAM(nn.Module):
+    """Convolutional Block Attention Module: channel attention, then spatial attention.
+
+    Woo et al. 2018, "CBAM: Convolutional Block Attention Module", ECCV, Eqs. 1-3:
+    - channel: a shared MLP (C → C/r → C, ReLU between) on the average- and the max-pooled
+      descriptor, summed, sigmoid; r = 16 as in the paper;
+    - spatial: the channel-wise average and max at each position → a 7×7 conv → sigmoid.
+    Channel first, then spatial, in sequence (the paper's best order).
+
+    Changed for whole leaves:
+    - the average and max over positions use leaf positions only (masked_mean, masked_max);
+    - with r = 16 the narrow layers here (16-64 channels) would get 1-4 hidden units, so the
+      hidden width is floored at 1;
+    - no batch norm after the 7×7 conv: the paper's text has none (the authors' code adds one).
+    The 7×7 conv sees the zero background next to the leaf margin, the same zeros on any canvas,
+    so a leaf's padding still cannot change its score; the output is re-masked to keep the
+    background exactly 0.
+    """
+
+    def __init__(self, channels: int, reduction: int = 16, kernel: int = 7):
+        super().__init__()
+        hidden = max(1, channels // reduction)
+        self.mlp = nn.Sequential(nn.Linear(channels, hidden), nn.ReLU(), nn.Linear(hidden, channels))
+        self.spatial = nn.Conv2d(2, 1, kernel, padding=kernel // 2, bias=False)
+
+    def forward(self, h: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+        """Reweight h (B, C, H, W) by channel, then by position; the background stays 0."""
+        # Channel attention (Eq. 2): one weight per channel from the leaf's average and max.
+        mc = torch.sigmoid(self.mlp(masked_mean(h, mask)) + self.mlp(masked_max(h, mask)))
+        h = h * mc[:, :, None, None]
+        # Spatial attention (Eq. 3): one weight per position from its average and max over channels.
+        s = torch.cat([h.mean(1, keepdim=True), h.amax(1, keepdim=True)], 1)
+        return h * torch.sigmoid(self.spatial(s)) * mask
+
+
+BLOCK_ATTENTION_MODULES = {"eca": MaskedECA, "cbam": MaskedCBAM}
+
+
+def make_block_attention(kind: str | None, channels: int) -> nn.Module | None:
+    """Build an ECA or CBAM module for a layer with this many channels, or None for no module.
+
+    :param kind: "eca", "cbam" or None.
+    :type kind: str | None
+    :param channels: Channels of the feature map it reweights.
+    :type channels: int
+    :return: A module mapping (h (B, C, H, W), mask (B, 1, H, W)) to a reweighted h, or None.
+    :rtype: nn.Module | None
+    """
+    return None if kind is None else BLOCK_ATTENTION_MODULES[kind](channels)
+
+
 class LeafPool(nn.Module):
-    """Turn a feature map into one vector per leaf: masked mean or gated-attention pooling.
+    """Turn a feature map into one vector per leaf: masked mean, gated-attention or mean ∥ max pooling.
 
     Positions whose 3x3 neighbourhood touches the background are left out, so the leaf
     margin cannot drive the prediction; a leaf too small to keep any falls back to its full mask.
@@ -143,12 +263,19 @@ class LeafPool(nn.Module):
     pooling="attention": gated attention (Ilse et al. 2018, "Attention-based Deep Multiple
     Instance Learning", ICML) learns one weight per position, so a few symptomatic patches
     can decide the leaf.
+    pooling="meanmax": the mean and the max of each channel over the leaf, concatenated (2C
+    values), as ULMFiT's concat pooling (Howard & Ruder 2018, "Universal Language Model
+    Fine-tuning for Text Classification", ACL, Eq. 4, without its last hidden state) and fastai's
+    AdaptiveConcatPool2d (Howard & Gugger 2020, "fastai: A Layered API for Deep Learning",
+    Information) do. The max lets a few strong patches count, the mean keeps the whole leaf. No
+    weights are learned; the returned position weights are the mean's.
     """
 
     def __init__(self, channels: int, pooling: str = "mean", hidden: int = 32):
         super().__init__()
-        assert pooling in ("mean", "attention")
+        assert pooling in ("mean", "attention", "meanmax")
         self.pooling = pooling
+        self.out_dim = 2 * channels if pooling == "meanmax" else channels   # length of the pooled vector
         if pooling == "attention":
             self.att_v = nn.Linear(channels, hidden)
             self.att_u = nn.Linear(channels, hidden)
@@ -163,7 +290,7 @@ class LeafPool(nn.Module):
         :type h: torch.Tensor
         :param mask: 1 on leaf positions, shape (B, 1, H, W).
         :type mask: torch.Tensor
-        :return: pooled vectors (B, C) and the weight of each position (B, H, W), summing to 1 per leaf.
+        :return: pooled vectors (B, out_dim) and the weight of each position (B, H, W), summing to 1 per leaf.
         :rtype: tuple[torch.Tensor, torch.Tensor]
         """
         valid = min_pool(mask, 3, 1, pad=1)
@@ -179,4 +306,7 @@ class LeafPool(nn.Module):
             a = torch.softmax(s, dim=1)
         else:
             a = keep.float() / keep.float().sum(1, keepdim=True)
-        return (a.unsqueeze(-1) * feats).sum(1), a.view(b, hh, ww)
+        z = (a.unsqueeze(-1) * feats).sum(1)
+        if self.pooling == "meanmax":
+            z = torch.cat([z, masked_max(h, valid)], 1)
+        return z, a.view(b, hh, ww)

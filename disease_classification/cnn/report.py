@@ -20,7 +20,7 @@ ROOT = HERE.parents[1]
 for p in (ROOT, HERE.parent / "logistic_regression", HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
-from helpers.backbones import BACKBONES, DEFAULT_BACKBONE, LABEL  # noqa: E402
+from helpers.backbones import BACKBONES, DEFAULT_BACKBONE, LABEL, WITHOUT_BLOCK_ATTENTION  # noqa: E402
 from helpers.data import load_dataset  # noqa: E402
 from helpers.log import get_logger  # noqa: E402
 from logistic_regression import (BANDS, POOLS, TASKS, bands_label, fold_of, is_pooled,  # noqa: E402
@@ -28,21 +28,35 @@ from logistic_regression import (BANDS, POOLS, TASKS, bands_label, fold_of, is_p
                                  usable_leaves, variety_label, varieties_of, TASK_NAME, metrics_section)
 from helpers.pca_common import get_device  # noqa: E402
 from run_experiments import DEFAULT_POOL, SEEDS, load_cube_list, results_root, run_dir  # noqa: E402
-from helpers.report_tables import BASELINE, METRICS_INTRO, column_table, fold_note, main_table, seed_table  # noqa: E402
+from helpers.report_tables import (BASELINE, METRICS_INTRO, column_table, delta, fold_note, main_table,  # noqa: E402
+                                   seed_table, table)
 from scoring import all_metrics, balanced_accuracy, bootstrap_weights, per_variety_metrics  # noqa: E402
 from helpers.cnn_common import pad_to_canvas  # noqa: E402
 from model import SECOND_BACKBONE  # noqa: E402
-from train import CANVAS, POOLING, TrainConfig  # noqa: E402
+from train import CANVAS, POOLINGS, TrainConfig  # noqa: E402
 
 FIG = HERE / "figures"
 
 
+POOL_NAME = {"mean": "mean", "attention": "attention", "meanmax": "mean ∥ max"}
+
+
 def model_label(backbone: str, pooling: str) -> str:
     """Report name of one CNN, e.g. "CNN, mean pool" (default backbone) or "small ResNet, attention pool"."""
-    return f"{LABEL[backbone]}, {pooling} pool"
+    return f"{LABEL[backbone]}, {POOL_NAME[pooling]} pool"
 
 
-ARM_LABEL = {a: model_label(DEFAULT_BACKBONE, a) for a in POOLING}   # every CNN uses pixel SNV
+def reference(backbone: str, pooling: str) -> tuple[str, str] | None:
+    """The model one change is compared with: the same backbone without ECA / CBAM, same pooling;
+    for mean ∥ max, the same backbone with mean pooling; None for every other model."""
+    if backbone in WITHOUT_BLOCK_ATTENTION:
+        return WITHOUT_BLOCK_ATTENTION[backbone], pooling
+    if pooling == "meanmax":
+        return backbone, "mean"
+    return None
+
+
+ARM_LABEL = {a: model_label(DEFAULT_BACKBONE, a) for a in POOLINGS}   # every CNN uses pixel SNV
 INK, INK_2, MUTED, GRID = "#0b0b0b", "#52514e", "#898781", "#e1e0d9"
 CNN_COLOR, BASE_COLOR = "#2a78d6", "#898781"
 # Attention relative to uniform: blue below 1, gray at 1, red above.
@@ -98,7 +112,7 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
     :type backbone: str
     :return: {task: {"y": (n,), "fold": (n,), "group": (n,), "variety": (n,), "leaf_idx": (n,) position in meta,
         "base": (n,), "cnn": {model label: (n_seeds, n)}, "att": {pooling: (n, S4, S4)} (default backbone, seed 0),
-        "epochs": {model label: list of best epochs}}}.
+        "epochs": {model label: list of best epochs}, "arms": {model label: (backbone, pooling)}}}.
     :rtype: dict
     """
     base = run_baselines(meta, load_means(variety, device, bands), tasks_in(root))
@@ -110,12 +124,14 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
         y = task_labels(meta, task)
         keep = usable_leaves(meta, y)
         t = {"y": y[keep], "fold": fold[keep], "group": group[keep], "variety": variety[keep],
-             "leaf_idx": np.flatnonzero(keep), "base": base[task][keep], "cnn": {}, "att": {}, "epochs": {}}
+             "leaf_idx": np.flatnonzero(keep), "base": base[task][keep], "cnn": {}, "att": {}, "epochs": {},
+             "arms": {}}
         sources = [(backbone, root), *others]
         for bb, folder in sources:
             if not (folder / "runs" / task).exists():
                 continue
-            for arm in POOLING:
+            # Only the poolings this backbone was trained with (mean ∥ max runs only on some backbones).
+            for arm in (a for a in POOLINGS if (folder / "runs" / task / a).exists()):
                 label = model_label(bb, arm)
                 probs, epochs = np.full((len(SEEDS), len(meta)), np.nan), []
                 for s in SEEDS:
@@ -130,6 +146,7 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
                             t["att"][arm][f["test_idx"]] = f["attention"]
                 assert not np.isnan(probs[:, keep]).any(), f"missing folds for {task} {label}"
                 t["cnn"][label], t["epochs"][label] = probs[:, keep], epochs
+                t["arms"][label] = (bb, arm)
         t["att"] = {arm: a[keep] for arm, a in t["att"].items()}
         out[task] = t
     return out
@@ -149,8 +166,10 @@ def compute_metrics(preds: dict, device: torch.device) -> dict:
     :type preds: dict
     :param device: GPU or CPU.
     :type device: torch.device
-    :return: {task: {name: {metric: value}}} with names "baseline" and the ARM_LABEL values;
-        plus per-row values, and per-variety values when a task uses several varieties.
+    :return: {task: {name: {metric: value}}} with names "baseline" and the model labels;
+        plus per-row values, and per-variety values when a task uses several varieties. A model with a
+        :func:`reference` in the same report also gets "vs_reference": the reference's label and the
+        paired difference to it, with its interval from the same resamples.
     :rtype: dict
     """
     out = {}
@@ -174,6 +193,7 @@ def compute_metrics(preds: dict, device: torch.device) -> dict:
             per_seed = [balanced_accuracy(tt(p), y).item() for p in p_seeds]
             q = torch.tensor([0.025, 0.975], dtype=torch.float64, device=device)
             return {
+                "boot": boot,   # dropped below, once the paired differences between CNNs are taken
                 "bal_acc": balanced_accuracy(ens, y).item(),
                 "ci95": torch.quantile(boot, q).tolist(),
                 "diff_vs_base": (balanced_accuracy(ens, y) - balanced_accuracy(base, y)).item(),
@@ -191,6 +211,17 @@ def compute_metrics(preds: dict, device: torch.device) -> dict:
         for label, p in t["cnn"].items():
             res[label] = score(p)
             res[label]["median_best_epoch"] = float(np.median(t["epochs"][label]))
+        # Each change against the same model without it, on the same resamples (paired).
+        q = torch.tensor([0.025, 0.975], dtype=torch.float64, device=device)
+        for label, arm in t["arms"].items():
+            ref = reference(*arm)
+            ref = model_label(*ref) if ref else None
+            if ref in res:
+                res[label]["vs_reference"] = {
+                    "reference": ref, "diff": res[label]["bal_acc"] - res[ref]["bal_acc"],
+                    "ci95": torch.quantile(res[label]["boot"] - res[ref]["boot"], q).tolist()}
+        for m in res.values():
+            del m["boot"]
         out[task] = res
     return out
 
@@ -236,6 +267,12 @@ def to_markdown(metrics: dict, labels: dict, variety: str, bands: str) -> str:
         lines += seed_table({k: m["seeds"] for k, m in cnns.items()}) + [""]
         lines += ["Median best epoch: " + ", ".join(f"{k} {m['median_best_epoch']:.0f}" for k, m in cnns.items())
                   + ".", ""]
+        changes = {k: m["vs_reference"] for k, m in cnns.items() if "vs_reference" in m}
+        if changes:
+            lines += ["Each change against the same model without it (ECA, CBAM: same backbone and pooling without "
+                      "the module; mean ∥ max: the same backbone's mean pool); paired, on the same resamples:", ""]
+            lines += table(["model", "compared with", "Δ bal. acc. [95% CI]"],
+                           [[k, c["reference"], delta(c["diff"], c["ci95"])] for k, c in changes.items()]) + [""]
     return "\n".join(lines)
 
 

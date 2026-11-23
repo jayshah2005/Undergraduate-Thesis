@@ -1,4 +1,4 @@
-"""Train the whole-leaf CNN (mean and attention pooling) on pooled varieties, fold by fold, beside the mean-spectrum baseline.
+"""Train the whole-leaf CNN (mean and attention pooling, or those given with --pooling) on pooled varieties, fold by fold, beside the mean-spectrum baseline.
 
 `run` is shared with ../within_variety_disease_cnn, which calls it once per variety.
 """
@@ -33,7 +33,7 @@ from model import LeafCNN  # noqa: E402
 from helpers.pca_common import get_device, np_  # noqa: E402
 from scoring import summary  # noqa: E402
 from helpers.cnn_common import pad_to_canvas  # noqa: E402
-from train import POOLING, TrainConfig, canvas_for, preprocess, train_fold  # noqa: E402
+from train import DEFAULT_POOLINGS, POOLINGS, TrainConfig, canvas_for, preprocess, train_fold  # noqa: E402
 
 DEFAULT_POOL = "all"
 DEFAULT_TASKS = ("leafroll", "red_blotch")
@@ -106,7 +106,7 @@ def invariance_check(d: dict, backbone: str = DEFAULT_BACKBONE) -> dict:
     # which moves ResNet-18's logits by ~0.002 between canvas sizes (float64: ~1e-15).
     x, mask = x.double(), mask.double()
     k = BACKBONES[backbone].stride // 4   # shifts must be whole strides, or the downsampling grid moves
-    for pooling in POOLING:
+    for pooling in POOLINGS:
         model = LeafCNN(X.shape[1], pooling, backbone=backbone).to(X.device).eval()
         # Give the running statistics non-trivial values so eval mode is exercised.
         for bn in masked_norms(model):
@@ -136,6 +136,15 @@ def results_root(smoke: bool, dropout: float = TrainConfig.dropout, variety: str
     name += "" if augment else "_no_augmentation"
     name += "" if backbone == DEFAULT_BACKBONE else f"_{backbone}"
     return results / "smoke" / name if smoke else results / name
+
+
+def log_name(root: Path, poolings) -> str:
+    """Log file name of one run: the results folder's name, plus the poolings when they are not the default two.
+
+    A mean ∥ max run adds runs to a finished folder (e.g. results/baco/), so it gets its own log
+    (logs/baco_meanmax.log) instead of overwriting that folder's mean and attention log.
+    """
+    return root.name + ("" if tuple(poolings) == DEFAULT_POOLINGS else "_" + "_".join(poolings))
 
 
 def check_settings(root: Path, cfg: TrainConfig) -> None:
@@ -180,7 +189,7 @@ def run_cnn(d: dict, fold_ids: np.ndarray, task: str, pooling: str, seed: int, f
     :type fold_ids: np.ndarray
     :param task: A key of TASKS.
     :type task: str
-    :param pooling: "mean" or "attention".
+    :param pooling: A value of POOLINGS.
     :type pooling: str
     :param seed: Repeat number 0-2.
     :type seed: int
@@ -212,7 +221,7 @@ def load_model_runs(task: str, pooling: str, seeds: tuple, folds, n: int, root: 
 
     :param task: A key of TASKS.
     :type task: str
-    :param pooling: "mean" or "attention".
+    :param pooling: A value of POOLINGS.
     :type pooling: str
     :param seeds: Seeds of this run.
     :type seeds: tuple
@@ -261,7 +270,7 @@ def report_command(args: argparse.Namespace) -> str:
 
 
 def run(variety: str, bands: str, tasks: list[str], root: Path, log, cfg: TrainConfig,
-        seeds: tuple = SEEDS, folds=range(5)) -> None:
+        seeds: tuple = SEEDS, folds=range(5), poolings=DEFAULT_POOLINGS) -> None:
     """Check, then train every (task, pooling, seed, fold) of one variety choice not already on disk.
 
     Logs the baseline and each model's test balanced accuracy, one line each.
@@ -282,6 +291,9 @@ def run(variety: str, bands: str, tasks: list[str], root: Path, log, cfg: TrainC
     :type seeds: tuple
     :param folds: Test folds to train.
     :type folds: Iterable[int]
+    :param poolings: Values of POOLINGS to train; each keeps its runs in its own runs/<task>/<pooling>/ folder,
+        so another pooling can be added to a finished run's folder later.
+    :type poolings: Iterable[str]
     """
     # Check the tasks can run before anything is written or loaded onto the GPU
     meta = load_meta(variety)
@@ -329,7 +341,7 @@ def run(variety: str, bands: str, tasks: list[str], root: Path, log, cfg: TrainC
                  f", left out {', '.join(left_out)}" if left_out else "", base_scores["bal_acc"],
                  format_scores(base_scores))
 
-        for pooling in POOLING:
+        for pooling in poolings:
             seconds = 0.0
             for seed in seeds:
 
@@ -386,6 +398,9 @@ def parse_args(choices: list[str], default, description: str) -> argparse.Namesp
     ap.add_argument("--backbone", choices=list(BACKBONES), default=DEFAULT_BACKBONE,
                     help="the CNN before the pooling (helpers/backbones.py); another than the default adds "
                          "_<backbone> to the folder name")
+    ap.add_argument("--pooling", nargs="+", choices=POOLINGS, default=list(DEFAULT_POOLINGS),
+                    help="poolings to train; each goes to runs/<task>/<pooling>/ in the same folder, so "
+                         "--pooling meanmax adds mean ∥ max pooling beside finished mean and attention runs")
     return ap.parse_args()
 
 
@@ -402,9 +417,10 @@ def main() -> None:
     args = parse_args(list(POOLS), DEFAULT_POOL, "which varieties to pool into one model; results go to results/<pool>/")
     root = results_root(args.smoke, args.dropout, args.variety, not args.no_augmentation, args.bands,
                         backbone=args.backbone)
-    log = get_logger(f"disease_cnn_{root.name}", log_file=None if args.smoke else LOGS / f"{root.name}.log")
+    log = get_logger(f"disease_cnn_{root.name}",
+                     log_file=None if args.smoke else LOGS / f"{log_name(root, args.pooling)}.log")
     cfg, seeds, folds = run_settings(args)
-    run(args.variety, args.bands, args.task, root, log, cfg, seeds, folds)
+    run(args.variety, args.bands, args.task, root, log, cfg, seeds, folds, args.pooling)
     log.info("[done] %s. For intervals, tables and figures: %s", root.relative_to(HERE), report_command(args))
 
 
