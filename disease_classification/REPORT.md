@@ -121,15 +121,18 @@ blotch only, since its leafroll leaves are the same 748):
   new backbones land within 0.05 of the small CNN (−0.03 to +0.05), and their leafroll and red-blotch scores for Baco,
   Chardonnay and Vidal stay at 0.41–0.60.
 - ECA, CBAM and mean ∥ max change nothing reliably. Of 180 paired intervals against the same model without the change,
-  41 exclude 0 (29 above, 12 below), against about 9 by chance; these intervals resample leaves, not training runs, so
-  they miss run-to-run noise. Within a variety, 16 of the 17 gains are where the plain model was weak: Baco and Vidal
-  RGB leafroll, from below chance (0.37–0.44) to 0.46–0.56, and Chardonnay red blotch, from 0.52–0.55 up to logistic
-  regression's level (0.57–0.61 vs 0.605). No new model beats logistic regression within a variety except on those two
+  41 exclude 0 (29 above, 12 below), against about 9 by chance (4–5 each way); 12 below 0 shows these intervals, which
+  resample leaves but not training runs, are too narrow. Within a variety, 16 of the 17 gains are where the plain model
+  was weak: Baco and Vidal RGB leafroll, from below chance (0.37–0.44) to 0.46–0.56, and Chardonnay red blotch, from
+  0.52–0.55 up to logistic regression's level (0.57–0.61 vs 0.605); the 17th is Baco leafroll, CNN + ECA with
+  attention (0.529 → 0.588). No new model beats logistic regression within a variety except on those two
   RGB leafroll sets, where logistic regression itself is below chance (0.418, 0.439). The same module can help with one
   pooling and hurt with the other (small ResNet + ECA, pooled RGB leafroll: mean −0.044, attention +0.047); mean ∥ max
-  is 3 above, 3 below out of 36. Pooled, CBAM in the small CNN scores highest (all 998, 204 bands: leafroll 0.624, Δ
-  +0.052 [+0.016, +0.088] vs logistic regression; red blotch 0.702, Δ +0.055 [+0.028, +0.081]), but every new pooled
-  model scores 0.42–0.59 on each variety's own leaves, so the gain is still the varieties' disease rates.
+  is 3 above, 3 below out of 36. Pooled over all 998 leaves (204 bands), all 10 new models beat logistic regression on
+  red blotch and 4 of 10 on leafroll; without Cab Franc (Baco + Chardonnay + Vidal) none does on red blotch, with 204
+  bands or RGB. CBAM in the small CNN scores highest (leafroll 0.624, Δ +0.052 [+0.016, +0.088] vs logistic regression;
+  red blotch 0.702, Δ +0.055 [+0.028, +0.081]), but every new pooled model scores 0.42–0.59 on each variety's own
+  leaves, so the gain is still the varieties' disease rates.
 - RGB does about as well as the full spectrum: the extra bands add nothing we can detect at this sample size.
 - CNN scores are fragile. Reruns with the same inputs are bit-identical, yet relabelling 7 of 998 leaves (all Vidal)
   moved the pooled CNN scores by up to 0.04 (median 0.008), about the size of their gains over logistic regression
