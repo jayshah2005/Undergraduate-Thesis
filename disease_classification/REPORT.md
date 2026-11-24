@@ -64,6 +64,42 @@ Net", ICLR workshop; as ResNet itself downsamples). ResNet-18 is He et al.'s ful
 | Small ResNet, no max pool, mean / attention | 0.595 / 0.602 | 0.683 / 0.673 | 0.624 / 0.590 |
 | ResNet-18, mean / attention | 0.607 / 0.573 | 0.672 / 0.667 | 0.602 / 0.591 |
 
+**Attention inside the CNN, and mean ∥ max pooling.** ECA (Wang et al. 2020, "ECA-Net: Efficient Channel Attention
+for Deep Convolutional Neural Networks", CVPR) reweights channels; CBAM (Woo et al. 2018, "CBAM: Convolutional Block
+Attention Module", ECCV) reweights channels, then positions. Both average over leaf pixels only and sit in each
+residual block of the small ResNet, before the skip is added, as in the papers, and after each 3 × 3 conv of the small
+CNN (our choice: neither paper has a plain 4-conv net). Mean ∥ max pooling joins each channel's mean and max over the
+leaf (Howard & Ruder 2018, "Universal Language Model Fine-tuning for Text Classification", ACL). Each is compared with
+the same model without it, paired on the same resamples; the rule, set before the runs, is that a change helps only
+where that 95% interval excludes 0. Within a variety, mean over Baco, Chardonnay and Vidal:
+
+| Model | Leafroll, 204 bands | Leafroll, RGB | Red blotch, 204 bands | Red blotch, RGB |
+|---|---|---|---|---|
+| Logistic regression | 0.539 | 0.482 | 0.553 | 0.571 |
+| Small CNN, mean / attention | 0.537 / 0.512 | 0.439 / 0.473 | 0.528 / 0.505 | 0.530 / 0.528 |
+| Small CNN + ECA, mean / attention | 0.523 / 0.562 | 0.497 / 0.482 | 0.503 / 0.535 | 0.532 / 0.539 |
+| Small CNN + CBAM, mean / attention | 0.510 / 0.524 | 0.495 / 0.539 | 0.547 / 0.505 | 0.558 / 0.523 |
+| Small CNN, mean ∥ max | 0.515 | 0.481 | 0.539 | 0.516 |
+| Small ResNet, mean / attention | 0.537 / 0.511 | 0.494 / 0.481 | 0.515 / 0.522 | 0.534 / 0.547 |
+| Small ResNet + ECA, mean / attention | 0.488 / 0.539 | 0.510 / 0.475 | 0.552 / 0.543 | 0.539 / 0.534 |
+| Small ResNet + CBAM, mean / attention | 0.525 / 0.510 | 0.535 / 0.501 | 0.527 / 0.521 | 0.521 / 0.535 |
+| Small ResNet, mean ∥ max | 0.538 | 0.492 | 0.522 | 0.500 |
+
+Pooled, 204 bands (RGB: `cnn/results/<pool>_rgb/final_report.md`; on Baco + Chardonnay + Vidal these models ran red
+blotch only, since its leafroll leaves are the same 748):
+
+| Model | Leafroll (748 leaves) | Red blotch, all 998 | Red blotch, Baco + Chardonnay + Vidal |
+|---|---|---|---|
+| Logistic regression | 0.572 | 0.647 | 0.600 |
+| Small CNN, mean / attention | 0.586 / 0.597 | 0.691 / 0.666 | 0.619 / 0.606 |
+| Small CNN + ECA, mean / attention | 0.603 / 0.590 | 0.686 / 0.681 | 0.580 / 0.609 |
+| Small CNN + CBAM, mean / attention | 0.610 / 0.624 | 0.702 / 0.701 | 0.623 / 0.589 |
+| Small CNN, mean ∥ max | 0.599 | 0.689 | 0.611 |
+| Small ResNet, mean / attention | 0.585 / 0.612 | 0.682 / 0.686 | 0.595 / 0.594 |
+| Small ResNet + ECA, mean / attention | 0.607 / 0.580 | 0.683 / 0.680 | 0.609 / 0.626 |
+| Small ResNet + CBAM, mean / attention | 0.610 / 0.583 | 0.686 / 0.678 | 0.607 / 0.623 |
+| Small ResNet, mean ∥ max | 0.595 | 0.675 | 0.619 |
+
 **What it shows**
 - Within a variety, disease is barely detectable: every score is 0.37–0.62. Chardonnay is the clearest case above chance
   (e.g. logistic regression on red blotch 0.605 [0.547, 0.662]); Baco and Vidal stay within about 0.06 of chance or
@@ -84,6 +120,16 @@ Net", ICLR workshop; as ResNet itself downsamples). ResNet-18 is He et al.'s ful
   positive (R1, R5) or negative (R3, R4, the row with 20% infected); each row alone scores 0.50–0.64. Pooled, both
   new backbones land within 0.05 of the small CNN (−0.03 to +0.05), and their leafroll and red-blotch scores for Baco,
   Chardonnay and Vidal stay at 0.41–0.60.
+- ECA, CBAM and mean ∥ max change nothing reliably. Of 180 paired intervals against the same model without the change,
+  41 exclude 0 (29 above, 12 below), against about 9 by chance; these intervals resample leaves, not training runs, so
+  they miss run-to-run noise. Within a variety, 16 of the 17 gains are where the plain model was weak: Baco and Vidal
+  RGB leafroll, from below chance (0.37–0.44) to 0.46–0.56, and Chardonnay red blotch, from 0.52–0.55 up to logistic
+  regression's level (0.57–0.61 vs 0.605). No new model beats logistic regression within a variety except on those two
+  RGB leafroll sets, where logistic regression itself is below chance (0.418, 0.439). The same module can help with one
+  pooling and hurt with the other (small ResNet + ECA, pooled RGB leafroll: mean −0.044, attention +0.047); mean ∥ max
+  is 3 above, 3 below out of 36. Pooled, CBAM in the small CNN scores highest (all 998, 204 bands: leafroll 0.624, Δ
+  +0.052 [+0.016, +0.088] vs logistic regression; red blotch 0.702, Δ +0.055 [+0.028, +0.081]), but every new pooled
+  model scores 0.42–0.59 on each variety's own leaves, so the gain is still the varieties' disease rates.
 - RGB does about as well as the full spectrum: the extra bands add nothing we can detect at this sample size.
 - CNN scores are fragile. Reruns with the same inputs are bit-identical, yet relabelling 7 of 998 leaves (all Vidal)
   moved the pooled CNN scores by up to 0.04 (median 0.008), about the size of their gains over logistic regression

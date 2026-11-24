@@ -16,6 +16,8 @@ training code here are also used by `../within_variety_disease_cnn/`.
 
 **Pools.** `all` (998 leaves) or `baco_chardonnay_vidal` (748). A variety with fewer than 5 positive or negative
 leaves sits out a task, so Cab Franc drops out of leafroll and both pools train leafroll on the same 748 leaves.
+Their leafroll runs were bit-identical, so the ECA, CBAM and mean ∥ max runs on `baco_chardonnay_vidal` are red blotch
+only (`--task red_blotch`); their leafroll scores are in `all`.
 
 **Models.** Each pixel's spectrum is SNV-normalised, as in the variety CNN, on a 212 × 212 canvas. Two models per task:
 mean pooling or gated attention pooling (Ilse et al. 2018, "Attention-based Deep Multiple Instance
