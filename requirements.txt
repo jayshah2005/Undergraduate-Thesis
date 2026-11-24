@@ -17,5 +17,10 @@ ipykernel>=6.29
 jupyter>=1.0
 tqdm>=4.66
 
+# moo_single_task_learning/ with UPGrad: the QP solver of torchjd's dual-cone projection
+# (torchjd itself is the local ../torchjd/src, put on PYTHONPATH)
+quadprog>=0.1.14
+qpsolvers>=4.13
+
 # Optional but useful for H5 / array inspection
 seaborn>=0.13

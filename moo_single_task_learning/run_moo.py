@@ -13,7 +13,7 @@ Usage (from this folder)::
 
     ../.venv/bin/python -u run_moo.py --method ls      # 15 trainings, resumable
     ../.venv/bin/python -u run_moo.py --method mgda          # also mgda_gn, mgda_ln, mgda_lgn
-    PYTHONPATH=../../torchjd/src ../.venv/bin/python -u run_moo.py --method svdpga   # also osnmfpga (local torchjd)
+    PYTHONPATH=../../torchjd/src ../.venv/bin/python -u run_moo.py --method svdpga   # also osnmfpga, upgrad (local torchjd)
     ../.venv/bin/python -u run_moo.py --method ls --smoke   # 1 seed x 5 folds x 1 epoch, results/smoke/
 """
 from __future__ import annotations

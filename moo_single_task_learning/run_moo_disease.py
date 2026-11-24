@@ -21,7 +21,7 @@ of the four has improved for 15 epochs (or at 80).
 Usage (from this folder; one run at a time: the 998 leaves take about 27 GB on the GPU)::
 
     ../.venv/bin/python -u run_moo_disease.py --method ls       # also mgda, mgda_gn, mgda_ln, mgda_lgn
-    PYTHONPATH=../../torchjd/src ../.venv/bin/python -u run_moo_disease.py --method svdpga   # also osnmfpga
+    PYTHONPATH=../../torchjd/src ../.venv/bin/python -u run_moo_disease.py --method svdpga   # also osnmfpga, upgrad
     ../.venv/bin/python -u run_moo_disease.py --method mgda --smoke   # 1 fold, 2 epochs, results_disease_setup/smoke/
 """
 from __future__ import annotations
@@ -73,7 +73,7 @@ def _load_moo():
 moo = _load_moo()
 
 RESULTS = HERE / "results_disease_setup"
-METHODS = ("ls", "mgda", "mgda_gn", "mgda_ln", "mgda_lgn", "svdpga", "osnmfpga")
+METHODS = ("ls", "mgda", "mgda_gn", "mgda_ln", "mgda_lgn", "svdpga", "osnmfpga", "upgrad")
 SEEDS = DE.SEEDS
 VARIETIES = ["Baco", "Cab Franc", "Chardonnay", "Vidal"]
 HEADS = VARIETIES + ["red_blotch", "leafroll"]

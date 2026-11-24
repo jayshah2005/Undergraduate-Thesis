@@ -20,14 +20,14 @@ from moo import (
 )
 
 
-METHODS = ("ls", "mgda", "mgda_gn", "mgda_ln", "mgda_lgn", "svdpga", "osnmfpga")
+METHODS = ("ls", "mgda", "mgda_gn", "mgda_ln", "mgda_lgn", "svdpga", "osnmfpga", "upgrad")
 
 
 @dataclass
 class TrainConfig:
     """Training knobs (not tuned on the test row)."""
 
-    method: str = "ls"       # "ls", "mgda", "mgda_gn", "mgda_ln", "mgda_lgn", or torchjd PGA: "svdpga", "osnmfpga"
+    method: str = "ls"       # "ls", "mgda", "mgda_gn", "mgda_ln", "mgda_lgn", or torchjd: "svdpga", "osnmfpga", "upgrad"
     batch: int = 8
     lr: float = 1e-3
     weight_decay: float = 1e-2
@@ -127,7 +127,7 @@ def train_fold(
                 g_agg, _alpha = aggregate_mgda(grads, loss_values, norm)
                 write_grad(model, g_agg)
             else:
-                # torchjd aggregator (PGA): six grads → its update direction → write into .grad.
+                # torchjd aggregator (PGA, UPGrad): six grads → its update direction → write into .grad.
                 grads = collect_head_grads(model, losses)
                 g_agg, _weights = aggregate_torchjd(grads, cfg.method)
                 write_grad(model, g_agg)

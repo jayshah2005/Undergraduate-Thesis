@@ -4,7 +4,8 @@ One whole-leaf CNN with six sigmoid heads (Baco, Cab Franc, Chardonnay, Vidal, r
 leaves and 204 bands. Each head is one objective. The methods differ only in how the six heads' gradients become one
 update: their sum (LS), MGDA (Sener & Koltun 2018, "Multi-Task Learning as Multi-Objective Optimization", NeurIPS)
 with or without gradient normalization (GN, LN, LGN, as listed in LibMTL, Lin & Zhang 2023), or the Principal
-Gradient Alignment aggregators of the local torchjd (`../../torchjd`, not yet published). Results:
+Gradient Alignment aggregators of the local torchjd (`../../torchjd`, not yet published), or UPGrad (Quinton & Rey
+2024, "Jacobian Descent for Multi-Objective Optimization"; needs `quadprog` and `qpsolvers`). Results:
 [`results/final_report.md`](results/final_report.md).
 
 | file | what it is |
@@ -24,7 +25,7 @@ every comparison is paired.
 ```bash
 cd moo_single_task_learning
 ../.venv/bin/python -u run_moo.py --method ls                 # also mgda, mgda_gn, mgda_ln, mgda_lgn
-PYTHONPATH=../../torchjd/src ../.venv/bin/python -u run_moo.py --method svdpga   # also osnmfpga
+PYTHONPATH=../../torchjd/src ../.venv/bin/python -u run_moo.py --method svdpga   # also osnmfpga, upgrad
 ../.venv/bin/python -u report_moo.py                          # -> results/final_report.md
 ../.venv/bin/python -u run_moo.py --method ls --smoke         # quick check: 1 seed, 5 folds, 1 epoch, results/smoke/
 ```
