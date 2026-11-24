@@ -1453,13 +1453,27 @@
   ]
  },
  "best_epochs": {
-  "ls": 25.0,
-  "mgda": 20.0,
-  "mgda_gn": 8.0,
-  "mgda_ln": 13.0,
-  "mgda_lgn": 9.0,
-  "svdpga": 8.0,
-  "osnmfpga": 8.0
+  "ls": {
+   "None": 25.0
+  },
+  "mgda": {
+   "None": 20.0
+  },
+  "mgda_gn": {
+   "None": 8.0
+  },
+  "mgda_ln": {
+   "None": 13.0
+  },
+  "mgda_lgn": {
+   "None": 9.0
+  },
+  "svdpga": {
+   "None": 8.0
+  },
+  "osnmfpga": {
+   "None": 8.0
+  }
  },
  "n_trainings": {
   "ls": 15,

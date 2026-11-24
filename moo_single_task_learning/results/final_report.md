@@ -6,6 +6,8 @@ One CNN with six sigmoid heads (Baco, Cab Franc, Chardonnay, Vidal, red blotch, 
 - **MGDA** (Sener & Koltun 2018): the shortest mix of the six gradients, over all weights. **-GN / -LN / -LGN** first divide each gradient by its norm, its loss, or both (the variants in LibMTL, Lin & Zhang 2023).
 - **SVD-PGA / OSNMF-PGA**: the Principal Gradient Alignment aggregators of the local torchjd (commit 04d1bef, not yet published), default settings.
 
+The six-head CNN is not the same network as the single-task CNNs: two 3 × 3 convolutions at full resolution and no batch norm, no rotations or flips, a 211 px canvas, one checkpoint for all six heads (lowest summed validation loss), and its leafroll and red blotch heads also train on Cab Franc. So the clean comparison is between the six-head methods; against the single-task models the network differs too. `results_disease_setup/final_report.md` repeats the comparison in the disease CNN's setup.
+
 Same row folds (test Rk, validation R(k+1), train on the other 3), seeds and 3-seed ensemble as the variety and disease CNNs, scored with their own report code. Rule, set before the runs: a difference counts only where its paired 95% interval excludes 0 (marked *).
 
 ## Summary
@@ -141,4 +143,3 @@ Each epoch's mean weights divided by the sum of their absolute values, averaged 
 
 - Median best epoch: LS 25, MGDA 20, MGDA-GN 8, MGDA-LN 13, MGDA-LGN 9, SVD-PGA 8, OSNMF-PGA 8. Trainings that reached the 40-epoch limit (early stopping never triggered): LS 6 of 15, MGDA 3 of 15, MGDA-GN 0 of 15, MGDA-LN 0 of 15, MGDA-LGN 0 of 15, SVD-PGA 1 of 15, OSNMF-PGA 0 of 15.
 - The single-task models in the red blotch columns trained on all 998 leaves. Trained on Baco, Chardonnay and Vidal only, the disease CNN scores 0.619 (mean pool) and 0.606 (attention pool) and logistic regression 0.600 (`disease_classification/REPORT.md`).
-- The six-head CNN is not the same network as the single-task CNNs: two 3 × 3 convolutions at full resolution and no batch norm, no rotations or flips, a 211 px canvas, one checkpoint for all six heads (lowest summed validation loss), and its leafroll and red blotch heads also train on Cab Franc. So the clean comparison is between the six-head methods; against the single-task models the network differs too.

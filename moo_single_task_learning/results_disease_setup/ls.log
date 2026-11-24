@@ -1,0 +1,16 @@
+[2026-11-24 14:07:07] ls: 998 leaves, canvas 212, padding check 8.9e-16
+[2026-11-24 14:08:13] ls seed 0 fold 0: best epochs variety 1, red_blotch 20, leafroll 6, all 1 of 35, 66 s
+[2026-11-24 14:10:51] ls seed 0 fold 1: best epochs variety 54, red_blotch 34, leafroll 40, all 56 of 71, 158 s
+[2026-11-24 14:13:49] ls seed 0 fold 2: best epochs variety 75, red_blotch 70, leafroll 53, all 75 of 80, 178 s
+[2026-11-24 14:15:10] ls seed 0 fold 3: best epochs variety 22, red_blotch 18, leafroll 3, all 22 of 37, 82 s
+[2026-11-24 14:16:53] ls seed 0 fold 4: best epochs variety 19, red_blotch 26, leafroll 31, all 19 of 46, 102 s
+[2026-11-24 14:18:56] ls seed 1 fold 0: best epochs variety 6, red_blotch 22, leafroll 41, all 6 of 56, 123 s
+[2026-11-24 14:21:33] ls seed 1 fold 1: best epochs variety 56, red_blotch 13, leafroll 42, all 56 of 71, 156 s
+[2026-11-24 14:24:16] ls seed 1 fold 2: best epochs variety 49, red_blotch 54, leafroll 5, all 58 of 73, 163 s
+[2026-11-24 14:26:22] ls seed 1 fold 3: best epochs variety 37, red_blotch 42, leafroll 8, all 37 of 57, 127 s
+[2026-11-24 14:28:09] ls seed 1 fold 4: best epochs variety 27, red_blotch 34, leafroll 27, all 27 of 49, 106 s
+[2026-11-24 14:29:14] ls seed 2 fold 0: best epochs variety 14, red_blotch 13, leafroll 14, all 14 of 29, 65 s
+[2026-11-24 14:32:08] ls seed 2 fold 1: best epochs variety 70, red_blotch 38, leafroll 66, all 69 of 80, 174 s
+[2026-11-24 14:33:57] ls seed 2 fold 2: best epochs variety 35, red_blotch 35, leafroll 33, all 35 of 50, 109 s
+[2026-11-24 14:35:48] ls seed 2 fold 3: best epochs variety 16, red_blotch 35, leafroll 30, all 16 of 50, 111 s
+[2026-11-24 14:38:42] ls seed 2 fold 4: best epochs variety 69, red_blotch 64, leafroll 69, all 69 of 80, 174 s
