@@ -1,0 +1,71 @@
+{
+ "train_config": {
+  "batch": 8,
+  "lr": 0.001,
+  "weight_decay": 0.01,
+  "max_epochs": 40,
+  "patience": 10,
+  "width": 32
+ },
+ "seed_rule": "100 * seed + fold",
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "created": "2026-11-24T10:02:32",
+ "torch": "2.14.1+cu130",
+ "code_sha256_by_method": {
+  "ls": {
+   "data.py": "7ae08e84b78a32d3bf940be0ce3dea2b07d29d5acdcde80bcc50f6925caa38af",
+   "model.py": "3aaf02ae326d67718841480703e9cb58dc082484b51515d02fb704f01e94303f",
+   "moo.py": "751dce930df2a6e2dd0a0f14c4d9ae7d93d0b87c816fa218d4e345b87b6bd1d4",
+   "metrics.py": "4b717e941140b5d4bdee228d854b92bc960e15f8c8e1207c51d458a6854c841e",
+   "train.py": "403a0c9c23871bbbf0c59e66ce011232cc4f0366f556639c17a4c5b11f47fe42"
+  },
+  "mgda": {
+   "data.py": "7ae08e84b78a32d3bf940be0ce3dea2b07d29d5acdcde80bcc50f6925caa38af",
+   "model.py": "3aaf02ae326d67718841480703e9cb58dc082484b51515d02fb704f01e94303f",
+   "moo.py": "751dce930df2a6e2dd0a0f14c4d9ae7d93d0b87c816fa218d4e345b87b6bd1d4",
+   "metrics.py": "4b717e941140b5d4bdee228d854b92bc960e15f8c8e1207c51d458a6854c841e",
+   "train.py": "403a0c9c23871bbbf0c59e66ce011232cc4f0366f556639c17a4c5b11f47fe42"
+  },
+  "mgda_gn": {
+   "data.py": "7ae08e84b78a32d3bf940be0ce3dea2b07d29d5acdcde80bcc50f6925caa38af",
+   "model.py": "3aaf02ae326d67718841480703e9cb58dc082484b51515d02fb704f01e94303f",
+   "moo.py": "550d2655f2137f72593a62b524b94ee8b02f5b51b5a68a5243e98ab5151df300",
+   "metrics.py": "4b717e941140b5d4bdee228d854b92bc960e15f8c8e1207c51d458a6854c841e",
+   "train.py": "18cbb04767425d7e7c3eb6bc8786e8c6096695cf071af828a2ea1fbc5a6107f6"
+  },
+  "mgda_ln": {
+   "data.py": "7ae08e84b78a32d3bf940be0ce3dea2b07d29d5acdcde80bcc50f6925caa38af",
+   "model.py": "3aaf02ae326d67718841480703e9cb58dc082484b51515d02fb704f01e94303f",
+   "moo.py": "550d2655f2137f72593a62b524b94ee8b02f5b51b5a68a5243e98ab5151df300",
+   "metrics.py": "4b717e941140b5d4bdee228d854b92bc960e15f8c8e1207c51d458a6854c841e",
+   "train.py": "18cbb04767425d7e7c3eb6bc8786e8c6096695cf071af828a2ea1fbc5a6107f6"
+  },
+  "mgda_lgn": {
+   "data.py": "7ae08e84b78a32d3bf940be0ce3dea2b07d29d5acdcde80bcc50f6925caa38af",
+   "model.py": "3aaf02ae326d67718841480703e9cb58dc082484b51515d02fb704f01e94303f",
+   "moo.py": "550d2655f2137f72593a62b524b94ee8b02f5b51b5a68a5243e98ab5151df300",
+   "metrics.py": "4b717e941140b5d4bdee228d854b92bc960e15f8c8e1207c51d458a6854c841e",
+   "train.py": "18cbb04767425d7e7c3eb6bc8786e8c6096695cf071af828a2ea1fbc5a6107f6"
+  },
+  "svdpga": {
+   "data.py": "7ae08e84b78a32d3bf940be0ce3dea2b07d29d5acdcde80bcc50f6925caa38af",
+   "model.py": "3aaf02ae326d67718841480703e9cb58dc082484b51515d02fb704f01e94303f",
+   "moo.py": "ce1bba926fd9ec3e569154ea885d642bb5c1679992b4d0538d12c91c579bee01",
+   "metrics.py": "4b717e941140b5d4bdee228d854b92bc960e15f8c8e1207c51d458a6854c841e",
+   "train.py": "23e901dd7653a710eb8676ea35ce23dd9b4044fea0374cd6be0ee9d06768aba6",
+   "torchjd": "../../torchjd @ 3ea6b0a50f7607966ef31c8bd46f46b22b9f4dd6"
+  },
+  "osnmfpga": {
+   "data.py": "7ae08e84b78a32d3bf940be0ce3dea2b07d29d5acdcde80bcc50f6925caa38af",
+   "model.py": "3aaf02ae326d67718841480703e9cb58dc082484b51515d02fb704f01e94303f",
+   "moo.py": "ce1bba926fd9ec3e569154ea885d642bb5c1679992b4d0538d12c91c579bee01",
+   "metrics.py": "4b717e941140b5d4bdee228d854b92bc960e15f8c8e1207c51d458a6854c841e",
+   "train.py": "23e901dd7653a710eb8676ea35ce23dd9b4044fea0374cd6be0ee9d06768aba6",
+   "torchjd": "../../torchjd @ 3ea6b0a50f7607966ef31c8bd46f46b22b9f4dd6"
+  }
+ }
+}

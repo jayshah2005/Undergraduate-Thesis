@@ -1,0 +1,15 @@
+[2026-11-24 11:23:53] mgda_gn seed 0 fold 0: best epoch 7 of 17, val loss 2.459, 264 s | variety bal. acc. 0.715, red blotch 0.626, leafroll 0.491
+[2026-11-24 11:30:36] mgda_gn seed 0 fold 1: best epoch 16 of 26, val loss 1.479, 403 s | variety bal. acc. 0.770, red blotch 0.580, leafroll 0.615
+[2026-11-24 11:36:50] mgda_gn seed 0 fold 2: best epoch 14 of 24, val loss 2.032, 374 s | variety bal. acc. 0.885, red blotch 0.727, leafroll 0.594
+[2026-11-24 11:41:28] mgda_gn seed 0 fold 3: best epoch 8 of 18, val loss 2.723, 278 s | variety bal. acc. 0.855, red blotch 0.621, leafroll 0.598
+[2026-11-24 11:45:46] mgda_gn seed 0 fold 4: best epoch 7 of 17, val loss 2.412, 258 s | variety bal. acc. 0.440, red blotch 0.657, leafroll 0.500
+[2026-11-24 11:49:55] mgda_gn seed 1 fold 0: best epoch 6 of 16, val loss 2.370, 249 s | variety bal. acc. 0.745, red blotch 0.519, leafroll 0.500
+[2026-11-24 11:59:17] mgda_gn seed 1 fold 1: best epoch 27 of 37, val loss 1.746, 562 s | variety bal. acc. 0.870, red blotch 0.590, leafroll 0.526
+[2026-11-24 12:03:59] mgda_gn seed 1 fold 2: best epoch 8 of 18, val loss 1.982, 282 s | variety bal. acc. 0.915, red blotch 0.651, leafroll 0.485
+[2026-11-24 12:07:53] mgda_gn seed 1 fold 3: best epoch 5 of 15, val loss 2.523, 234 s | variety bal. acc. 0.750, red blotch 0.583, leafroll 0.500
+[2026-11-24 12:11:53] mgda_gn seed 1 fold 4: best epoch 6 of 16, val loss 2.169, 240 s | variety bal. acc. 0.695, red blotch 0.648, leafroll 0.593
+[2026-11-24 12:17:56] mgda_gn seed 2 fold 0: best epoch 14 of 24, val loss 2.867, 364 s | variety bal. acc. 0.780, red blotch 0.518, leafroll 0.500
+[2026-11-24 12:23:07] mgda_gn seed 2 fold 1: best epoch 10 of 20, val loss 1.702, 310 s | variety bal. acc. 0.685, red blotch 0.622, leafroll 0.544
+[2026-11-24 12:27:22] mgda_gn seed 2 fold 2: best epoch 6 of 16, val loss 1.933, 255 s | variety bal. acc. 0.885, red blotch 0.734, leafroll 0.500
+[2026-11-24 12:31:32] mgda_gn seed 2 fold 3: best epoch 4 of 14, val loss 3.103, 250 s | variety bal. acc. 0.565, red blotch 0.500, leafroll 0.518
+[2026-11-24 12:37:16] mgda_gn seed 2 fold 4: best epoch 10 of 20, val loss 3.044, 344 s | variety bal. acc. 0.695, red blotch 0.624, leafroll 0.573

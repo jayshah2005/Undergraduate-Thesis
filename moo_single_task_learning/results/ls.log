@@ -1,0 +1,15 @@
+[2026-11-24 10:07:32] ls seed 0 fold 0: best epoch 25 of 35, val loss 2.296, 268 s | variety bal. acc. 0.615, red blotch 0.614, leafroll 0.500
+[2026-11-24 10:10:51] ls seed 0 fold 1: best epoch 16 of 26, val loss 1.815, 199 s | variety bal. acc. 0.830, red blotch 0.615, leafroll 0.532
+[2026-11-24 10:13:09] ls seed 0 fold 2: best epoch 8 of 18, val loss 2.123, 138 s | variety bal. acc. 0.790, red blotch 0.714, leafroll 0.485
+[2026-11-24 10:18:13] ls seed 0 fold 3: best epoch 40 of 40, val loss 2.140, 305 s | variety bal. acc. 0.790, red blotch 0.577, leafroll 0.537
+[2026-11-24 10:21:48] ls seed 0 fold 4: best epoch 18 of 28, val loss 1.680, 214 s | variety bal. acc. 0.680, red blotch 0.631, leafroll 0.551
+[2026-11-24 10:26:37] ls seed 1 fold 0: best epoch 28 of 38, val loss 1.881, 289 s | variety bal. acc. 0.755, red blotch 0.593, leafroll 0.533
+[2026-11-24 10:31:05] ls seed 1 fold 1: best epoch 25 of 35, val loss 1.454, 269 s | variety bal. acc. 0.890, red blotch 0.620, leafroll 0.500
+[2026-11-24 10:36:10] ls seed 1 fold 2: best epoch 38 of 40, val loss 1.808, 305 s | variety bal. acc. 0.910, red blotch 0.716, leafroll 0.525
+[2026-11-24 10:41:18] ls seed 1 fold 3: best epoch 39 of 40, val loss 1.875, 307 s | variety bal. acc. 0.895, red blotch 0.575, leafroll 0.567
+[2026-11-24 10:44:52] ls seed 1 fold 4: best epoch 18 of 28, val loss 1.718, 214 s | variety bal. acc. 0.535, red blotch 0.672, leafroll 0.612
+[2026-11-24 10:49:07] ls seed 2 fold 0: best epoch 23 of 33, val loss 1.777, 255 s | variety bal. acc. 0.815, red blotch 0.679, leafroll 0.504
+[2026-11-24 10:54:11] ls seed 2 fold 1: best epoch 34 of 40, val loss 1.677, 304 s | variety bal. acc. 0.855, red blotch 0.637, leafroll 0.571
+[2026-11-24 10:59:18] ls seed 2 fold 2: best epoch 40 of 40, val loss 1.489, 307 s | variety bal. acc. 0.905, red blotch 0.746, leafroll 0.621
+[2026-11-24 11:03:46] ls seed 2 fold 3: best epoch 25 of 35, val loss 2.317, 268 s | variety bal. acc. 0.850, red blotch 0.652, leafroll 0.558
+[2026-11-24 11:08:53] ls seed 2 fold 4: best epoch 37 of 40, val loss 1.540, 307 s | variety bal. acc. 0.735, red blotch 0.657, leafroll 0.612
