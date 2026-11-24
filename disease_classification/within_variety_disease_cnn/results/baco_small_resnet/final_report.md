@@ -9,6 +9,7 @@ Every model uses SNV and trains on the 3 training rows; the CNN picks its checkp
 | logistic regression | 0.524 [0.464, 0.587] | — | 0.534 | 0.585 | 0.511 | 0.562 | 0.486 |
 | small ResNet, mean pool | 0.549 [0.533, 0.566] | +0.025 [-0.041, +0.089] | 0.483 | 0.475 | 0.500 | 0.500 | 0.500 |
 | small ResNet, attention pool | 0.576 [0.545, 0.610] | +0.052 [-0.017, +0.118] | 0.500 | 0.545 | 0.482 | 0.500 | 0.470 |
+| small ResNet, mean ∥ max pool | 0.583 [0.551, 0.612] | +0.058 [-0.012, +0.125] | 0.522 | 0.500 | 0.500 | 0.500 | 0.463 |
 
 Fold k tests on row Rk of Baco; the next row (R1 after R5) is validation and the other 3 train.
 
@@ -18,8 +19,15 @@ Single seeds (the ensemble above averages their probabilities):
 |---|---|---|
 | small ResNet, mean pool | 0.565, 0.462, 0.538 | 0.522 ± 0.054 |
 | small ResNet, attention pool | 0.585, 0.492, 0.546 | 0.541 ± 0.047 |
+| small ResNet, mean ∥ max pool | 0.561, 0.552, 0.574 | 0.562 ± 0.011 |
 
-Median best epoch: small ResNet, mean pool 3, small ResNet, attention pool 4.
+Median best epoch: small ResNet, mean pool 3, small ResNet, attention pool 4, small ResNet, mean ∥ max pool 2.
+
+Each change against the same model without it (ECA, CBAM: same backbone and pooling without the module; mean ∥ max: the same backbone's mean pool); paired, on the same resamples:
+
+| model | compared with | Δ bal. acc. [95% CI] |
+|---|---|---|
+| small ResNet, mean ∥ max pool | small ResNet, mean pool | +0.033 [-0.003, +0.066] |
 
 ## Red blotch (135 + / 113 −)
 
@@ -28,6 +36,7 @@ Median best epoch: small ResNet, mean pool 3, small ResNet, attention pool 4.
 | logistic regression | 0.506 [0.445, 0.565] | — | 0.483 | 0.528 | 0.462 | 0.560 | 0.465 |
 | small ResNet, mean pool | 0.525 [0.480, 0.569] | +0.019 [-0.052, +0.089] | 0.500 | 0.565 | 0.505 | 0.560 | 0.385 |
 | small ResNet, attention pool | 0.511 [0.468, 0.553] | +0.005 [-0.069, +0.078] | 0.500 | 0.552 | 0.427 | 0.500 | 0.470 |
+| small ResNet, mean ∥ max pool | 0.486 [0.437, 0.533] | -0.020 [-0.091, +0.056] | 0.505 | 0.429 | 0.467 | 0.560 | 0.409 |
 
 Fold k tests on row Rk of Baco; the next row (R1 after R5) is validation and the other 3 train.
 
@@ -37,5 +46,12 @@ Single seeds (the ensemble above averages their probabilities):
 |---|---|---|
 | small ResNet, mean pool | 0.485, 0.495, 0.457 | 0.479 ± 0.020 |
 | small ResNet, attention pool | 0.488, 0.520, 0.521 | 0.510 ± 0.019 |
+| small ResNet, mean ∥ max pool | 0.482, 0.511, 0.483 | 0.492 ± 0.017 |
 
-Median best epoch: small ResNet, mean pool 6, small ResNet, attention pool 6.
+Median best epoch: small ResNet, mean pool 6, small ResNet, attention pool 6, small ResNet, mean ∥ max pool 8.
+
+Each change against the same model without it (ECA, CBAM: same backbone and pooling without the module; mean ∥ max: the same backbone's mean pool); paired, on the same resamples:
+
+| model | compared with | Δ bal. acc. [95% CI] |
+|---|---|---|
+| small ResNet, mean ∥ max pool | small ResNet, mean pool | -0.039 [-0.091, +0.018] |
