@@ -9,6 +9,7 @@ A leaf counts as positive (diseased) at P ≥ 0.5; CNN = mean probability of 3 s
 | logistic regression | 0.542 [0.511, 0.573] | 0.544 [0.515, 0.572] | 0.537 [0.490, 0.588] | 0.548 [0.513, 0.580] | 0.381 [0.351, 0.410] | 0.446 [0.411, 0.480] |
 | small ResNet, mean pool | 0.595 [0.568, 0.622] | 0.607 [0.582, 0.632] | 0.557 [0.510, 0.600] | 0.633 [0.602, 0.665] | 0.440 [0.411, 0.468] | 0.491 [0.459, 0.523] |
 | small ResNet, attention pool | 0.564 [0.535, 0.592] | 0.567 [0.539, 0.594] | 0.557 [0.510, 0.600] | 0.572 [0.540, 0.602] | 0.402 [0.374, 0.429] | 0.467 [0.433, 0.499] |
+| small ResNet, mean ∥ max pool | 0.577 [0.553, 0.601] | 0.553 [0.529, 0.579] | 0.651 [0.612, 0.686] | 0.503 [0.471, 0.535] | 0.404 [0.384, 0.425] | 0.498 [0.474, 0.523] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
@@ -17,6 +18,7 @@ Confusion counts (positive = called diseased at P ≥ 0.5):
 | logistic regression | 137 | 118 | 223 | 270 |
 | small ResNet, mean pool | 142 | 113 | 181 | 312 |
 | small ResNet, attention pool | 142 | 113 | 211 | 282 |
+| small ResNet, mean ∥ max pool | 166 | 89 | 245 | 248 |
 
 Per variety:
 
@@ -31,6 +33,9 @@ Per variety:
 | small ResNet, attention pool | Baco | 0.477 | 0.484 | 0.430 | 0.525 | 0.407 | 0.418 |
 | small ResNet, attention pool | Chardonnay | 0.440 | 0.432 | 0.762 | 0.117 | 0.451 | 0.567 |
 | small ResNet, attention pool | Vidal | 0.488 | 0.784 | 0.115 | 0.862 | 0.088 | 0.100 |
+| small ResNet, mean ∥ max pool | Baco | 0.509 | 0.492 | 0.636 | 0.383 | 0.439 | 0.519 |
+| small ResNet, mean ∥ max pool | Chardonnay | 0.486 | 0.480 | 0.754 | 0.219 | 0.479 | 0.586 |
+| small ResNet, mean ∥ max pool | Vidal | 0.486 | 0.688 | 0.231 | 0.741 | 0.094 | 0.133 |
 
 ## Red blotch (637 + / 361 −)
 
@@ -39,6 +44,7 @@ Per variety:
 | logistic regression | 0.644 [0.622, 0.667] | 0.632 [0.609, 0.656] | 0.601 [0.573, 0.631] | 0.687 [0.654, 0.723] | 0.772 [0.752, 0.794] | 0.676 [0.653, 0.701] |
 | small ResNet, mean pool | 0.659 [0.641, 0.678] | 0.630 [0.612, 0.648] | 0.554 [0.529, 0.578] | 0.765 [0.737, 0.792] | 0.806 [0.786, 0.826] | 0.657 [0.636, 0.676] |
 | small ResNet, attention pool | 0.668 [0.646, 0.688] | 0.646 [0.625, 0.666] | 0.590 [0.562, 0.617] | 0.745 [0.715, 0.776] | 0.803 [0.782, 0.824] | 0.681 [0.657, 0.702] |
+| small ResNet, mean ∥ max pool | 0.666 [0.647, 0.685] | 0.631 [0.611, 0.650] | 0.540 [0.515, 0.564] | 0.792 [0.765, 0.820] | 0.821 [0.800, 0.843] | 0.652 [0.630, 0.672] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
@@ -47,6 +53,7 @@ Confusion counts (positive = called diseased at P ≥ 0.5):
 | logistic regression | 383 | 254 | 113 | 248 |
 | small ResNet, mean pool | 353 | 284 | 85 | 276 |
 | small ResNet, attention pool | 376 | 261 | 92 | 269 |
+| small ResNet, mean ∥ max pool | 344 | 293 | 75 | 286 |
 
 Per variety:
 
@@ -64,6 +71,10 @@ Per variety:
 | small ResNet, attention pool | Cab Franc | 0.485 | 0.832 | 0.859 | 0.111 | 0.963 | 0.908 |
 | small ResNet, attention pool | Chardonnay | 0.542 | 0.672 | 0.102 | 0.981 | 0.750 | 0.180 |
 | small ResNet, attention pool | Vidal | 0.521 | 0.592 | 0.705 | 0.338 | 0.705 | 0.705 |
+| small ResNet, mean ∥ max pool | Baco | 0.503 | 0.480 | 0.237 | 0.770 | 0.552 | 0.332 |
+| small ResNet, mean ∥ max pool | Cab Franc | 0.497 | 0.856 | 0.884 | 0.111 | 0.964 | 0.922 |
+| small ResNet, mean ∥ max pool | Chardonnay | 0.517 | 0.656 | 0.045 | 0.988 | 0.667 | 0.085 |
+| small ResNet, mean ∥ max pool | Vidal | 0.521 | 0.532 | 0.549 | 0.494 | 0.709 | 0.619 |
 
 ## Any disease vs healthy (776 + / 222 −)
 

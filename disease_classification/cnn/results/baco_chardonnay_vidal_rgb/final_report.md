@@ -54,12 +54,22 @@ Median best epoch: CNN, mean pool 9, CNN, attention pool 2, small ResNet, mean p
 | logistic regression | 0.609 [0.583, 0.634] | — | 0.616 | 0.575 | 0.693 | 0.547 | 0.661 |
 | CNN, mean pool | 0.611 [0.585, 0.637] | +0.002 [-0.019, +0.024] | 0.608 | 0.580 | 0.663 | 0.568 | 0.661 |
 | CNN, attention pool | 0.609 [0.583, 0.635] | +0.000 [-0.019, +0.018] | 0.606 | 0.582 | 0.660 | 0.576 | 0.662 |
+| CNN, mean ∥ max pool | 0.596 [0.571, 0.620] | -0.013 [-0.036, +0.010] | 0.610 | 0.588 | 0.638 | 0.533 | 0.653 |
 | small ResNet, mean pool | 0.604 [0.579, 0.630] | -0.005 [-0.026, +0.016] | 0.595 | 0.568 | 0.662 | 0.569 | 0.655 |
 | small ResNet, attention pool | 0.596 [0.568, 0.622] | -0.014 [-0.034, +0.008] | 0.594 | 0.573 | 0.668 | 0.549 | 0.633 |
+| small ResNet, mean ∥ max pool | 0.594 [0.567, 0.620] | -0.015 [-0.040, +0.010] | 0.532 | 0.554 | 0.645 | 0.594 | 0.636 |
 | small ResNet (no max pool), mean pool | 0.607 [0.581, 0.633] | -0.003 [-0.021, +0.016] | 0.586 | 0.575 | 0.671 | 0.592 | 0.653 |
 | small ResNet (no max pool), attention pool | 0.615 [0.590, 0.639] | +0.005 [-0.011, +0.021] | 0.619 | 0.560 | 0.705 | 0.585 | 0.655 |
 | ResNet-18, mean pool | 0.605 [0.578, 0.632] | -0.004 [-0.036, +0.028] | 0.551 | 0.626 | 0.693 | 0.545 | 0.618 |
 | ResNet-18, attention pool | 0.581 [0.557, 0.605] | -0.029 [-0.057, -0.000] | 0.559 | 0.534 | 0.616 | 0.522 | 0.663 |
+| CNN + ECA, mean pool | 0.609 [0.583, 0.634] | -0.001 [-0.019, +0.018] | 0.603 | 0.587 | 0.662 | 0.571 | 0.655 |
+| CNN + ECA, attention pool | 0.610 [0.586, 0.635] | +0.001 [-0.021, +0.022] | 0.598 | 0.583 | 0.663 | 0.576 | 0.662 |
+| CNN + CBAM, mean pool | 0.599 [0.573, 0.625] | -0.011 [-0.034, +0.012] | 0.576 | 0.604 | 0.649 | 0.514 | 0.662 |
+| CNN + CBAM, attention pool | 0.608 [0.582, 0.634] | -0.002 [-0.022, +0.018] | 0.607 | 0.588 | 0.665 | 0.549 | 0.662 |
+| small ResNet + ECA, mean pool | 0.607 [0.580, 0.633] | -0.003 [-0.024, +0.019] | 0.594 | 0.588 | 0.665 | 0.562 | 0.659 |
+| small ResNet + ECA, attention pool | 0.600 [0.574, 0.625] | -0.010 [-0.032, +0.012] | 0.583 | 0.584 | 0.665 | 0.548 | 0.653 |
+| small ResNet + CBAM, mean pool | 0.618 [0.594, 0.642] | +0.009 [-0.013, +0.031] | 0.604 | 0.582 | 0.717 | 0.583 | 0.644 |
+| small ResNet + CBAM, attention pool | 0.589 [0.562, 0.617] | -0.020 [-0.042, +0.001] | 0.551 | 0.579 | 0.661 | 0.550 | 0.646 |
 
 Fold k tests on row Rk of every variety (3 field rows, since each variety has its own rows R1–R5); the next row (R1 after R5) is validation and the other 3 train.
 
@@ -70,12 +80,22 @@ Balanced accuracy per variety:
 | logistic regression | 0.441 | 0.610 | 0.548 |
 | CNN, mean pool | 0.493 | 0.580 | 0.543 |
 | CNN, attention pool | 0.473 | 0.592 | 0.532 |
+| CNN, mean ∥ max pool | 0.455 | 0.574 | 0.551 |
 | small ResNet, mean pool | 0.477 | 0.568 | 0.539 |
 | small ResNet, attention pool | 0.480 | 0.559 | 0.530 |
+| small ResNet, mean ∥ max pool | 0.449 | 0.571 | 0.561 |
 | small ResNet (no max pool), mean pool | 0.461 | 0.594 | 0.545 |
 | small ResNet (no max pool), attention pool | 0.471 | 0.602 | 0.536 |
 | ResNet-18, mean pool | 0.511 | 0.546 | 0.550 |
 | ResNet-18, attention pool | 0.487 | 0.528 | 0.532 |
+| CNN + ECA, mean pool | 0.463 | 0.591 | 0.544 |
+| CNN + ECA, attention pool | 0.478 | 0.588 | 0.535 |
+| CNN + CBAM, mean pool | 0.482 | 0.571 | 0.526 |
+| CNN + CBAM, attention pool | 0.468 | 0.594 | 0.535 |
+| small ResNet + ECA, mean pool | 0.472 | 0.577 | 0.552 |
+| small ResNet + ECA, attention pool | 0.466 | 0.565 | 0.546 |
+| small ResNet + CBAM, mean pool | 0.495 | 0.583 | 0.544 |
+| small ResNet + CBAM, attention pool | 0.454 | 0.565 | 0.528 |
 
 Single seeds (the ensemble above averages their probabilities):
 
@@ -83,11 +103,36 @@ Single seeds (the ensemble above averages their probabilities):
 |---|---|---|
 | CNN, mean pool | 0.612, 0.560, 0.608 | 0.593 ± 0.029 |
 | CNN, attention pool | 0.615, 0.609, 0.601 | 0.608 ± 0.007 |
+| CNN, mean ∥ max pool | 0.599, 0.599, 0.563 | 0.587 ± 0.021 |
 | small ResNet, mean pool | 0.590, 0.599, 0.600 | 0.596 ± 0.005 |
 | small ResNet, attention pool | 0.597, 0.589, 0.605 | 0.597 ± 0.008 |
+| small ResNet, mean ∥ max pool | 0.589, 0.595, 0.592 | 0.592 ± 0.003 |
 | small ResNet (no max pool), mean pool | 0.593, 0.586, 0.592 | 0.590 ± 0.004 |
 | small ResNet (no max pool), attention pool | 0.609, 0.609, 0.586 | 0.601 ± 0.013 |
 | ResNet-18, mean pool | 0.565, 0.615, 0.566 | 0.582 ± 0.029 |
 | ResNet-18, attention pool | 0.580, 0.553, 0.582 | 0.572 ± 0.016 |
+| CNN + ECA, mean pool | 0.604, 0.604, 0.607 | 0.605 ± 0.002 |
+| CNN + ECA, attention pool | 0.596, 0.597, 0.610 | 0.601 ± 0.008 |
+| CNN + CBAM, mean pool | 0.587, 0.598, 0.616 | 0.600 ± 0.014 |
+| CNN + CBAM, attention pool | 0.597, 0.591, 0.613 | 0.600 ± 0.011 |
+| small ResNet + ECA, mean pool | 0.593, 0.595, 0.604 | 0.597 ± 0.006 |
+| small ResNet + ECA, attention pool | 0.596, 0.600, 0.607 | 0.601 ± 0.005 |
+| small ResNet + CBAM, mean pool | 0.610, 0.637, 0.610 | 0.619 ± 0.016 |
+| small ResNet + CBAM, attention pool | 0.592, 0.605, 0.583 | 0.593 ± 0.011 |
 
-Median best epoch: CNN, mean pool 6, CNN, attention pool 5, small ResNet, mean pool 6, small ResNet, attention pool 6, small ResNet (no max pool), mean pool 4, small ResNet (no max pool), attention pool 6, ResNet-18, mean pool 18, ResNet-18, attention pool 11.
+Median best epoch: CNN, mean pool 6, CNN, attention pool 5, CNN, mean ∥ max pool 6, small ResNet, mean pool 6, small ResNet, attention pool 6, small ResNet, mean ∥ max pool 10, small ResNet (no max pool), mean pool 4, small ResNet (no max pool), attention pool 6, ResNet-18, mean pool 18, ResNet-18, attention pool 11, CNN + ECA, mean pool 6, CNN + ECA, attention pool 4, CNN + CBAM, mean pool 14, CNN + CBAM, attention pool 12, small ResNet + ECA, mean pool 5, small ResNet + ECA, attention pool 4, small ResNet + CBAM, mean pool 20, small ResNet + CBAM, attention pool 9.
+
+Each change against the same model without it (ECA, CBAM: same backbone and pooling without the module; mean ∥ max: the same backbone's mean pool); paired, on the same resamples:
+
+| model | compared with | Δ bal. acc. [95% CI] |
+|---|---|---|
+| CNN, mean ∥ max pool | CNN, mean pool | -0.015 [-0.032, +0.000] |
+| small ResNet, mean ∥ max pool | small ResNet, mean pool | -0.010 [-0.031, +0.011] |
+| CNN + ECA, mean pool | CNN, mean pool | -0.002 [-0.017, +0.012] |
+| CNN + ECA, attention pool | CNN, attention pool | +0.001 [-0.011, +0.014] |
+| CNN + CBAM, mean pool | CNN, mean pool | -0.012 [-0.032, +0.006] |
+| CNN + CBAM, attention pool | CNN, attention pool | -0.002 [-0.015, +0.013] |
+| small ResNet + ECA, mean pool | small ResNet, mean pool | +0.002 [-0.011, +0.018] |
+| small ResNet + ECA, attention pool | small ResNet, attention pool | +0.004 [-0.011, +0.018] |
+| small ResNet + CBAM, mean pool | small ResNet, mean pool | +0.014 [-0.008, +0.035] |
+| small ResNet + CBAM, attention pool | small ResNet, attention pool | -0.006 [-0.027, +0.013] |

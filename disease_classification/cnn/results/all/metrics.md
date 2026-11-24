@@ -9,12 +9,22 @@ A leaf counts as positive (diseased) at P ≥ 0.5; CNN = mean probability of 3 s
 | logistic regression | 0.572 [0.540, 0.604] | 0.596 [0.568, 0.624] | 0.494 [0.439, 0.549] | 0.649 [0.617, 0.682] | 0.421 [0.387, 0.457] | 0.455 [0.414, 0.495] |
 | CNN, mean pool | 0.586 [0.566, 0.606] | 0.561 [0.541, 0.582] | 0.663 [0.631, 0.694] | 0.509 [0.483, 0.535] | 0.411 [0.394, 0.429] | 0.508 [0.487, 0.527] |
 | CNN, attention pool | 0.597 [0.578, 0.618] | 0.547 [0.528, 0.567] | 0.757 [0.725, 0.788] | 0.438 [0.414, 0.462] | 0.411 [0.396, 0.426] | 0.532 [0.514, 0.551] |
+| CNN, mean ∥ max pool | 0.599 [0.579, 0.618] | 0.571 [0.551, 0.590] | 0.686 [0.655, 0.718] | 0.511 [0.485, 0.535] | 0.421 [0.404, 0.437] | 0.522 [0.501, 0.540] |
 | small ResNet, mean pool | 0.585 [0.564, 0.605] | 0.549 [0.529, 0.570] | 0.698 [0.667, 0.729] | 0.473 [0.448, 0.497] | 0.406 [0.390, 0.422] | 0.514 [0.493, 0.533] |
 | small ResNet, attention pool | 0.612 [0.588, 0.636] | 0.572 [0.549, 0.595] | 0.737 [0.698, 0.776] | 0.487 [0.460, 0.513] | 0.426 [0.408, 0.445] | 0.540 [0.516, 0.564] |
+| small ResNet, mean ∥ max pool | 0.595 [0.570, 0.620] | 0.591 [0.570, 0.614] | 0.608 [0.565, 0.651] | 0.582 [0.558, 0.609] | 0.429 [0.407, 0.452] | 0.503 [0.475, 0.531] |
 | small ResNet (no max pool), mean pool | 0.595 [0.575, 0.613] | 0.580 [0.560, 0.599] | 0.643 [0.612, 0.671] | 0.548 [0.521, 0.572] | 0.424 [0.405, 0.441] | 0.511 [0.490, 0.530] |
 | small ResNet (no max pool), attention pool | 0.602 [0.582, 0.621] | 0.563 [0.544, 0.580] | 0.725 [0.694, 0.757] | 0.479 [0.456, 0.499] | 0.419 [0.404, 0.433] | 0.531 [0.512, 0.549] |
 | ResNet-18, mean pool | 0.607 [0.580, 0.633] | 0.584 [0.559, 0.610] | 0.678 [0.635, 0.722] | 0.535 [0.505, 0.566] | 0.430 [0.408, 0.453] | 0.527 [0.499, 0.554] |
 | ResNet-18, attention pool | 0.573 [0.546, 0.602] | 0.557 [0.532, 0.583] | 0.624 [0.576, 0.671] | 0.523 [0.493, 0.552] | 0.404 [0.380, 0.428] | 0.490 [0.461, 0.519] |
+| CNN + ECA, mean pool | 0.603 [0.579, 0.625] | 0.591 [0.570, 0.612] | 0.639 [0.600, 0.678] | 0.566 [0.542, 0.590] | 0.432 [0.412, 0.453] | 0.516 [0.490, 0.541] |
+| CNN + ECA, attention pool | 0.590 [0.568, 0.611] | 0.603 [0.582, 0.623] | 0.549 [0.514, 0.584] | 0.631 [0.604, 0.657] | 0.435 [0.411, 0.458] | 0.485 [0.459, 0.510] |
+| CNN + CBAM, mean pool | 0.610 [0.591, 0.628] | 0.579 [0.560, 0.596] | 0.706 [0.675, 0.737] | 0.513 [0.491, 0.533] | 0.429 [0.413, 0.443] | 0.533 [0.514, 0.552] |
+| CNN + CBAM, attention pool | 0.624 [0.604, 0.643] | 0.583 [0.564, 0.602] | 0.753 [0.722, 0.784] | 0.495 [0.469, 0.519] | 0.435 [0.420, 0.451] | 0.552 [0.532, 0.571] |
+| small ResNet + ECA, mean pool | 0.607 [0.589, 0.625] | 0.596 [0.578, 0.615] | 0.639 [0.612, 0.667] | 0.574 [0.550, 0.600] | 0.437 [0.420, 0.455] | 0.519 [0.500, 0.538] |
+| small ResNet + ECA, attention pool | 0.580 [0.560, 0.599] | 0.553 [0.533, 0.574] | 0.663 [0.631, 0.694] | 0.497 [0.473, 0.521] | 0.405 [0.388, 0.422] | 0.503 [0.482, 0.522] |
+| small ResNet + CBAM, mean pool | 0.610 [0.591, 0.629] | 0.594 [0.575, 0.612] | 0.663 [0.635, 0.690] | 0.558 [0.535, 0.582] | 0.437 [0.420, 0.454] | 0.526 [0.507, 0.546] |
+| small ResNet + CBAM, attention pool | 0.583 [0.565, 0.601] | 0.564 [0.548, 0.582] | 0.643 [0.616, 0.671] | 0.523 [0.503, 0.544] | 0.411 [0.396, 0.426] | 0.502 [0.482, 0.519] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
@@ -23,12 +33,22 @@ Confusion counts (positive = called diseased at P ≥ 0.5):
 | logistic regression | 126 | 129 | 173 | 320 |
 | CNN, mean pool | 169 | 86 | 242 | 251 |
 | CNN, attention pool | 193 | 62 | 277 | 216 |
+| CNN, mean ∥ max pool | 175 | 80 | 241 | 252 |
 | small ResNet, mean pool | 178 | 77 | 260 | 233 |
 | small ResNet, attention pool | 188 | 67 | 253 | 240 |
+| small ResNet, mean ∥ max pool | 155 | 100 | 206 | 287 |
 | small ResNet (no max pool), mean pool | 164 | 91 | 223 | 270 |
 | small ResNet (no max pool), attention pool | 185 | 70 | 257 | 236 |
 | ResNet-18, mean pool | 173 | 82 | 229 | 264 |
 | ResNet-18, attention pool | 159 | 96 | 235 | 258 |
+| CNN + ECA, mean pool | 163 | 92 | 214 | 279 |
+| CNN + ECA, attention pool | 140 | 115 | 182 | 311 |
+| CNN + CBAM, mean pool | 180 | 75 | 240 | 253 |
+| CNN + CBAM, attention pool | 192 | 63 | 249 | 244 |
+| small ResNet + ECA, mean pool | 163 | 92 | 210 | 283 |
+| small ResNet + ECA, attention pool | 169 | 86 | 248 | 245 |
+| small ResNet + CBAM, mean pool | 169 | 86 | 218 | 275 |
+| small ResNet + CBAM, attention pool | 164 | 91 | 235 | 258 |
 
 Per variety:
 
@@ -43,12 +63,18 @@ Per variety:
 | CNN, attention pool | Baco | 0.516 | 0.480 | 0.776 | 0.255 | 0.441 | 0.563 |
 | CNN, attention pool | Chardonnay | 0.454 | 0.444 | 0.869 | 0.039 | 0.463 | 0.604 |
 | CNN, attention pool | Vidal | 0.468 | 0.716 | 0.154 | 0.781 | 0.075 | 0.101 |
+| CNN, mean ∥ max pool | Baco | 0.510 | 0.472 | 0.785 | 0.234 | 0.438 | 0.562 |
+| CNN, mean ∥ max pool | Chardonnay | 0.450 | 0.444 | 0.721 | 0.180 | 0.456 | 0.559 |
+| CNN, mean ∥ max pool | Vidal | 0.495 | 0.796 | 0.115 | 0.875 | 0.097 | 0.105 |
 | small ResNet, mean pool | Baco | 0.503 | 0.460 | 0.822 | 0.184 | 0.433 | 0.568 |
 | small ResNet, mean pool | Chardonnay | 0.442 | 0.436 | 0.697 | 0.188 | 0.450 | 0.547 |
 | small ResNet, mean pool | Vidal | 0.505 | 0.752 | 0.192 | 0.817 | 0.109 | 0.139 |
 | small ResNet, attention pool | Baco | 0.518 | 0.488 | 0.738 | 0.298 | 0.444 | 0.554 |
 | small ResNet, attention pool | Chardonnay | 0.520 | 0.512 | 0.844 | 0.195 | 0.500 | 0.628 |
 | small ResNet, attention pool | Vidal | 0.502 | 0.716 | 0.231 | 0.772 | 0.105 | 0.145 |
+| small ResNet, mean ∥ max pool | Baco | 0.462 | 0.448 | 0.570 | 0.355 | 0.401 | 0.471 |
+| small ResNet, mean ∥ max pool | Chardonnay | 0.502 | 0.496 | 0.762 | 0.242 | 0.489 | 0.596 |
+| small ResNet, mean ∥ max pool | Vidal | 0.479 | 0.828 | 0.038 | 0.920 | 0.053 | 0.044 |
 | small ResNet (no max pool), mean pool | Baco | 0.480 | 0.448 | 0.720 | 0.241 | 0.418 | 0.529 |
 | small ResNet (no max pool), mean pool | Chardonnay | 0.497 | 0.492 | 0.705 | 0.289 | 0.486 | 0.575 |
 | small ResNet (no max pool), mean pool | Vidal | 0.463 | 0.800 | 0.038 | 0.888 | 0.038 | 0.038 |
@@ -61,6 +87,30 @@ Per variety:
 | ResNet-18, attention pool | Baco | 0.507 | 0.492 | 0.617 | 0.397 | 0.437 | 0.512 |
 | ResNet-18, attention pool | Chardonnay | 0.419 | 0.412 | 0.721 | 0.117 | 0.438 | 0.545 |
 | ResNet-18, attention pool | Vidal | 0.514 | 0.768 | 0.192 | 0.835 | 0.119 | 0.147 |
+| CNN + ECA, mean pool | Baco | 0.480 | 0.448 | 0.720 | 0.241 | 0.418 | 0.529 |
+| CNN + ECA, mean pool | Chardonnay | 0.477 | 0.472 | 0.697 | 0.258 | 0.472 | 0.563 |
+| CNN + ECA, mean pool | Vidal | 0.492 | 0.852 | 0.038 | 0.946 | 0.077 | 0.051 |
+| CNN + ECA, attention pool | Baco | 0.478 | 0.464 | 0.579 | 0.376 | 0.413 | 0.482 |
+| CNN + ECA, attention pool | Chardonnay | 0.503 | 0.500 | 0.631 | 0.375 | 0.490 | 0.552 |
+| CNN + ECA, attention pool | Vidal | 0.488 | 0.844 | 0.038 | 0.938 | 0.067 | 0.049 |
+| CNN + CBAM, mean pool | Baco | 0.497 | 0.460 | 0.766 | 0.227 | 0.429 | 0.550 |
+| CNN + CBAM, mean pool | Chardonnay | 0.456 | 0.448 | 0.787 | 0.125 | 0.462 | 0.582 |
+| CNN + CBAM, mean pool | Vidal | 0.496 | 0.828 | 0.077 | 0.915 | 0.095 | 0.085 |
+| CNN + CBAM, attention pool | Baco | 0.497 | 0.460 | 0.766 | 0.227 | 0.429 | 0.550 |
+| CNN + CBAM, attention pool | Chardonnay | 0.508 | 0.500 | 0.861 | 0.156 | 0.493 | 0.627 |
+| CNN + CBAM, attention pool | Vidal | 0.525 | 0.788 | 0.192 | 0.857 | 0.135 | 0.159 |
+| small ResNet + ECA, mean pool | Baco | 0.527 | 0.504 | 0.692 | 0.362 | 0.451 | 0.546 |
+| small ResNet + ECA, mean pool | Chardonnay | 0.485 | 0.480 | 0.713 | 0.258 | 0.478 | 0.572 |
+| small ResNet + ECA, mean pool | Vidal | 0.483 | 0.804 | 0.077 | 0.888 | 0.074 | 0.075 |
+| small ResNet + ECA, attention pool | Baco | 0.489 | 0.456 | 0.729 | 0.248 | 0.424 | 0.536 |
+| small ResNet + ECA, attention pool | Chardonnay | 0.450 | 0.444 | 0.697 | 0.203 | 0.455 | 0.550 |
+| small ResNet + ECA, attention pool | Vidal | 0.526 | 0.760 | 0.231 | 0.821 | 0.130 | 0.167 |
+| small ResNet + CBAM, mean pool | Baco | 0.527 | 0.492 | 0.785 | 0.270 | 0.449 | 0.571 |
+| small ResNet + CBAM, mean pool | Chardonnay | 0.488 | 0.484 | 0.672 | 0.305 | 0.480 | 0.560 |
+| small ResNet + CBAM, mean pool | Vidal | 0.500 | 0.804 | 0.115 | 0.884 | 0.103 | 0.109 |
+| small ResNet + CBAM, attention pool | Baco | 0.501 | 0.476 | 0.682 | 0.319 | 0.432 | 0.529 |
+| small ResNet + CBAM, attention pool | Chardonnay | 0.431 | 0.424 | 0.713 | 0.148 | 0.444 | 0.547 |
+| small ResNet + CBAM, attention pool | Vidal | 0.510 | 0.792 | 0.154 | 0.866 | 0.118 | 0.133 |
 
 ## Red blotch (637 + / 361 −)
 
@@ -69,12 +119,22 @@ Per variety:
 | logistic regression | 0.647 [0.624, 0.668] | 0.645 [0.624, 0.665] | 0.642 [0.615, 0.667] | 0.651 [0.615, 0.684] | 0.764 [0.744, 0.784] | 0.698 [0.677, 0.717] |
 | CNN, mean pool | 0.691 [0.672, 0.709] | 0.671 [0.652, 0.688] | 0.620 [0.597, 0.642] | 0.762 [0.734, 0.792] | 0.821 [0.802, 0.840] | 0.707 [0.687, 0.725] |
 | CNN, attention pool | 0.666 [0.646, 0.685] | 0.647 [0.627, 0.666] | 0.598 [0.575, 0.623] | 0.734 [0.704, 0.765] | 0.799 [0.779, 0.818] | 0.684 [0.664, 0.702] |
+| CNN, mean ∥ max pool | 0.689 [0.671, 0.707] | 0.669 [0.651, 0.687] | 0.619 [0.595, 0.641] | 0.759 [0.731, 0.787] | 0.819 [0.802, 0.838] | 0.705 [0.686, 0.723] |
 | small ResNet, mean pool | 0.682 [0.662, 0.702] | 0.660 [0.641, 0.679] | 0.603 [0.578, 0.626] | 0.762 [0.731, 0.792] | 0.817 [0.797, 0.837] | 0.694 [0.673, 0.713] |
 | small ResNet, attention pool | 0.686 [0.668, 0.704] | 0.664 [0.646, 0.681] | 0.608 [0.584, 0.630] | 0.765 [0.737, 0.792] | 0.820 [0.802, 0.838] | 0.698 [0.680, 0.715] |
+| small ResNet, mean ∥ max pool | 0.675 [0.659, 0.691] | 0.653 [0.637, 0.669] | 0.597 [0.576, 0.617] | 0.753 [0.729, 0.778] | 0.810 [0.794, 0.827] | 0.687 [0.670, 0.704] |
 | small ResNet (no max pool), mean pool | 0.683 [0.665, 0.700] | 0.672 [0.655, 0.689] | 0.645 [0.623, 0.666] | 0.720 [0.695, 0.748] | 0.803 [0.787, 0.820] | 0.715 [0.698, 0.731] |
 | small ResNet (no max pool), attention pool | 0.673 [0.653, 0.692] | 0.654 [0.634, 0.673] | 0.604 [0.581, 0.628] | 0.742 [0.712, 0.770] | 0.805 [0.785, 0.825] | 0.691 [0.671, 0.709] |
 | ResNet-18, mean pool | 0.672 [0.647, 0.693] | 0.649 [0.627, 0.669] | 0.590 [0.565, 0.615] | 0.753 [0.712, 0.789] | 0.809 [0.783, 0.832] | 0.682 [0.661, 0.703] |
 | ResNet-18, attention pool | 0.667 [0.643, 0.689] | 0.642 [0.620, 0.662] | 0.578 [0.554, 0.603] | 0.756 [0.715, 0.792] | 0.807 [0.781, 0.832] | 0.673 [0.653, 0.694] |
+| CNN + ECA, mean pool | 0.686 [0.669, 0.702] | 0.685 [0.669, 0.701] | 0.684 [0.664, 0.703] | 0.687 [0.659, 0.715] | 0.794 [0.779, 0.810] | 0.735 [0.721, 0.749] |
+| CNN + ECA, attention pool | 0.681 [0.663, 0.698] | 0.667 [0.650, 0.684] | 0.633 [0.612, 0.653] | 0.729 [0.704, 0.756] | 0.804 [0.789, 0.821] | 0.708 [0.691, 0.725] |
+| CNN + CBAM, mean pool | 0.702 [0.683, 0.720] | 0.680 [0.662, 0.697] | 0.625 [0.603, 0.647] | 0.778 [0.748, 0.806] | 0.833 [0.814, 0.851] | 0.714 [0.696, 0.731] |
+| CNN + CBAM, attention pool | 0.701 [0.680, 0.721] | 0.680 [0.660, 0.699] | 0.626 [0.601, 0.648] | 0.776 [0.745, 0.806] | 0.831 [0.811, 0.852] | 0.714 [0.694, 0.733] |
+| small ResNet + ECA, mean pool | 0.683 [0.666, 0.701] | 0.662 [0.644, 0.680] | 0.608 [0.586, 0.628] | 0.759 [0.731, 0.787] | 0.816 [0.798, 0.836] | 0.697 [0.679, 0.714] |
+| small ResNet + ECA, attention pool | 0.680 [0.662, 0.699] | 0.680 [0.662, 0.698] | 0.681 [0.659, 0.703] | 0.679 [0.648, 0.709] | 0.789 [0.773, 0.806] | 0.731 [0.715, 0.748] |
+| small ResNet + CBAM, mean pool | 0.686 [0.666, 0.704] | 0.655 [0.636, 0.672] | 0.576 [0.553, 0.597] | 0.795 [0.767, 0.825] | 0.832 [0.812, 0.853] | 0.681 [0.660, 0.699] |
+| small ResNet + CBAM, attention pool | 0.678 [0.660, 0.695] | 0.684 [0.666, 0.700] | 0.702 [0.678, 0.724] | 0.654 [0.626, 0.681] | 0.781 [0.767, 0.796] | 0.739 [0.723, 0.755] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
@@ -83,12 +143,22 @@ Confusion counts (positive = called diseased at P ≥ 0.5):
 | logistic regression | 409 | 228 | 126 | 235 |
 | CNN, mean pool | 395 | 242 | 86 | 275 |
 | CNN, attention pool | 381 | 256 | 96 | 265 |
+| CNN, mean ∥ max pool | 394 | 243 | 87 | 274 |
 | small ResNet, mean pool | 384 | 253 | 86 | 275 |
 | small ResNet, attention pool | 387 | 250 | 85 | 276 |
+| small ResNet, mean ∥ max pool | 380 | 257 | 89 | 272 |
 | small ResNet (no max pool), mean pool | 411 | 226 | 101 | 260 |
 | small ResNet (no max pool), attention pool | 385 | 252 | 93 | 268 |
 | ResNet-18, mean pool | 376 | 261 | 89 | 272 |
 | ResNet-18, attention pool | 368 | 269 | 88 | 273 |
+| CNN + ECA, mean pool | 436 | 201 | 113 | 248 |
+| CNN + ECA, attention pool | 403 | 234 | 98 | 263 |
+| CNN + CBAM, mean pool | 398 | 239 | 80 | 281 |
+| CNN + CBAM, attention pool | 399 | 238 | 81 | 280 |
+| small ResNet + ECA, mean pool | 387 | 250 | 87 | 274 |
+| small ResNet + ECA, attention pool | 434 | 203 | 116 | 245 |
+| small ResNet + CBAM, mean pool | 367 | 270 | 74 | 287 |
+| small ResNet + CBAM, attention pool | 447 | 190 | 125 | 236 |
 
 Per variety:
 
@@ -106,6 +176,10 @@ Per variety:
 | CNN, attention pool | Cab Franc | 0.510 | 0.880 | 0.909 | 0.111 | 0.965 | 0.936 |
 | CNN, attention pool | Chardonnay | 0.539 | 0.652 | 0.159 | 0.920 | 0.519 | 0.243 |
 | CNN, attention pool | Vidal | 0.505 | 0.584 | 0.711 | 0.299 | 0.695 | 0.703 |
+| CNN, mean ∥ max pool | Baco | 0.496 | 0.468 | 0.178 | 0.814 | 0.533 | 0.267 |
+| CNN, mean ∥ max pool | Cab Franc | 0.576 | 0.904 | 0.929 | 0.222 | 0.970 | 0.949 |
+| CNN, mean ∥ max pool | Chardonnay | 0.519 | 0.656 | 0.057 | 0.981 | 0.625 | 0.104 |
+| CNN, mean ∥ max pool | Vidal | 0.544 | 0.648 | 0.815 | 0.273 | 0.716 | 0.762 |
 | small ResNet, mean pool | Baco | 0.504 | 0.476 | 0.185 | 0.823 | 0.556 | 0.278 |
 | small ResNet, mean pool | Cab Franc | 0.512 | 0.884 | 0.913 | 0.111 | 0.965 | 0.938 |
 | small ResNet, mean pool | Chardonnay | 0.555 | 0.672 | 0.159 | 0.951 | 0.636 | 0.255 |
@@ -114,6 +188,10 @@ Per variety:
 | small ResNet, attention pool | Cab Franc | 0.524 | 0.908 | 0.938 | 0.111 | 0.966 | 0.952 |
 | small ResNet, attention pool | Chardonnay | 0.538 | 0.664 | 0.114 | 0.963 | 0.625 | 0.192 |
 | small ResNet, attention pool | Vidal | 0.541 | 0.644 | 0.809 | 0.273 | 0.714 | 0.759 |
+| small ResNet, mean ∥ max pool | Baco | 0.463 | 0.431 | 0.104 | 0.823 | 0.412 | 0.166 |
+| small ResNet, mean ∥ max pool | Cab Franc | 0.529 | 0.916 | 0.946 | 0.111 | 0.966 | 0.956 |
+| small ResNet, mean ∥ max pool | Chardonnay | 0.548 | 0.676 | 0.114 | 0.981 | 0.769 | 0.198 |
+| small ResNet, mean ∥ max pool | Vidal | 0.493 | 0.588 | 0.740 | 0.247 | 0.688 | 0.713 |
 | small ResNet (no max pool), mean pool | Baco | 0.494 | 0.460 | 0.111 | 0.876 | 0.517 | 0.183 |
 | small ResNet (no max pool), mean pool | Cab Franc | 0.531 | 0.920 | 0.950 | 0.111 | 0.966 | 0.958 |
 | small ResNet (no max pool), mean pool | Chardonnay | 0.554 | 0.664 | 0.182 | 0.926 | 0.571 | 0.276 |
@@ -130,6 +208,38 @@ Per variety:
 | ResNet-18, attention pool | Cab Franc | 0.537 | 0.932 | 0.963 | 0.111 | 0.967 | 0.965 |
 | ResNet-18, attention pool | Chardonnay | 0.541 | 0.644 | 0.193 | 0.889 | 0.486 | 0.276 |
 | ResNet-18, attention pool | Vidal | 0.518 | 0.552 | 0.607 | 0.429 | 0.705 | 0.652 |
+| CNN + ECA, mean pool | Baco | 0.489 | 0.460 | 0.156 | 0.823 | 0.512 | 0.239 |
+| CNN + ECA, mean pool | Cab Franc | 0.545 | 0.948 | 0.979 | 0.111 | 0.967 | 0.973 |
+| CNN + ECA, mean pool | Chardonnay | 0.569 | 0.664 | 0.250 | 0.889 | 0.550 | 0.344 |
+| CNN + ECA, mean pool | Vidal | 0.519 | 0.668 | 0.908 | 0.130 | 0.701 | 0.791 |
+| CNN + ECA, attention pool | Baco | 0.483 | 0.456 | 0.178 | 0.788 | 0.500 | 0.262 |
+| CNN + ECA, attention pool | Cab Franc | 0.586 | 0.924 | 0.950 | 0.222 | 0.970 | 0.960 |
+| CNN + ECA, attention pool | Chardonnay | 0.539 | 0.668 | 0.102 | 0.975 | 0.692 | 0.178 |
+| CNN + ECA, attention pool | Vidal | 0.498 | 0.620 | 0.815 | 0.182 | 0.691 | 0.748 |
+| CNN + CBAM, mean pool | Baco | 0.489 | 0.456 | 0.111 | 0.867 | 0.500 | 0.182 |
+| CNN + CBAM, mean pool | Cab Franc | 0.522 | 0.904 | 0.934 | 0.111 | 0.966 | 0.949 |
+| CNN + CBAM, mean pool | Chardonnay | 0.558 | 0.680 | 0.148 | 0.969 | 0.722 | 0.245 |
+| CNN + CBAM, mean pool | Vidal | 0.581 | 0.680 | 0.838 | 0.325 | 0.736 | 0.784 |
+| CNN + CBAM, attention pool | Baco | 0.503 | 0.472 | 0.148 | 0.858 | 0.556 | 0.234 |
+| CNN + CBAM, attention pool | Cab Franc | 0.537 | 0.932 | 0.963 | 0.111 | 0.967 | 0.965 |
+| CNN + CBAM, attention pool | Chardonnay | 0.584 | 0.696 | 0.205 | 0.963 | 0.750 | 0.321 |
+| CNN + CBAM, attention pool | Vidal | 0.542 | 0.620 | 0.746 | 0.338 | 0.717 | 0.731 |
+| small ResNet + ECA, mean pool | Baco | 0.463 | 0.427 | 0.067 | 0.858 | 0.360 | 0.113 |
+| small ResNet + ECA, mean pool | Cab Franc | 0.533 | 0.924 | 0.954 | 0.111 | 0.966 | 0.960 |
+| small ResNet + ECA, mean pool | Chardonnay | 0.547 | 0.668 | 0.136 | 0.957 | 0.632 | 0.224 |
+| small ResNet + ECA, mean pool | Vidal | 0.529 | 0.628 | 0.786 | 0.273 | 0.708 | 0.745 |
+| small ResNet + ECA, attention pool | Baco | 0.482 | 0.460 | 0.230 | 0.735 | 0.508 | 0.316 |
+| small ResNet + ECA, attention pool | Cab Franc | 0.545 | 0.948 | 0.979 | 0.111 | 0.967 | 0.973 |
+| small ResNet + ECA, attention pool | Chardonnay | 0.565 | 0.668 | 0.216 | 0.914 | 0.576 | 0.314 |
+| small ResNet + ECA, attention pool | Vidal | 0.512 | 0.644 | 0.855 | 0.169 | 0.698 | 0.769 |
+| small ResNet + CBAM, mean pool | Baco | 0.482 | 0.448 | 0.089 | 0.876 | 0.462 | 0.149 |
+| small ResNet + CBAM, mean pool | Cab Franc | 0.572 | 0.896 | 0.921 | 0.222 | 0.969 | 0.945 |
+| small ResNet + CBAM, mean pool | Chardonnay | 0.531 | 0.664 | 0.080 | 0.981 | 0.700 | 0.143 |
+| small ResNet + CBAM, mean pool | Vidal | 0.539 | 0.612 | 0.728 | 0.351 | 0.716 | 0.722 |
+| small ResNet + CBAM, attention pool | Baco | 0.514 | 0.504 | 0.400 | 0.628 | 0.562 | 0.468 |
+| small ResNet + CBAM, attention pool | Cab Franc | 0.533 | 0.924 | 0.954 | 0.111 | 0.966 | 0.960 |
+| small ResNet + CBAM, attention pool | Chardonnay | 0.546 | 0.664 | 0.148 | 0.944 | 0.591 | 0.236 |
+| small ResNet + CBAM, attention pool | Vidal | 0.505 | 0.644 | 0.867 | 0.143 | 0.694 | 0.771 |
 
 ## Any disease vs healthy (776 + / 222 −)
 

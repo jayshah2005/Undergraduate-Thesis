@@ -9,6 +9,7 @@ Every model uses SNV and trains on the 3 training rows; the CNN picks its checkp
 | logistic regression | 0.572 [0.540, 0.604] | — | 0.568 | 0.560 | 0.692 | 0.478 | 0.594 |
 | small ResNet, mean pool | 0.585 [0.564, 0.605] | +0.014 [-0.022, +0.049] | 0.572 | 0.643 | 0.548 | 0.540 | 0.634 |
 | small ResNet, attention pool | 0.612 [0.588, 0.636] | +0.040 [+0.002, +0.075] | 0.489 | 0.668 | 0.611 | 0.522 | 0.645 |
+| small ResNet, mean ∥ max pool | 0.595 [0.570, 0.620] | +0.023 [-0.017, +0.060] | 0.563 | 0.656 | 0.579 | 0.492 | 0.599 |
 
 Fold k tests on row Rk of every variety (3 field rows, since each variety has its own rows R1–R5); the next row (R1 after R5) is validation and the other 3 train.
 
@@ -19,6 +20,7 @@ Balanced accuracy per variety:
 | logistic regression | 0.471 | 0.478 | 0.522 |
 | small ResNet, mean pool | 0.503 | 0.442 | 0.505 |
 | small ResNet, attention pool | 0.518 | 0.520 | 0.502 |
+| small ResNet, mean ∥ max pool | 0.462 | 0.502 | 0.479 |
 
 Single seeds (the ensemble above averages their probabilities):
 
@@ -26,8 +28,15 @@ Single seeds (the ensemble above averages their probabilities):
 |---|---|---|
 | small ResNet, mean pool | 0.584, 0.575, 0.559 | 0.573 ± 0.012 |
 | small ResNet, attention pool | 0.617, 0.609, 0.601 | 0.609 ± 0.008 |
+| small ResNet, mean ∥ max pool | 0.567, 0.604, 0.575 | 0.582 ± 0.020 |
 
-Median best epoch: small ResNet, mean pool 17, small ResNet, attention pool 18.
+Median best epoch: small ResNet, mean pool 17, small ResNet, attention pool 18, small ResNet, mean ∥ max pool 17.
+
+Each change against the same model without it (ECA, CBAM: same backbone and pooling without the module; mean ∥ max: the same backbone's mean pool); paired, on the same resamples:
+
+| model | compared with | Δ bal. acc. [95% CI] |
+|---|---|---|
+| small ResNet, mean ∥ max pool | small ResNet, mean pool | +0.010 [-0.016, +0.038] |
 
 ## Red blotch (637 + / 361 −)
 
@@ -36,6 +45,7 @@ Median best epoch: small ResNet, mean pool 17, small ResNet, attention pool 18.
 | logistic regression | 0.647 [0.624, 0.668] | — | 0.539 | 0.698 | 0.713 | 0.610 | 0.689 |
 | small ResNet, mean pool | 0.682 [0.662, 0.702] | +0.036 [+0.008, +0.063] | 0.620 | 0.655 | 0.731 | 0.690 | 0.691 |
 | small ResNet, attention pool | 0.686 [0.668, 0.704] | +0.040 [+0.014, +0.065] | 0.652 | 0.664 | 0.748 | 0.669 | 0.695 |
+| small ResNet, mean ∥ max pool | 0.675 [0.659, 0.691] | +0.028 [+0.002, +0.054] | 0.670 | 0.672 | 0.706 | 0.658 | 0.682 |
 
 Fold k tests on row Rk of every variety (4 field rows, since each variety has its own rows R1–R5); the next row (R1 after R5) is validation and the other 3 train.
 
@@ -46,6 +56,7 @@ Balanced accuracy per variety:
 | logistic regression | 0.456 | 0.475 | 0.540 | 0.522 |
 | small ResNet, mean pool | 0.504 | 0.512 | 0.555 | 0.537 |
 | small ResNet, attention pool | 0.474 | 0.524 | 0.538 | 0.541 |
+| small ResNet, mean ∥ max pool | 0.463 | 0.529 | 0.548 | 0.493 |
 
 Single seeds (the ensemble above averages their probabilities):
 
@@ -53,8 +64,15 @@ Single seeds (the ensemble above averages their probabilities):
 |---|---|---|
 | small ResNet, mean pool | 0.684, 0.671, 0.675 | 0.677 ± 0.007 |
 | small ResNet, attention pool | 0.689, 0.673, 0.656 | 0.672 ± 0.016 |
+| small ResNet, mean ∥ max pool | 0.672, 0.668, 0.668 | 0.669 ± 0.002 |
 
-Median best epoch: small ResNet, mean pool 11, small ResNet, attention pool 11.
+Median best epoch: small ResNet, mean pool 11, small ResNet, attention pool 11, small ResNet, mean ∥ max pool 13.
+
+Each change against the same model without it (ECA, CBAM: same backbone and pooling without the module; mean ∥ max: the same backbone's mean pool); paired, on the same resamples:
+
+| model | compared with | Δ bal. acc. [95% CI] |
+|---|---|---|
+| small ResNet, mean ∥ max pool | small ResNet, mean pool | -0.007 [-0.026, +0.012] |
 
 ## Any disease vs healthy (776 + / 222 −)
 
