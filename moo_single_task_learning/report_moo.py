@@ -189,8 +189,10 @@ def score_disease(results: Path, only: list[str] | None = None) -> dict:
                        for name, r in res.items()},
             "pairs": {f"{a} − {b}": diff(a, b) for a, b in pairs_of(methods)},
         }
-    # Each epoch's mean weights as shares of their sum (MGDA's α already sum to 1; PGA's are not normalized).
-    share = {m: six[m]["alpha"] / six[m]["alpha"].sum(1, keepdims=True) for m in methods if len(six[m]["alpha"])}
+    # Each epoch's mean weights over the sum of their absolute values: MGDA's α (on the simplex) are unchanged;
+    # PGA's are not normalized and can be negative.
+    share = {m: six[m]["alpha"] / np.abs(six[m]["alpha"]).sum(1, keepdims=True)
+             for m in methods if len(six[m]["alpha"])}
     out["alpha"] = {m: a.mean(0).tolist() for m, a in share.items()}
     out["alpha_range"] = {m: [a.min(0).tolist(), a.max(0).tolist()] for m, a in share.items()}
     out["best_epochs"] = {m: float(np.median(six[m]["best_epochs"])) for m in methods}
@@ -285,8 +287,8 @@ def to_markdown(var: dict, dis: dict) -> str:
     # 3. Weights
     if dis["alpha"]:
         L += ["## Weight per head", "",
-              "Each epoch's mean weights as shares of their sum, averaged over every epoch of a method's 15 "
-              "trainings (range over epochs). For MGDA these are α.", "",
+              "Each epoch's mean weights divided by the sum of their absolute values, averaged over every epoch of "
+              "a method's 15 trainings (range over epochs). For MGDA these are α; a PGA weight can be negative.", "",
               "| method | " + " | ".join(HEADS) + " |", "|---|" + "---|" * len(HEADS)]
         for m, a in dis["alpha"].items():
             lo, hi = dis["alpha_range"][m]

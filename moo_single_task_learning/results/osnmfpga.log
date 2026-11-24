@@ -1,0 +1,15 @@
+[2026-11-24 12:41:08] osnmfpga seed 0 fold 0: best epoch 6 of 16, val loss 2.582, 234 s | variety bal. acc. 0.660, red blotch 0.644, leafroll 0.500
+[2026-11-24 12:48:18] osnmfpga seed 0 fold 1: best epoch 20 of 30, val loss 1.775, 430 s | variety bal. acc. 0.875, red blotch 0.631, leafroll 0.500
+[2026-11-24 12:51:55] osnmfpga seed 0 fold 2: best epoch 5 of 15, val loss 2.064, 218 s | variety bal. acc. 0.885, red blotch 0.713, leafroll 0.498
+[2026-11-24 12:55:35] osnmfpga seed 0 fold 3: best epoch 9 of 19, val loss 2.907, 220 s | variety bal. acc. 0.865, red blotch 0.554, leafroll 0.534
+[2026-11-24 12:58:22] osnmfpga seed 0 fold 4: best epoch 5 of 15, val loss 2.206, 166 s | variety bal. acc. 0.605, red blotch 0.621, leafroll 0.522
+[2026-11-24 13:01:04] osnmfpga seed 1 fold 0: best epoch 5 of 15, val loss 2.232, 162 s | variety bal. acc. 0.785, red blotch 0.624, leafroll 0.500
+[2026-11-24 13:04:41] osnmfpga seed 1 fold 1: best epoch 10 of 20, val loss 1.701, 217 s | variety bal. acc. 0.850, red blotch 0.616, leafroll 0.500
+[2026-11-24 13:10:10] osnmfpga seed 1 fold 2: best epoch 20 of 30, val loss 2.159, 328 s | variety bal. acc. 0.935, red blotch 0.707, leafroll 0.552
+[2026-11-24 13:12:43] osnmfpga seed 1 fold 3: best epoch 4 of 14, val loss 2.711, 154 s | variety bal. acc. 0.765, red blotch 0.583, leafroll 0.535
+[2026-11-24 13:15:04] osnmfpga seed 1 fold 4: best epoch 3 of 13, val loss 2.486, 141 s | variety bal. acc. 0.685, red blotch 0.500, leafroll 0.500
+[2026-11-24 13:20:03] osnmfpga seed 2 fold 0: best epoch 17 of 27, val loss 2.318, 299 s | variety bal. acc. 0.885, red blotch 0.641, leafroll 0.500
+[2026-11-24 13:23:23] osnmfpga seed 2 fold 1: best epoch 8 of 18, val loss 1.909, 200 s | variety bal. acc. 0.855, red blotch 0.517, leafroll 0.500
+[2026-11-24 13:28:42] osnmfpga seed 2 fold 2: best epoch 19 of 29, val loss 1.942, 319 s | variety bal. acc. 0.940, red blotch 0.726, leafroll 0.543
+[2026-11-24 13:30:55] osnmfpga seed 2 fold 3: best epoch 4 of 14, val loss 2.892, 132 s | variety bal. acc. 0.710, red blotch 0.527, leafroll 0.500
+[2026-11-24 13:33:40] osnmfpga seed 2 fold 4: best epoch 9 of 19, val loss 2.825, 165 s | variety bal. acc. 0.600, red blotch 0.623, leafroll 0.557
