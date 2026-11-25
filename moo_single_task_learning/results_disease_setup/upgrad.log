@@ -1,0 +1,16 @@
+[2026-11-24 19:21:51] upgrad: 998 leaves, canvas 212, padding check 8.9e-16
+[2026-11-24 19:24:36] upgrad seed 0 fold 0: best epochs variety 2, red_blotch 15, leafroll 10, all 2 of 30, 165 s
+[2026-11-24 19:28:05] upgrad seed 0 fold 1: best epochs variety 23, red_blotch 12, leafroll 12, all 23 of 38, 209 s
+[2026-11-24 19:35:26] upgrad seed 0 fold 2: best epochs variety 58, red_blotch 79, leafroll 22, all 58 of 80, 441 s
+[2026-11-24 19:38:16] upgrad seed 0 fold 3: best epochs variety 16, red_blotch 16, leafroll 8, all 16 of 31, 171 s
+[2026-11-24 19:42:34] upgrad seed 0 fold 4: best epochs variety 32, red_blotch 24, leafroll 19, all 32 of 47, 258 s
+[2026-11-24 19:45:02] upgrad seed 1 fold 0: best epochs variety 12, red_blotch 9, leafroll 6, all 12 of 27, 148 s
+[2026-11-24 19:47:26] upgrad seed 1 fold 1: best epochs variety 11, red_blotch 11, leafroll 7, all 11 of 26, 143 s
+[2026-11-24 19:52:02] upgrad seed 1 fold 2: best epochs variety 35, red_blotch 26, leafroll 9, all 35 of 50, 277 s
+[2026-11-24 19:57:42] upgrad seed 1 fold 3: best epochs variety 31, red_blotch 47, leafroll 31, all 31 of 62, 340 s
+[2026-11-24 20:04:45] upgrad seed 1 fold 4: best epochs variety 62, red_blotch 51, leafroll 35, all 62 of 77, 423 s
+[2026-11-24 20:10:25] upgrad seed 2 fold 0: best epochs variety 11, red_blotch 41, leafroll 47, all 11 of 62, 340 s
+[2026-11-24 20:15:06] upgrad seed 2 fold 1: best epochs variety 34, red_blotch 36, leafroll 34, all 34 of 51, 281 s
+[2026-11-24 20:22:28] upgrad seed 2 fold 2: best epochs variety 57, red_blotch 66, leafroll 48, all 76 of 80, 441 s
+[2026-11-24 20:29:24] upgrad seed 2 fold 3: best epochs variety 55, red_blotch 61, leafroll 53, all 55 of 76, 416 s
+[2026-11-24 20:36:43] upgrad seed 2 fold 4: best epochs variety 61, red_blotch 48, leafroll 69, all 61 of 80, 439 s

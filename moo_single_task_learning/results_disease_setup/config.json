@@ -57,6 +57,57 @@
    "disease_classification/cnn/run_experiments.py": "f12750157855c3d42fc69a2cd5fcc8529d4d1e380e641ec8173a40a4dbdd458c",
    "helpers/backbones.py": "90f380079a0627c0e3b3042feb1772aac74f2281f81cc330251c01d1b6cc9dae",
    "helpers/cnn_common.py": "4d382027b7bcfc50136b6b7f6aec7f599941810d9b8278a46bec328066c880f9"
+  },
+  "mgda_gn": {
+   "moo_single_task_learning/run_moo_disease.py": "07c51f459756fa83ebd54ba91a4af9ce6322fff3ed28af454834f760580dee05",
+   "moo_single_task_learning/moo.py": "d19d9e85875f0555a4e089a075cddeb7b2e04271b7b6592173b1b8d46082ff66",
+   "disease_classification/cnn/train.py": "546ce88f95d868f5df82cbb379903518c2996d73d5091653ef33375f80211c75",
+   "disease_classification/cnn/run_experiments.py": "f12750157855c3d42fc69a2cd5fcc8529d4d1e380e641ec8173a40a4dbdd458c",
+   "helpers/backbones.py": "90f380079a0627c0e3b3042feb1772aac74f2281f81cc330251c01d1b6cc9dae",
+   "helpers/cnn_common.py": "4d382027b7bcfc50136b6b7f6aec7f599941810d9b8278a46bec328066c880f9"
+  },
+  "mgda_ln": {
+   "moo_single_task_learning/run_moo_disease.py": "07c51f459756fa83ebd54ba91a4af9ce6322fff3ed28af454834f760580dee05",
+   "moo_single_task_learning/moo.py": "d19d9e85875f0555a4e089a075cddeb7b2e04271b7b6592173b1b8d46082ff66",
+   "disease_classification/cnn/train.py": "546ce88f95d868f5df82cbb379903518c2996d73d5091653ef33375f80211c75",
+   "disease_classification/cnn/run_experiments.py": "f12750157855c3d42fc69a2cd5fcc8529d4d1e380e641ec8173a40a4dbdd458c",
+   "helpers/backbones.py": "90f380079a0627c0e3b3042feb1772aac74f2281f81cc330251c01d1b6cc9dae",
+   "helpers/cnn_common.py": "4d382027b7bcfc50136b6b7f6aec7f599941810d9b8278a46bec328066c880f9"
+  },
+  "mgda_lgn": {
+   "moo_single_task_learning/run_moo_disease.py": "07c51f459756fa83ebd54ba91a4af9ce6322fff3ed28af454834f760580dee05",
+   "moo_single_task_learning/moo.py": "d19d9e85875f0555a4e089a075cddeb7b2e04271b7b6592173b1b8d46082ff66",
+   "disease_classification/cnn/train.py": "546ce88f95d868f5df82cbb379903518c2996d73d5091653ef33375f80211c75",
+   "disease_classification/cnn/run_experiments.py": "f12750157855c3d42fc69a2cd5fcc8529d4d1e380e641ec8173a40a4dbdd458c",
+   "helpers/backbones.py": "90f380079a0627c0e3b3042feb1772aac74f2281f81cc330251c01d1b6cc9dae",
+   "helpers/cnn_common.py": "4d382027b7bcfc50136b6b7f6aec7f599941810d9b8278a46bec328066c880f9"
+  },
+  "svdpga": {
+   "moo_single_task_learning/run_moo_disease.py": "07c51f459756fa83ebd54ba91a4af9ce6322fff3ed28af454834f760580dee05",
+   "moo_single_task_learning/moo.py": "d19d9e85875f0555a4e089a075cddeb7b2e04271b7b6592173b1b8d46082ff66",
+   "disease_classification/cnn/train.py": "546ce88f95d868f5df82cbb379903518c2996d73d5091653ef33375f80211c75",
+   "disease_classification/cnn/run_experiments.py": "f12750157855c3d42fc69a2cd5fcc8529d4d1e380e641ec8173a40a4dbdd458c",
+   "helpers/backbones.py": "90f380079a0627c0e3b3042feb1772aac74f2281f81cc330251c01d1b6cc9dae",
+   "helpers/cnn_common.py": "4d382027b7bcfc50136b6b7f6aec7f599941810d9b8278a46bec328066c880f9",
+   "torchjd": "../../torchjd @ 3ea6b0a50f7607966ef31c8bd46f46b22b9f4dd6"
+  },
+  "osnmfpga": {
+   "moo_single_task_learning/run_moo_disease.py": "07c51f459756fa83ebd54ba91a4af9ce6322fff3ed28af454834f760580dee05",
+   "moo_single_task_learning/moo.py": "d19d9e85875f0555a4e089a075cddeb7b2e04271b7b6592173b1b8d46082ff66",
+   "disease_classification/cnn/train.py": "546ce88f95d868f5df82cbb379903518c2996d73d5091653ef33375f80211c75",
+   "disease_classification/cnn/run_experiments.py": "f12750157855c3d42fc69a2cd5fcc8529d4d1e380e641ec8173a40a4dbdd458c",
+   "helpers/backbones.py": "90f380079a0627c0e3b3042feb1772aac74f2281f81cc330251c01d1b6cc9dae",
+   "helpers/cnn_common.py": "4d382027b7bcfc50136b6b7f6aec7f599941810d9b8278a46bec328066c880f9",
+   "torchjd": "../../torchjd @ 3ea6b0a50f7607966ef31c8bd46f46b22b9f4dd6"
+  },
+  "upgrad": {
+   "moo_single_task_learning/run_moo_disease.py": "07c51f459756fa83ebd54ba91a4af9ce6322fff3ed28af454834f760580dee05",
+   "moo_single_task_learning/moo.py": "d19d9e85875f0555a4e089a075cddeb7b2e04271b7b6592173b1b8d46082ff66",
+   "disease_classification/cnn/train.py": "546ce88f95d868f5df82cbb379903518c2996d73d5091653ef33375f80211c75",
+   "disease_classification/cnn/run_experiments.py": "f12750157855c3d42fc69a2cd5fcc8529d4d1e380e641ec8173a40a4dbdd458c",
+   "helpers/backbones.py": "90f380079a0627c0e3b3042feb1772aac74f2281f81cc330251c01d1b6cc9dae",
+   "helpers/cnn_common.py": "4d382027b7bcfc50136b6b7f6aec7f599941810d9b8278a46bec328066c880f9",
+   "torchjd": "../../torchjd @ 3ea6b0a50f7607966ef31c8bd46f46b22b9f4dd6"
   }
  }
 }

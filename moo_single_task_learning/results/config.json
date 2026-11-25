@@ -66,6 +66,14 @@
    "metrics.py": "4b717e941140b5d4bdee228d854b92bc960e15f8c8e1207c51d458a6854c841e",
    "train.py": "23e901dd7653a710eb8676ea35ce23dd9b4044fea0374cd6be0ee9d06768aba6",
    "torchjd": "../../torchjd @ 3ea6b0a50f7607966ef31c8bd46f46b22b9f4dd6"
+  },
+  "upgrad": {
+   "data.py": "7ae08e84b78a32d3bf940be0ce3dea2b07d29d5acdcde80bcc50f6925caa38af",
+   "model.py": "3aaf02ae326d67718841480703e9cb58dc082484b51515d02fb704f01e94303f",
+   "moo.py": "d19d9e85875f0555a4e089a075cddeb7b2e04271b7b6592173b1b8d46082ff66",
+   "metrics.py": "4b717e941140b5d4bdee228d854b92bc960e15f8c8e1207c51d458a6854c841e",
+   "train.py": "d4981fd0bc640f54437857ea4074a18f8e7600f2cee51ba1f6196ee0f7334d5e",
+   "torchjd": "../../torchjd @ 3ea6b0a50f7607966ef31c8bd46f46b22b9f4dd6"
   }
  }
 }

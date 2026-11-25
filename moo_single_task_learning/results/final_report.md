@@ -5,6 +5,7 @@ One CNN with six sigmoid heads (Baco, Cab Franc, Chardonnay, Vidal, red blotch, 
 - **LS**: their sum (one backward pass on the summed loss).
 - **MGDA** (Sener & Koltun 2018): the shortest mix of the six gradients, over all weights. **-GN / -LN / -LGN** first divide each gradient by its norm, its loss, or both (the variants in LibMTL, Lin & Zhang 2023).
 - **SVD-PGA / OSNMF-PGA**: the Principal Gradient Alignment aggregators of the local torchjd (commit 04d1bef, not yet published), default settings.
+- **UPGrad** (Quinton & Rey 2024, "Jacobian Descent for Multi-Objective Optimization"): each gradient projected onto the dual cone of all six (so it conflicts with none), then averaged; torchjd's default.
 
 The six-head CNN is not the same network as the single-task CNNs: two 3 × 3 convolutions at full resolution and no batch norm, no rotations or flips, a 211 px canvas, one checkpoint for all six heads (lowest summed validation loss), and its leafroll and red blotch heads also train on Cab Franc. So the clean comparison is between the six-head methods; against the single-task models the network differs too. `results_disease_setup/final_report.md` repeats the comparison in the disease CNN's setup.
 
@@ -28,6 +29,7 @@ Balanced accuracy (chance: variety 0.25, disease 0.5). Leafroll never includes C
 | six-head, MGDA-LGN | 0.806 | 0.504 | 0.642 | 0.613 |
 | six-head, SVD-PGA | 0.759 | 0.531 | 0.610 | 0.592 |
 | six-head, OSNMF-PGA | 0.840 | 0.488 | 0.633 | 0.610 |
+| six-head, UPGrad | 0.846 | 0.502 | 0.645 | 0.607 |
 
 ## Each method against LS
 
@@ -41,6 +43,7 @@ Paired difference in balanced accuracy [95% CI], same resampled leaves; * = inte
 | MGDA-LGN − LS | -0.027 [-0.046, -0.008] * | +0.012 [-0.009, +0.034] | -0.018 [-0.035, -0.002] * | -0.013 [-0.031, +0.005] |
 | SVD-PGA − LS | -0.074 [-0.099, -0.049] * | +0.039 [+0.016, +0.061] * | -0.051 [-0.070, -0.030] * | -0.033 [-0.054, -0.010] * |
 | OSNMF-PGA − LS | +0.007 [-0.014, +0.026] | -0.004 [-0.023, +0.015] | -0.027 [-0.043, -0.011] * | -0.016 [-0.033, +0.003] |
+| UPGrad − LS | +0.013 [-0.003, +0.029] | +0.010 [-0.011, +0.032] | -0.015 [-0.028, -0.002] * | -0.018 [-0.033, -0.003] * |
 
 ## Six-head against the single-task CNN, attention pool
 
@@ -55,6 +58,7 @@ The CNN, attention pool is the closest single-task model (same pooling). Paired,
 | MGDA-LGN − CNN, attention pool | -0.089 [-0.114, -0.065] * | -0.094 [-0.117, -0.069] * | -0.024 [-0.049, -0.001] * | +0.033 [+0.004, +0.061] * |
 | SVD-PGA − CNN, attention pool | -0.136 [-0.162, -0.110] * | -0.067 [-0.094, -0.040] * | -0.057 [-0.083, -0.029] * | +0.013 [-0.019, +0.045] |
 | OSNMF-PGA − CNN, attention pool | -0.055 [-0.081, -0.029] * | -0.109 [-0.133, -0.087] * | -0.033 [-0.056, -0.011] * | +0.030 [+0.005, +0.057] * |
+| UPGrad − CNN, attention pool | -0.049 [-0.073, -0.026] * | -0.096 [-0.122, -0.070] * | -0.021 [-0.044, +0.000] | +0.027 [+0.000, +0.054] * |
 
 ## Weight per head
 
@@ -68,6 +72,7 @@ Each epoch's mean weights divided by the sum of their absolute values, averaged 
 | MGDA-LGN | 0.17 (0.01–0.73) | 0.16 (0.00–0.57) | 0.19 (0.00–0.76) | 0.15 (0.00–0.50) | 0.18 (0.00–0.38) | 0.15 (0.00–0.34) |
 | SVD-PGA | 0.54 (0.00–1.00) | 0.09 (-0.00–0.68) | 0.23 (-0.01–0.99) | 0.05 (0.00–0.27) | 0.05 (0.00–0.30) | 0.05 (0.00–0.29) |
 | OSNMF-PGA | 0.56 (-0.59–1.00) | 0.06 (-0.00–0.29) | 0.25 (-0.02–0.99) | 0.05 (-0.01–0.34) | 0.04 (0.00–0.30) | 0.04 (0.00–0.28) |
+| UPGrad | 0.28 (0.12–0.50) | 0.14 (0.06–0.28) | 0.22 (0.07–0.42) | 0.12 (0.06–0.23) | 0.12 (0.07–0.25) | 0.12 (0.06–0.26) |
 
 ## Details
 
@@ -87,6 +92,7 @@ Each epoch's mean weights divided by the sum of their absolute values, averaged 
 | six-head, MGDA-LGN | 0.806 [0.782, 0.828] | -0.068 [-0.094, -0.043] * | 0.775 | 0.895 | 0.910 | 0.780 | 0.670 |
 | six-head, SVD-PGA | 0.759 [0.734, 0.783] | -0.115 [-0.140, -0.089] * | 0.715 | 0.865 | 0.915 | 0.700 | 0.600 |
 | six-head, OSNMF-PGA | 0.840 [0.817, 0.862] | -0.034 [-0.060, -0.008] * | 0.865 | 0.900 | 0.945 | 0.875 | 0.615 |
+| six-head, UPGrad | 0.846 [0.824, 0.867] | -0.028 [-0.054, -0.002] * | 0.855 | 0.880 | 0.915 | 0.885 | 0.695 |
 
 ### Leafroll (748 leaves, 255 with the disease), per variety
 
@@ -104,6 +110,7 @@ Each epoch's mean weights divided by the sum of their absolute values, averaged 
 | six-head, MGDA-LGN | 0.504 [0.490, 0.519] | -0.068 [-0.101, -0.034] * | 0.473 | 0.501 | 0.500 |
 | six-head, SVD-PGA | 0.531 [0.513, 0.550] | -0.041 [-0.077, -0.005] * | 0.507 | 0.491 | 0.500 |
 | six-head, OSNMF-PGA | 0.488 [0.477, 0.499] | -0.083 [-0.117, -0.051] * | 0.494 | 0.431 | 0.500 |
+| six-head, UPGrad | 0.502 [0.483, 0.521] | -0.070 [-0.106, -0.036] * | 0.445 | 0.468 | 0.500 |
 
 ### Red blotch, all leaves (998 leaves, 637 with the disease), per variety
 
@@ -121,6 +128,7 @@ Each epoch's mean weights divided by the sum of their absolute values, averaged 
 | six-head, MGDA-LGN | 0.642 [0.623, 0.658] | -0.005 [-0.032, +0.023] | 0.512 | 0.475 | 0.534 | 0.510 |
 | six-head, SVD-PGA | 0.610 [0.589, 0.630] | -0.037 [-0.063, -0.010] * | 0.469 | 0.508 | 0.591 | 0.508 |
 | six-head, OSNMF-PGA | 0.633 [0.618, 0.647] | -0.014 [-0.038, +0.010] | 0.493 | 0.494 | 0.564 | 0.500 |
+| six-head, UPGrad | 0.645 [0.630, 0.658] | -0.002 [-0.027, +0.022] | 0.472 | 0.549 | 0.550 | 0.500 |
 
 ### Red blotch without Cab Franc (748 leaves, 396 with the disease), per variety
 
@@ -138,8 +146,9 @@ Each epoch's mean weights divided by the sum of their absolute values, averaged 
 | six-head, MGDA-LGN | 0.613 [0.593, 0.632] | +0.019 [-0.012, +0.049] | 0.512 | 0.534 | 0.510 |
 | six-head, SVD-PGA | 0.592 [0.572, 0.614] | -0.001 [-0.033, +0.029] | 0.469 | 0.591 | 0.508 |
 | six-head, OSNMF-PGA | 0.610 [0.594, 0.627] | +0.016 [-0.013, +0.045] | 0.493 | 0.564 | 0.500 |
+| six-head, UPGrad | 0.607 [0.591, 0.623] | +0.013 [-0.016, +0.042] | 0.472 | 0.550 | 0.500 |
 
 ## Notes
 
-- Median best epoch: LS 25, MGDA 20, MGDA-GN 8, MGDA-LN 13, MGDA-LGN 9, SVD-PGA 8, OSNMF-PGA 8. Trainings that reached the 40-epoch limit (early stopping never triggered): LS 6 of 15, MGDA 3 of 15, MGDA-GN 0 of 15, MGDA-LN 0 of 15, MGDA-LGN 0 of 15, SVD-PGA 1 of 15, OSNMF-PGA 0 of 15.
+- Median best epoch: LS 25, MGDA 20, MGDA-GN 8, MGDA-LN 13, MGDA-LGN 9, SVD-PGA 8, OSNMF-PGA 8, UPGrad 34. Trainings that reached the 40-epoch limit (early stopping never triggered): LS 6 of 15, MGDA 3 of 15, MGDA-GN 0 of 15, MGDA-LN 0 of 15, MGDA-LGN 0 of 15, SVD-PGA 1 of 15, OSNMF-PGA 0 of 15, UPGrad 8 of 15.
 - The single-task models in the red blotch columns trained on all 998 leaves. Trained on Baco, Chardonnay and Vidal only, the disease CNN scores 0.619 (mean pool) and 0.606 (attention pool) and logistic regression 0.600 (`disease_classification/REPORT.md`).

@@ -1,0 +1,16 @@
+[2026-11-24 17:00:56] mgda_ln: 998 leaves, canvas 212, padding check 8.9e-16
+[2026-11-24 17:04:18] mgda_ln seed 0 fold 0: best epochs variety 13, red_blotch 21, leafroll 8, all 13 of 36, 202 s
+[2026-11-24 17:10:55] mgda_ln seed 0 fold 1: best epochs variety 56, red_blotch 51, leafroll 39, all 56 of 71, 397 s
+[2026-11-24 17:17:04] mgda_ln seed 0 fold 2: best epochs variety 48, red_blotch 51, leafroll 39, all 48 of 66, 370 s
+[2026-11-24 17:19:19] mgda_ln seed 0 fold 3: best epochs variety 9, red_blotch 9, leafroll 5, all 9 of 24, 135 s
+[2026-11-24 17:24:04] mgda_ln seed 0 fold 4: best epochs variety 23, red_blotch 25, leafroll 36, all 23 of 51, 285 s
+[2026-11-24 17:27:58] mgda_ln seed 1 fold 0: best epochs variety 2, red_blotch 27, leafroll 25, all 2 of 42, 235 s
+[2026-11-24 17:35:22] mgda_ln seed 1 fold 1: best epochs variety 61, red_blotch 66, leafroll 69, all 61 of 80, 443 s
+[2026-11-24 17:42:45] mgda_ln seed 1 fold 2: best epochs variety 65, red_blotch 73, leafroll 47, all 39 of 80, 443 s
+[2026-11-24 17:46:58] mgda_ln seed 1 fold 3: best epochs variety 21, red_blotch 21, leafroll 30, all 21 of 45, 253 s
+[2026-11-24 17:52:32] mgda_ln seed 1 fold 4: best epochs variety 5, red_blotch 45, leafroll 37, all 5 of 60, 334 s
+[2026-11-24 17:56:53] mgda_ln seed 2 fold 0: best epochs variety 2, red_blotch 30, leafroll 32, all 2 of 47, 261 s
+[2026-11-24 18:00:53] mgda_ln seed 2 fold 1: best epochs variety 28, red_blotch 10, leafroll 13, all 28 of 43, 240 s
+[2026-11-24 18:07:41] mgda_ln seed 2 fold 2: best epochs variety 56, red_blotch 45, leafroll 58, all 56 of 73, 408 s
+[2026-11-24 18:09:28] mgda_ln seed 2 fold 3: best epochs variety 4, red_blotch 3, leafroll 4, all 4 of 19, 107 s
+[2026-11-24 18:14:45] mgda_ln seed 2 fold 4: best epochs variety 1, red_blotch 42, leafroll 28, all 1 of 57, 318 s
