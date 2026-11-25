@@ -169,7 +169,8 @@ def update(model, losses: list[torch.Tensor], present: list[int], method: str) -
         norm = method.split("_")[1] if "_" in method else "none"
         g, w = moo.aggregate_mgda(grads, [float(L.detach()) for L in head], norm)
     else:
-        g, w = moo.aggregate_torchjd(grads, method)
+        # PGA in float64: its float32 eigendecomposition failed on the GPU in this setup (see moo.py).
+        g, w = moo.aggregate_torchjd(grads, method, float64=method in ("svdpga", "osnmfpga"))
     moo.write_grad(model, g)
     weights[present] = w.detach().float().cpu()
     return weights

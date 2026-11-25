@@ -133,7 +133,11 @@ def aggregate_mgda(
 TORCHJD_AGGREGATORS = ("svdpga", "osnmfpga", "upgrad")
 
 
-def aggregate_torchjd(grads: list[torch.Tensor], name: str) -> tuple[torch.Tensor, torch.Tensor]:
+def aggregate_torchjd(
+    grads: list[torch.Tensor],
+    name: str,
+    float64: bool = False,
+) -> tuple[torch.Tensor, torch.Tensor]:
     """Update direction from a torchjd aggregator, and the weight it gave each objective.
 
     Uses the local torchjd (../../torchjd/src on PYTHONPATH), with default settings:
@@ -142,13 +146,18 @@ def aggregate_torchjd(grads: list[torch.Tensor], name: str) -> tuple[torch.Tenso
     and UPGrad (Quinton & Rey 2024, "Jacobian Descent for Multi-Objective Optimization": each
     gradient projected onto the dual cone of all of them, then averaged; needs quadprog and
     qpsolvers). The weights are only recorded; the direction is the aggregator's own.
+
+    float64: aggregate in double precision and return the direction in the gradients' dtype.
+    PGA's eigendecomposition (torch.linalg.eigh) fails to converge in float32 on the GPU when
+    the heads' gradient norms span many orders of magnitude (seen: 1e-20 to 1e3).
     """
     from torchjd.aggregation import OSNMFPGA, SVDPGA, UPGrad  # only these methods need torchjd
 
     aggregator = {"svdpga": SVDPGA, "osnmfpga": OSNMFPGA, "upgrad": UPGrad}[name]()
     J = torch.stack(grads)   # (M, P): one row per objective
-    weights = aggregator.gramian_weighting(J @ J.T)
-    return aggregator(J), weights
+    Jc = J.double() if float64 else J
+    weights = aggregator.gramian_weighting(Jc @ Jc.T)
+    return aggregator(Jc).to(J.dtype), weights
 
 
 if __name__ == "__main__":
