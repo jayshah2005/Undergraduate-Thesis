@@ -340,7 +340,7 @@ def fig_balanced_accuracy(metrics: dict, labels: dict, path: Path) -> None:
         ax.tick_params(colors=INK_2, labelsize=9, length=0)
     axes[0].set_yticks(range(len(names)))
     axes[0].set_yticklabels(names[::-1])
-    fig.text(0.99, 0.01, "dot = 3-seed ensemble with 95% bootstrap CI; ticks = single seeds; dashed = chance",
+    fig.text(0.99, 0.01, "dot = 5-seed ensemble with 95% bootstrap CI; ticks = single seeds; dashed = chance",
              ha="right", va="bottom", fontsize=8, color=MUTED)
     fig.tight_layout(rect=(0, 0.2 / fig.get_figheight(), 1, 1))   # keep 0.2 in below the axes for the caption
     fig.savefig(path, dpi=200, facecolor="white")

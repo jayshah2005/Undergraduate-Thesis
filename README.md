@@ -42,6 +42,12 @@ Cab Franc has essentially no leafroll positives, so leafroll training and scorin
 
 ---
 
+## Results
+
+Every model, score and planned comparison is on one page, [`RESULTS.md`](RESULTS.md), built from the saved predictions by `make_results.py` (run from the repo root: `.venv/bin/python make_results.py`, about 20 s; models still training are listed as not finished). What is compared, and when a difference counts, was fixed before the runs in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md). Everything tried so far, kept or removed: [`TESTED.md`](TESTED.md).
+
+---
+
 ## Layout
 
 Analyses are grouped by what they ask:
@@ -50,7 +56,8 @@ Analyses are grouped by what they ask:
 |---|---|
 | [`variety_classification/`](variety_classification/) | predict a leaf's variety: logistic regression and a whole-leaf CNN, each with all 204 bands or RGB only |
 | [`spectral_analysis/`](spectral_analysis/) | what the spectra look like: PCA by variety and by disease class, plus the poster's normalisation figure |
-| [`disease_classification/`](disease_classification/) | detect a disease within a variety: whole-leaf CNN with attention pooling vs the mean-spectrum baseline |
+| [`disease_classification/`](disease_classification/) | detect a disease (leafroll, red blotch) within one variety and pooled over varieties: logistic regression and whole-leaf CNNs |
+| [`moo_single_task_learning/`](moo_single_task_learning/) | one network with six outputs (4 varieties, red blotch, leafroll), with 8 ways to combine the six gradients |
 | [`labelling/`](labelling/) | how `vine_hsi.h5` and its virus labels were built, and `review_labels.py` to check the labels by hand (lab sheets and raw data stay out of git) |
 
 Shared code, in [`helpers/`](helpers/):

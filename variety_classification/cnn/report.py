@@ -101,7 +101,7 @@ def paired_delta(y: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray, rows: np
 
 
 def score_run(run: str, y: np.ndarray, rows: np.ndarray, device: torch.device) -> dict:
-    """Score one run: its 3-seed ensemble, each seed and each row.
+    """Score one run: its 5-seed ensemble, each seed and each row.
 
     n: the number of leaves.
 

@@ -321,7 +321,7 @@ def run(variety: str, bands: str, tasks: list[str], root: Path, log, cfg: TrainC
 
     # Log system information
     log.info("%s: %d leaves, %d bands, canvas %d", root.name, len(d["meta"]), d["X"].shape[1], d["side"])
-    log.info("Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). "
+    log.info("Balanced accuracy of the 5-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). "
              "CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.")
 
     chk = invariance_check(d, cfg.backbone)
