@@ -6,5 +6,6 @@ ResNet without max pooling) were removed; they are in git history at `0538fdd`, 
 
 | file | what it is |
 |---|---|
+| `run_moo.py` | trains one network × optimizer × bands × method, 5 folds × 5 seeds (resumable), into `results/<network>_<optimizer>[_rgb]/<method>/`; `--select-lr` chooses SGD's learning rate on the validation rows |
 | `moo.py` | per-head losses and gradients; the aggregators: LS, MGDA (Sener & Koltun 2018, "Multi-Task Learning as Multi-Objective Optimization", NeurIPS) with or without gradient normalization (GN, LN, LGN, as listed in LibMTL, Lin & Zhang 2023), and torchjd's SVD-PGA, OSNMF-PGA (Principal Gradient Alignment, local torchjd, not published) and UPGrad (Quinton & Rey 2024, "Jacobian Descent for Multi-Objective Optimization") |
 | `data.py`, `model.py`, `metrics.py`, `train.py` | the original six-head network and its training (1 × 1 spectral mix → two 3 × 3 convs → attention pooling → six logits), kept |
