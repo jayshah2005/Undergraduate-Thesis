@@ -24,7 +24,8 @@ from logistic_regression import Config as LRConfig  # noqa: E402
 from helpers.report_tables import (BANDS_TITLE, BASELINE, METRICS_INTRO, column_table, fold_note,  # noqa: E402
                            main_table, seed_table)
 from model import SECOND_BACKBONE  # noqa: E402
-from scoring import N_BOOT, SEED, evaluate  # noqa: E402
+from scoring import evaluate, row_weights  # noqa: E402
+from helpers.scoring import balanced_accuracy_multiclass  # noqa: E402
 
 FIG = HERE / "figures"
 BAND_COLOR = {"all": "#2a78d6", "rgb": "#eb6834"}
@@ -66,12 +67,14 @@ def leaf_size_control(device: torch.device) -> float:
     """
     meta, sizes = load_leaf_sizes()
     y = meta.variety.map({v: k for k, v in enumerate(VARIETIES)}).to_numpy()
-    P, _folds = row_cv(sizes, y, meta.row.to_numpy().astype(str))
-    return evaluate(y, P, device)["balanced_accuracy"]
+    rows = meta.row.to_numpy().astype(str)
+    P, _folds = row_cv(sizes, y, rows)
+    return evaluate(y, P, rows, device)["balanced_accuracy"]
 
 
-def paired_delta(y: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray, device: torch.device) -> list[float]:
-    """Balanced accuracy of A minus B with a 95% interval, on the same resampled leaves.
+def paired_delta(y: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray, rows: np.ndarray,
+                 device: torch.device) -> list[float]:
+    """Balanced accuracy of A minus B with a 95% interval, on the shared row × variety resamples.
 
     n: the number of leaves.
 
@@ -81,25 +84,20 @@ def paired_delta(y: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray, device: 
     :type pred_a: np.ndarray
     :param pred_b: Predictions of B, length n.
     :type pred_b: np.ndarray
+    :param rows: Field row per leaf, length n.
+    :type rows: np.ndarray
     :param device: Where the resampling runs.
     :type device: torch.device
     :return: Difference, lower bound, upper bound.
     :rtype: list[float]
     """
+    w = row_weights(y, rows, device)
     yt = torch.tensor(y, device=device)
-    g = torch.Generator(device=device).manual_seed(SEED)
-    idx = torch.randint(len(y), (N_BOOT, len(y)), generator=g, device=device)
-    y_boot = yt[idx]
-
-    def bacc(pred: torch.Tensor, truth: torch.Tensor) -> torch.Tensor:
-        """Mean recall over the 4 varieties, along the last dimension of truth."""
-        hit = pred == truth
-        return torch.stack([((truth == k) & hit).sum(-1) / (truth == k).sum(-1) for k in range(4)]).mean(0).double()
-
     a, b = torch.tensor(pred_a, device=device), torch.tensor(pred_b, device=device)
-    diff = bacc(a[idx], y_boot) - bacc(b[idx], y_boot)
+    k = len(VARIETIES)
+    diff = balanced_accuracy_multiclass(a, yt, k, w) - balanced_accuracy_multiclass(b, yt, k, w)
     q = torch.quantile(diff, torch.tensor([0.025, 0.975], device=device, dtype=torch.float64)).tolist()
-    return [(bacc(a, yt) - bacc(b, yt)).item(), *q]
+    return [(balanced_accuracy_multiclass(a, yt, k) - balanced_accuracy_multiclass(b, yt, k)).item(), *q]
 
 
 def score_run(run: str, y: np.ndarray, rows: np.ndarray, device: torch.device) -> dict:
@@ -119,8 +117,8 @@ def score_run(run: str, y: np.ndarray, rows: np.ndarray, device: torch.device) -
     :rtype: dict
     """
     ens, seeds = load_ensemble(run, len(y))
-    m = evaluate(y, ens, device)
-    m["seed_scores"] = [evaluate(y, p, device)["balanced_accuracy"] for p in seeds]
+    m = evaluate(y, ens, rows, device)
+    m["seed_scores"] = [evaluate(y, p, rows, device)["balanced_accuracy"] for p in seeds]
     m["per_row"] = {r: balanced_accuracy_score(y[rows == r], ens[rows == r].argmax(1)) for r in ROWS}
     m["median_best_epoch"] = float(np.median([np.load(RESULTS / run / f"seed{s}" / f"fold{k}.npz")["best_epoch"]
                                               for s in SEEDS for k in range(5)]))
@@ -151,21 +149,21 @@ def compute(device: torch.device, augment: bool = True) -> dict:
         d = load_features(LRConfig(b), device)
         y, rows = d["y"], d["rows"]
         P, folds = row_cv(d["X"], y, rows)
-        out["lr"][b] = {**evaluate(y, P, device), "per_row": {r: f["test_balanced_accuracy"] for r, f in folds.items()}}
+        out["lr"][b] = {**evaluate(y, P, rows, device), "per_row": {r: f["test_balanced_accuracy"] for r, f in folds.items()}}
         for name, (backbone, pooling) in runs.items():
             out["cnns"][name][b] = score_run(run_name(b, augment, backbone, pooling), y, rows, device)
     lr = out["lr"]
-    out["vs_lr"] = {name: {b: paired_delta(y, c[b]["pred"], lr[b]["pred"], device) for b in BANDS}
+    out["vs_lr"] = {name: {b: paired_delta(y, c[b]["pred"], lr[b]["pred"], rows, device) for b in BANDS}
                     for name, c in out["cnns"].items()}
-    out["deltas"] = {name: paired_delta(y, c["all"]["pred"], c["rgb"]["pred"], device) for name, c in out["cnns"].items()}
-    out["deltas"][BASELINE] = paired_delta(y, lr["all"]["pred"], lr["rgb"]["pred"], device)
+    out["deltas"] = {name: paired_delta(y, c["all"]["pred"], c["rgb"]["pred"], rows, device) for name, c in out["cnns"].items()}
+    out["deltas"][BASELINE] = paired_delta(y, lr["all"]["pred"], lr["rgb"]["pred"], rows, device)
     # Attention against mean pooling of the same backbone, on the same input and resampled leaves.
     out["pool_deltas"] = {}
     for backbone in dict.fromkeys(bb for bb, _ in runs.values()):   # in run order, so the table order is fixed
         att, mean = f"{LABEL[backbone]}, attention pool", f"{LABEL[backbone]}, mean pool"
         if att in runs and mean in runs:
             c = out["cnns"]
-            out["pool_deltas"][LABEL[backbone]] = {b: paired_delta(y, c[att][b]["pred"], c[mean][b]["pred"], device)
+            out["pool_deltas"][LABEL[backbone]] = {b: paired_delta(y, c[att][b]["pred"], c[mean][b]["pred"], rows, device)
                                                    for b in BANDS}
     return out
 

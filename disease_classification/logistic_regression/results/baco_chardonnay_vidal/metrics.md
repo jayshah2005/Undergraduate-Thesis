@@ -6,78 +6,38 @@ A leaf counts as positive (diseased) at P ≥ 0.5; 95% bootstrap intervals. Sens
 
 | model | bal. acc. [95% CI] | accuracy [95% CI] | sensitivity (recall) [95% CI] | specificity [95% CI] | precision [95% CI] | F1 [95% CI] |
 |---|---|---|---|---|---|---|
-| logistic regression | 0.572 [0.540, 0.604] | 0.596 [0.568, 0.624] | 0.494 [0.439, 0.549] | 0.649 [0.617, 0.682] | 0.421 [0.387, 0.457] | 0.455 [0.414, 0.495] |
+| logistic regression | 0.587 [0.557, 0.616] | 0.583 [0.557, 0.608] | 0.600 [0.549, 0.651] | 0.574 [0.546, 0.602] | 0.421 [0.395, 0.447] | 0.495 [0.460, 0.527] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
 | model | TP | FN | FP | TN |
 |---|---|---|---|---|
-| logistic regression | 126 | 129 | 173 | 320 |
+| logistic regression | 153 | 102 | 210 | 283 |
 
 Per variety:
 
 | model | variety | bal. acc. | accuracy | sensitivity (recall) | specificity | precision | F1 |
 |---|---|---|---|---|---|---|---|
-| logistic regression | Baco | 0.471 | 0.468 | 0.495 | 0.447 | 0.405 | 0.445 |
-| logistic regression | Chardonnay | 0.478 | 0.476 | 0.574 | 0.383 | 0.470 | 0.517 |
-| logistic regression | Vidal | 0.522 | 0.844 | 0.115 | 0.929 | 0.158 | 0.133 |
+| logistic regression | Baco | 0.437 | 0.415 | 0.598 | 0.277 | 0.386 | 0.469 |
+| logistic regression | Chardonnay | 0.474 | 0.468 | 0.721 | 0.227 | 0.471 | 0.570 |
+| logistic regression | Vidal | 0.499 | 0.864 | 0.038 | 0.960 | 0.100 | 0.056 |
 
 ## Red blotch (396 + / 352 −)
 
 | model | bal. acc. [95% CI] | accuracy [95% CI] | sensitivity (recall) [95% CI] | specificity [95% CI] | precision [95% CI] | F1 [95% CI] |
 |---|---|---|---|---|---|---|
-| logistic regression | 0.600 [0.573, 0.626] | 0.602 [0.575, 0.628] | 0.631 [0.596, 0.667] | 0.568 [0.531, 0.608] | 0.622 [0.597, 0.648] | 0.627 [0.599, 0.653] |
+| logistic regression | 0.580 [0.557, 0.605] | 0.582 [0.559, 0.607] | 0.609 [0.573, 0.646] | 0.551 [0.523, 0.582] | 0.604 [0.583, 0.627] | 0.606 [0.580, 0.634] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
 | model | TP | FN | FP | TN |
 |---|---|---|---|---|
-| logistic regression | 250 | 146 | 152 | 200 |
+| logistic regression | 241 | 155 | 158 | 194 |
 
 Per variety:
 
 | model | variety | bal. acc. | accuracy | sensitivity (recall) | specificity | precision | F1 |
 |---|---|---|---|---|---|---|---|
-| logistic regression | Baco | 0.462 | 0.472 | 0.570 | 0.354 | 0.513 | 0.540 |
-| logistic regression | Chardonnay | 0.542 | 0.648 | 0.182 | 0.901 | 0.500 | 0.267 |
-| logistic regression | Vidal | 0.545 | 0.684 | 0.908 | 0.182 | 0.714 | 0.799 |
-
-## Both diseases (116 + / 632 −)
-
-| model | bal. acc. [95% CI] | accuracy [95% CI] | sensitivity (recall) [95% CI] | specificity [95% CI] | precision [95% CI] | F1 [95% CI] |
-|---|---|---|---|---|---|---|
-| logistic regression | 0.522 [0.481, 0.563] | 0.662 [0.632, 0.693] | 0.319 [0.250, 0.397] | 0.725 [0.693, 0.756] | 0.175 [0.138, 0.215] | 0.226 [0.178, 0.276] |
-
-Confusion counts (positive = called diseased at P ≥ 0.5):
-
-| model | TP | FN | FP | TN |
-|---|---|---|---|---|
-| logistic regression | 37 | 79 | 174 | 458 |
-
-Per variety:
-
-| model | variety | bal. acc. | accuracy | sensitivity (recall) | specificity | precision | F1 |
-|---|---|---|---|---|---|---|---|
-| logistic regression | Baco | 0.458 | 0.504 | 0.377 | 0.538 | 0.182 | 0.245 |
-| logistic regression | Chardonnay | 0.515 | 0.620 | 0.340 | 0.690 | 0.215 | 0.264 |
-| logistic regression | Vidal | 0.454 | 0.860 | 0.000 | 0.907 | 0.000 | 0.000 |
-
-## Any disease vs healthy (535 + / 213 −)
-
-| model | bal. acc. [95% CI] | accuracy [95% CI] | sensitivity (recall) [95% CI] | specificity [95% CI] | precision [95% CI] | F1 [95% CI] |
-|---|---|---|---|---|---|---|
-| logistic regression | 0.518 [0.485, 0.553] | 0.541 [0.509, 0.572] | 0.572 [0.535, 0.609] | 0.465 [0.408, 0.526] | 0.729 [0.704, 0.753] | 0.641 [0.610, 0.670] |
-
-Confusion counts (positive = called diseased at P ≥ 0.5):
-
-| model | TP | FN | FP | TN |
-|---|---|---|---|---|
-| logistic regression | 306 | 229 | 114 | 99 |
-
-Per variety:
-
-| model | variety | bal. acc. | accuracy | sensitivity (recall) | specificity | precision | F1 |
-|---|---|---|---|---|---|---|---|
-| logistic regression | Baco | 0.438 | 0.552 | 0.656 | 0.220 | 0.729 | 0.691 |
-| logistic regression | Chardonnay | 0.495 | 0.460 | 0.369 | 0.622 | 0.634 | 0.466 |
-| logistic regression | Vidal | 0.565 | 0.612 | 0.661 | 0.469 | 0.783 | 0.717 |
+| logistic regression | Baco | 0.452 | 0.472 | 0.674 | 0.230 | 0.511 | 0.581 |
+| logistic regression | Chardonnay | 0.521 | 0.652 | 0.080 | 0.963 | 0.538 | 0.139 |
+| logistic regression | Vidal | 0.491 | 0.620 | 0.827 | 0.156 | 0.688 | 0.751 |

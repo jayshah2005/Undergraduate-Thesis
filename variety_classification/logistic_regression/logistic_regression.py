@@ -13,19 +13,17 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
-from sklearn.linear_model import LogisticRegression  # noqa: E402
-from sklearn.metrics import balanced_accuracy_score, log_loss  # noqa: E402
-from sklearn.pipeline import make_pipeline  # noqa: E402
-from sklearn.preprocessing import StandardScaler  # noqa: E402
+from sklearn.metrics import balanced_accuracy_score  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 for p in (ROOT, HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
-from helpers.data import load_dataset  # noqa: E402
+from helpers.data import RGB_NM, load_dataset, load_leaf_features, rgb_band_indices  # noqa: E402
+from helpers.logreg import C_GRID, fit_with_validation, make_model  # noqa: E402,F401  (the shared recipe)
 from helpers.log import get_logger  # noqa: E402
-from helpers.pca_common import VARIETIES, get_device, np_, snv  # noqa: E402
+from helpers.pca_common import VARIETIES, get_device  # noqa: E402
 from helpers.report_tables import (BANDS_TITLE, BASELINE, METRICS_INTRO, cell, column_table, fold_note,  # noqa: E402
                            main_table, table)
 from scoring import evaluate  # noqa: E402
@@ -33,14 +31,12 @@ from scoring import evaluate  # noqa: E402
 RES, FIG = HERE / "results", HERE / "figures"
 ROWS = ["R1", "R2", "R3", "R4", "R5"]
 BANDS = ("all", "rgb")
-RGB_NM = {"R": 640.0, "G": 550.0, "B": 460.0}  # the pseudo-RGB picks of the earlier ResNet runs
-C_GRID = (1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10.0, 100.0, 1000.0)
 INK, MUTED = "#0b0b0b", "#52514e"
 
 
 @dataclass(frozen=True)
 class Config:
-    """Which numbers describe a leaf; SNV is always applied, over the bands kept."""
+    """Which numbers describe a leaf: the leaf's average of its normalized pixels over the bands kept."""
 
     bands: str = "all"    # "all": every band; "rgb": the bands nearest 640 / 550 / 460 nm
 
@@ -51,53 +47,31 @@ class Config:
 
 
 def rgb_bands(wavelengths: np.ndarray) -> np.ndarray:
-    """Find the band closest to each of the three RGB centres.
-
-    :param wavelengths: Band centres in nm, shape (204,).
-    :type wavelengths: np.ndarray
-    :return: Band indices in R, G, B order, length 3.
-    :rtype: np.ndarray
-    """
-    return np.array([int(np.abs(wavelengths - nm).argmin()) for nm in RGB_NM.values()])
+    """Index of the band nearest each RGB centre (helpers.data.RGB_NM), in R, G, B order."""
+    return rgb_band_indices(wavelengths)
 
 
 def load_features(cfg: Config, device: torch.device) -> dict:
     """Build the feature table of one configuration.
 
-    SNV centres and scales each leaf over its own bands, which removes brightness. Bands
-    are picked before SNV, so under rgb it works over the three values only.
+    Each leaf's average of its normalized pixels (helpers.data.load_leaf_features): per-pixel SNV over
+    204 bands, or per-pixel normalized rgb over the 3 RGB bands, computed exactly as the CNN input is.
 
     n: the number of leaves (998). d: the number of features (204 or 3).
 
-    :param cfg: Which bands to use.
+    :param cfg: Which bands.
     :type cfg: Config
-    :param device: Where SNV runs.
+    :param device: Unused (kept so every model's loader takes the same arguments).
     :type device: torch.device
     :return: X (n, d) float64, y (n,) with codes in VARIETIES order, rows (n,), meta (n rows),
         wavelengths of the kept bands (d,).
     :rtype: dict
     """
-    meta, wavelengths, means, _glint = load_dataset()
+    meta, wavelengths, _means, _glint = load_dataset()
     keep = rgb_bands(wavelengths) if cfg.bands == "rgb" else np.arange(len(wavelengths))
-    # Why NumPy afterwards: scikit-learn fits the model.
-    X = np_(snv(torch.tensor(means[:, keep], dtype=torch.float64, device=device)))
     y = meta.variety.map({v: k for k, v in enumerate(VARIETIES)}).to_numpy()
-    return {"X": X, "y": y, "rows": meta.row.to_numpy(), "meta": meta, "wavelengths": wavelengths[keep]}
-
-
-def make_model(C: float):
-    """Standardise each band, then fit multinomial logistic regression.
-
-    Why scikit-learn: it is the model behind the earlier reported score, and its lbfgs
-    solver has no drop-in PyTorch equivalent. The scaler is inside the pipeline so it is
-    only ever fit on the training leaves of the current split.
-
-    :param C: Inverse L2 regularisation; small C = a simpler model.
-    :type C: float
-    :return: Unfitted scikit-learn pipeline.
-    :rtype: sklearn.pipeline.Pipeline
-    """
-    return make_pipeline(StandardScaler(), LogisticRegression(C=C, solver="lbfgs", max_iter=10_000))
+    return {"X": load_leaf_features(cfg.bands), "y": y, "rows": meta.row.to_numpy(), "meta": meta,
+            "wavelengths": wavelengths[keep]}
 
 
 def fold_split(rows: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -118,31 +92,6 @@ def fold_split(rows: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray, np.nda
     idx = np.arange(len(rows))
     test, val = rows == ROWS[k], rows == ROWS[(k + 1) % 5]
     return idx[~test & ~val], idx[val], idx[test]
-
-
-def fit_with_validation(X: np.ndarray, y: np.ndarray, tr: np.ndarray, va: np.ndarray) -> tuple[float, object]:
-    """Fit one model per C on the training rows and keep the one with the lowest validation log-loss.
-
-    The validation row only picks C and never fits the model, as it only picks the checkpoint
-    in the CNN.
-
-    n: the number of leaves. d: the number of features.
-
-    :param X: Features, shape (n, d).
-    :type X: np.ndarray
-    :param y: Variety codes, length n.
-    :type y: np.ndarray
-    :param tr: Training leaves.
-    :type tr: np.ndarray
-    :param va: Validation leaves.
-    :type va: np.ndarray
-    :return: The best C and its fitted model.
-    :rtype: tuple
-    """
-    fits = {C: make_model(C).fit(X[tr], y[tr]) for C in C_GRID}
-    losses = {C: log_loss(y[va], m.predict_proba(X[va]), labels=range(len(VARIETIES))) for C, m in fits.items()}
-    best = min(losses, key=losses.get)
-    return best, fits[best]
 
 
 def row_cv(X: np.ndarray, y: np.ndarray, rows: np.ndarray) -> tuple[np.ndarray, dict]:
@@ -238,7 +187,8 @@ def final_report_markdown(name: str, m: dict) -> str:
     """
     folds = m["folds"].values()
     lines = [f"# Variety: logistic regression, {BANDS_TITLE[name]}", "",
-             "Leaf mean spectrum → SNV → logistic regression, C chosen on the validation row. Balanced accuracy = "
+             "Leaf average of its per-pixel SNV spectra (RGB: per-pixel normalized rgb) → class-balanced logistic "
+             "regression, C chosen on the validation row. Balanced accuracy = "
              "the mean of the 4 recalls (chance 0.25), with a 95% bootstrap interval. Every metric: `metrics.md`.", "",
              f"## {BANDS_TITLE[name]}", ""]
     lines += main_table([{"name": BASELINE, "bal_acc": m["balanced_accuracy"], "ci95": m["balanced_accuracy_ci95"],
@@ -286,7 +236,8 @@ def metrics_markdown(name: str, m: dict) -> str:
     :rtype: str
     """
     lines = [f"# Variety: logistic regression, {BANDS_TITLE[name]}: all metrics", "",
-             "Leaf mean spectrum → SNV → logistic regression; 4 varieties, a leaf is called its most likely one; "
+             "Leaf average of its per-pixel SNV spectra (RGB: normalized rgb) → class-balanced logistic regression; "
+             "4 varieties, a leaf is called its most likely one; "
              "95% bootstrap intervals. " + METRICS_INTRO, "", f"## {BANDS_TITLE[name]}", ""]
     return "\n".join(lines + metrics_section({BASELINE: m}) + [""])
 
@@ -322,7 +273,7 @@ def main() -> None:
     device = get_device()
     d = load_features(cfg, device)
     P, folds = row_cv(d["X"], d["y"], d["rows"])
-    m = evaluate(d["y"], P, device)
+    m = evaluate(d["y"], P, d["rows"], device)
     write_outputs(cfg, m, folds)
     log.info("%s bands: balanced accuracy %.3f | results/%s/{final_report,metrics}.md", cfg.name,
              m["balanced_accuracy"], cfg.name)

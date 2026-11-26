@@ -1,12 +1,12 @@
 # Disease: logistic regression on Chardonnay, full spectrum
 
-Leaf mean spectrum → SNV → logistic regression, trained on the 3 training rows (the validation row is used only by the CNN). Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% bootstrap interval. Every metric: `metrics.md`.
+Leaf average of its per-pixel SNV spectra (RGB: per-pixel normalized rgb) → class-balanced logistic regression on the 3 training rows, C chosen on the validation row. Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% bootstrap interval. Every metric: `metrics.md`.
 
 ## Leafroll (122 + / 128 −)
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.537 [0.477, 0.596] | — | 0.483 | 0.511 | 0.556 | 0.325 | 0.572 |
+| logistic regression | 0.533 [0.473, 0.593] | — | 0.481 | 0.511 | 0.653 | 0.375 | 0.624 |
 
 Fold k tests on row Rk of Chardonnay; the next row (R1 after R5) is validation and the other 3 train.
 
@@ -14,22 +14,6 @@ Fold k tests on row Rk of Chardonnay; the next row (R1 after R5) is validation a
 
 | model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
 |---|---|---|---|---|---|---|---|
-| logistic regression | 0.605 [0.547, 0.662] | — | 0.529 | 0.525 | 0.686 | 0.620 | 0.525 |
-
-Fold k tests on row Rk of Chardonnay; the next row (R1 after R5) is validation and the other 3 train.
-
-## Both diseases (50 + / 200 −)
-
-| model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
-|---|---|---|---|---|---|---|---|
-| logistic regression | 0.522 [0.458, 0.593] | — | 0.359 | 0.517 | 0.594 | 0.424 | 0.446 |
-
-Fold k tests on row Rk of Chardonnay; the next row (R1 after R5) is validation and the other 3 train.
-
-## Any disease vs healthy (160 + / 90 −)
-
-| model | bal. acc. [95% CI] | Δ vs logistic regression [95% CI] | Fold 1 (R1) | Fold 2 (R2) | Fold 3 (R3) | Fold 4 (R4) | Fold 5 (R5) |
-|---|---|---|---|---|---|---|---|
-| logistic regression | 0.562 [0.499, 0.626] | — | 0.591 | 0.471 | 0.632 | 0.540 | 0.554 |
+| logistic regression | 0.597 [0.537, 0.656] | — | 0.494 | 0.450 | 0.790 | 0.507 | 0.700 |
 
 Fold k tests on row Rk of Chardonnay; the next row (R1 after R5) is validation and the other 3 train.

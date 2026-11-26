@@ -27,7 +27,7 @@ from helpers.backbones import BACKBONES, DEFAULT_BACKBONE, masked_norms  # noqa:
 from helpers.data import load_cubes  # noqa: E402
 from helpers.log import get_logger  # noqa: E402
 from logistic_regression import (BANDS, POOLS, ROWS, TASKS, band_indices, check_task, fold_of,  # noqa: E402
-                                 fold_split, load_meta, load_means, results_name, run_baselines, task_labels,
+                                 fold_split, load_meta, load_features, results_name, run_baselines, task_labels,
                                  usable_leaves, varieties_of)
 from model import LeafCNN  # noqa: E402
 from helpers.pca_common import get_device, np_  # noqa: E402
@@ -72,7 +72,7 @@ def load(variety: str, bands: str, device: torch.device, backbone: str = DEFAULT
     :type bands: str
     :param device: GPU or CPU.
     :type device: torch.device
-    :return: meta, X (n, d, S, S) float16, mask (n, 1, S, S), S, means (n, d), norm (the pixel normalization
+    :return: meta, X (n, d, S, S) float16, mask (n, 1, S, S), S, features (n, d), norm (the pixel normalization
         of these bands, PIXEL_NORM[bands]).
     :rtype: dict
     """
@@ -81,7 +81,7 @@ def load(variety: str, bands: str, device: torch.device, backbone: str = DEFAULT
     if bands != "all":
         X = X[:, torch.as_tensor(band_indices(bands), device=device)]   # a copy; the 204-band canvas is freed
     return {"meta": load_meta(variety), "X": X, "mask": mask, "side": side,
-            "means": load_means(variety, device, bands), "norm": PIXEL_NORM[bands]}
+            "features": load_features(variety, device, bands), "norm": PIXEL_NORM[bands]}
 
 
 def invariance_check(d: dict, backbone: str = DEFAULT_BACKBONE) -> dict:
@@ -329,7 +329,7 @@ def run(variety: str, bands: str, tasks: list[str], root: Path, log, cfg: TrainC
         raise RuntimeError(f"padding leaks into the prediction: {chk}")
 
     # Baseline: logistic regression on the mean spectrum, from ../logistic_regression (seconds, so not saved)
-    base = run_baselines(d["meta"], d["means"], tasks)
+    base = run_baselines(d["meta"], d["features"], tasks)
 
     root.mkdir(parents=True, exist_ok=True)
     (root / "config.json").write_text(json.dumps({**asdict(cfg), "seeds": list(seeds), "variety": variety,

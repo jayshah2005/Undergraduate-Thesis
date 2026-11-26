@@ -24,7 +24,7 @@ from helpers.backbones import BACKBONES, DEFAULT_BACKBONE, LABEL, WITHOUT_BLOCK_
 from helpers.data import load_dataset  # noqa: E402
 from helpers.log import get_logger  # noqa: E402
 from logistic_regression import (BANDS, POOLS, TASKS, bands_label, fold_of, is_pooled,  # noqa: E402
-                                 load_meta, load_means, rgb_bands, row_groups, run_baselines, task_labels,
+                                 load_meta, load_features, rgb_bands, row_groups, run_baselines, task_labels,
                                  usable_leaves, variety_label, varieties_of, TASK_NAME, metrics_section)
 from helpers.pca_common import get_device  # noqa: E402
 from run_experiments import DEFAULT_POOL, SEEDS, load_cube_list, results_root, run_dir  # noqa: E402
@@ -113,7 +113,7 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
         "epochs": {model label: list of best epochs}, "arms": {model label: (backbone, pooling)}}}.
     :rtype: dict
     """
-    base = run_baselines(meta, load_means(variety, device, bands), tasks_in(root))
+    base = run_baselines(meta, load_features(variety, device, bands), tasks_in(root))
     fold = fold_of(meta)
     group = row_groups(meta)
     variety = meta.variety.to_numpy()   # from here on: variety per leaf

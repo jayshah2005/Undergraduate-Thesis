@@ -12,6 +12,8 @@ ROOT = HELPERS.parent
 H5_PATH = ROOT / "vine_hsi.h5"
 CACHE_DIR = ROOT / "cache"
 MEANS_PATH = CACHE_DIR / "leaf_means.npz"
+FEATURES_PATH = CACHE_DIR / "leaf_features.npz"
+RGB_NM = {"R": 640.0, "G": 550.0, "B": 460.0}  # pseudo-RGB: the band nearest each centre
 META_PATH = CACHE_DIR / "meta.parquet"
 
 
@@ -259,3 +261,68 @@ def load_dataset() -> tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray]:
     meta, wavelengths, X, glint = _build()
     _save(meta, wavelengths, X, glint)
     return meta, wavelengths, X, glint
+
+
+def rgb_band_indices(wavelengths: np.ndarray) -> np.ndarray:
+    """Index of the band nearest each RGB centre (RGB_NM), in R, G, B order.
+
+    :param wavelengths: Band centres in nm, shape (204,).
+    :type wavelengths: np.ndarray
+    :return: Band indices, length 3.
+    :rtype: np.ndarray
+    """
+    return np.array([int(np.abs(wavelengths - nm).argmin()) for nm in RGB_NM.values()])
+
+
+def _build_features(meta: pd.DataFrame, wavelengths: np.ndarray) -> dict:
+    """Average each leaf's normalized pixels, exactly as the CNN input is normalized.
+
+    Each cube is stored in float16, the leaf mask is taken from all 204 bands, and the pixels are
+    normalized by helpers.cnn_common.normalize_pixels, as pad_to_canvas and the CNNs' preprocess do;
+    the average over the leaf's pixels is taken in float64. The CNN's pooling leaves out the leaf
+    margin, this average does not. Slow (~1 min) only when the cache is missing.
+
+    n: the number of leaves.
+
+    :return: {"snv": (n, 204) float64, "chromaticity": (n, 3) float64}.
+    """
+    import torch
+    from .cnn_common import normalize_pixels
+    rgb = torch.as_tensor(rgb_band_indices(wavelengths))
+    out = {"snv": [], "chromaticity": []}
+    with h5py.File(H5_PATH, "r") as h5:
+        for path in meta.path:
+            cube = np.nan_to_num(np.asarray(h5[path]["cube"], dtype=np.float32), nan=0.0).transpose(1, 0, 2)
+            x = torch.from_numpy(np.ascontiguousarray(cube)).half()[None]   # (1, 204, H, W), as on the canvas
+            m = (x != 0).any(dim=1, keepdim=True).float()
+            leaf = m[0, 0].bool()
+            for norm, xb in (("snv", x), ("chromaticity", x[:, rgb])):
+                z = normalize_pixels(xb, m, norm)[0]                        # (d, H, W) float32
+                out[norm].append(z[:, leaf].double().mean(1).numpy())
+    return {k: np.stack(v) for k, v in out.items()}
+
+
+def load_leaf_features(bands: str) -> np.ndarray:
+    """Logistic-regression features: each leaf's average of its normalized pixels, in load_dataset order.
+
+    bands="all": per-pixel SNV over 204 bands; bands="rgb": per-pixel normalized rgb over the 3 RGB
+    bands (helpers.cnn_common.PIXEL_NORM). Cached in cache/leaf_features.npz, rebuilt when the leaf
+    table or the labels change.
+
+    n: the number of leaves (998).
+
+    :param bands: "all" or "rgb".
+    :type bands: str
+    :return: Features, shape (n, 204) or (n, 3) float64.
+    :rtype: np.ndarray
+    """
+    from .cnn_common import PIXEL_NORM
+    meta, wavelengths, _means, _glint = load_dataset()
+    if FEATURES_PATH.exists():
+        d = np.load(FEATURES_PATH, allow_pickle=True)
+        if list(d["path"]) == list(meta.path) and np.array_equal(d["labels"], meta[["red_blotch", "leafroll3"]].to_numpy()):
+            return d[PIXEL_NORM[bands]]
+    f = _build_features(meta, wavelengths)
+    CACHE_DIR.mkdir(exist_ok=True)
+    np.savez(FEATURES_PATH, path=np.array(meta.path), labels=meta[["red_blotch", "leafroll3"]].to_numpy(), **f)
+    return f[PIXEL_NORM[bands]]

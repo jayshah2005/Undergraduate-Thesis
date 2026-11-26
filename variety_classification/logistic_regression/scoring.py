@@ -6,8 +6,7 @@ import torch
 from sklearn.metrics import balanced_accuracy_score, confusion_matrix, recall_score, roc_auc_score
 
 from helpers.pca_common import VARIETIES
-
-N_BOOT, SEED = 2000, 0
+from helpers.scoring import BOOT_SEED as SEED, N_BOOT, bootstrap_weights, macro_auc  # noqa: F401
 
 
 def confusion_metrics(cm: torch.Tensor) -> dict:
@@ -33,33 +32,55 @@ def confusion_metrics(cm: torch.Tensor) -> dict:
             "accuracy": tp.sum(-1) / cm.sum((-2, -1)), "balanced_accuracy": sens.mean(-1), "macro_f1": f1.mean(-1)}
 
 
-def bootstrap_metrics(y: np.ndarray, pred: np.ndarray, device: torch.device) -> dict:
-    """95% intervals of the overall metrics, by resampling leaves with replacement.
+def row_weights(y: np.ndarray, rows: np.ndarray, device: torch.device) -> torch.Tensor:
+    """The shared resampling (helpers.scoring.bootstrap_weights): leaves drawn within each row × variety cell.
 
-    B: the number of resamples. n: the number of leaves.
+    Every model scored on the same leaves gets the same resamples, so differences are paired.
+
+    n: the number of leaves. B: the number of resamples.
+
+    :param y: True variety codes, length n.
+    :type y: np.ndarray
+    :param rows: Field row per leaf ("R1".."R5"), length n.
+    :type rows: np.ndarray
+    :param device: Where the resampling runs.
+    :type device: torch.device
+    :return: Resampling counts, shape (B, n) float64.
+    :rtype: torch.Tensor
+    """
+    group = torch.tensor([int(str(r).lstrip("R")) for r in rows], device=device)
+    return bootstrap_weights(torch.tensor(y, device=device), group)
+
+
+def bootstrap_metrics(y: np.ndarray, pred: np.ndarray, P: np.ndarray, rows: np.ndarray, device: torch.device) -> dict:
+    """95% intervals of the overall metrics over the shared row × variety resamples.
+
+    B: the number of resamples. n: the number of leaves. K: the number of varieties.
 
     :param y: True variety codes, length n.
     :type y: np.ndarray
     :param pred: Predicted variety codes, length n.
     :type pred: np.ndarray
+    :param P: Class probabilities (n, K), for the AUC.
+    :type P: np.ndarray
+    :param rows: Field row per leaf, length n.
+    :type rows: np.ndarray
     :param device: Where the resampling runs.
     :type device: torch.device
-    :return: {metric: [lower, upper]} for accuracy, balanced_accuracy and macro_f1.
+    :return: {metric: [lower, upper]} for accuracy, balanced_accuracy, macro_f1 and auc_macro.
     :rtype: dict
     """
     k = len(VARIETIES)
-    g = torch.Generator(device=device).manual_seed(SEED)
+    w = row_weights(y, rows, device)                                            # (B, n)
     yt, pt = torch.tensor(y, device=device), torch.tensor(pred, device=device)
-    idx = torch.randint(len(y), (N_BOOT, len(y)), generator=g, device=device)  # (B, n)
-    cell = yt[idx] * k + pt[idx]                                               # confusion cell of each draw
-    cm = torch.zeros(N_BOOT, k * k, device=device, dtype=torch.float64)
-    cm.scatter_add_(1, cell, torch.ones_like(cell, dtype=torch.float64))
-    m = confusion_metrics(cm.view(N_BOOT, k, k))
+    onehot = torch.nn.functional.one_hot(yt * k + pt, k * k).double()           # (n, K*K) confusion cell of each leaf
+    m = confusion_metrics((w @ onehot).view(-1, k, k))
+    m["auc_macro"] = macro_auc(torch.tensor(P, dtype=torch.float64, device=device), yt, w)
     q = torch.tensor([0.025, 0.975], device=device, dtype=torch.float64)
-    return {name: torch.quantile(m[name], q).tolist() for name in ("accuracy", "balanced_accuracy", "macro_f1")}
+    return {name: torch.quantile(m[name], q).tolist() for name in ("accuracy", "balanced_accuracy", "macro_f1", "auc_macro")}
 
 
-def evaluate(y: np.ndarray, P: np.ndarray, device: torch.device) -> dict:
+def evaluate(y: np.ndarray, P: np.ndarray, rows: np.ndarray, device: torch.device) -> dict:
     """Score out-of-fold probabilities.
 
     Why scikit-learn: standard metric code, run once per model on 998 leaves.
@@ -70,9 +91,11 @@ def evaluate(y: np.ndarray, P: np.ndarray, device: torch.device) -> dict:
     :type y: np.ndarray
     :param P: Out-of-fold probabilities, shape (n, 4).
     :type P: np.ndarray
+    :param rows: Field row per leaf (the resampling keeps each row × variety cell's size), length n.
+    :type rows: np.ndarray
     :param device: Where the bootstrap runs.
     :type device: torch.device
-    :return: pred (n,); balanced accuracy, accuracy and macro F1 with CIs; per-variety recall,
+    :return: pred (n,); balanced accuracy, accuracy, macro F1 and macro AUC with CIs; per-variety recall,
         per_class (sensitivity, specificity, precision, F1) and ROC AUC; confusion (4, 4).
     :rtype: dict
     """
@@ -80,7 +103,7 @@ def evaluate(y: np.ndarray, P: np.ndarray, device: torch.device) -> dict:
     labels = range(len(VARIETIES))
     cm = confusion_matrix(y, pred, labels=labels)
     m = {k: v.tolist() for k, v in confusion_metrics(torch.tensor(cm)).items()}
-    ci = bootstrap_metrics(y, pred, device)
+    ci = bootstrap_metrics(y, pred, P, rows, device)
     return {
         "pred": pred,
         "balanced_accuracy": balanced_accuracy_score(y, pred),
@@ -92,5 +115,8 @@ def evaluate(y: np.ndarray, P: np.ndarray, device: torch.device) -> dict:
         "per_class": {k: m[k] for k in ("sensitivity", "specificity", "precision", "f1")},
         # One-vs-rest AUC: how well P(this variety) ranks its leaves above the other three.
         "auc_ovr": [roc_auc_score((y == k).astype(int), P[:, k]) for k in labels],
+        # Their mean: how well the probabilities rank the leaves, without a cut-off.
+        "auc_macro": float(np.mean([roc_auc_score((y == k).astype(int), P[:, k]) for k in labels])),
+        "auc_macro_ci95": ci["auc_macro"],
         "confusion": cm,
     }

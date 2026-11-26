@@ -6,46 +6,22 @@ A leaf counts as positive (diseased) at P ≥ 0.5; 95% bootstrap intervals. Sens
 
 | model | bal. acc. [95% CI] | accuracy [95% CI] | sensitivity (recall) [95% CI] | specificity [95% CI] | precision [95% CI] | F1 [95% CI] |
 |---|---|---|---|---|---|---|
-| logistic regression | 0.524 [0.464, 0.587] | 0.528 [0.468, 0.589] | 0.495 [0.402, 0.589] | 0.553 [0.475, 0.638] | 0.457 [0.393, 0.523] | 0.475 [0.400, 0.546] |
+| logistic regression | 0.438 [0.385, 0.493] | 0.448 [0.395, 0.504] | 0.364 [0.290, 0.439] | 0.511 [0.433, 0.589] | 0.361 [0.301, 0.423] | 0.363 [0.296, 0.428] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
 | model | TP | FN | FP | TN |
 |---|---|---|---|---|
-| logistic regression | 53 | 54 | 63 | 78 |
+| logistic regression | 39 | 68 | 69 | 72 |
 
 ## Red blotch (135 + / 113 −)
 
 | model | bal. acc. [95% CI] | accuracy [95% CI] | sensitivity (recall) [95% CI] | specificity [95% CI] | precision [95% CI] | F1 [95% CI] |
 |---|---|---|---|---|---|---|
-| logistic regression | 0.506 [0.445, 0.565] | 0.508 [0.448, 0.569] | 0.533 [0.452, 0.615] | 0.478 [0.389, 0.566] | 0.550 [0.492, 0.604] | 0.541 [0.474, 0.604] |
+| logistic regression | 0.548 [0.489, 0.601] | 0.556 [0.500, 0.609] | 0.644 [0.570, 0.726] | 0.451 [0.363, 0.531] | 0.584 [0.535, 0.629] | 0.613 [0.553, 0.664] |
 
 Confusion counts (positive = called diseased at P ≥ 0.5):
 
 | model | TP | FN | FP | TN |
 |---|---|---|---|---|
-| logistic regression | 72 | 63 | 59 | 54 |
-
-## Both diseases (53 + / 195 −)
-
-| model | bal. acc. [95% CI] | accuracy [95% CI] | sensitivity (recall) [95% CI] | specificity [95% CI] | precision [95% CI] | F1 [95% CI] |
-|---|---|---|---|---|---|---|
-| logistic regression | 0.470 [0.401, 0.536] | 0.577 [0.520, 0.633] | 0.283 [0.170, 0.396] | 0.656 [0.595, 0.723] | 0.183 [0.114, 0.250] | 0.222 [0.138, 0.305] |
-
-Confusion counts (positive = called diseased at P ≥ 0.5):
-
-| model | TP | FN | FP | TN |
-|---|---|---|---|---|
-| logistic regression | 15 | 38 | 67 | 128 |
-
-## Any disease vs healthy (189 + / 59 −)
-
-| model | bal. acc. [95% CI] | accuracy [95% CI] | sensitivity (recall) [95% CI] | specificity [95% CI] | precision [95% CI] | F1 [95% CI] |
-|---|---|---|---|---|---|---|
-| logistic regression | 0.509 [0.444, 0.573] | 0.589 [0.532, 0.645] | 0.661 [0.593, 0.725] | 0.356 [0.237, 0.458] | 0.767 [0.731, 0.802] | 0.710 [0.661, 0.756] |
-
-Confusion counts (positive = called diseased at P ≥ 0.5):
-
-| model | TP | FN | FP | TN |
-|---|---|---|---|---|
-| logistic regression | 125 | 64 | 38 | 21 |
+| logistic regression | 87 | 48 | 62 | 51 |

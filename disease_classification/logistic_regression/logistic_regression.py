@@ -13,9 +13,10 @@ ROOT = HERE.parents[1]
 for p in (ROOT, HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
-from helpers.data import load_dataset  # noqa: E402
+from helpers.data import load_dataset, load_leaf_features, rgb_band_indices  # noqa: E402
+from helpers.logreg import fit_with_validation  # noqa: E402  (the recipe shared with variety)
 from helpers.log import get_logger  # noqa: E402
-from helpers.pca_common import VARIETIES, get_device, snv  # noqa: E402
+from helpers.pca_common import VARIETIES, get_device  # noqa: E402
 from helpers.report_tables import BASELINE, METRICS_INTRO, cell, column_table, fold_note, main_table, table  # noqa: E402
 from scoring import (METRICS, all_metrics, balanced_accuracy, bootstrap_weights,  # noqa: E402
                      per_variety_metrics, summary)
@@ -35,9 +36,9 @@ TASKS = {
 }
 TASK_NAME = {"leafroll": "Leafroll", "red_blotch": "Red blotch", "both": "Both diseases",
              "any": "Any disease vs healthy"}  # section titles in reports
+REPORTED_TASKS = ("leafroll", "red_blotch")  # the two diseases, each scored on its own
 MIN_PER_CLASS = 5  # a variety with fewer positive or negative leaves sits out that task
 BANDS = ("all", "rgb")  # full spectrum (204 bands), or only the 3 bands nearest RGB
-RGB_NM = {"R": 640.0, "G": 550.0, "B": 460.0}  # the same picks as the variety models
 
 
 # --------------------------------------------------------------------------
@@ -79,14 +80,8 @@ def load_meta(variety: str):
 
 
 def rgb_bands(wavelengths: np.ndarray) -> np.ndarray:
-    """Find the band closest to each of the three RGB centres.
-
-    :param wavelengths: Band centres in nm, shape (204,).
-    :type wavelengths: np.ndarray
-    :return: Band indices in R, G, B order, length 3.
-    :rtype: np.ndarray
-    """
-    return np.array([int(np.abs(wavelengths - nm).argmin()) for nm in RGB_NM.values()])
+    """Index of the band nearest each RGB centre (helpers.data.RGB_NM), in R, G, B order."""
+    return rgb_band_indices(wavelengths)
 
 
 def band_indices(bands: str) -> np.ndarray:
@@ -101,10 +96,14 @@ def band_indices(bands: str) -> np.ndarray:
     return rgb_bands(wavelengths) if bands == "rgb" else np.arange(len(wavelengths))
 
 
-def load_means(variety: str, device: torch.device, bands: str = "all") -> torch.Tensor:
-    """Load the leaf-mean spectra of a --variety choice, in the order of :func:`load_meta`.
+def load_features(variety: str, device: torch.device, bands: str = "all") -> torch.Tensor:
+    """The logistic-regression features of a --variety choice, in the order of :func:`load_meta`.
 
-    n: leaves of the chosen varieties. d: bands kept (204 or 3).
+    Each leaf's average of its normalized pixels (helpers.data.load_leaf_features): per-pixel SNV
+    over 204 bands, or per-pixel normalized rgb over the 3 RGB bands, computed exactly as the CNN
+    input is, so the baseline and the CNN see the same data.
+
+    n: leaves of the chosen varieties. d: features (204 or 3).
 
     :param variety: A variety name, or a key of POOLS.
     :type variety: str
@@ -112,14 +111,12 @@ def load_means(variety: str, device: torch.device, bands: str = "all") -> torch.
     :type device: torch.device
     :param bands: A value of BANDS.
     :type bands: str
-    :return: Leaf-mean reflectance, shape (n, d) float64.
+    :return: Features, shape (n, d) float64.
     :rtype: torch.Tensor
     """
-    meta, _w, means, _g = load_dataset()
+    meta = load_dataset()[0]
     keep = meta.variety.isin(varieties_of(variety)).to_numpy()
-    # Row-major like the unsliced array: a column-major copy makes SNV sum in another order, and the
-    # pooled fit turns that 1e-15 change into visible score shifts.
-    return torch.tensor(np.ascontiguousarray(means[keep][:, band_indices(bands)]), dtype=torch.float64, device=device)
+    return torch.tensor(np.ascontiguousarray(load_leaf_features(bands)[keep]), dtype=torch.float64, device=device)
 
 
 def task_labels(meta, task: str) -> np.ndarray:
@@ -190,8 +187,8 @@ def row_groups(meta) -> np.ndarray:
 def fold_split(fold: np.ndarray, k: int, keep: np.ndarray | None = None) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Test = row k, validation = row k+1, train = the other 3 rows.
 
-    The CNN stops early on the validation row. The baseline has no setting to choose, so it
-    leaves that row unused and trains on the same 3 rows as the CNN.
+    The CNN stops early on the validation row; the baseline chooses its C there. Both train on the
+    same 3 rows.
 
     :param fold: Fold per leaf from :func:`fold_of`, length n.
     :type fold: np.ndarray
@@ -232,44 +229,40 @@ def check_task(meta, fold: np.ndarray, task: str) -> None:
 # --------------------------------------------------------------------------
 # The baseline
 # --------------------------------------------------------------------------
-def baseline_fold(means: torch.Tensor, y: np.ndarray, train_idx: np.ndarray,
+def baseline_fold(features: torch.Tensor, y: np.ndarray, train_idx: np.ndarray, val_idx: np.ndarray,
                   test_idx: np.ndarray) -> np.ndarray:
-    """Logistic regression on the SNV leaf-mean spectrum (the earlier baseline).
+    """The shared logistic-regression recipe (helpers.logreg) on one fold.
 
-    Why scikit-learn: it is the model the archived per-variety baseline used
-    (StandardScaler + LogisticRegression, class_weight="balanced"). SNV runs over the bands
-    kept, so with RGB it works over 3 values only, as in the variety models.
+    Class-balanced logistic regression on the leaf features, fitted on the training rows, with C chosen
+    by the validation row's class-balanced log-loss, as for variety.
 
-    :param means: Leaf-mean reflectance, shape (n, d).
-    :type means: torch.Tensor
+    :param features: Leaf features from :func:`load_features`, shape (n, d).
+    :type features: torch.Tensor
     :param y: 0/1 labels, length n.
     :type y: np.ndarray
     :param train_idx: Training leaves.
     :type train_idx: np.ndarray
+    :param val_idx: Validation leaves (pick C only).
+    :type val_idx: np.ndarray
     :param test_idx: Test leaves.
     :type test_idx: np.ndarray
     :return: P(positive) for the test leaves, length n_test.
     :rtype: np.ndarray
     """
-    from sklearn.linear_model import LogisticRegression
-    from sklearn.pipeline import make_pipeline
-    from sklearn.preprocessing import StandardScaler
-
-    Z = snv(means.double()).cpu().numpy()
-    clf = make_pipeline(StandardScaler(), LogisticRegression(class_weight="balanced", max_iter=5000))
-    clf.fit(Z[train_idx], y[train_idx])
-    return clf.predict_proba(Z[test_idx])[:, 1]
+    X = features.double().cpu().numpy()
+    _C, model = fit_with_validation(X, y, train_idx, val_idx)
+    return model.predict_proba(X[test_idx])[:, 1]
 
 
-def run_baselines(meta, means: torch.Tensor, tasks: list[str]) -> dict:
+def run_baselines(meta, features: torch.Tensor, tasks: list[str]) -> dict:
     """Score the baseline on every row, fitting on the same 3 rows the CNN trains on.
 
     n: leaves of the chosen varieties.
 
     :param meta: Leaf table from :func:`load_meta`, n rows.
     :type meta: pandas.DataFrame
-    :param means: Leaf-mean reflectance from :func:`load_means`, shape (n, d).
-    :type means: torch.Tensor
+    :param features: Leaf features from :func:`load_features`, shape (n, d).
+    :type features: torch.Tensor
     :param tasks: Keys of TASKS.
     :type tasks: list[str]
     :return: {task: P(positive) per leaf, length n; 0 for leaves the task leaves out}.
@@ -282,8 +275,8 @@ def run_baselines(meta, means: torch.Tensor, tasks: list[str]) -> dict:
         keep = usable_leaves(meta, y)
         p = np.zeros(len(y))
         for k in range(5):
-            tr, _va, te = fold_split(fold, k, keep)
-            p[te] = baseline_fold(means, y, tr, te)
+            tr, va, te = fold_split(fold, k, keep)
+            p[te] = baseline_fold(features, y, tr, va, te)
         out[task] = p
     return out
 
@@ -359,8 +352,8 @@ def final_report_markdown(variety: str, bands: str, scores: dict) -> str:
     :rtype: str
     """
     lines = [f"# Disease: logistic regression on {variety_label(variety)}, {bands_label(bands)}", "",
-             "Leaf mean spectrum → SNV → logistic regression, trained on the 3 training rows (the validation row is "
-             "used only by the CNN). Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% "
+             "Leaf average of its per-pixel SNV spectra (RGB: per-pixel normalized rgb) → class-balanced logistic "
+             "regression on the 3 training rows, C chosen on the validation row. Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% "
              "bootstrap interval. Every metric: `metrics.md`.", ""]
     for task, s in scores.items():
         lines += [f"## {TASK_NAME[task]} ({s['n_pos']} + / {s['n_neg']} −)", ""]
@@ -435,7 +428,8 @@ def main() -> None:
     device = get_device()
 
     meta = load_meta(args.variety)
-    base = run_baselines(meta, load_means(args.variety, device, args.bands), runnable_tasks(meta))
+    tasks = [t for t in runnable_tasks(meta) if t in REPORTED_TASKS]
+    base = run_baselines(meta, load_features(args.variety, device, args.bands), tasks)
     scores = score_baselines(meta, base, device)
 
     res = RES / results_name(args.variety, args.bands)
