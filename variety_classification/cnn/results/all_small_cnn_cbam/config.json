@@ -1,0 +1,23 @@
+{
+  "bands": "all",
+  "training": {
+    "batch": 8,
+    "lr": 0.001,
+    "weight_decay": 0.01,
+    "max_epochs": 80,
+    "patience": 15,
+    "dropout": 0.5,
+    "augment": true,
+    "backbone": "small_cnn_cbam",
+    "pooling": "mean"
+  },
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "canvas": 212,
+  "pixel_norm": "snv"
+}

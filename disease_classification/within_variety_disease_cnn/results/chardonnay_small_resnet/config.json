@@ -10,9 +10,12 @@
   "seeds": [
     0,
     1,
-    2
+    2,
+    3,
+    4
   ],
   "variety": "Chardonnay",
   "bands": "all",
-  "canvas": 212
+  "canvas": 212,
+  "pixel_norm": "snv"
 }

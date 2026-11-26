@@ -1,0 +1,7 @@
+all_attention_small_resnet_eca: 998 leaves, 204 bands, canvas 212
+seed 0: 5 folds, median best epoch 22, 321 s
+seed 1: 5 folds, median best epoch 17, 310 s
+seed 2: 5 folds, median best epoch 23, 353 s
+seed 3: 5 folds, median best epoch 33, 335 s
+seed 4: 5 folds, median best epoch 51, 438 s
+[done] results/all_attention_small_resnet_eca

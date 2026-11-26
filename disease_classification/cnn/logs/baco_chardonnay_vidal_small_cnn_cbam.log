@@ -1,6 +1,6 @@
 baco_chardonnay_vidal_small_cnn_cbam: 748 leaves, 204 bands, canvas 212
 Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
-red_blotch (396 + / 352 −): baseline bal. acc. 0.600; R1 0.58 R2 0.62 R3 0.66 R4 0.52 R5 0.60; Baco 0.46 Chardonnay 0.54 Vidal 0.54
-red_blotch | mean pooling: bal. acc. 0.623 (+0.023 vs baseline); seeds 0.59 0.61 0.61; R1 0.59 R2 0.63 R3 0.64 R4 0.57 R5 0.63; Baco 0.53 Chardonnay 0.56 Vidal 0.55; median best epoch 6; 565 s
-red_blotch | attention pooling: bal. acc. 0.589 (-0.011 vs baseline); seeds 0.58 0.56 0.62; R1 0.54 R2 0.58 R3 0.63 R4 0.60 R5 0.63; Baco 0.46 Chardonnay 0.55 Vidal 0.53; median best epoch 12; 683 s
+red_blotch (396 + / 352 −): baseline bal. acc. 0.580; R1 0.58 R2 0.57 R3 0.66 R4 0.50 R5 0.61; Baco 0.45 Chardonnay 0.52 Vidal 0.49
+red_blotch | mean pooling: bal. acc. 0.607 (+0.028 vs baseline); seeds 0.59 0.61 0.61 0.54 0.58; R1 0.55 R2 0.62 R3 0.62 R4 0.56 R5 0.65; Baco 0.53 Chardonnay 0.55 Vidal 0.53; median best epoch 8; 264 s
+red_blotch | attention pooling: bal. acc. 0.590 (+0.010 vs baseline); seeds 0.58 0.56 0.62 0.57 0.59; R1 0.57 R2 0.58 R3 0.62 R4 0.56 R5 0.64; Baco 0.44 Chardonnay 0.55 Vidal 0.54; median best epoch 9; 199 s
 [done] results/baco_chardonnay_vidal_small_cnn_cbam. For intervals, tables and figures: report.py --variety baco_chardonnay_vidal

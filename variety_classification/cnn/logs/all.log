@@ -1,0 +1,7 @@
+all: 998 leaves, 204 bands, canvas 212
+seed 0: 5 folds, median best epoch 16, 171 s
+seed 1: 5 folds, median best epoch 14, 202 s
+seed 2: 5 folds, median best epoch 55, 254 s
+seed 3: 5 folds, median best epoch 28, 172 s
+seed 4: 5 folds, median best epoch 25, 183 s
+[done] results/all

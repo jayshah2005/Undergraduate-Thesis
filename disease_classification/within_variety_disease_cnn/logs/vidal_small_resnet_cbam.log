@@ -1,9 +1,9 @@
 vidal_small_resnet_cbam: 250 leaves, 204 bands, canvas 212
 Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
-leafroll (26 + / 224 −): baseline bal. acc. 0.557; R1 0.53 R2 0.49 R3 0.47 R4 0.59 R5 0.41
-leafroll | mean pooling: bal. acc. 0.451 (-0.105 vs baseline); seeds 0.46 0.48 0.52; R1 0.51 R2 0.56 R3 0.54 R4 0.50 R5 0.51; median best epoch 5; 344 s
-leafroll | attention pooling: bal. acc. 0.453 (-0.103 vs baseline); seeds 0.43 0.46 0.43; R1 0.50 R2 0.47 R3 0.51 R4 0.56 R5 0.50; median best epoch 2; 305 s
-red_blotch (173 + / 77 −): baseline bal. acc. 0.547; R1 0.45 R2 0.63 R3 0.60 R4 0.54 R5 0.55
-red_blotch | mean pooling: bal. acc. 0.521 (-0.026 vs baseline); seeds 0.49 0.52 0.50; R1 0.71 R2 0.56 R3 0.50 R4 0.54 R5 0.51; median best epoch 9; 377 s
-red_blotch | attention pooling: bal. acc. 0.509 (-0.038 vs baseline); seeds 0.50 0.50 0.51; R1 0.62 R2 0.50 R3 0.51 R4 0.57 R5 0.56; median best epoch 7; 351 s
+leafroll (26 + / 224 −): baseline bal. acc. 0.457; R1 0.41 R2 0.53 R3 0.26 R4 0.59 R5 0.46
+leafroll | mean pooling: bal. acc. 0.417 (-0.040 vs baseline); seeds 0.46 0.48 0.52 0.44 0.39; R1 0.49 R2 0.39 R3 0.61 R4 0.50 R5 0.50; median best epoch 6; 108 s
+leafroll | attention pooling: bal. acc. 0.437 (-0.020 vs baseline); seeds 0.43 0.46 0.43 0.44 0.44; R1 0.50 R2 0.34 R3 0.60 R4 0.55 R5 0.50; median best epoch 4; 109 s
+red_blotch (173 + / 77 −): baseline bal. acc. 0.538; R1 0.58 R2 0.62 R3 0.59 R4 0.49 R5 0.51
+red_blotch | mean pooling: bal. acc. 0.528 (-0.009 vs baseline); seeds 0.49 0.52 0.50 0.51 0.56; R1 0.70 R2 0.54 R3 0.47 R4 0.53 R5 0.59; median best epoch 9; 118 s
+red_blotch | attention pooling: bal. acc. 0.510 (-0.028 vs baseline); seeds 0.50 0.50 0.51 0.50 0.47; R1 0.63 R2 0.50 R3 0.50 R4 0.57 R5 0.57; median best epoch 5; 95 s
 [done] results/vidal_small_resnet_cbam. For intervals, tables and figures: report_within_variety.py

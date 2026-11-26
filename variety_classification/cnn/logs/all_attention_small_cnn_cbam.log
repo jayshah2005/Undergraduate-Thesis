@@ -1,0 +1,7 @@
+all_attention_small_cnn_cbam: 998 leaves, 204 bands, canvas 212
+seed 0: 5 folds, median best epoch 35, 271 s
+seed 1: 5 folds, median best epoch 14, 176 s
+seed 2: 5 folds, median best epoch 21, 226 s
+seed 3: 5 folds, median best epoch 19, 203 s
+seed 4: 5 folds, median best epoch 21, 234 s
+[done] results/all_attention_small_cnn_cbam
