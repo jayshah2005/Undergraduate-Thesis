@@ -52,6 +52,44 @@ class MaskedBatchNorm2d(nn.Module):
         return (y * self.weight[None, :, None, None] + self.bias[None, :, None, None]) * mask
 
 
+# Pixel normalization per band choice: SNV over 204 bands; over the 3 RGB bands SNV would leave one number per
+# pixel (mean 0 and SD 1 over 3 values), so RGB uses normalized rgb instead, which keeps two colour coordinates.
+PIXEL_NORM = {"all": "snv", "rgb": "chromaticity"}
+
+
+def normalize_pixels(x: torch.Tensor, m: torch.Tensor, norm: str) -> torch.Tensor:
+    """Normalize each pixel's spectrum over its own bands, removing brightness; the background stays 0.
+
+    norm="snv": subtract the pixel's mean over its bands and divide by their SD (standard normal variate).
+    norm="chromaticity": divide each band by the pixel's sum over its bands, normalized rgb as in
+    Gevers & Smeulders 1999, "Color-based object recognition", Pattern Recognition 32: invariant to
+    intensity, keeping 2 of the 3 colour coordinates. Every leaf pixel's R+G+B here is at least 0.04.
+
+    The same function prepares the CNN input and the logistic-regression leaf features, so both see
+    the same data.
+
+    B: batch size (or leaves). d: bands. S: canvas side (any trailing shape works).
+
+    :param x: Reflectance, shape (B, d, ...); float16 values are computed in float32.
+    :type x: torch.Tensor
+    :param m: 1 on leaf pixels, shape (B, 1, ...).
+    :type m: torch.Tensor
+    :param norm: A value of PIXEL_NORM.
+    :type norm: str
+    :return: Normalized x, float32 (or x's dtype if wider), 0 off the leaf.
+    :rtype: torch.Tensor
+    """
+    x = x.float() if x.dtype in (torch.float16, torch.bfloat16) else x
+    if norm == "snv":
+        # Background pixels have SD 0, so clamp and re-mask afterwards.
+        mu = x.mean(1, keepdim=True)
+        sd = x.std(1, keepdim=True, unbiased=False).clamp_min(1e-6)
+        return (x - mu) / sd * m
+    if norm == "chromaticity":
+        return x / x.sum(1, keepdim=True).clamp_min(1e-6) * m
+    raise ValueError(f"unknown pixel normalization {norm!r}; choose from {sorted(set(PIXEL_NORM.values()))}")
+
+
 def min_pool(mask: torch.Tensor, k: int, stride: int, pad: int = 0) -> torch.Tensor:
     """Erode a 0/1 mask: a position stays 1 only if its whole k×k window is 1.
 

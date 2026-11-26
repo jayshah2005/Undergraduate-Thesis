@@ -24,7 +24,7 @@ for p in (ROOT, HERE.parent / "logistic_regression", HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 from helpers.backbones import BACKBONES, DEFAULT_BACKBONE, masked_norms  # noqa: E402
-from helpers.cnn_common import augment, pad_to_canvas  # noqa: E402
+from helpers.cnn_common import PIXEL_NORM, augment, normalize_pixels, pad_to_canvas  # noqa: E402
 from helpers.data import load_cubes, load_dataset  # noqa: E402
 from helpers.log import get_logger  # noqa: E402
 from logistic_regression import BANDS, ROWS, fold_split, rgb_bands  # noqa: E402, F401  (ROWS: re-exported for report.py)
@@ -87,8 +87,8 @@ def load(device: torch.device) -> dict:
     return {"meta": meta, "X": X, "mask": mask, "y": y, "rgb": rgb_bands(wavelengths), "side": side}
 
 
-def preprocess(x: torch.Tensor, m: torch.Tensor) -> torch.Tensor:
-    """Apply SNV to each pixel over its own bands, which removes brightness; the background stays 0.
+def preprocess(x: torch.Tensor, m: torch.Tensor, norm: str) -> torch.Tensor:
+    """Normalize each pixel over its own bands (helpers.cnn_common.normalize_pixels), as in the disease CNN.
 
     B: batch size. d: input bands. S: canvas side.
 
@@ -96,25 +96,25 @@ def preprocess(x: torch.Tensor, m: torch.Tensor) -> torch.Tensor:
     :type x: torch.Tensor
     :param m: Leaf mask, shape (B, 1, S, S).
     :type m: torch.Tensor
-    :return: Input, shape (B, d, S, S) float32.
+    :param norm: "snv" (204 bands) or "chromaticity" (RGB): PIXEL_NORM[bands].
+    :type norm: str
+    :return: Input, shape (B, d, S, S) float32, 0 off the leaf.
     :rtype: torch.Tensor
     """
-    x = x.float()
-    # Background pixels have SD 0, so clamp and re-mask afterwards.
-    return (x - x.mean(1, keepdim=True)) / x.std(1, keepdim=True, unbiased=False).clamp_min(1e-6) * m
+    return normalize_pixels(x, m, norm)
 
 
-def _logits(model, X, mask, idx, bands, batch: int = 16) -> torch.Tensor:
+def _logits(model, X, mask, idx, bands, norm: str, batch: int = 16) -> torch.Tensor:
     """Logits for the given leaves (eval mode)."""
     out = []
     with torch.no_grad():
         for s in range(0, len(idx), batch):
             j = idx[s:s + batch]
-            out.append(model(preprocess(X[j][:, bands], mask[j]), mask[j]))
+            out.append(model(preprocess(X[j][:, bands], mask[j], norm), mask[j]))
     return torch.cat(out)
 
 
-def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed: int) -> dict:
+def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed: int, norm: str) -> dict:
     """Train one network, keep the weights with the lowest validation loss, and score the test row.
 
     k: the number of test leaves.
@@ -129,6 +129,8 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
     :type split: tuple
     :param seed: Seed for weights, batch order and augmentation.
     :type seed: int
+    :param norm: Pixel normalization, PIXEL_NORM[bands].
+    :type norm: str
     :return: test probabilities (k, 4), validation probabilities (from the kept weights), best epoch,
         epochs run, per-epoch train and validation losses.
     :rtype: dict
@@ -148,7 +150,7 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
         total = 0.0
         for s in range(0, len(order), tc.batch):
             j = order[s:s + tc.batch]
-            x, m = preprocess(X[j][:, bands], mask[j]), mask[j]
+            x, m = preprocess(X[j][:, bands], mask[j], norm), mask[j]
             if tc.augment:
                 x, m = augment(x, m, g)
             loss = F.cross_entropy(model(x, m), y[j])
@@ -159,7 +161,7 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
         hist_tr.append(total / len(tr))
 
         model.eval()
-        vloss = F.cross_entropy(_logits(model, X, mask, va, bands), y[va]).item()
+        vloss = F.cross_entropy(_logits(model, X, mask, va, bands, norm), y[va]).item()
         hist_va.append(vloss)
         if vloss < best[0]:
             best = (vloss, epoch, copy.deepcopy(model.state_dict()))
@@ -168,20 +170,23 @@ def train_fold(d: dict, bands: torch.Tensor, tc: TrainConfig, split: tuple, seed
 
     model.load_state_dict(best[2])
     model.eval()
-    prob = torch.softmax(_logits(model, X, mask, te, bands), 1)
+    prob = torch.softmax(_logits(model, X, mask, te, bands, norm), 1)
     # Kept so backbones can be compared without the test rows.
-    val_prob = torch.softmax(_logits(model, X, mask, va, bands), 1)
+    val_prob = torch.softmax(_logits(model, X, mask, va, bands, norm), 1)
     return {"prob": prob, "val_prob": val_prob, "best_epoch": best[1], "epochs": len(hist_tr),
             "train_loss": hist_tr, "val_loss": hist_va}
 
 
-def invariance_check(d: dict, bands: torch.Tensor, backbone: str = DEFAULT_BACKBONE, pooling: str = "mean") -> float:
+def invariance_check(d: dict, bands: torch.Tensor, norm: str, backbone: str = DEFAULT_BACKBONE,
+                    pooling: str = "mean") -> float:
     """Check that padding and position don't change a leaf's score (untrained network, eval mode).
 
     :param d: Output of :func:`load`.
     :type d: dict
     :param bands: Indices of the input bands, length d.
     :type bands: torch.Tensor
+    :param norm: Pixel normalization, PIXEL_NORM[bands].
+    :type norm: str
     :param backbone: A key of BACKBONES.
     :type backbone: str
     :param pooling: "mean" or "attention".
@@ -191,11 +196,14 @@ def invariance_check(d: dict, bands: torch.Tensor, backbone: str = DEFAULT_BACKB
     """
     torch.manual_seed(0)
     m = d["mask"][:4]
-    x = preprocess(d["X"][:4][:, bands], m)
+    # In float64, as the disease check: it tests the masking, not float32 rounding.
+    x = preprocess(d["X"][:4][:, bands], m, norm).double()
+    m = m.double()
     model = VarietyCNN(len(bands), backbone=backbone, pooling=pooling).to(x.device).eval()
     for bn in masked_norms(model):   # non-trivial running statistics, so eval mode is exercised
         bn.running_mean.normal_()
         bn.running_var.uniform_(0.5, 2.0)
+    model = model.double()
     with torch.no_grad():
         base = model(x, m)
         return max((model(F.pad(x, p), F.pad(m, p)) - base).abs().max().item()
@@ -209,7 +217,7 @@ def run_name(bands: str, augment: bool = True, backbone: str = DEFAULT_BACKBONE,
             + ("" if backbone == DEFAULT_BACKBONE else f"_{backbone}"))
 
 
-def check_settings(root: Path, tc: TrainConfig) -> None:
+def check_settings(root: Path, tc: TrainConfig, norm: str) -> None:
     """Refuse to resume into a folder whose runs used other training settings.
 
     :param root: Results folder of this run.
@@ -219,8 +227,13 @@ def check_settings(root: Path, tc: TrainConfig) -> None:
     :raises RuntimeError: if root/config.json lists different training settings.
     """
     if (root / "config.json").exists():
+        saved = json.loads((root / "config.json").read_text())
+        # Runs made before the normalization was recorded all used SNV.
+        if saved.get("pixel_norm", "snv") != norm:
+            raise RuntimeError(f"{root} holds runs with {saved.get('pixel_norm', 'snv')} pixel normalization, "
+                               f"not {norm}; move or delete it first")
         # A setting added after a run was made took its default value in that run.
-        old = {**asdict(TrainConfig()), **json.loads((root / "config.json").read_text())["training"]}
+        old = {**asdict(TrainConfig()), **saved["training"]}
         if old != asdict(tc):
             raise RuntimeError(f"{root} holds runs made with {old}, not {asdict(tc)}; move or delete it first")
 
@@ -241,7 +254,8 @@ def run(cfg: Config, tc: TrainConfig, root: Path, log, seeds: tuple = SEEDS, fol
     :param folds: Test folds to train.
     :type folds: Iterable[int]
     """
-    check_settings(root, tc)
+    norm = PIXEL_NORM[cfg.bands]
+    check_settings(root, tc, norm)
 
     torch.backends.cudnn.benchmark = False
     # warn_only: max-pool backward has no deterministic CUDA kernel; everything else is.
@@ -252,13 +266,13 @@ def run(cfg: Config, tc: TrainConfig, root: Path, log, seeds: tuple = SEEDS, fol
     bands = torch.as_tensor(d["rgb"] if cfg.bands == "rgb" else np.arange(d["X"].shape[1]), device=device)
     rows = d["meta"].row.to_numpy().astype(str)
     log.info("%s: %d leaves, %d bands, canvas %d", root.name, len(rows), len(bands), d["side"])
-    change = invariance_check(d, bands, tc.backbone, tc.pooling)
+    change = invariance_check(d, bands, norm, tc.backbone, tc.pooling)
     if change > 1e-3:
         raise RuntimeError(f"padding leaks into the prediction: {change}")
 
     root.mkdir(parents=True, exist_ok=True)
     (root / "config.json").write_text(json.dumps({**asdict(cfg), "training": asdict(tc), "seeds": list(seeds),
-                                                  "canvas": d["side"]}, indent=2))
+                                                  "canvas": d["side"], "pixel_norm": norm}, indent=2))
     for seed in seeds:
         out = root / f"seed{seed}"
         out.mkdir(exist_ok=True)
@@ -268,7 +282,7 @@ def run(cfg: Config, tc: TrainConfig, root: Path, log, seeds: tuple = SEEDS, fol
             if f.exists():
                 continue
             split = fold_split(rows, k)
-            r = train_fold(d, bands, tc, split, 100 * seed + k)
+            r = train_fold(d, bands, tc, split, 100 * seed + k, norm)
             np.savez(f, test_idx=split[2], prob=np_(r["prob"]), val_idx=split[1], val_prob=np_(r["val_prob"]),
                      best_epoch=r["best_epoch"], epochs=r["epochs"],
                      train_loss=np.array(r["train_loss"]), val_loss=np.array(r["val_loss"]))

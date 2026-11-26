@@ -32,7 +32,7 @@ from logistic_regression import (BANDS, POOLS, ROWS, TASKS, band_indices, check_
 from model import LeafCNN  # noqa: E402
 from helpers.pca_common import get_device, np_  # noqa: E402
 from scoring import summary  # noqa: E402
-from helpers.cnn_common import pad_to_canvas  # noqa: E402
+from helpers.cnn_common import PIXEL_NORM, pad_to_canvas  # noqa: E402
 from train import DEFAULT_POOLINGS, POOLINGS, TrainConfig, canvas_for, preprocess, train_fold  # noqa: E402
 
 DEFAULT_POOL = "all"
@@ -72,7 +72,8 @@ def load(variety: str, bands: str, device: torch.device, backbone: str = DEFAULT
     :type bands: str
     :param device: GPU or CPU.
     :type device: torch.device
-    :return: meta, X (n, d, S, S) float16, mask (n, 1, S, S), S, means (n, d).
+    :return: meta, X (n, d, S, S) float16, mask (n, 1, S, S), S, means (n, d), norm (the pixel normalization
+        of these bands, PIXEL_NORM[bands]).
     :rtype: dict
     """
     stride = BACKBONES[backbone].stride
@@ -80,7 +81,7 @@ def load(variety: str, bands: str, device: torch.device, backbone: str = DEFAULT
     if bands != "all":
         X = X[:, torch.as_tensor(band_indices(bands), device=device)]   # a copy; the 204-band canvas is freed
     return {"meta": load_meta(variety), "X": X, "mask": mask, "side": side,
-            "means": load_means(variety, device, bands)}
+            "means": load_means(variety, device, bands), "norm": PIXEL_NORM[bands]}
 
 
 def invariance_check(d: dict, backbone: str = DEFAULT_BACKBONE) -> dict:
@@ -100,7 +101,7 @@ def invariance_check(d: dict, backbone: str = DEFAULT_BACKBONE) -> dict:
     """
     torch.manual_seed(0)
     X, mask = d["X"][:4].float(), d["mask"][:4]
-    x = preprocess(X, mask)
+    x = preprocess(X, mask, d["norm"])
     out = {"max_logit_diff": 0.0, "background_zero": bool((x * (1 - mask)).abs().max() == 0)}
     # In float64, so the check tests the masking and not rounding: convolutions run in TF32 by default,
     # which moved a deep network's logits by ~0.002 between canvas sizes (float64: ~1e-15).
@@ -147,7 +148,7 @@ def log_name(root: Path, poolings) -> str:
     return root.name + ("" if tuple(poolings) == DEFAULT_POOLINGS else "_" + "_".join(poolings))
 
 
-def check_settings(root: Path, cfg: TrainConfig) -> None:
+def check_settings(root: Path, cfg: TrainConfig, norm: str) -> None:
     """Refuse to resume into a folder whose runs used other training settings.
 
     Fold files already on disk are skipped, so without this check a rerun with
@@ -157,16 +158,23 @@ def check_settings(root: Path, cfg: TrainConfig) -> None:
     :type root: Path
     :param cfg: Training settings of this run.
     :type cfg: TrainConfig
-    :raises RuntimeError: if root/config.json lists different training settings or another canvas.
+    :param norm: Pixel normalization of this run (PIXEL_NORM[bands]).
+    :type norm: str
+    :raises RuntimeError: if root/config.json lists different training settings, another canvas or another
+        pixel normalization.
     """
     if not (root / "config.json").exists():
         return
     old = json.loads((root / "config.json").read_text())
+    # Runs made before the normalization was recorded all used SNV.
+    if old.get("pixel_norm", "snv") != norm:
+        raise RuntimeError(f"{root} holds runs with {old.get('pixel_norm', 'snv')} pixel normalization, not {norm}; "
+                           "move or delete that folder first")
     canvas = canvas_for(cfg.backbone)
     if old.get("canvas") != canvas:
         raise RuntimeError(f"{root} holds runs on a {old.get('canvas')} px canvas, not {canvas}; "
                            "move or delete that folder first")
-    not_training = ("seeds", "variety", "bands", "canvas")
+    not_training = ("seeds", "variety", "bands", "canvas", "pixel_norm")
     # A setting added after a run was made took its default value in that run.
     old_settings = {**asdict(TrainConfig()), **{k: v for k, v in old.items() if k not in not_training}}
     if old_settings != asdict(cfg):
@@ -204,7 +212,7 @@ def run_cnn(d: dict, fold_ids: np.ndarray, task: str, pooling: str, seed: int, f
     y = torch.tensor(labels, dtype=torch.float32, device=d["X"].device)
     split = fold_split(fold_ids, fold, usable_leaves(d["meta"], labels))
     t0 = time.time()
-    r = train_fold(d["X"], d["mask"], y, split, pooling, 100 * seed + fold, cfg)
+    r = train_fold(d["X"], d["mask"], y, split, pooling, 100 * seed + fold, cfg, d["norm"])
     return {
         "test_idx": split[2], "prob": np_(r["prob"]), "attention": np_(r["attention"]).astype(np.float16),
         "val_idx": split[1], "val_prob": np_(r["val_prob"]),
@@ -300,7 +308,7 @@ def run(variety: str, bands: str, tasks: list[str], root: Path, log, cfg: TrainC
     fold_ids = fold_of(meta)   # every leaf's fold 0-4 is its field row
     for task in tasks:
         check_task(meta, fold_ids, task)
-    check_settings(root, cfg)   # a folder only resumes runs made with the same settings
+    check_settings(root, cfg, PIXEL_NORM[bands])   # a folder only resumes runs made with the same settings
 
     # Set up GPU
     torch.backends.cudnn.benchmark = False
@@ -325,7 +333,8 @@ def run(variety: str, bands: str, tasks: list[str], root: Path, log, cfg: TrainC
 
     root.mkdir(parents=True, exist_ok=True)
     (root / "config.json").write_text(json.dumps({**asdict(cfg), "seeds": list(seeds), "variety": variety,
-                                                  "bands": bands, "canvas": d["side"]}, indent=2))
+                                                  "bands": bands, "canvas": d["side"], "pixel_norm": d["norm"]},
+                                                 indent=2))
 
     varieties = meta.variety.to_numpy()
 

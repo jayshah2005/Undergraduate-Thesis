@@ -15,7 +15,7 @@ for p in (ROOT, HERE):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 from helpers.backbones import BACKBONES, DEFAULT_BACKBONE  # noqa: E402
-from helpers.cnn_common import augment  # noqa: E402
+from helpers.cnn_common import augment, normalize_pixels  # noqa: E402
 from model import LeafCNN  # noqa: E402
 
 # Every pooling LeafPool offers, and the two a run trains unless --pooling says otherwise.
@@ -50,11 +50,8 @@ class TrainConfig:
     backbone: str = DEFAULT_BACKBONE   # a key of helpers.backbones.BACKBONES; the same settings for every backbone
 
 
-def preprocess(x: torch.Tensor, m: torch.Tensor) -> torch.Tensor:
-    """Apply SNV to each pixel over its own d bands, as in the variety CNN; background stays 0.
-
-    SNV centres and scales each pixel's spectrum, which removes brightness (light,
-    leaf angle) and keeps spectral shape.
+def preprocess(x: torch.Tensor, m: torch.Tensor, norm: str) -> torch.Tensor:
+    """Normalize each pixel over its own d bands (helpers.cnn_common.normalize_pixels), as in the variety CNN.
 
     B: batch size. d: input bands (204, or 3 for RGB). S: canvas side.
 
@@ -62,23 +59,21 @@ def preprocess(x: torch.Tensor, m: torch.Tensor) -> torch.Tensor:
     :type x: torch.Tensor
     :param m: Leaf mask, shape (B, 1, S, S).
     :type m: torch.Tensor
-    :return: Input, shape (B, d, S, S) float32.
+    :param norm: "snv" (204 bands) or "chromaticity" (RGB): PIXEL_NORM[bands].
+    :type norm: str
+    :return: Input, shape (B, d, S, S) float32, 0 off the leaf.
     :rtype: torch.Tensor
     """
-    x = x.float()
-    # Background pixels have SD 0, so clamp and re-mask afterwards.
-    mu = x.mean(1, keepdim=True)
-    sd = x.std(1, keepdim=True, unbiased=False).clamp_min(1e-6)
-    return (x - mu) / sd * m
+    return normalize_pixels(x, m, norm)
 
 
-def _predict(model, X, mask, idx, batch: int = 16):
+def _predict(model, X, mask, idx, norm: str, batch: int = 16):
     """Logits and pooling weights for the given leaves (eval mode)."""
     logits, att = [], []
     with torch.no_grad():
         for s in range(0, len(idx), batch):
             j = idx[s:s + batch]
-            x = preprocess(X[j], mask[j])
+            x = preprocess(X[j], mask[j], norm)
             lo, a = model(x, mask[j])
             logits.append(lo)
             att.append(a)
@@ -86,7 +81,7 @@ def _predict(model, X, mask, idx, batch: int = 16):
 
 
 def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, pooling: str, seed: int,
-               cfg: TrainConfig) -> dict:
+               cfg: TrainConfig, norm: str) -> dict:
     """Train one CNN on one fold split and score its validation and test leaves.
 
     Early stopping uses the validation row's loss (the same class-weighted binary
@@ -109,6 +104,8 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, pool
     :type seed: int
     :param cfg: Training settings.
     :type cfg: TrainConfig
+    :param norm: Pixel normalization, PIXEL_NORM[bands] ("snv" or "chromaticity").
+    :type norm: str
     :return: test probabilities (n_test,), test pooling weights (n_test, S4, S4), validation
         probabilities (n_val,) from the kept weights, best epoch, epochs run, per-epoch train
         and validation losses.
@@ -134,7 +131,7 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, pool
         total = 0.0
         for s in range(0, len(order), cfg.batch):
             j = order[s:s + cfg.batch]
-            x, m = preprocess(X[j], mask[j]), mask[j]
+            x, m = preprocess(X[j], mask[j], norm), mask[j]
             if cfg.augment:
                 x, m = augment(x, m, g)
             logit, _ = model(x, m)
@@ -146,7 +143,7 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, pool
         hist_tr.append(total / len(tr))
 
         model.eval()
-        lv, _ = _predict(model, X, mask, va)
+        lv, _ = _predict(model, X, mask, va, norm)
         vloss = F.binary_cross_entropy_with_logits(lv, y[va], pos_weight=pos_weight).item()
         hist_va.append(vloss)
         if vloss < best[0]:
@@ -156,8 +153,8 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, pool
 
     model.load_state_dict(best[2])
     model.eval()
-    lt, att = _predict(model, X, mask, te)
-    lv, _ = _predict(model, X, mask, va)   # kept so backbones can be compared without the test rows
+    lt, att = _predict(model, X, mask, te, norm)
+    lv, _ = _predict(model, X, mask, va, norm)   # kept so backbones can be compared without the test rows
     return {
         "prob": torch.sigmoid(lt),
         "attention": att,

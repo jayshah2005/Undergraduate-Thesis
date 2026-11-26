@@ -4,7 +4,8 @@ from __future__ import annotations
 import numpy as np
 import torch
 
-N_BOOT, BOOT_SEED = 2000, 0
+# One resampling for every report (helpers/scoring.py): within each variety × row × class cell.
+from helpers.scoring import BOOT_SEED, N_BOOT, auc, bootstrap_weights  # noqa: E402,F401
 METRICS = ("bal_acc", "accuracy", "sensitivity", "specificity", "precision", "f1")  # metrics.md columns
 THRESHOLD = 0.5  # a leaf is called positive when P(positive) >= 0.5; fixed in advance, never tuned
 
@@ -85,36 +86,6 @@ def all_metrics(p: torch.Tensor, y: torch.Tensor, w: torch.Tensor) -> dict:
     for k in METRICS:
         out[k + "_ci95"] = torch.nanquantile(boot[k], q).tolist()   # nan: precision with no positive call
     return out
-
-
-def bootstrap_weights(y: torch.Tensor, group: torch.Tensor, n_boot: int = N_BOOT, seed: int = BOOT_SEED) -> torch.Tensor:
-    """Resample leaves with replacement within each (group, class) cell.
-
-    Keeping each cell's size fixed keeps both recalls defined in every resample and keeps
-    each row's class balance. Seeded so every model sees the same resamples, which makes
-    the model-minus-baseline differences paired.
-
-    :param y: 0/1 labels, shape (n,).
-    :type y: torch.Tensor
-    :param group: Group per leaf (variety × row), shape (n,).
-    :type group: torch.Tensor
-    :param n_boot: Number of resamples B.
-    :type n_boot: int
-    :param seed: Generator seed.
-    :type seed: int
-    :return: Counts, shape (B, n) float64.
-    :rtype: torch.Tensor
-    """
-    g = torch.Generator(device=y.device).manual_seed(seed)
-    w = torch.zeros(n_boot, len(y), dtype=torch.float64, device=y.device)
-    for k in torch.unique(group).tolist():
-        for c in (0, 1):
-            idx = torch.nonzero((group == k) & (y == c)).squeeze(1)
-            if len(idx) == 0:
-                continue
-            draw = idx[torch.randint(len(idx), (n_boot, len(idx)), generator=g, device=y.device)]
-            w.scatter_add_(1, draw, torch.ones_like(draw, dtype=torch.float64))
-    return w
 
 
 def summary(p_seeds: np.ndarray, y: np.ndarray, fold: np.ndarray, variety: np.ndarray,
