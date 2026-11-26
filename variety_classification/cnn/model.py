@@ -34,7 +34,7 @@ class VarietyCNN(nn.Module):
         # Built in this order (backbone, pooling, head) so a seed gives the same weights as before the refactor.
         self.backbone = make_backbone(backbone, n_bands)
         self.pool = LeafPool(self.backbone.out_channels, pooling)
-        self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(self.backbone.out_channels, N_VARIETIES))
+        self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(self.pool.out_dim, N_VARIETIES))
 
     def forward(self, x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         """Score each leaf.

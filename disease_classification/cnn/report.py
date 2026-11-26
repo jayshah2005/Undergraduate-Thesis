@@ -38,7 +38,7 @@ from train import CANVAS, POOLINGS, TrainConfig  # noqa: E402
 FIG = HERE / "figures"
 
 
-POOL_NAME = {"mean": "mean", "attention": "attention", "meanmax": "mean ∥ max"}
+POOL_NAME = {"mean": "mean", "attention": "attention"}
 
 
 def model_label(backbone: str, pooling: str) -> str:
@@ -48,11 +48,9 @@ def model_label(backbone: str, pooling: str) -> str:
 
 def reference(backbone: str, pooling: str) -> tuple[str, str] | None:
     """The model one change is compared with: the same backbone without ECA / CBAM, same pooling;
-    for mean ∥ max, the same backbone with mean pooling; None for every other model."""
+    None for every other model."""
     if backbone in WITHOUT_BLOCK_ATTENTION:
         return WITHOUT_BLOCK_ATTENTION[backbone], pooling
-    if pooling == "meanmax":
-        return backbone, "mean"
     return None
 
 
@@ -130,7 +128,7 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
         for bb, folder in sources:
             if not (folder / "runs" / task).exists():
                 continue
-            # Only the poolings this backbone was trained with (mean ∥ max runs only on some backbones).
+            # Only the poolings this backbone was trained with.
             for arm in (a for a in POOLINGS if (folder / "runs" / task / a).exists()):
                 label = model_label(bb, arm)
                 probs, epochs = np.full((len(SEEDS), len(meta)), np.nan), []
@@ -270,7 +268,7 @@ def to_markdown(metrics: dict, labels: dict, variety: str, bands: str) -> str:
         changes = {k: m["vs_reference"] for k, m in cnns.items() if "vs_reference" in m}
         if changes:
             lines += ["Each change against the same model without it (ECA, CBAM: same backbone and pooling without "
-                      "the module; mean ∥ max: the same backbone's mean pool); paired, on the same resamples:", ""]
+                      "the module); paired, on the same resamples:", ""]
             lines += table(["model", "compared with", "Δ bal. acc. [95% CI]"],
                            [[k, c["reference"], delta(c["diff"], c["ci95"])] for k, c in changes.items()]) + [""]
     return "\n".join(lines)

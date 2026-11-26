@@ -103,7 +103,7 @@ def invariance_check(d: dict, backbone: str = DEFAULT_BACKBONE) -> dict:
     x = preprocess(X, mask)
     out = {"max_logit_diff": 0.0, "background_zero": bool((x * (1 - mask)).abs().max() == 0)}
     # In float64, so the check tests the masking and not rounding: convolutions run in TF32 by default,
-    # which moves ResNet-18's logits by ~0.002 between canvas sizes (float64: ~1e-15).
+    # which moved a deep network's logits by ~0.002 between canvas sizes (float64: ~1e-15).
     x, mask = x.double(), mask.double()
     k = BACKBONES[backbone].stride // 4   # shifts must be whole strides, or the downsampling grid moves
     for pooling in POOLINGS:
@@ -141,8 +141,8 @@ def results_root(smoke: bool, dropout: float = TrainConfig.dropout, variety: str
 def log_name(root: Path, poolings) -> str:
     """Log file name of one run: the results folder's name, plus the poolings when they are not the default two.
 
-    A mean ∥ max run adds runs to a finished folder (e.g. results/baco/), so it gets its own log
-    (logs/baco_meanmax.log) instead of overwriting that folder's mean and attention log.
+    A run of other poolings adds runs to a finished folder (e.g. results/baco/), so it gets its own log
+    (e.g. logs/baco_attention.log) instead of overwriting that folder's log.
     """
     return root.name + ("" if tuple(poolings) == DEFAULT_POOLINGS else "_" + "_".join(poolings))
 
@@ -400,7 +400,7 @@ def parse_args(choices: list[str], default, description: str) -> argparse.Namesp
                          "_<backbone> to the folder name")
     ap.add_argument("--pooling", nargs="+", choices=POOLINGS, default=list(DEFAULT_POOLINGS),
                     help="poolings to train; each goes to runs/<task>/<pooling>/ in the same folder, so "
-                         "--pooling meanmax adds mean ∥ max pooling beside finished mean and attention runs")
+                         "a pooling can be added beside finished runs of the other one")
     return ap.parse_args()
 
 

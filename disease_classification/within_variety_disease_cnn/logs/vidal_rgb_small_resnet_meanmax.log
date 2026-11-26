@@ -1,7 +1,0 @@
-vidal_rgb_small_resnet: 250 leaves, 3 bands, canvas 212
-Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
-leafroll (26 + / 224 −): baseline bal. acc. 0.439; R1 0.48 R2 0.42 R3 0.36 R4 0.45 R5 0.64
-leafroll | meanmax pooling: bal. acc. 0.467 (+0.027 vs baseline); seeds 0.46 0.40 0.42; R1 0.50 R2 0.45 R3 0.50 R4 0.47 R5 0.74; median best epoch 2; 199 s
-red_blotch (173 + / 77 −): baseline bal. acc. 0.552; R1 0.54 R2 0.56 R3 0.57 R4 0.53 R5 0.57
-red_blotch | meanmax pooling: bal. acc. 0.458 (-0.093 vs baseline); seeds 0.47 0.47 0.44; R1 0.58 R2 0.53 R3 0.50 R4 0.44 R5 0.50; median best epoch 5; 180 s
-[done] results/vidal_rgb_small_resnet. For intervals, tables and figures: report_within_variety.py --bands rgb

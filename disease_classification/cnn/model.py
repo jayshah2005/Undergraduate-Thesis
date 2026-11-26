@@ -1,4 +1,4 @@
-"""Whole-leaf disease CNN: any backbone from helpers/backbones.py → masked mean, attention or mean ∥ max pooling → 1 logit."""
+"""Whole-leaf disease CNN: any backbone from helpers/backbones.py → masked mean or attention pooling → 1 logit."""
 from __future__ import annotations
 
 import sys
@@ -26,8 +26,6 @@ class LeafCNN(nn.Module):
     pooling="mean": every leaf position gets the same weight.
     pooling="attention": gated attention (Ilse et al. 2018) learns one weight per
     position, so a few symptomatic patches can decide the leaf.
-    pooling="meanmax": the leaf's mean and max of each channel side by side (concat pooling,
-    Howard & Ruder 2018), so the last layer gets twice the backbone's channels.
     """
 
     def __init__(self, n_bands: int = 204, pooling: str = "attention", dropout: float = 0.5,

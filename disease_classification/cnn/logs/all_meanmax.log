@@ -1,7 +1,0 @@
-all: 998 leaves, 204 bands, canvas 212
-Balanced accuracy of the 3-seed ensemble (mean P >= 0.5) over the held-out rows (0.5 = chance). CNN and baseline train on the same 3 rows; checkpoints are chosen on a fourth, and test scores choose nothing.
-leafroll (255 + / 493 −, left out Cab Franc): baseline bal. acc. 0.572; R1 0.57 R2 0.56 R3 0.69 R4 0.48 R5 0.59; Baco 0.47 Chardonnay 0.48 Vidal 0.52
-leafroll | meanmax pooling: bal. acc. 0.599 (+0.027 vs baseline); seeds 0.59 0.59 0.57; R1 0.65 R2 0.64 R3 0.54 R4 0.55 R5 0.63; Baco 0.51 Chardonnay 0.45 Vidal 0.50; median best epoch 16; 678 s
-red_blotch (637 + / 361 −): baseline bal. acc. 0.647; R1 0.54 R2 0.70 R3 0.71 R4 0.61 R5 0.69; Baco 0.46 Cab Franc 0.47 Chardonnay 0.54 Vidal 0.52
-red_blotch | meanmax pooling: bal. acc. 0.689 (+0.042 vs baseline); seeds 0.66 0.67 0.65; R1 0.69 R2 0.67 R3 0.76 R4 0.65 R5 0.69; Baco 0.50 Cab Franc 0.58 Chardonnay 0.52 Vidal 0.54; median best epoch 9; 699 s
-[done] results/all. For intervals, tables and figures: report.py --variety all

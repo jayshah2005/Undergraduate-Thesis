@@ -24,10 +24,8 @@ Row R1 is the weak fold for every model (about 0.6).
 | CNN pooled (all 998 leaves; Baco + Chardonnay + Vidal) | higher overall (red blotch 0.691) but near chance per variety; the gain is variety disease rates |
 | 204 bands vs RGB | about equal |
 | Small ResNet backbone on every disease run | in each run's `final_report.md` |
-| Small ResNet without max pooling (stride-2 convs, Springenberg et al. 2015) and full ResNet-18 (He et al. 2016), within variety and pooled, 204 bands and RGB | no gain: within variety the no-max-pool small ResNet is within 0.03 of the small ResNet and ResNet-18, the weakest, up to 0.05 below it; the one interval above logistic regression (Baco leafroll) comes from calling whole rows positive or negative. Pooled, within 0.05 of the small CNN |
-| ECA (Wang et al. 2020) and CBAM (Woo et al. 2018) inside the small CNN and small ResNet, and mean ∥ max pooling (Howard & Ruder 2018), within variety and pooled, 204 bands and RGB | no consistent gain: 41 of 180 paired intervals against the same model without the change exclude 0 (29 above, 12 below); within a variety the gains lift below-chance RGB leafroll models or bring Chardonnay red blotch up to logistic regression. Pooled, CBAM in the small CNN scores highest (all 998: leafroll 0.624, red blotch 0.702) but 0.42–0.59 on each variety |
+| ECA (Wang et al. 2020) and CBAM (Woo et al. 2018) inside the small CNN and small ResNet, within variety and pooled, 204 bands and RGB (3 seeds; counts include mean ∥ max, now removed) | no consistent gain: 41 of 180 paired intervals against the same model without the change exclude 0 (29 above, 12 below); within a variety the gains lift below-chance RGB leafroll models or bring Chardonnay red blotch up to logistic regression. Pooled, CBAM in the small CNN scores highest (all 998: leafroll 0.624, red blotch 0.702) but 0.42–0.59 on each variety |
 | Every disease model rerun on the FINAL 2026 virus tests (7 Vidal leaves relabelled) | headline unchanged (nothing beats logistic regression within a variety; pooled gains come from variety disease rates); Baco and Chardonnay within-variety runs bit-identical; pooled CNN scores moved up to 0.04, logistic regression at most 0.01, so fewer pooled CNNs clear logistic regression on all 998 leaves (red blotch 4 of 8, was 8; leafroll 1 of 8, was 2). Interim-label file: `labelling/vine_hsi_interim_labels.h5` |
-| Extra tasks: any disease vs healthy, both diseases | in the logistic regression reports; the pooled CNN (`all`) also runs any disease |
 
 ### Spectral analysis
 
@@ -35,6 +33,17 @@ Row R1 is the weak fold for every model (about 0.6).
 |---|---|
 | PCA of SNV leaf means by variety | variety dominates the spectra |
 | PCA by disease class within variety (R² test) | only Chardonnay red blotch differs (R² 0.069, p 0.001, largest at 703 nm) |
+
+## Removed from the repo (commit `0538fdd`)
+
+Run on the FINAL 2026 labels with 3 seeds; removed when the comparison was narrowed to logistic regression, the small CNN and the small ResNet (both with max pooling).
+
+| Test | Outcome |
+|---|---|
+| Small ResNet without max pooling (stride-2 convs, Springenberg et al. 2015) and full ResNet-18 (He et al. 2016), within variety and pooled, 204 bands and RGB | no gain: within variety the no-max-pool small ResNet is within 0.03 of the small ResNet and ResNet-18, the weakest, up to 0.05 below it; the one interval above logistic regression (Baco leafroll) comes from calling whole rows positive or negative. Pooled, within 0.05 of the small CNN |
+| Mean ∥ max pooling (Howard & Ruder 2018), small CNN and small ResNet, within variety and pooled, 204 bands and RGB | no effect: 3 of 36 paired intervals against mean pooling above 0, 3 below |
+| Extra tasks: any disease vs healthy, both diseases | in the logistic regression reports; the pooled CNN (`all`) also runs any disease |
+| Six-head CNN (4 varieties + red blotch + leafroll), 8 gradient aggregators (LS, MGDA, MGDA-GN / LN / LGN, SVD-PGA, OSNMF-PGA from the local torchjd, UPGrad), on the user's original network and on the small ResNet without max pooling in the disease CNN's setup | no aggregator beat LS (disease setup: 2 of 28 paired intervals above 0, both leafroll with a red-blotch loss, 9 below); six-head LS tied the single-task model on variety and leafroll, and its red-blotch gain was no larger than predicting from the variety's disease rate (0.706) |
 
 ## Removed from the repo (commit `fb310b9`)
 

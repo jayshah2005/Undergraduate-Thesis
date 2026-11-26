@@ -111,8 +111,8 @@ def augment(x: torch.Tensor, m: torch.Tensor, g: torch.Generator) -> tuple[torch
     """Random 90° rotations and flips, the same for a leaf's cube and mask.
 
     Rotation by 90° maps the square canvas onto itself. A moved leaf can sit off the pooling
-    grid by up to the backbone's stride − 1 px (3 px, or 31 px for ResNet-18; training only,
-    test leaves stay on it), which adds a little variety.
+    grid by up to the backbone's stride − 1 px (3 px; training only, test leaves stay on it),
+    which adds a little variety.
 
     :param x: Input, shape (B, d, S, S).
     :type x: torch.Tensor
@@ -254,7 +254,7 @@ def make_block_attention(kind: str | None, channels: int) -> nn.Module | None:
 
 
 class LeafPool(nn.Module):
-    """Turn a feature map into one vector per leaf: masked mean, gated-attention or mean ∥ max pooling.
+    """Turn a feature map into one vector per leaf: masked mean or gated-attention pooling.
 
     Positions whose 3x3 neighbourhood touches the background are left out, so the leaf
     margin cannot drive the prediction; a leaf too small to keep any falls back to its full mask.
@@ -263,19 +263,13 @@ class LeafPool(nn.Module):
     pooling="attention": gated attention (Ilse et al. 2018, "Attention-based Deep Multiple
     Instance Learning", ICML) learns one weight per position, so a few symptomatic patches
     can decide the leaf.
-    pooling="meanmax": the mean and the max of each channel over the leaf, concatenated (2C
-    values), as ULMFiT's concat pooling (Howard & Ruder 2018, "Universal Language Model
-    Fine-tuning for Text Classification", ACL, Eq. 4, without its last hidden state) and fastai's
-    AdaptiveConcatPool2d (Howard & Gugger 2020, "fastai: A Layered API for Deep Learning",
-    Information) do. The max lets a few strong patches count, the mean keeps the whole leaf. No
-    weights are learned; the returned position weights are the mean's.
     """
 
     def __init__(self, channels: int, pooling: str = "mean", hidden: int = 32):
         super().__init__()
-        assert pooling in ("mean", "attention", "meanmax")
+        assert pooling in ("mean", "attention")
         self.pooling = pooling
-        self.out_dim = 2 * channels if pooling == "meanmax" else channels   # length of the pooled vector
+        self.out_dim = channels   # length of the pooled vector
         if pooling == "attention":
             self.att_v = nn.Linear(channels, hidden)
             self.att_u = nn.Linear(channels, hidden)
@@ -307,6 +301,4 @@ class LeafPool(nn.Module):
         else:
             a = keep.float() / keep.float().sum(1, keepdim=True)
         z = (a.unsqueeze(-1) * feats).sum(1)
-        if self.pooling == "meanmax":
-            z = torch.cat([z, masked_max(h, valid)], 1)
         return z, a.view(b, hh, ww)

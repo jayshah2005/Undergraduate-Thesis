@@ -19,7 +19,7 @@ from helpers.cnn_common import augment  # noqa: E402
 from model import LeafCNN  # noqa: E402
 
 # Every pooling LeafPool offers, and the two a run trains unless --pooling says otherwise.
-POOLINGS = ("mean", "attention", "meanmax")
+POOLINGS = ("mean", "attention")
 DEFAULT_POOLINGS = ("mean", "attention")
 # Canvas side for every disease model: the largest of all 998 leaves (211 px) rounded up to a
 # multiple of 4, so every model, pooled or one variety, sees 212 × 212 × d inputs.
@@ -27,7 +27,7 @@ CANVAS = 212
 
 
 def canvas_for(backbone: str) -> int:
-    """Canvas side for one backbone: CANVAS rounded up to a multiple of its total stride (224 for ResNet-18).
+    """Canvas side for one backbone: CANVAS rounded up to a multiple of its total stride.
 
     Leaves must sit on the backbone's downsampling grid, so the side and the leaf offsets are
     multiples of its stride; for the stride-4 backbones this is CANVAS itself.
@@ -103,7 +103,7 @@ def train_fold(X: torch.Tensor, mask: torch.Tensor, y: torch.Tensor, split, pool
     :type y: torch.Tensor
     :param split: (train, validation, test) index arrays from logistic_regression.fold_split.
     :type split: tuple
-    :param pooling: "mean", "attention" or "meanmax".
+    :param pooling: "mean" or "attention".
     :type pooling: str
     :param seed: Seed for initial weights, batch order and augmentation.
     :type seed: int

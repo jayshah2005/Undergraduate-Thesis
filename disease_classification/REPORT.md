@@ -1,5 +1,10 @@
 # Disease classification: report
 
+> **Being rebuilt (2026-11-25).** The tables below are the earlier 3-seed runs. The comparison is being redone with
+> 5 seeds, one logistic-regression recipe, a new RGB normalization and AUC, on the small CNN and small ResNet only.
+> The no-max-pool small ResNet, ResNet-18 and mean ∥ max rows below were removed from the repo (git history at
+> `0538fdd`; outcomes in `../TESTED.md`).
+
 **Question.** Can a whole-leaf CNN detect leafroll or red blotch better than logistic regression on the leaf's mean
 spectrum? Does it help to train one model per variety or to pool varieties? Do all 204 bands beat 3 RGB bands?
 
