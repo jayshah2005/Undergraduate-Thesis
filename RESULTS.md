@@ -225,49 +225,49 @@ No comparison is marked.
 
 Comparisons (# column): **1** against logistic regression, same data; **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.913 vs 0.885 | +0.028 [+0.014, +0.042] | 3 of 5 |  | 0.987 vs 0.985 | +0.002 [-0.001, +0.006] | 1 of 5 |  |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.885 vs 0.885 | +0.000 [-0.015, +0.015] | 1 of 5 |  | 0.986 vs 0.985 | +0.001 [-0.002, +0.005] | 0 of 5 |  |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.896 vs 0.885 | +0.011 [-0.002, +0.025] | 1 of 5 |  | 0.982 vs 0.985 | -0.002 [-0.005, +0.001] | 0 of 5 |  |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.905 vs 0.885 | +0.020 [+0.004, +0.036] | 0 of 5 |  | 0.989 vs 0.985 | +0.004 [+0.001, +0.008] | 1 of 5 |  |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.925 vs 0.885 | +0.040 [+0.025, +0.055] | 4 of 5 | ✓ | 0.989 vs 0.985 | +0.004 [+0.001, +0.008] | 2 of 5 |  |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.918 vs 0.885 | +0.033 [+0.018, +0.049] | 3 of 5 |  | 0.988 vs 0.985 | +0.003 [-0.000, +0.008] | 0 of 5 |  |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.909 vs 0.885 | +0.024 [+0.010, +0.039] | 2 of 5 |  | 0.981 vs 0.985 | -0.004 [-0.008, +0.000] | 0 of 5 |  |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.895 vs 0.885 | +0.010 [-0.005, +0.025] | 1 of 5 |  | 0.984 vs 0.985 | -0.000 [-0.004, +0.003] | 0 of 5 |  |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.907 vs 0.885 | +0.022 [+0.007, +0.037] | 2 of 5 |  | 0.988 vs 0.985 | +0.003 [-0.000, +0.007] | 0 of 5 |  |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.909 vs 0.885 | +0.024 [+0.009, +0.040] | 5 of 5 | ✓ | 0.990 vs 0.985 | +0.006 [+0.003, +0.010] | 2 of 5 |  |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.912 vs 0.885 | +0.027 [+0.013, +0.042] | 3 of 5 |  | 0.979 vs 0.985 | -0.006 [-0.010, -0.002] | 0 of 5 | ✗ |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.899 vs 0.885 | +0.014 [-0.001, +0.029] | 3 of 5 |  | 0.984 vs 0.985 | -0.000 [-0.004, +0.004] | 1 of 5 |  |
-| 1 | CNN, mean pool − logistic regression | RGB | 0.918 vs 0.675 | +0.243 [+0.216, +0.270] | 5 of 5 | ✓ | 0.988 vs 0.864 | +0.125 [+0.110, +0.139] | 5 of 5 | ✓ |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.896 vs 0.913 | -0.017 [-0.028, -0.007] | 1 of 5 | ✗ | 0.982 vs 0.987 | -0.005 [-0.006, -0.003] | 1 of 5 | ✗ |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.905 vs 0.885 | +0.020 [+0.008, +0.033] | 1 of 5 |  | 0.989 vs 0.986 | +0.003 [+0.002, +0.005] | 5 of 5 | ✓ |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.925 vs 0.913 | +0.012 [+0.003, +0.022] | 4 of 5 | ✓ | 0.989 vs 0.987 | +0.002 [+0.000, +0.003] | 3 of 5 |  |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.918 vs 0.885 | +0.033 [+0.022, +0.045] | 3 of 5 |  | 0.988 vs 0.986 | +0.003 [+0.000, +0.005] | 5 of 5 | ✓ |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.907 vs 0.909 | -0.002 [-0.011, +0.008] | 2 of 5 |  | 0.988 vs 0.981 | +0.007 [+0.004, +0.009] | 4 of 5 | ✓ |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.909 vs 0.895 | +0.014 [+0.005, +0.023] | 4 of 5 | ✓ | 0.990 vs 0.984 | +0.006 [+0.004, +0.008] | 5 of 5 | ✓ |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.912 vs 0.909 | +0.003 [-0.008, +0.013] | 2 of 5 |  | 0.979 vs 0.981 | -0.002 [-0.004, -0.000] | 3 of 5 |  |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.899 vs 0.895 | +0.004 [-0.004, +0.012] | 3 of 5 |  | 0.984 vs 0.984 | +0.000 [-0.002, +0.002] | 4 of 5 |  |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.885 vs 0.913 | -0.028 [-0.040, -0.016] | 1 of 5 | ✗ | 0.986 vs 0.987 | -0.001 [-0.003, +0.000] | 1 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.905 vs 0.896 | +0.009 [-0.004, +0.022] | 3 of 5 |  | 0.989 vs 0.982 | +0.007 [+0.005, +0.008] | 5 of 5 | ✓ |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.918 vs 0.925 | -0.007 [-0.016, +0.002] | 2 of 5 |  | 0.988 vs 0.989 | -0.001 [-0.003, +0.001] | 2 of 5 |  |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.895 vs 0.909 | -0.014 [-0.024, -0.004] | 3 of 5 |  | 0.984 vs 0.981 | +0.003 [+0.000, +0.006] | 4 of 5 | ✓ |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.909 vs 0.907 | +0.002 [-0.009, +0.012] | 5 of 5 |  | 0.990 vs 0.988 | +0.003 [+0.001, +0.004] | 4 of 5 | ✓ |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.899 vs 0.912 | -0.013 [-0.024, -0.002] | 2 of 5 |  | 0.984 vs 0.979 | +0.006 [+0.003, +0.008] | 4 of 5 | ✓ |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.909 vs 0.913 | -0.004 [-0.013, +0.004] | 2 of 5 |  | 0.981 vs 0.987 | -0.006 [-0.008, -0.004] | 0 of 5 | ✗ |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.895 vs 0.885 | +0.010 [+0.000, +0.020] | 4 of 5 | ✓ | 0.984 vs 0.986 | -0.001 [-0.003, +0.001] | 4 of 5 |  |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.907 vs 0.896 | +0.011 [+0.000, +0.022] | 5 of 5 | ✓ | 0.988 vs 0.982 | +0.005 [+0.004, +0.007] | 4 of 5 | ✓ |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.909 vs 0.905 | +0.004 [-0.008, +0.015] | 5 of 5 |  | 0.990 vs 0.989 | +0.001 [-0.000, +0.003] | 4 of 5 |  |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.912 vs 0.925 | -0.013 [-0.023, -0.003] | 2 of 5 |  | 0.979 vs 0.989 | -0.010 [-0.013, -0.008] | 0 of 5 | ✗ |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.899 vs 0.918 | -0.019 [-0.030, -0.009] | 1 of 5 | ✗ | 0.984 vs 0.988 | -0.004 [-0.006, -0.002] | 2 of 5 |  |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.913 vs 0.885 | +0.028 [+0.014, +0.042] | 3 / 2 |  | 0.987 vs 0.985 | +0.002 [-0.001, +0.006] | 1 / 4 |  |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.885 vs 0.885 | +0.000 [-0.015, +0.015] | 1 / 4 |  | 0.986 vs 0.985 | +0.001 [-0.002, +0.005] | 0 / 5 |  |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.896 vs 0.885 | +0.011 [-0.002, +0.025] | 1 / 4 |  | 0.982 vs 0.985 | -0.002 [-0.005, +0.001] | 0 / 5 |  |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.905 vs 0.885 | +0.020 [+0.004, +0.036] | 0 / 5 |  | 0.989 vs 0.985 | +0.004 [+0.001, +0.008] | 1 / 4 |  |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.925 vs 0.885 | +0.040 [+0.025, +0.055] | 4 / 1 | ✓ | 0.989 vs 0.985 | +0.004 [+0.001, +0.008] | 2 / 3 |  |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.918 vs 0.885 | +0.033 [+0.018, +0.049] | 3 / 2 |  | 0.988 vs 0.985 | +0.003 [-0.000, +0.008] | 0 / 5 |  |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.909 vs 0.885 | +0.024 [+0.010, +0.039] | 2 / 3 |  | 0.981 vs 0.985 | -0.004 [-0.008, +0.000] | 0 / 5 |  |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.895 vs 0.885 | +0.010 [-0.005, +0.025] | 1 / 4 |  | 0.984 vs 0.985 | -0.000 [-0.004, +0.003] | 0 / 5 |  |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.907 vs 0.885 | +0.022 [+0.007, +0.037] | 2 / 3 |  | 0.988 vs 0.985 | +0.003 [-0.000, +0.007] | 0 / 5 |  |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.909 vs 0.885 | +0.024 [+0.009, +0.040] | 5 / 0 | ✓ | 0.990 vs 0.985 | +0.006 [+0.003, +0.010] | 2 / 3 |  |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.912 vs 0.885 | +0.027 [+0.013, +0.042] | 3 / 2 |  | 0.979 vs 0.985 | -0.006 [-0.010, -0.002] | 0 / 5 | ✗ |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.899 vs 0.885 | +0.014 [-0.001, +0.029] | 3 / 2 |  | 0.984 vs 0.985 | -0.000 [-0.004, +0.004] | 1 / 4 |  |
+| 1 | CNN, mean pool − logistic regression | RGB | 0.918 vs 0.675 | +0.243 [+0.216, +0.270] | 5 / 0 | ✓ | 0.988 vs 0.864 | +0.125 [+0.110, +0.139] | 5 / 0 | ✓ |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.896 vs 0.913 | -0.017 [-0.028, -0.007] | 1 / 4 | ✗ | 0.982 vs 0.987 | -0.005 [-0.006, -0.003] | 1 / 4 | ✗ |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.905 vs 0.885 | +0.020 [+0.008, +0.033] | 1 / 4 |  | 0.989 vs 0.986 | +0.003 [+0.002, +0.005] | 5 / 0 | ✓ |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.925 vs 0.913 | +0.012 [+0.003, +0.022] | 4 / 1 | ✓ | 0.989 vs 0.987 | +0.002 [+0.000, +0.003] | 3 / 2 |  |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.918 vs 0.885 | +0.033 [+0.022, +0.045] | 3 / 2 |  | 0.988 vs 0.986 | +0.003 [+0.000, +0.005] | 5 / 0 | ✓ |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.907 vs 0.909 | -0.002 [-0.011, +0.008] | 2 / 3 |  | 0.988 vs 0.981 | +0.007 [+0.004, +0.009] | 4 / 1 | ✓ |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.909 vs 0.895 | +0.014 [+0.005, +0.023] | 4 / 1 | ✓ | 0.990 vs 0.984 | +0.006 [+0.004, +0.008] | 5 / 0 | ✓ |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.912 vs 0.909 | +0.003 [-0.008, +0.013] | 2 / 3 |  | 0.979 vs 0.981 | -0.002 [-0.004, -0.000] | 3 / 2 |  |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.899 vs 0.895 | +0.004 [-0.004, +0.012] | 3 / 2 |  | 0.984 vs 0.984 | +0.000 [-0.002, +0.002] | 4 / 1 |  |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.885 vs 0.913 | -0.028 [-0.040, -0.016] | 1 / 4 | ✗ | 0.986 vs 0.987 | -0.001 [-0.003, +0.000] | 1 / 4 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.905 vs 0.896 | +0.009 [-0.004, +0.022] | 3 / 2 |  | 0.989 vs 0.982 | +0.007 [+0.005, +0.008] | 5 / 0 | ✓ |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.918 vs 0.925 | -0.007 [-0.016, +0.002] | 2 / 3 |  | 0.988 vs 0.989 | -0.001 [-0.003, +0.001] | 2 / 3 |  |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.895 vs 0.909 | -0.014 [-0.024, -0.004] | 3 / 2 |  | 0.984 vs 0.981 | +0.003 [+0.000, +0.006] | 4 / 1 | ✓ |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.909 vs 0.907 | +0.002 [-0.009, +0.012] | 5 / 0 |  | 0.990 vs 0.988 | +0.003 [+0.001, +0.004] | 4 / 1 | ✓ |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.899 vs 0.912 | -0.013 [-0.024, -0.002] | 2 / 3 |  | 0.984 vs 0.979 | +0.006 [+0.003, +0.008] | 4 / 1 | ✓ |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.909 vs 0.913 | -0.004 [-0.013, +0.004] | 2 / 3 |  | 0.981 vs 0.987 | -0.006 [-0.008, -0.004] | 0 / 5 | ✗ |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.895 vs 0.885 | +0.010 [+0.000, +0.020] | 4 / 1 | ✓ | 0.984 vs 0.986 | -0.001 [-0.003, +0.001] | 4 / 1 |  |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.907 vs 0.896 | +0.011 [+0.000, +0.022] | 5 / 0 | ✓ | 0.988 vs 0.982 | +0.005 [+0.004, +0.007] | 4 / 1 | ✓ |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.909 vs 0.905 | +0.004 [-0.008, +0.015] | 5 / 0 |  | 0.990 vs 0.989 | +0.001 [-0.000, +0.003] | 4 / 1 |  |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.912 vs 0.925 | -0.013 [-0.023, -0.003] | 2 / 3 |  | 0.979 vs 0.989 | -0.010 [-0.013, -0.008] | 0 / 5 | ✗ |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.899 vs 0.918 | -0.019 [-0.030, -0.009] | 1 / 4 | ✗ | 0.984 vs 0.988 | -0.004 [-0.006, -0.002] | 2 / 3 |  |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.885 vs 0.675 | +0.210 [+0.183, +0.237] | single fits | ✓ | 0.985 vs 0.864 | +0.121 [+0.107, +0.135] | single fits | ✓ |
-| 4 | CNN, mean pool − CNN, mean pool | 204 bands − RGB | 0.913 vs 0.918 | -0.005 [-0.019, +0.010] | 0 of 5 |  | 0.987 vs 0.988 | -0.001 [-0.004, +0.002] | 1 of 5 |  |
+| 4 | CNN, mean pool − CNN, mean pool | 204 bands − RGB | 0.913 vs 0.918 | -0.005 [-0.019, +0.010] | 0 / 5 |  | 0.987 vs 0.988 | -0.001 [-0.004, +0.002] | 1 / 4 |  |
 
 Marked, of 35 comparisons: balanced accuracy 8 ✓ and 3 ✗; AUC 11 ✓ and 4 ✗. Chance alone would put about 1.8 intervals per score off 0 (fewer once the seeds must agree).
 
 ## Disease
 
-Leafroll leaves out Cab Franc everywhere (1 of its 250 leaves has leafroll). Red blotch on all 998 is also scored without Cab Franc's leaves (241 of its 250 leaves have red blotch), with the same models. The **variety-only rule** predicts from the leaf's variety alone (each variety's disease rate on the training rows); a pooled model has to beat it to show more than the varieties' different disease rates.
+Leafroll leaves out Cab Franc everywhere (1 of its 250 leaves has leafroll). Red blotch on all 998 is also scored without Cab Franc's leaves (241 of its 250 leaves have red blotch), with the same models. The **variety-only rule** predicts from the leaf's variety alone (each variety's disease rate on the training rows); a pooled model has to beat it to show more than the varieties' different disease rates. Its interval has zero width: it gives every leaf of one variety in one test row the same P, and the resamples keep the number of positive and negative leaves in each variety × row, so every resample gives it the same score.
 
 ### Leafroll overview
 
@@ -373,40 +373,40 @@ RGB:
 
 Comparisons (# column): **1** against logistic regression, same data; **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.497 vs 0.438 | +0.060 [-0.002, +0.119] | 5 of 5 |  | 0.521 vs 0.468 | +0.054 [-0.011, +0.116] | 4 of 5 |  |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.476 vs 0.438 | +0.038 [-0.020, +0.093] | 5 of 5 |  | 0.529 vs 0.468 | +0.061 [-0.002, +0.123] | 5 of 5 |  |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.590 vs 0.438 | +0.153 [+0.096, +0.209] | 5 of 5 | ✓ | 0.553 vs 0.468 | +0.085 [+0.016, +0.149] | 5 of 5 | ✓ |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.572 vs 0.438 | +0.135 [+0.069, +0.200] | 5 of 5 | ✓ | 0.559 vs 0.468 | +0.091 [+0.023, +0.155] | 5 of 5 | ✓ |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.594 vs 0.438 | +0.157 [+0.087, +0.226] | 5 of 5 | ✓ | 0.574 vs 0.468 | +0.106 [+0.039, +0.170] | 5 of 5 | ✓ |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.555 vs 0.438 | +0.117 [+0.044, +0.188] | 5 of 5 | ✓ | 0.599 vs 0.468 | +0.131 [+0.061, +0.200] | 5 of 5 | ✓ |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.550 vs 0.438 | +0.113 [+0.049, +0.174] | 5 of 5 | ✓ | 0.561 vs 0.468 | +0.093 [+0.028, +0.154] | 4 of 5 | ✓ |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.585 vs 0.438 | +0.148 [+0.086, +0.208] | 5 of 5 | ✓ | 0.568 vs 0.468 | +0.100 [+0.038, +0.159] | 5 of 5 | ✓ |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.559 vs 0.438 | +0.122 [+0.049, +0.193] | 5 of 5 | ✓ | 0.550 vs 0.468 | +0.082 [+0.011, +0.149] | 5 of 5 | ✓ |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.565 vs 0.438 | +0.127 [+0.068, +0.182] | 4 of 5 | ✓ | 0.564 vs 0.468 | +0.096 [+0.031, +0.156] | 4 of 5 | ✓ |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.553 vs 0.438 | +0.115 [+0.060, +0.168] | 5 of 5 | ✓ | 0.574 vs 0.468 | +0.106 [+0.045, +0.165] | 5 of 5 | ✓ |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.545 vs 0.438 | +0.107 [+0.044, +0.173] | 5 of 5 | ✓ | 0.544 vs 0.468 | +0.076 [+0.011, +0.138] | 5 of 5 | ✓ |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.590 vs 0.497 | +0.093 [+0.060, +0.126] | 3 of 5 |  | 0.553 vs 0.521 | +0.031 [+0.008, +0.054] | 4 of 5 | ✓ |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.572 vs 0.476 | +0.097 [+0.064, +0.133] | 4 of 5 | ✓ | 0.559 vs 0.529 | +0.030 [+0.009, +0.050] | 4 of 5 | ✓ |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.594 vs 0.497 | +0.097 [+0.059, +0.133] | 4 of 5 | ✓ | 0.574 vs 0.521 | +0.052 [+0.026, +0.079] | 4 of 5 | ✓ |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.555 vs 0.476 | +0.079 [+0.030, +0.130] | 3 of 5 |  | 0.599 vs 0.529 | +0.070 [+0.039, +0.101] | 4 of 5 | ✓ |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.559 vs 0.550 | +0.009 [-0.035, +0.051] | 3 of 5 |  | 0.550 vs 0.561 | -0.011 [-0.037, +0.015] | 2 of 5 |  |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.565 vs 0.585 | -0.021 [-0.052, +0.012] | 2 of 5 |  | 0.564 vs 0.568 | -0.004 [-0.023, +0.015] | 2 of 5 |  |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.553 vs 0.550 | +0.002 [-0.021, +0.026] | 3 of 5 |  | 0.574 vs 0.561 | +0.013 [-0.004, +0.031] | 5 of 5 |  |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.545 vs 0.585 | -0.040 [-0.086, +0.003] | 3 of 5 |  | 0.544 vs 0.568 | -0.024 [-0.049, +0.002] | 2 of 5 |  |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.476 vs 0.497 | -0.022 [-0.063, +0.022] | 4 of 5 |  | 0.529 vs 0.521 | +0.008 [-0.015, +0.030] | 2 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.572 vs 0.590 | -0.018 [-0.049, +0.015] | 2 of 5 |  | 0.559 vs 0.553 | +0.006 [-0.014, +0.027] | 2 of 5 |  |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.555 vs 0.594 | -0.039 [-0.077, -0.000] | 1 of 5 | ✗ | 0.599 vs 0.574 | +0.025 [-0.001, +0.052] | 3 of 5 |  |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.585 vs 0.550 | +0.035 [-0.003, +0.071] | 4 of 5 |  | 0.568 vs 0.561 | +0.007 [-0.014, +0.028] | 2 of 5 |  |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.565 vs 0.559 | +0.005 [-0.039, +0.049] | 3 of 5 |  | 0.564 vs 0.550 | +0.014 [-0.018, +0.044] | 3 of 5 |  |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.545 vs 0.553 | -0.008 [-0.048, +0.030] | 3 of 5 |  | 0.544 vs 0.574 | -0.031 [-0.057, -0.002] | 1 of 5 | ✗ |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.550 vs 0.497 | +0.053 [+0.015, +0.089] | 4 of 5 | ✓ | 0.561 vs 0.521 | +0.039 [+0.019, +0.061] | 4 of 5 | ✓ |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.585 vs 0.476 | +0.110 [+0.068, +0.151] | 3 of 5 |  | 0.568 vs 0.529 | +0.038 [+0.018, +0.058] | 4 of 5 | ✓ |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.559 vs 0.590 | -0.031 [-0.075, +0.010] | 2 of 5 |  | 0.550 vs 0.553 | -0.003 [-0.034, +0.029] | 1 of 5 |  |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.565 vs 0.572 | -0.008 [-0.042, +0.023] | 3 of 5 |  | 0.564 vs 0.559 | +0.005 [-0.019, +0.030] | 3 of 5 |  |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.553 vs 0.594 | -0.041 [-0.066, -0.016] | 1 of 5 | ✗ | 0.574 vs 0.574 | +0.001 [-0.024, +0.024] | 3 of 5 |  |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.545 vs 0.555 | -0.010 [-0.058, +0.034] | 3 of 5 |  | 0.544 vs 0.599 | -0.055 [-0.086, -0.024] | 1 of 5 | ✗ |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.497 vs 0.438 | +0.060 [-0.002, +0.119] | 5 / 0 |  | 0.521 vs 0.468 | +0.054 [-0.011, +0.116] | 4 / 1 |  |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.476 vs 0.438 | +0.038 [-0.020, +0.093] | 5 / 0 |  | 0.529 vs 0.468 | +0.061 [-0.002, +0.123] | 5 / 0 |  |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.590 vs 0.438 | +0.153 [+0.096, +0.209] | 5 / 0 | ✓ | 0.553 vs 0.468 | +0.085 [+0.016, +0.149] | 5 / 0 | ✓ |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.572 vs 0.438 | +0.135 [+0.069, +0.200] | 5 / 0 | ✓ | 0.559 vs 0.468 | +0.091 [+0.023, +0.155] | 5 / 0 | ✓ |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.594 vs 0.438 | +0.157 [+0.087, +0.226] | 5 / 0 | ✓ | 0.574 vs 0.468 | +0.106 [+0.039, +0.170] | 5 / 0 | ✓ |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.555 vs 0.438 | +0.117 [+0.044, +0.188] | 5 / 0 | ✓ | 0.599 vs 0.468 | +0.131 [+0.061, +0.200] | 5 / 0 | ✓ |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.550 vs 0.438 | +0.113 [+0.049, +0.174] | 5 / 0 | ✓ | 0.561 vs 0.468 | +0.093 [+0.028, +0.154] | 4 / 1 | ✓ |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.585 vs 0.438 | +0.148 [+0.086, +0.208] | 5 / 0 | ✓ | 0.568 vs 0.468 | +0.100 [+0.038, +0.159] | 5 / 0 | ✓ |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.559 vs 0.438 | +0.122 [+0.049, +0.193] | 5 / 0 | ✓ | 0.550 vs 0.468 | +0.082 [+0.011, +0.149] | 5 / 0 | ✓ |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.565 vs 0.438 | +0.127 [+0.068, +0.182] | 4 / 1 | ✓ | 0.564 vs 0.468 | +0.096 [+0.031, +0.156] | 4 / 1 | ✓ |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.553 vs 0.438 | +0.115 [+0.060, +0.168] | 5 / 0 | ✓ | 0.574 vs 0.468 | +0.106 [+0.045, +0.165] | 5 / 0 | ✓ |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.545 vs 0.438 | +0.107 [+0.044, +0.173] | 5 / 0 | ✓ | 0.544 vs 0.468 | +0.076 [+0.011, +0.138] | 5 / 0 | ✓ |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.590 vs 0.497 | +0.093 [+0.060, +0.126] | 3 / 2 |  | 0.553 vs 0.521 | +0.031 [+0.008, +0.054] | 4 / 1 | ✓ |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.572 vs 0.476 | +0.097 [+0.064, +0.133] | 4 / 1 | ✓ | 0.559 vs 0.529 | +0.030 [+0.009, +0.050] | 4 / 1 | ✓ |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.594 vs 0.497 | +0.097 [+0.059, +0.133] | 4 / 1 | ✓ | 0.574 vs 0.521 | +0.052 [+0.026, +0.079] | 4 / 1 | ✓ |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.555 vs 0.476 | +0.079 [+0.030, +0.130] | 3 / 2 |  | 0.599 vs 0.529 | +0.070 [+0.039, +0.101] | 4 / 1 | ✓ |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.559 vs 0.550 | +0.009 [-0.035, +0.051] | 3 / 2 |  | 0.550 vs 0.561 | -0.011 [-0.037, +0.015] | 2 / 3 |  |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.565 vs 0.585 | -0.021 [-0.052, +0.012] | 2 / 3 |  | 0.564 vs 0.568 | -0.004 [-0.023, +0.015] | 2 / 3 |  |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.553 vs 0.550 | +0.002 [-0.021, +0.026] | 3 / 2 |  | 0.574 vs 0.561 | +0.013 [-0.004, +0.031] | 5 / 0 |  |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.545 vs 0.585 | -0.040 [-0.086, +0.003] | 3 / 2 |  | 0.544 vs 0.568 | -0.024 [-0.049, +0.002] | 2 / 3 |  |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.476 vs 0.497 | -0.022 [-0.063, +0.022] | 4 / 1 |  | 0.529 vs 0.521 | +0.008 [-0.015, +0.030] | 2 / 3 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.572 vs 0.590 | -0.018 [-0.049, +0.015] | 2 / 3 |  | 0.559 vs 0.553 | +0.006 [-0.014, +0.027] | 2 / 3 |  |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.555 vs 0.594 | -0.039 [-0.077, -0.000] | 1 / 4 | ✗ | 0.599 vs 0.574 | +0.025 [-0.001, +0.052] | 3 / 2 |  |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.585 vs 0.550 | +0.035 [-0.003, +0.071] | 4 / 1 |  | 0.568 vs 0.561 | +0.007 [-0.014, +0.028] | 2 / 3 |  |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.565 vs 0.559 | +0.005 [-0.039, +0.049] | 3 / 2 |  | 0.564 vs 0.550 | +0.014 [-0.018, +0.044] | 3 / 2 |  |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.545 vs 0.553 | -0.008 [-0.048, +0.030] | 3 / 2 |  | 0.544 vs 0.574 | -0.031 [-0.057, -0.002] | 1 / 4 | ✗ |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.550 vs 0.497 | +0.053 [+0.015, +0.089] | 4 / 1 | ✓ | 0.561 vs 0.521 | +0.039 [+0.019, +0.061] | 4 / 1 | ✓ |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.585 vs 0.476 | +0.110 [+0.068, +0.151] | 3 / 2 |  | 0.568 vs 0.529 | +0.038 [+0.018, +0.058] | 4 / 1 | ✓ |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.559 vs 0.590 | -0.031 [-0.075, +0.010] | 2 / 3 |  | 0.550 vs 0.553 | -0.003 [-0.034, +0.029] | 1 / 4 |  |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.565 vs 0.572 | -0.008 [-0.042, +0.023] | 3 / 2 |  | 0.564 vs 0.559 | +0.005 [-0.019, +0.030] | 3 / 2 |  |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.553 vs 0.594 | -0.041 [-0.066, -0.016] | 1 / 4 | ✗ | 0.574 vs 0.574 | +0.001 [-0.024, +0.024] | 3 / 2 |  |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.545 vs 0.555 | -0.010 [-0.058, +0.034] | 3 / 2 |  | 0.544 vs 0.599 | -0.055 [-0.086, -0.024] | 1 / 4 | ✗ |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.438 vs 0.427 | +0.010 [-0.045, +0.064] | single fits |  | 0.468 vs 0.410 | +0.057 [-0.002, +0.121] | single fits |  |
 
 Marked, of 33 comparisons: balanced accuracy 13 ✓ and 2 ✗; AUC 16 ✓ and 2 ✗. Chance alone would put about 1.6 intervals per score off 0 (fewer once the seeds must agree).
@@ -431,40 +431,40 @@ Marked, of 33 comparisons: balanced accuracy 13 ✓ and 2 ✗; AUC 16 ✓ and 2 
 
 Comparisons (# column): **1** against logistic regression, same data; **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.569 vs 0.533 | +0.036 [-0.028, +0.100] | 4 of 5 |  | 0.563 vs 0.528 | +0.035 [-0.029, +0.099] | 3 of 5 |  |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.553 vs 0.533 | +0.020 [-0.051, +0.088] | 2 of 5 |  | 0.545 vs 0.528 | +0.017 [-0.053, +0.088] | 4 of 5 |  |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.554 vs 0.533 | +0.021 [-0.043, +0.081] | 3 of 5 |  | 0.581 vs 0.528 | +0.053 [-0.009, +0.116] | 5 of 5 |  |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.580 vs 0.533 | +0.047 [-0.012, +0.103] | 5 of 5 |  | 0.558 vs 0.528 | +0.030 [-0.034, +0.093] | 4 of 5 |  |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.535 vs 0.533 | +0.002 [-0.064, +0.070] | 4 of 5 |  | 0.555 vs 0.528 | +0.027 [-0.039, +0.090] | 3 of 5 |  |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.561 vs 0.533 | +0.028 [-0.036, +0.092] | 5 of 5 |  | 0.571 vs 0.528 | +0.043 [-0.024, +0.109] | 5 of 5 |  |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.564 vs 0.533 | +0.031 [-0.033, +0.092] | 4 of 5 |  | 0.568 vs 0.528 | +0.040 [-0.025, +0.104] | 5 of 5 |  |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.561 vs 0.533 | +0.028 [-0.036, +0.092] | 4 of 5 |  | 0.552 vs 0.528 | +0.024 [-0.047, +0.094] | 5 of 5 |  |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.573 vs 0.533 | +0.040 [-0.021, +0.100] | 3 of 5 |  | 0.562 vs 0.528 | +0.034 [-0.032, +0.102] | 4 of 5 |  |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.545 vs 0.533 | +0.012 [-0.054, +0.080] | 3 of 5 |  | 0.572 vs 0.528 | +0.043 [-0.024, +0.112] | 4 of 5 |  |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.567 vs 0.533 | +0.034 [-0.030, +0.094] | 5 of 5 |  | 0.570 vs 0.528 | +0.042 [-0.025, +0.108] | 4 of 5 |  |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.560 vs 0.533 | +0.027 [-0.033, +0.086] | 5 of 5 |  | 0.547 vs 0.528 | +0.019 [-0.048, +0.085] | 4 of 5 |  |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.554 vs 0.569 | -0.015 [-0.050, +0.021] | 2 of 5 |  | 0.581 vs 0.563 | +0.018 [-0.009, +0.043] | 4 of 5 |  |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.580 vs 0.553 | +0.027 [-0.021, +0.075] | 4 of 5 |  | 0.558 vs 0.545 | +0.013 [-0.012, +0.037] | 3 of 5 |  |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.535 vs 0.569 | -0.034 [-0.078, +0.010] | 3 of 5 |  | 0.555 vs 0.563 | -0.008 [-0.037, +0.022] | 2 of 5 |  |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.561 vs 0.553 | +0.008 [-0.028, +0.048] | 3 of 5 |  | 0.571 vs 0.545 | +0.026 [-0.004, +0.055] | 4 of 5 |  |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.573 vs 0.564 | +0.009 [-0.020, +0.037] | 2 of 5 |  | 0.562 vs 0.568 | -0.005 [-0.026, +0.017] | 2 of 5 |  |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.545 vs 0.561 | -0.016 [-0.047, +0.012] | 1 of 5 |  | 0.572 vs 0.552 | +0.019 [-0.005, +0.043] | 4 of 5 |  |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.567 vs 0.564 | +0.002 [-0.030, +0.034] | 2 of 5 |  | 0.570 vs 0.568 | +0.003 [-0.020, +0.025] | 3 of 5 |  |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.560 vs 0.561 | -0.001 [-0.042, +0.038] | 3 of 5 |  | 0.547 vs 0.552 | -0.005 [-0.028, +0.017] | 4 of 5 |  |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.553 vs 0.569 | -0.016 [-0.056, +0.025] | 1 of 5 |  | 0.545 vs 0.563 | -0.018 [-0.040, +0.005] | 2 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.580 vs 0.554 | +0.026 [-0.002, +0.058] | 4 of 5 |  | 0.558 vs 0.581 | -0.023 [-0.045, -0.000] | 1 of 5 | ✗ |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.561 vs 0.535 | +0.026 [-0.014, +0.066] | 2 of 5 |  | 0.571 vs 0.555 | +0.016 [-0.007, +0.038] | 2 of 5 |  |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.561 vs 0.564 | -0.003 [-0.027, +0.020] | 3 of 5 |  | 0.552 vs 0.568 | -0.015 [-0.035, +0.005] | 0 of 5 |  |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.545 vs 0.573 | -0.028 [-0.064, +0.008] | 3 of 5 |  | 0.572 vs 0.562 | +0.009 [-0.013, +0.030] | 3 of 5 |  |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.560 vs 0.567 | -0.007 [-0.031, +0.017] | 0 of 5 |  | 0.547 vs 0.570 | -0.023 [-0.043, -0.004] | 2 of 5 |  |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.564 vs 0.569 | -0.004 [-0.036, +0.024] | 2 of 5 |  | 0.568 vs 0.563 | +0.005 [-0.016, +0.025] | 3 of 5 |  |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.561 vs 0.553 | +0.008 [-0.023, +0.039] | 2 of 5 |  | 0.552 vs 0.545 | +0.007 [-0.010, +0.025] | 1 of 5 |  |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.573 vs 0.554 | +0.019 [-0.013, +0.054] | 3 of 5 |  | 0.562 vs 0.581 | -0.019 [-0.043, +0.007] | 2 of 5 |  |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.545 vs 0.580 | -0.036 [-0.080, +0.012] | 2 of 5 |  | 0.572 vs 0.558 | +0.013 [-0.011, +0.038] | 3 of 5 |  |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.567 vs 0.535 | +0.032 [-0.005, +0.072] | 4 of 5 |  | 0.570 vs 0.555 | +0.015 [-0.015, +0.045] | 3 of 5 |  |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.560 vs 0.561 | -0.002 [-0.038, +0.034] | 2 of 5 |  | 0.547 vs 0.571 | -0.024 [-0.049, +0.000] | 2 of 5 |  |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.569 vs 0.533 | +0.036 [-0.028, +0.100] | 4 / 1 |  | 0.563 vs 0.528 | +0.035 [-0.029, +0.099] | 3 / 2 |  |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.553 vs 0.533 | +0.020 [-0.051, +0.088] | 2 / 3 |  | 0.545 vs 0.528 | +0.017 [-0.053, +0.088] | 4 / 1 |  |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.554 vs 0.533 | +0.021 [-0.043, +0.081] | 3 / 2 |  | 0.581 vs 0.528 | +0.053 [-0.009, +0.116] | 5 / 0 |  |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.580 vs 0.533 | +0.047 [-0.012, +0.103] | 5 / 0 |  | 0.558 vs 0.528 | +0.030 [-0.034, +0.093] | 4 / 1 |  |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.535 vs 0.533 | +0.002 [-0.064, +0.070] | 4 / 1 |  | 0.555 vs 0.528 | +0.027 [-0.039, +0.090] | 3 / 2 |  |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.561 vs 0.533 | +0.028 [-0.036, +0.092] | 5 / 0 |  | 0.571 vs 0.528 | +0.043 [-0.024, +0.109] | 5 / 0 |  |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.564 vs 0.533 | +0.031 [-0.033, +0.092] | 4 / 1 |  | 0.568 vs 0.528 | +0.040 [-0.025, +0.104] | 5 / 0 |  |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.561 vs 0.533 | +0.028 [-0.036, +0.092] | 4 / 1 |  | 0.552 vs 0.528 | +0.024 [-0.047, +0.094] | 5 / 0 |  |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.573 vs 0.533 | +0.040 [-0.021, +0.100] | 3 / 2 |  | 0.562 vs 0.528 | +0.034 [-0.032, +0.102] | 4 / 1 |  |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.545 vs 0.533 | +0.012 [-0.054, +0.080] | 3 / 2 |  | 0.572 vs 0.528 | +0.043 [-0.024, +0.112] | 4 / 1 |  |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.567 vs 0.533 | +0.034 [-0.030, +0.094] | 5 / 0 |  | 0.570 vs 0.528 | +0.042 [-0.025, +0.108] | 4 / 1 |  |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.560 vs 0.533 | +0.027 [-0.033, +0.086] | 5 / 0 |  | 0.547 vs 0.528 | +0.019 [-0.048, +0.085] | 4 / 1 |  |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.554 vs 0.569 | -0.015 [-0.050, +0.021] | 2 / 3 |  | 0.581 vs 0.563 | +0.018 [-0.009, +0.043] | 4 / 1 |  |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.580 vs 0.553 | +0.027 [-0.021, +0.075] | 4 / 1 |  | 0.558 vs 0.545 | +0.013 [-0.012, +0.037] | 3 / 2 |  |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.535 vs 0.569 | -0.034 [-0.078, +0.010] | 3 / 2 |  | 0.555 vs 0.563 | -0.008 [-0.037, +0.022] | 2 / 3 |  |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.561 vs 0.553 | +0.008 [-0.028, +0.048] | 3 / 2 |  | 0.571 vs 0.545 | +0.026 [-0.004, +0.055] | 4 / 1 |  |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.573 vs 0.564 | +0.009 [-0.020, +0.037] | 2 / 3 |  | 0.562 vs 0.568 | -0.005 [-0.026, +0.017] | 2 / 3 |  |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.545 vs 0.561 | -0.016 [-0.047, +0.012] | 1 / 4 |  | 0.572 vs 0.552 | +0.019 [-0.005, +0.043] | 4 / 1 |  |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.567 vs 0.564 | +0.002 [-0.030, +0.034] | 2 / 3 |  | 0.570 vs 0.568 | +0.003 [-0.020, +0.025] | 3 / 2 |  |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.560 vs 0.561 | -0.001 [-0.042, +0.038] | 3 / 2 |  | 0.547 vs 0.552 | -0.005 [-0.028, +0.017] | 4 / 1 |  |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.553 vs 0.569 | -0.016 [-0.056, +0.025] | 1 / 4 |  | 0.545 vs 0.563 | -0.018 [-0.040, +0.005] | 2 / 3 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.580 vs 0.554 | +0.026 [-0.002, +0.058] | 4 / 1 |  | 0.558 vs 0.581 | -0.023 [-0.045, -0.000] | 1 / 4 | ✗ |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.561 vs 0.535 | +0.026 [-0.014, +0.066] | 2 / 3 |  | 0.571 vs 0.555 | +0.016 [-0.007, +0.038] | 2 / 3 |  |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.561 vs 0.564 | -0.003 [-0.027, +0.020] | 3 / 2 |  | 0.552 vs 0.568 | -0.015 [-0.035, +0.005] | 0 / 5 |  |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.545 vs 0.573 | -0.028 [-0.064, +0.008] | 3 / 2 |  | 0.572 vs 0.562 | +0.009 [-0.013, +0.030] | 3 / 2 |  |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.560 vs 0.567 | -0.007 [-0.031, +0.017] | 0 / 5 |  | 0.547 vs 0.570 | -0.023 [-0.043, -0.004] | 2 / 3 |  |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.564 vs 0.569 | -0.004 [-0.036, +0.024] | 2 / 3 |  | 0.568 vs 0.563 | +0.005 [-0.016, +0.025] | 3 / 2 |  |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.561 vs 0.553 | +0.008 [-0.023, +0.039] | 2 / 3 |  | 0.552 vs 0.545 | +0.007 [-0.010, +0.025] | 1 / 4 |  |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.573 vs 0.554 | +0.019 [-0.013, +0.054] | 3 / 2 |  | 0.562 vs 0.581 | -0.019 [-0.043, +0.007] | 2 / 3 |  |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.545 vs 0.580 | -0.036 [-0.080, +0.012] | 2 / 3 |  | 0.572 vs 0.558 | +0.013 [-0.011, +0.038] | 3 / 2 |  |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.567 vs 0.535 | +0.032 [-0.005, +0.072] | 4 / 1 |  | 0.570 vs 0.555 | +0.015 [-0.015, +0.045] | 3 / 2 |  |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.560 vs 0.561 | -0.002 [-0.038, +0.034] | 2 / 3 |  | 0.547 vs 0.571 | -0.024 [-0.049, +0.000] | 2 / 3 |  |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.533 vs 0.491 | +0.042 [-0.021, +0.107] | single fits |  | 0.528 vs 0.470 | +0.058 [-0.017, +0.131] | single fits |  |
 
 Marked, of 33 comparisons: balanced accuracy 0 ✓ and 0 ✗; AUC 0 ✓ and 1 ✗. Chance alone would put about 1.6 intervals per score off 0 (fewer once the seeds must agree).
@@ -489,40 +489,40 @@ Marked, of 33 comparisons: balanced accuracy 0 ✓ and 0 ✗; AUC 0 ✓ and 1 �
 
 Comparisons (# column): **1** against logistic regression, same data; **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.454 vs 0.457 | -0.003 [-0.094, +0.095] | 1 of 5 |  | 0.424 vs 0.432 | -0.008 [-0.116, +0.090] | 4 of 5 |  |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.461 vs 0.457 | +0.004 [-0.103, +0.111] | 2 of 5 |  | 0.435 vs 0.432 | +0.003 [-0.116, +0.116] | 3 of 5 |  |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.400 vs 0.457 | -0.057 [-0.170, +0.058] | 2 of 5 |  | 0.414 vs 0.432 | -0.017 [-0.142, +0.105] | 2 of 5 |  |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.457 vs 0.457 | +0.000 [-0.121, +0.122] | 3 of 5 |  | 0.417 vs 0.432 | -0.015 [-0.131, +0.097] | 3 of 5 |  |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.478 vs 0.457 | +0.020 [-0.104, +0.154] | 2 of 5 |  | 0.430 vs 0.432 | -0.002 [-0.128, +0.129] | 4 of 5 |  |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.411 vs 0.457 | -0.047 [-0.164, +0.067] | 4 of 5 |  | 0.406 vs 0.432 | -0.025 [-0.139, +0.083] | 4 of 5 |  |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.492 vs 0.457 | +0.035 [-0.056, +0.119] | 3 of 5 |  | 0.469 vs 0.432 | +0.038 [-0.075, +0.144] | 3 of 5 |  |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.482 vs 0.457 | +0.025 [-0.068, +0.118] | 3 of 5 |  | 0.461 vs 0.432 | +0.029 [-0.080, +0.125] | 4 of 5 |  |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.453 vs 0.457 | -0.004 [-0.120, +0.104] | 3 of 5 |  | 0.428 vs 0.432 | -0.004 [-0.133, +0.114] | 4 of 5 |  |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.453 vs 0.457 | -0.004 [-0.119, +0.104] | 3 of 5 |  | 0.448 vs 0.432 | +0.016 [-0.111, +0.135] | 4 of 5 |  |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.417 vs 0.457 | -0.040 [-0.132, +0.050] | 3 of 5 |  | 0.457 vs 0.432 | +0.025 [-0.087, +0.130] | 4 of 5 |  |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.437 vs 0.457 | -0.020 [-0.110, +0.061] | 1 of 5 |  | 0.447 vs 0.432 | +0.015 [-0.107, +0.126] | 5 of 5 |  |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.400 vs 0.454 | -0.054 [-0.144, +0.043] | 3 of 5 |  | 0.414 vs 0.424 | -0.009 [-0.072, +0.061] | 2 of 5 |  |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.457 vs 0.461 | -0.004 [-0.075, +0.071] | 3 of 5 |  | 0.417 vs 0.435 | -0.019 [-0.059, +0.027] | 1 of 5 |  |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.478 vs 0.454 | +0.023 [-0.075, +0.126] | 3 of 5 |  | 0.430 vs 0.424 | +0.006 [-0.069, +0.086] | 2 of 5 |  |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.411 vs 0.461 | -0.050 [-0.132, +0.038] | 5 of 5 |  | 0.406 vs 0.435 | -0.029 [-0.094, +0.042] | 2 of 5 |  |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.453 vs 0.492 | -0.038 [-0.124, +0.051] | 2 of 5 |  | 0.428 vs 0.469 | -0.041 [-0.113, +0.024] | 2 of 5 |  |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.453 vs 0.482 | -0.029 [-0.108, +0.053] | 3 of 5 |  | 0.448 vs 0.461 | -0.013 [-0.060, +0.040] | 3 of 5 |  |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.417 vs 0.492 | -0.074 [-0.135, -0.027] | 1 of 5 | ✗ | 0.457 vs 0.469 | -0.012 [-0.073, +0.036] | 3 of 5 |  |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.437 vs 0.482 | -0.045 [-0.103, +0.024] | 2 of 5 |  | 0.447 vs 0.461 | -0.014 [-0.070, +0.038] | 4 of 5 |  |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.461 vs 0.454 | +0.007 [-0.081, +0.100] | 2 of 5 |  | 0.435 vs 0.424 | +0.011 [-0.040, +0.062] | 3 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.457 vs 0.400 | +0.057 [-0.003, +0.119] | 2 of 5 |  | 0.417 vs 0.414 | +0.002 [-0.049, +0.055] | 4 of 5 |  |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.411 vs 0.478 | -0.067 [-0.140, +0.010] | 5 of 5 |  | 0.406 vs 0.430 | -0.023 [-0.092, +0.046] | 3 of 5 |  |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.482 vs 0.492 | -0.009 [-0.074, +0.043] | 2 of 5 |  | 0.461 vs 0.469 | -0.009 [-0.060, +0.037] | 2 of 5 |  |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.453 vs 0.453 | -0.000 [-0.061, +0.056] | 3 of 5 |  | 0.448 vs 0.428 | +0.020 [-0.028, +0.073] | 2 of 5 |  |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.437 vs 0.417 | +0.020 [-0.033, +0.086] | 1 of 5 |  | 0.447 vs 0.457 | -0.010 [-0.061, +0.046] | 4 of 5 |  |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.492 vs 0.454 | +0.037 [-0.037, +0.122] | 3 of 5 |  | 0.469 vs 0.424 | +0.046 [-0.007, +0.106] | 3 of 5 |  |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.482 vs 0.461 | +0.021 [-0.045, +0.088] | 3 of 5 |  | 0.461 vs 0.435 | +0.025 [-0.033, +0.087] | 1 of 5 |  |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.453 vs 0.400 | +0.053 [-0.012, +0.120] | 3 of 5 |  | 0.428 vs 0.414 | +0.013 [-0.045, +0.073] | 4 of 5 |  |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.453 vs 0.457 | -0.004 [-0.054, +0.050] | 3 of 5 |  | 0.448 vs 0.417 | +0.031 [-0.009, +0.073] | 4 of 5 |  |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.417 vs 0.478 | -0.060 [-0.166, +0.039] | 2 of 5 |  | 0.457 vs 0.430 | +0.027 [-0.075, +0.122] | 3 of 5 |  |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.437 vs 0.411 | +0.027 [-0.074, +0.129] | 0 of 5 |  | 0.447 vs 0.406 | +0.040 [-0.051, +0.130] | 4 of 5 |  |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.454 vs 0.457 | -0.003 [-0.094, +0.095] | 1 / 4 |  | 0.424 vs 0.432 | -0.008 [-0.116, +0.090] | 4 / 1 |  |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.461 vs 0.457 | +0.004 [-0.103, +0.111] | 2 / 3 |  | 0.435 vs 0.432 | +0.003 [-0.116, +0.116] | 3 / 2 |  |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.400 vs 0.457 | -0.057 [-0.170, +0.058] | 2 / 3 |  | 0.414 vs 0.432 | -0.017 [-0.142, +0.105] | 2 / 2 |  |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.457 vs 0.457 | +0.000 [-0.121, +0.122] | 3 / 2 |  | 0.417 vs 0.432 | -0.015 [-0.131, +0.097] | 3 / 2 |  |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.478 vs 0.457 | +0.020 [-0.104, +0.154] | 2 / 3 |  | 0.430 vs 0.432 | -0.002 [-0.128, +0.129] | 4 / 1 |  |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.411 vs 0.457 | -0.047 [-0.164, +0.067] | 4 / 1 |  | 0.406 vs 0.432 | -0.025 [-0.139, +0.083] | 4 / 1 |  |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.492 vs 0.457 | +0.035 [-0.056, +0.119] | 3 / 2 |  | 0.469 vs 0.432 | +0.038 [-0.075, +0.144] | 3 / 2 |  |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.482 vs 0.457 | +0.025 [-0.068, +0.118] | 3 / 2 |  | 0.461 vs 0.432 | +0.029 [-0.080, +0.125] | 4 / 1 |  |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.453 vs 0.457 | -0.004 [-0.120, +0.104] | 3 / 2 |  | 0.428 vs 0.432 | -0.004 [-0.133, +0.114] | 4 / 1 |  |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.453 vs 0.457 | -0.004 [-0.119, +0.104] | 3 / 2 |  | 0.448 vs 0.432 | +0.016 [-0.111, +0.135] | 4 / 1 |  |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.417 vs 0.457 | -0.040 [-0.132, +0.050] | 3 / 2 |  | 0.457 vs 0.432 | +0.025 [-0.087, +0.130] | 4 / 1 |  |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.437 vs 0.457 | -0.020 [-0.110, +0.061] | 1 / 4 |  | 0.447 vs 0.432 | +0.015 [-0.107, +0.126] | 5 / 0 |  |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.400 vs 0.454 | -0.054 [-0.144, +0.043] | 3 / 2 |  | 0.414 vs 0.424 | -0.009 [-0.072, +0.061] | 2 / 3 |  |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.457 vs 0.461 | -0.004 [-0.075, +0.071] | 3 / 2 |  | 0.417 vs 0.435 | -0.019 [-0.059, +0.027] | 1 / 4 |  |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.478 vs 0.454 | +0.023 [-0.075, +0.126] | 3 / 2 |  | 0.430 vs 0.424 | +0.006 [-0.069, +0.086] | 2 / 3 |  |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.411 vs 0.461 | -0.050 [-0.132, +0.038] | 5 / 0 |  | 0.406 vs 0.435 | -0.029 [-0.094, +0.042] | 2 / 3 |  |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.453 vs 0.492 | -0.038 [-0.124, +0.051] | 2 / 3 |  | 0.428 vs 0.469 | -0.041 [-0.113, +0.024] | 2 / 3 |  |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.453 vs 0.482 | -0.029 [-0.108, +0.053] | 3 / 2 |  | 0.448 vs 0.461 | -0.013 [-0.060, +0.040] | 3 / 2 |  |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.417 vs 0.492 | -0.074 [-0.135, -0.027] | 1 / 4 | ✗ | 0.457 vs 0.469 | -0.012 [-0.073, +0.036] | 3 / 2 |  |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.437 vs 0.482 | -0.045 [-0.103, +0.024] | 2 / 3 |  | 0.447 vs 0.461 | -0.014 [-0.070, +0.038] | 4 / 1 |  |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.461 vs 0.454 | +0.007 [-0.081, +0.100] | 2 / 3 |  | 0.435 vs 0.424 | +0.011 [-0.040, +0.062] | 3 / 2 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.457 vs 0.400 | +0.057 [-0.003, +0.119] | 2 / 3 |  | 0.417 vs 0.414 | +0.002 [-0.049, +0.055] | 4 / 1 |  |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.411 vs 0.478 | -0.067 [-0.140, +0.010] | 5 / 0 |  | 0.406 vs 0.430 | -0.023 [-0.092, +0.046] | 3 / 2 |  |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.482 vs 0.492 | -0.009 [-0.074, +0.043] | 2 / 3 |  | 0.461 vs 0.469 | -0.009 [-0.060, +0.037] | 2 / 3 |  |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.453 vs 0.453 | -0.000 [-0.061, +0.056] | 3 / 2 |  | 0.448 vs 0.428 | +0.020 [-0.028, +0.073] | 2 / 3 |  |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.437 vs 0.417 | +0.020 [-0.033, +0.086] | 1 / 4 |  | 0.447 vs 0.457 | -0.010 [-0.061, +0.046] | 4 / 1 |  |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.492 vs 0.454 | +0.037 [-0.037, +0.122] | 3 / 2 |  | 0.469 vs 0.424 | +0.046 [-0.007, +0.106] | 3 / 2 |  |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.482 vs 0.461 | +0.021 [-0.045, +0.088] | 3 / 2 |  | 0.461 vs 0.435 | +0.025 [-0.033, +0.087] | 1 / 4 |  |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.453 vs 0.400 | +0.053 [-0.012, +0.120] | 3 / 2 |  | 0.428 vs 0.414 | +0.013 [-0.045, +0.073] | 4 / 1 |  |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.453 vs 0.457 | -0.004 [-0.054, +0.050] | 3 / 2 |  | 0.448 vs 0.417 | +0.031 [-0.009, +0.073] | 4 / 1 |  |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.417 vs 0.478 | -0.060 [-0.166, +0.039] | 2 / 3 |  | 0.457 vs 0.430 | +0.027 [-0.075, +0.122] | 3 / 2 |  |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.437 vs 0.411 | +0.027 [-0.074, +0.129] | 0 / 5 |  | 0.447 vs 0.406 | +0.040 [-0.051, +0.130] | 4 / 1 |  |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.457 vs 0.422 | +0.035 [-0.060, +0.126] | single fits |  | 0.432 vs 0.411 | +0.021 [-0.114, +0.152] | single fits |  |
 
 Marked, of 33 comparisons: balanced accuracy 0 ✓ and 1 ✗; AUC 0 ✓ and 0 ✗. Chance alone would put about 1.6 intervals per score off 0 (fewer once the seeds must agree).
@@ -548,54 +548,54 @@ Marked, of 33 comparisons: balanced accuracy 0 ✓ and 1 ✗; AUC 0 ✓ and 0 �
 
 Comparisons (# column): **1** against logistic regression, same data; **1b** against the variety-only rule (pooled sets); **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.598 vs 0.587 | +0.011 [-0.020, +0.042] | 2 of 5 |  | 0.635 vs 0.619 | +0.017 [-0.006, +0.039] | 3 of 5 |  |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.595 vs 0.587 | +0.008 [-0.022, +0.040] | 1 of 5 |  | 0.624 vs 0.619 | +0.005 [-0.017, +0.026] | 0 of 5 |  |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.606 vs 0.587 | +0.019 [-0.011, +0.050] | 1 of 5 |  | 0.636 vs 0.619 | +0.017 [-0.005, +0.041] | 2 of 5 |  |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.607 vs 0.587 | +0.020 [-0.011, +0.052] | 1 of 5 |  | 0.633 vs 0.619 | +0.014 [-0.007, +0.036] | 2 of 5 |  |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.612 vs 0.587 | +0.025 [-0.006, +0.056] | 3 of 5 |  | 0.651 vs 0.619 | +0.032 [+0.008, +0.055] | 2 of 5 |  |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.626 vs 0.587 | +0.039 [+0.008, +0.070] | 4 of 5 | ✓ | 0.666 vs 0.619 | +0.048 [+0.024, +0.070] | 5 of 5 | ✓ |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.584 vs 0.587 | -0.003 [-0.035, +0.031] | 2 of 5 |  | 0.632 vs 0.619 | +0.013 [-0.011, +0.037] | 1 of 5 |  |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.611 vs 0.587 | +0.024 [-0.007, +0.057] | 4 of 5 |  | 0.661 vs 0.619 | +0.042 [+0.019, +0.064] | 5 of 5 | ✓ |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.604 vs 0.587 | +0.017 [-0.014, +0.050] | 3 of 5 |  | 0.654 vs 0.619 | +0.036 [+0.012, +0.061] | 3 of 5 |  |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.574 vs 0.587 | -0.013 [-0.044, +0.019] | 0 of 5 |  | 0.622 vs 0.619 | +0.004 [-0.020, +0.026] | 2 of 5 |  |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.612 vs 0.587 | +0.025 [-0.004, +0.057] | 3 of 5 |  | 0.637 vs 0.619 | +0.018 [-0.004, +0.040] | 3 of 5 |  |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.585 vs 0.587 | -0.003 [-0.034, +0.029] | 0 of 5 |  | 0.626 vs 0.619 | +0.007 [-0.016, +0.030] | 3 of 5 |  |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.598 vs 0.587 | +0.011 [-0.020, +0.042] | 2 / 3 |  | 0.635 vs 0.619 | +0.017 [-0.006, +0.039] | 3 / 2 |  |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.595 vs 0.587 | +0.008 [-0.022, +0.040] | 1 / 4 |  | 0.624 vs 0.619 | +0.005 [-0.017, +0.026] | 0 / 5 |  |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.606 vs 0.587 | +0.019 [-0.011, +0.050] | 1 / 4 |  | 0.636 vs 0.619 | +0.017 [-0.005, +0.041] | 2 / 3 |  |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.607 vs 0.587 | +0.020 [-0.011, +0.052] | 1 / 4 |  | 0.633 vs 0.619 | +0.014 [-0.007, +0.036] | 2 / 3 |  |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.612 vs 0.587 | +0.025 [-0.006, +0.056] | 3 / 2 |  | 0.651 vs 0.619 | +0.032 [+0.008, +0.055] | 2 / 3 |  |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.626 vs 0.587 | +0.039 [+0.008, +0.070] | 4 / 1 | ✓ | 0.666 vs 0.619 | +0.048 [+0.024, +0.070] | 5 / 0 | ✓ |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.584 vs 0.587 | -0.003 [-0.035, +0.031] | 2 / 3 |  | 0.632 vs 0.619 | +0.013 [-0.011, +0.037] | 1 / 4 |  |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.611 vs 0.587 | +0.024 [-0.007, +0.057] | 4 / 1 |  | 0.661 vs 0.619 | +0.042 [+0.019, +0.064] | 5 / 0 | ✓ |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.604 vs 0.587 | +0.017 [-0.014, +0.050] | 3 / 2 |  | 0.654 vs 0.619 | +0.036 [+0.012, +0.061] | 3 / 2 |  |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.574 vs 0.587 | -0.013 [-0.044, +0.019] | 0 / 5 |  | 0.622 vs 0.619 | +0.004 [-0.020, +0.026] | 2 / 3 |  |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.612 vs 0.587 | +0.025 [-0.004, +0.057] | 3 / 2 |  | 0.637 vs 0.619 | +0.018 [-0.004, +0.040] | 3 / 2 |  |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.585 vs 0.587 | -0.003 [-0.034, +0.029] | 0 / 5 |  | 0.626 vs 0.619 | +0.007 [-0.016, +0.030] | 3 / 2 |  |
 | 1b | logistic regression − variety-only rule | 204 bands | 0.587 vs 0.676 | -0.089 [-0.120, -0.061] | single fits | ✗ | 0.619 vs 0.652 | -0.033 [-0.058, -0.008] | single fits | ✗ |
-| 1b | CNN, mean pool − variety-only rule | 204 bands | 0.598 vs 0.676 | -0.079 [-0.098, -0.060] | 0 of 5 | ✗ | 0.635 vs 0.652 | -0.016 [-0.035, +0.002] | 2 of 5 |  |
-| 1b | CNN, attention pool − variety-only rule | 204 bands | 0.595 vs 0.676 | -0.081 [-0.100, -0.060] | 0 of 5 | ✗ | 0.624 vs 0.652 | -0.028 [-0.049, -0.008] | 0 of 5 | ✗ |
-| 1b | CNN + ECA, mean pool − variety-only rule | 204 bands | 0.606 vs 0.676 | -0.071 [-0.090, -0.050] | 0 of 5 | ✗ | 0.636 vs 0.652 | -0.016 [-0.036, +0.004] | 0 of 5 |  |
-| 1b | CNN + ECA, attention pool − variety-only rule | 204 bands | 0.607 vs 0.676 | -0.069 [-0.087, -0.051] | 0 of 5 | ✗ | 0.633 vs 0.652 | -0.019 [-0.037, -0.001] | 0 of 5 | ✗ |
-| 1b | CNN + CBAM, mean pool − variety-only rule | 204 bands | 0.612 vs 0.676 | -0.065 [-0.085, -0.045] | 0 of 5 | ✗ | 0.651 vs 0.652 | -0.001 [-0.022, +0.019] | 1 of 5 |  |
-| 1b | CNN + CBAM, attention pool − variety-only rule | 204 bands | 0.626 vs 0.676 | -0.051 [-0.072, -0.029] | 0 of 5 | ✗ | 0.666 vs 0.652 | +0.014 [-0.004, +0.032] | 1 of 5 |  |
-| 1b | small ResNet, mean pool − variety-only rule | 204 bands | 0.584 vs 0.676 | -0.092 [-0.114, -0.072] | 0 of 5 | ✗ | 0.632 vs 0.652 | -0.020 [-0.040, +0.000] | 0 of 5 |  |
-| 1b | small ResNet, attention pool − variety-only rule | 204 bands | 0.611 vs 0.676 | -0.065 [-0.087, -0.041] | 0 of 5 | ✗ | 0.661 vs 0.652 | +0.009 [-0.012, +0.030] | 1 of 5 |  |
-| 1b | small ResNet + ECA, mean pool − variety-only rule | 204 bands | 0.604 vs 0.676 | -0.072 [-0.092, -0.053] | 0 of 5 | ✗ | 0.654 vs 0.652 | +0.003 [-0.016, +0.022] | 2 of 5 |  |
-| 1b | small ResNet + ECA, attention pool − variety-only rule | 204 bands | 0.574 vs 0.676 | -0.103 [-0.122, -0.084] | 0 of 5 | ✗ | 0.622 vs 0.652 | -0.030 [-0.049, -0.011] | 0 of 5 | ✗ |
-| 1b | small ResNet + CBAM, mean pool − variety-only rule | 204 bands | 0.612 vs 0.676 | -0.064 [-0.082, -0.047] | 0 of 5 | ✗ | 0.637 vs 0.652 | -0.015 [-0.031, +0.002] | 0 of 5 |  |
-| 1b | small ResNet + CBAM, attention pool − variety-only rule | 204 bands | 0.585 vs 0.676 | -0.092 [-0.110, -0.074] | 0 of 5 | ✗ | 0.626 vs 0.652 | -0.026 [-0.044, -0.007] | 0 of 5 | ✗ |
+| 1b | CNN, mean pool − variety-only rule | 204 bands | 0.598 vs 0.676 | -0.079 [-0.098, -0.060] | 0 / 5 | ✗ | 0.635 vs 0.652 | -0.016 [-0.035, +0.002] | 2 / 3 |  |
+| 1b | CNN, attention pool − variety-only rule | 204 bands | 0.595 vs 0.676 | -0.081 [-0.100, -0.060] | 0 / 5 | ✗ | 0.624 vs 0.652 | -0.028 [-0.049, -0.008] | 0 / 5 | ✗ |
+| 1b | CNN + ECA, mean pool − variety-only rule | 204 bands | 0.606 vs 0.676 | -0.071 [-0.090, -0.050] | 0 / 5 | ✗ | 0.636 vs 0.652 | -0.016 [-0.036, +0.004] | 0 / 5 |  |
+| 1b | CNN + ECA, attention pool − variety-only rule | 204 bands | 0.607 vs 0.676 | -0.069 [-0.087, -0.051] | 0 / 5 | ✗ | 0.633 vs 0.652 | -0.019 [-0.037, -0.001] | 0 / 5 | ✗ |
+| 1b | CNN + CBAM, mean pool − variety-only rule | 204 bands | 0.612 vs 0.676 | -0.065 [-0.085, -0.045] | 0 / 5 | ✗ | 0.651 vs 0.652 | -0.001 [-0.022, +0.019] | 1 / 4 |  |
+| 1b | CNN + CBAM, attention pool − variety-only rule | 204 bands | 0.626 vs 0.676 | -0.051 [-0.072, -0.029] | 0 / 5 | ✗ | 0.666 vs 0.652 | +0.014 [-0.004, +0.032] | 1 / 4 |  |
+| 1b | small ResNet, mean pool − variety-only rule | 204 bands | 0.584 vs 0.676 | -0.092 [-0.114, -0.072] | 0 / 5 | ✗ | 0.632 vs 0.652 | -0.020 [-0.040, +0.000] | 0 / 5 |  |
+| 1b | small ResNet, attention pool − variety-only rule | 204 bands | 0.611 vs 0.676 | -0.065 [-0.087, -0.041] | 0 / 5 | ✗ | 0.661 vs 0.652 | +0.009 [-0.012, +0.030] | 1 / 4 |  |
+| 1b | small ResNet + ECA, mean pool − variety-only rule | 204 bands | 0.604 vs 0.676 | -0.072 [-0.092, -0.053] | 0 / 5 | ✗ | 0.654 vs 0.652 | +0.003 [-0.016, +0.022] | 2 / 3 |  |
+| 1b | small ResNet + ECA, attention pool − variety-only rule | 204 bands | 0.574 vs 0.676 | -0.103 [-0.122, -0.084] | 0 / 5 | ✗ | 0.622 vs 0.652 | -0.030 [-0.049, -0.011] | 0 / 5 | ✗ |
+| 1b | small ResNet + CBAM, mean pool − variety-only rule | 204 bands | 0.612 vs 0.676 | -0.064 [-0.082, -0.047] | 0 / 5 | ✗ | 0.637 vs 0.652 | -0.015 [-0.031, +0.002] | 0 / 5 |  |
+| 1b | small ResNet + CBAM, attention pool − variety-only rule | 204 bands | 0.585 vs 0.676 | -0.092 [-0.110, -0.074] | 0 / 5 | ✗ | 0.626 vs 0.652 | -0.026 [-0.044, -0.007] | 0 / 5 | ✗ |
 | 1b | logistic regression − variety-only rule | RGB | 0.573 vs 0.676 | -0.103 [-0.130, -0.077] | single fits | ✗ | 0.622 vs 0.652 | -0.030 [-0.057, -0.005] | single fits | ✗ |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.606 vs 0.598 | +0.008 [-0.009, +0.027] | 3 of 5 |  | 0.636 vs 0.635 | +0.000 [-0.011, +0.012] | 2 of 5 |  |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.607 vs 0.595 | +0.012 [-0.010, +0.034] | 2 of 5 |  | 0.633 vs 0.624 | +0.010 [-0.004, +0.024] | 4 of 5 |  |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.612 vs 0.598 | +0.014 [-0.007, +0.036] | 3 of 5 |  | 0.651 vs 0.635 | +0.016 [-0.000, +0.032] | 3 of 5 |  |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.626 vs 0.595 | +0.030 [+0.007, +0.053] | 5 of 5 | ✓ | 0.666 vs 0.624 | +0.043 [+0.026, +0.060] | 5 of 5 | ✓ |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.604 vs 0.584 | +0.020 [+0.002, +0.039] | 3 of 5 |  | 0.654 vs 0.632 | +0.023 [+0.011, +0.034] | 3 of 5 |  |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.574 vs 0.611 | -0.038 [-0.059, -0.018] | 1 of 5 | ✗ | 0.622 vs 0.661 | -0.039 [-0.051, -0.026] | 1 of 5 | ✗ |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.612 vs 0.584 | +0.028 [+0.009, +0.047] | 3 of 5 |  | 0.637 vs 0.632 | +0.006 [-0.006, +0.018] | 3 of 5 |  |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.585 vs 0.611 | -0.027 [-0.051, -0.005] | 0 of 5 | ✗ | 0.626 vs 0.661 | -0.035 [-0.049, -0.020] | 0 of 5 | ✗ |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.595 vs 0.598 | -0.002 [-0.023, +0.020] | 3 of 5 |  | 0.624 vs 0.635 | -0.012 [-0.027, +0.003] | 2 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.607 vs 0.606 | +0.001 [-0.019, +0.021] | 2 of 5 |  | 0.633 vs 0.636 | -0.002 [-0.015, +0.010] | 2 of 5 |  |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.626 vs 0.612 | +0.014 [-0.008, +0.036] | 4 of 5 |  | 0.666 vs 0.651 | +0.015 [+0.001, +0.030] | 3 of 5 |  |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.611 vs 0.584 | +0.027 [+0.002, +0.054] | 3 of 5 |  | 0.661 vs 0.632 | +0.029 [+0.010, +0.049] | 4 of 5 | ✓ |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.574 vs 0.604 | -0.031 [-0.053, -0.011] | 2 of 5 |  | 0.622 vs 0.654 | -0.032 [-0.051, -0.014] | 1 of 5 | ✗ |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.585 vs 0.612 | -0.028 [-0.049, -0.007] | 1 of 5 | ✗ | 0.626 vs 0.637 | -0.011 [-0.025, +0.003] | 1 of 5 |  |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.584 vs 0.598 | -0.013 [-0.031, +0.004] | 3 of 5 |  | 0.632 vs 0.635 | -0.004 [-0.015, +0.007] | 2 of 5 |  |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.611 vs 0.595 | +0.016 [-0.005, +0.038] | 4 of 5 |  | 0.661 vs 0.624 | +0.037 [+0.020, +0.054] | 5 of 5 | ✓ |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.604 vs 0.606 | -0.001 [-0.022, +0.019] | 3 of 5 |  | 0.654 vs 0.636 | +0.019 [+0.004, +0.033] | 4 of 5 | ✓ |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.574 vs 0.607 | -0.033 [-0.054, -0.013] | 3 of 5 |  | 0.622 vs 0.633 | -0.011 [-0.027, +0.005] | 2 of 5 |  |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.612 vs 0.612 | +0.001 [-0.021, +0.022] | 3 of 5 |  | 0.637 vs 0.651 | -0.014 [-0.028, -0.000] | 3 of 5 |  |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.585 vs 0.626 | -0.041 [-0.066, -0.018] | 1 of 5 | ✗ | 0.626 vs 0.666 | -0.040 [-0.056, -0.025] | 1 of 5 | ✗ |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.606 vs 0.598 | +0.008 [-0.009, +0.027] | 3 / 2 |  | 0.636 vs 0.635 | +0.000 [-0.011, +0.012] | 2 / 3 |  |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.607 vs 0.595 | +0.012 [-0.010, +0.034] | 2 / 3 |  | 0.633 vs 0.624 | +0.010 [-0.004, +0.024] | 4 / 1 |  |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.612 vs 0.598 | +0.014 [-0.007, +0.036] | 3 / 2 |  | 0.651 vs 0.635 | +0.016 [-0.000, +0.032] | 3 / 2 |  |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.626 vs 0.595 | +0.030 [+0.007, +0.053] | 5 / 0 | ✓ | 0.666 vs 0.624 | +0.043 [+0.026, +0.060] | 5 / 0 | ✓ |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.604 vs 0.584 | +0.020 [+0.002, +0.039] | 3 / 2 |  | 0.654 vs 0.632 | +0.023 [+0.011, +0.034] | 3 / 2 |  |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.574 vs 0.611 | -0.038 [-0.059, -0.018] | 1 / 4 | ✗ | 0.622 vs 0.661 | -0.039 [-0.051, -0.026] | 1 / 4 | ✗ |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.612 vs 0.584 | +0.028 [+0.009, +0.047] | 3 / 2 |  | 0.637 vs 0.632 | +0.006 [-0.006, +0.018] | 3 / 2 |  |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.585 vs 0.611 | -0.027 [-0.051, -0.005] | 0 / 5 | ✗ | 0.626 vs 0.661 | -0.035 [-0.049, -0.020] | 0 / 5 | ✗ |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.595 vs 0.598 | -0.002 [-0.023, +0.020] | 3 / 2 |  | 0.624 vs 0.635 | -0.012 [-0.027, +0.003] | 2 / 3 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.607 vs 0.606 | +0.001 [-0.019, +0.021] | 2 / 3 |  | 0.633 vs 0.636 | -0.002 [-0.015, +0.010] | 2 / 3 |  |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.626 vs 0.612 | +0.014 [-0.008, +0.036] | 4 / 1 |  | 0.666 vs 0.651 | +0.015 [+0.001, +0.030] | 3 / 2 |  |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.611 vs 0.584 | +0.027 [+0.002, +0.054] | 3 / 2 |  | 0.661 vs 0.632 | +0.029 [+0.010, +0.049] | 4 / 1 | ✓ |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.574 vs 0.604 | -0.031 [-0.053, -0.011] | 2 / 3 |  | 0.622 vs 0.654 | -0.032 [-0.051, -0.014] | 1 / 4 | ✗ |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.585 vs 0.612 | -0.028 [-0.049, -0.007] | 1 / 4 | ✗ | 0.626 vs 0.637 | -0.011 [-0.025, +0.003] | 1 / 4 |  |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.584 vs 0.598 | -0.013 [-0.031, +0.004] | 3 / 2 |  | 0.632 vs 0.635 | -0.004 [-0.015, +0.007] | 2 / 3 |  |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.611 vs 0.595 | +0.016 [-0.005, +0.038] | 4 / 1 |  | 0.661 vs 0.624 | +0.037 [+0.020, +0.054] | 5 / 0 | ✓ |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.604 vs 0.606 | -0.001 [-0.022, +0.019] | 3 / 2 |  | 0.654 vs 0.636 | +0.019 [+0.004, +0.033] | 4 / 1 | ✓ |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.574 vs 0.607 | -0.033 [-0.054, -0.013] | 3 / 2 |  | 0.622 vs 0.633 | -0.011 [-0.027, +0.005] | 2 / 3 |  |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.612 vs 0.612 | +0.001 [-0.021, +0.022] | 3 / 2 |  | 0.637 vs 0.651 | -0.014 [-0.028, -0.000] | 3 / 2 |  |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.585 vs 0.626 | -0.041 [-0.066, -0.018] | 1 / 4 | ✗ | 0.626 vs 0.666 | -0.040 [-0.056, -0.025] | 1 / 4 | ✗ |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.587 vs 0.573 | +0.014 [-0.021, +0.050] | single fits |  | 0.619 vs 0.622 | -0.003 [-0.033, +0.031] | single fits |  |
 
 Marked, of 47 comparisons: balanced accuracy 2 ✓ and 18 ✗; AUC 6 ✓ and 10 ✗. Chance alone would put about 2.4 intervals per score off 0 (fewer once the seeds must agree).
@@ -620,40 +620,40 @@ Marked, of 47 comparisons: balanced accuracy 2 ✓ and 18 ✗; AUC 6 ✓ and 10 
 
 Comparisons (# column): **1** against logistic regression, same data; **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.500 vs 0.548 | -0.048 [-0.120, +0.022] | 0 of 5 |  | 0.497 vs 0.526 | -0.029 [-0.099, +0.043] | 0 of 5 |  |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.485 vs 0.548 | -0.062 [-0.128, +0.008] | 0 of 5 |  | 0.493 vs 0.526 | -0.033 [-0.105, +0.046] | 0 of 5 |  |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.483 vs 0.548 | -0.065 [-0.137, +0.011] | 0 of 5 |  | 0.519 vs 0.526 | -0.007 [-0.083, +0.073] | 2 of 5 |  |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.521 vs 0.548 | -0.027 [-0.090, +0.036] | 1 of 5 |  | 0.524 vs 0.526 | -0.002 [-0.077, +0.075] | 2 of 5 |  |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.471 vs 0.548 | -0.077 [-0.141, -0.008] | 0 of 5 | ✗ | 0.471 vs 0.526 | -0.055 [-0.118, +0.014] | 0 of 5 |  |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.518 vs 0.548 | -0.030 [-0.095, +0.037] | 0 of 5 |  | 0.480 vs 0.526 | -0.047 [-0.119, +0.029] | 1 of 5 |  |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.508 vs 0.548 | -0.040 [-0.108, +0.031] | 0 of 5 |  | 0.483 vs 0.526 | -0.043 [-0.126, +0.043] | 0 of 5 |  |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.496 vs 0.548 | -0.052 [-0.115, +0.012] | 0 of 5 |  | 0.485 vs 0.526 | -0.041 [-0.119, +0.041] | 1 of 5 |  |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.509 vs 0.548 | -0.039 [-0.115, +0.036] | 0 of 5 |  | 0.522 vs 0.526 | -0.004 [-0.089, +0.086] | 3 of 5 |  |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.489 vs 0.548 | -0.059 [-0.129, +0.015] | 1 of 5 |  | 0.498 vs 0.526 | -0.028 [-0.113, +0.061] | 2 of 5 |  |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.484 vs 0.548 | -0.064 [-0.125, +0.003] | 0 of 5 |  | 0.495 vs 0.526 | -0.032 [-0.103, +0.045] | 1 of 5 |  |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.504 vs 0.548 | -0.043 [-0.109, +0.029] | 0 of 5 |  | 0.492 vs 0.526 | -0.035 [-0.113, +0.046] | 2 of 5 |  |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.483 vs 0.500 | -0.017 [-0.067, +0.034] | 3 of 5 |  | 0.519 vs 0.497 | +0.023 [-0.017, +0.062] | 4 of 5 |  |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.521 vs 0.485 | +0.036 [-0.017, +0.090] | 3 of 5 |  | 0.524 vs 0.493 | +0.031 [-0.005, +0.069] | 4 of 5 |  |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.471 vs 0.500 | -0.029 [-0.086, +0.028] | 4 of 5 |  | 0.471 vs 0.497 | -0.026 [-0.075, +0.024] | 3 of 5 |  |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.518 vs 0.485 | +0.033 [-0.023, +0.087] | 4 of 5 |  | 0.480 vs 0.493 | -0.013 [-0.060, +0.032] | 3 of 5 |  |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.509 vs 0.508 | +0.001 [-0.052, +0.053] | 3 of 5 |  | 0.522 vs 0.483 | +0.039 [-0.008, +0.086] | 4 of 5 |  |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.489 vs 0.496 | -0.006 [-0.051, +0.041] | 2 of 5 |  | 0.498 vs 0.485 | +0.013 [-0.027, +0.050] | 3 of 5 |  |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.484 vs 0.508 | -0.024 [-0.063, +0.015] | 3 of 5 |  | 0.495 vs 0.483 | +0.011 [-0.021, +0.048] | 4 of 5 |  |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.504 vs 0.496 | +0.009 [-0.031, +0.051] | 3 of 5 |  | 0.492 vs 0.485 | +0.007 [-0.031, +0.044] | 3 of 5 |  |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.485 vs 0.500 | -0.015 [-0.062, +0.035] | 4 of 5 |  | 0.493 vs 0.497 | -0.004 [-0.039, +0.032] | 2 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.521 vs 0.483 | +0.038 [-0.012, +0.088] | 3 of 5 |  | 0.524 vs 0.519 | +0.005 [-0.030, +0.041] | 2 of 5 |  |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.518 vs 0.471 | +0.047 [-0.007, +0.101] | 2 of 5 |  | 0.480 vs 0.471 | +0.008 [-0.036, +0.055] | 2 of 5 |  |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.496 vs 0.508 | -0.012 [-0.058, +0.035] | 4 of 5 |  | 0.485 vs 0.483 | +0.002 [-0.043, +0.047] | 4 of 5 |  |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.489 vs 0.509 | -0.020 [-0.069, +0.028] | 2 of 5 |  | 0.498 vs 0.522 | -0.024 [-0.062, +0.015] | 3 of 5 |  |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.504 vs 0.484 | +0.021 [-0.030, +0.068] | 3 of 5 |  | 0.492 vs 0.495 | -0.003 [-0.040, +0.032] | 2 of 5 |  |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.508 vs 0.500 | +0.008 [-0.037, +0.054] | 3 of 5 |  | 0.483 vs 0.497 | -0.014 [-0.057, +0.029] | 4 of 5 |  |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.496 vs 0.485 | +0.010 [-0.037, +0.056] | 3 of 5 |  | 0.485 vs 0.493 | -0.008 [-0.044, +0.029] | 2 of 5 |  |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.509 vs 0.483 | +0.026 [-0.017, +0.070] | 2 of 5 |  | 0.522 vs 0.519 | +0.002 [-0.035, +0.043] | 3 of 5 |  |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.489 vs 0.521 | -0.032 [-0.083, +0.017] | 3 of 5 |  | 0.498 vs 0.524 | -0.026 [-0.069, +0.016] | 3 of 5 |  |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.484 vs 0.471 | +0.012 [-0.043, +0.073] | 3 of 5 |  | 0.495 vs 0.471 | +0.024 [-0.021, +0.071] | 3 of 5 |  |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.504 vs 0.518 | -0.013 [-0.063, +0.038] | 3 of 5 |  | 0.492 vs 0.480 | +0.012 [-0.042, +0.067] | 3 of 5 |  |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.500 vs 0.548 | -0.048 [-0.120, +0.022] | 0 / 5 |  | 0.497 vs 0.526 | -0.029 [-0.099, +0.043] | 0 / 5 |  |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.485 vs 0.548 | -0.062 [-0.128, +0.008] | 0 / 5 |  | 0.493 vs 0.526 | -0.033 [-0.105, +0.046] | 0 / 5 |  |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.483 vs 0.548 | -0.065 [-0.137, +0.011] | 0 / 5 |  | 0.519 vs 0.526 | -0.007 [-0.083, +0.073] | 2 / 3 |  |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.521 vs 0.548 | -0.027 [-0.090, +0.036] | 1 / 4 |  | 0.524 vs 0.526 | -0.002 [-0.077, +0.075] | 2 / 3 |  |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.471 vs 0.548 | -0.077 [-0.141, -0.008] | 0 / 5 | ✗ | 0.471 vs 0.526 | -0.055 [-0.118, +0.014] | 0 / 5 |  |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.518 vs 0.548 | -0.030 [-0.095, +0.037] | 0 / 5 |  | 0.480 vs 0.526 | -0.047 [-0.119, +0.029] | 1 / 4 |  |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.508 vs 0.548 | -0.040 [-0.108, +0.031] | 0 / 5 |  | 0.483 vs 0.526 | -0.043 [-0.126, +0.043] | 0 / 5 |  |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.496 vs 0.548 | -0.052 [-0.115, +0.012] | 0 / 5 |  | 0.485 vs 0.526 | -0.041 [-0.119, +0.041] | 1 / 4 |  |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.509 vs 0.548 | -0.039 [-0.115, +0.036] | 0 / 5 |  | 0.522 vs 0.526 | -0.004 [-0.089, +0.086] | 3 / 2 |  |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.489 vs 0.548 | -0.059 [-0.129, +0.015] | 1 / 4 |  | 0.498 vs 0.526 | -0.028 [-0.113, +0.061] | 2 / 3 |  |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.484 vs 0.548 | -0.064 [-0.125, +0.003] | 0 / 5 |  | 0.495 vs 0.526 | -0.032 [-0.103, +0.045] | 1 / 4 |  |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.504 vs 0.548 | -0.043 [-0.109, +0.029] | 0 / 5 |  | 0.492 vs 0.526 | -0.035 [-0.113, +0.046] | 2 / 3 |  |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.483 vs 0.500 | -0.017 [-0.067, +0.034] | 3 / 2 |  | 0.519 vs 0.497 | +0.023 [-0.017, +0.062] | 4 / 1 |  |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.521 vs 0.485 | +0.036 [-0.017, +0.090] | 3 / 2 |  | 0.524 vs 0.493 | +0.031 [-0.005, +0.069] | 4 / 1 |  |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.471 vs 0.500 | -0.029 [-0.086, +0.028] | 4 / 1 |  | 0.471 vs 0.497 | -0.026 [-0.075, +0.024] | 3 / 2 |  |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.518 vs 0.485 | +0.033 [-0.023, +0.087] | 4 / 1 |  | 0.480 vs 0.493 | -0.013 [-0.060, +0.032] | 3 / 2 |  |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.509 vs 0.508 | +0.001 [-0.052, +0.053] | 3 / 2 |  | 0.522 vs 0.483 | +0.039 [-0.008, +0.086] | 4 / 1 |  |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.489 vs 0.496 | -0.006 [-0.051, +0.041] | 2 / 3 |  | 0.498 vs 0.485 | +0.013 [-0.027, +0.050] | 3 / 2 |  |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.484 vs 0.508 | -0.024 [-0.063, +0.015] | 3 / 2 |  | 0.495 vs 0.483 | +0.011 [-0.021, +0.048] | 4 / 1 |  |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.504 vs 0.496 | +0.009 [-0.031, +0.051] | 3 / 2 |  | 0.492 vs 0.485 | +0.007 [-0.031, +0.044] | 3 / 2 |  |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.485 vs 0.500 | -0.015 [-0.062, +0.035] | 4 / 1 |  | 0.493 vs 0.497 | -0.004 [-0.039, +0.032] | 2 / 3 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.521 vs 0.483 | +0.038 [-0.012, +0.088] | 3 / 2 |  | 0.524 vs 0.519 | +0.005 [-0.030, +0.041] | 2 / 3 |  |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.518 vs 0.471 | +0.047 [-0.007, +0.101] | 2 / 3 |  | 0.480 vs 0.471 | +0.008 [-0.036, +0.055] | 2 / 3 |  |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.496 vs 0.508 | -0.012 [-0.058, +0.035] | 4 / 1 |  | 0.485 vs 0.483 | +0.002 [-0.043, +0.047] | 4 / 1 |  |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.489 vs 0.509 | -0.020 [-0.069, +0.028] | 2 / 3 |  | 0.498 vs 0.522 | -0.024 [-0.062, +0.015] | 3 / 2 |  |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.504 vs 0.484 | +0.021 [-0.030, +0.068] | 3 / 2 |  | 0.492 vs 0.495 | -0.003 [-0.040, +0.032] | 2 / 3 |  |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.508 vs 0.500 | +0.008 [-0.037, +0.054] | 3 / 2 |  | 0.483 vs 0.497 | -0.014 [-0.057, +0.029] | 4 / 1 |  |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.496 vs 0.485 | +0.010 [-0.037, +0.056] | 3 / 2 |  | 0.485 vs 0.493 | -0.008 [-0.044, +0.029] | 2 / 3 |  |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.509 vs 0.483 | +0.026 [-0.017, +0.070] | 2 / 3 |  | 0.522 vs 0.519 | +0.002 [-0.035, +0.043] | 3 / 2 |  |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.489 vs 0.521 | -0.032 [-0.083, +0.017] | 3 / 2 |  | 0.498 vs 0.524 | -0.026 [-0.069, +0.016] | 3 / 2 |  |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.484 vs 0.471 | +0.012 [-0.043, +0.073] | 3 / 2 |  | 0.495 vs 0.471 | +0.024 [-0.021, +0.071] | 3 / 2 |  |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.504 vs 0.518 | -0.013 [-0.063, +0.038] | 3 / 2 |  | 0.492 vs 0.480 | +0.012 [-0.042, +0.067] | 3 / 2 |  |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.548 vs 0.559 | -0.011 [-0.073, +0.047] | single fits |  | 0.526 vs 0.522 | +0.004 [-0.066, +0.081] | single fits |  |
 
 Marked, of 33 comparisons: balanced accuracy 0 ✓ and 1 ✗; AUC 0 ✓ and 0 ✗. Chance alone would put about 1.6 intervals per score off 0 (fewer once the seeds must agree).
@@ -678,40 +678,40 @@ Marked, of 33 comparisons: balanced accuracy 0 ✓ and 1 ✗; AUC 0 ✓ and 0 �
 
 Comparisons (# column): **1** against logistic regression, same data; **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.523 vs 0.597 | -0.074 [-0.125, -0.022] | 0 of 5 | ✗ | 0.540 vs 0.566 | -0.026 [-0.065, +0.012] | 1 of 5 |  |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.512 vs 0.597 | -0.084 [-0.133, -0.033] | 0 of 5 | ✗ | 0.536 vs 0.566 | -0.030 [-0.068, +0.008] | 0 of 5 |  |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.546 vs 0.597 | -0.051 [-0.097, -0.001] | 0 of 5 | ✗ | 0.586 vs 0.566 | +0.020 [-0.021, +0.060] | 2 of 5 |  |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.572 vs 0.597 | -0.024 [-0.077, +0.028] | 1 of 5 |  | 0.539 vs 0.566 | -0.027 [-0.068, +0.012] | 1 of 5 |  |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.560 vs 0.597 | -0.037 [-0.081, +0.008] | 0 of 5 |  | 0.577 vs 0.566 | +0.011 [-0.034, +0.055] | 1 of 5 |  |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.591 vs 0.597 | -0.005 [-0.058, +0.045] | 0 of 5 |  | 0.584 vs 0.566 | +0.018 [-0.031, +0.064] | 4 of 5 |  |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.589 vs 0.597 | -0.008 [-0.061, +0.043] | 0 of 5 |  | 0.571 vs 0.566 | +0.005 [-0.038, +0.047] | 1 of 5 |  |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.542 vs 0.597 | -0.055 [-0.100, -0.006] | 1 of 5 | ✗ | 0.543 vs 0.566 | -0.023 [-0.067, +0.022] | 1 of 5 |  |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.590 vs 0.597 | -0.007 [-0.063, +0.046] | 0 of 5 |  | 0.559 vs 0.566 | -0.007 [-0.051, +0.038] | 1 of 5 |  |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.595 vs 0.597 | -0.002 [-0.047, +0.043] | 0 of 5 |  | 0.564 vs 0.566 | -0.003 [-0.045, +0.039] | 1 of 5 |  |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.572 vs 0.597 | -0.025 [-0.074, +0.027] | 2 of 5 |  | 0.559 vs 0.566 | -0.007 [-0.050, +0.033] | 2 of 5 |  |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.554 vs 0.597 | -0.043 [-0.093, +0.008] | 0 of 5 |  | 0.541 vs 0.566 | -0.025 [-0.065, +0.011] | 2 of 5 |  |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.546 vs 0.523 | +0.023 [-0.015, +0.061] | 1 of 5 |  | 0.586 vs 0.540 | +0.046 [+0.025, +0.066] | 4 of 5 | ✓ |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.572 vs 0.512 | +0.060 [+0.017, +0.102] | 4 of 5 | ✓ | 0.539 vs 0.536 | +0.003 [-0.021, +0.025] | 3 of 5 |  |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.560 vs 0.523 | +0.037 [-0.009, +0.083] | 2 of 5 |  | 0.577 vs 0.540 | +0.037 [+0.002, +0.070] | 4 of 5 | ✓ |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.591 vs 0.512 | +0.079 [+0.031, +0.127] | 4 of 5 | ✓ | 0.584 vs 0.536 | +0.048 [+0.014, +0.080] | 5 of 5 | ✓ |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.590 vs 0.589 | +0.000 [-0.042, +0.041] | 2 of 5 |  | 0.559 vs 0.571 | -0.012 [-0.036, +0.011] | 1 of 5 |  |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.595 vs 0.542 | +0.053 [+0.018, +0.089] | 1 of 5 |  | 0.564 vs 0.543 | +0.020 [-0.001, +0.041] | 4 of 5 |  |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.572 vs 0.589 | -0.017 [-0.050, +0.015] | 3 of 5 |  | 0.559 vs 0.571 | -0.012 [-0.031, +0.007] | 3 of 5 |  |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.554 vs 0.542 | +0.012 [-0.025, +0.050] | 3 of 5 |  | 0.541 vs 0.543 | -0.002 [-0.029, +0.023] | 3 of 5 |  |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.512 vs 0.523 | -0.011 [-0.048, +0.025] | 1 of 5 |  | 0.536 vs 0.540 | -0.004 [-0.026, +0.016] | 2 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.572 vs 0.546 | +0.026 [-0.021, +0.070] | 5 of 5 |  | 0.539 vs 0.586 | -0.047 [-0.067, -0.028] | 0 of 5 | ✗ |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.591 vs 0.560 | +0.032 [-0.011, +0.071] | 2 of 5 |  | 0.584 vs 0.577 | +0.007 [-0.024, +0.038] | 4 of 5 |  |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.542 vs 0.589 | -0.047 [-0.089, -0.006] | 2 of 5 |  | 0.543 vs 0.571 | -0.028 [-0.056, +0.001] | 2 of 5 |  |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.595 vs 0.590 | +0.006 [-0.036, +0.044] | 3 of 5 |  | 0.564 vs 0.559 | +0.004 [-0.013, +0.022] | 4 of 5 |  |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.554 vs 0.572 | -0.018 [-0.056, +0.023] | 2 of 5 |  | 0.541 vs 0.559 | -0.018 [-0.038, +0.003] | 2 of 5 |  |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.589 vs 0.523 | +0.066 [+0.025, +0.110] | 3 of 5 |  | 0.571 vs 0.540 | +0.030 [+0.008, +0.054] | 5 of 5 | ✓ |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.542 vs 0.512 | +0.030 [-0.002, +0.059] | 4 of 5 |  | 0.543 vs 0.536 | +0.007 [-0.013, +0.028] | 3 of 5 |  |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.590 vs 0.546 | +0.044 [-0.000, +0.085] | 3 of 5 |  | 0.559 vs 0.586 | -0.027 [-0.049, -0.006] | 1 of 5 | ✗ |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.595 vs 0.572 | +0.023 [-0.014, +0.060] | 3 of 5 |  | 0.564 vs 0.539 | +0.024 [+0.004, +0.045] | 4 of 5 | ✓ |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.572 vs 0.560 | +0.012 [-0.032, +0.056] | 3 of 5 |  | 0.559 vs 0.577 | -0.018 [-0.055, +0.017] | 2 of 5 |  |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.554 vs 0.591 | -0.037 [-0.080, +0.008] | 1 of 5 |  | 0.541 vs 0.584 | -0.043 [-0.073, -0.013] | 1 of 5 | ✗ |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.523 vs 0.597 | -0.074 [-0.125, -0.022] | 0 / 5 | ✗ | 0.540 vs 0.566 | -0.026 [-0.065, +0.012] | 1 / 4 |  |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.512 vs 0.597 | -0.084 [-0.133, -0.033] | 0 / 5 | ✗ | 0.536 vs 0.566 | -0.030 [-0.068, +0.008] | 0 / 5 |  |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.546 vs 0.597 | -0.051 [-0.097, -0.001] | 0 / 5 | ✗ | 0.586 vs 0.566 | +0.020 [-0.021, +0.060] | 2 / 3 |  |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.572 vs 0.597 | -0.024 [-0.077, +0.028] | 1 / 4 |  | 0.539 vs 0.566 | -0.027 [-0.068, +0.012] | 1 / 4 |  |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.560 vs 0.597 | -0.037 [-0.081, +0.008] | 0 / 5 |  | 0.577 vs 0.566 | +0.011 [-0.034, +0.055] | 1 / 3 |  |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.591 vs 0.597 | -0.005 [-0.058, +0.045] | 0 / 5 |  | 0.584 vs 0.566 | +0.018 [-0.031, +0.064] | 4 / 1 |  |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.589 vs 0.597 | -0.008 [-0.061, +0.043] | 0 / 5 |  | 0.571 vs 0.566 | +0.005 [-0.038, +0.047] | 1 / 4 |  |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.542 vs 0.597 | -0.055 [-0.100, -0.006] | 1 / 4 | ✗ | 0.543 vs 0.566 | -0.023 [-0.067, +0.022] | 1 / 4 |  |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.590 vs 0.597 | -0.007 [-0.063, +0.046] | 0 / 5 |  | 0.559 vs 0.566 | -0.007 [-0.051, +0.038] | 1 / 4 |  |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.595 vs 0.597 | -0.002 [-0.047, +0.043] | 0 / 5 |  | 0.564 vs 0.566 | -0.003 [-0.045, +0.039] | 1 / 4 |  |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.572 vs 0.597 | -0.025 [-0.074, +0.027] | 2 / 3 |  | 0.559 vs 0.566 | -0.007 [-0.050, +0.033] | 2 / 3 |  |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.554 vs 0.597 | -0.043 [-0.093, +0.008] | 0 / 5 |  | 0.541 vs 0.566 | -0.025 [-0.065, +0.011] | 2 / 3 |  |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.546 vs 0.523 | +0.023 [-0.015, +0.061] | 1 / 4 |  | 0.586 vs 0.540 | +0.046 [+0.025, +0.066] | 4 / 1 | ✓ |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.572 vs 0.512 | +0.060 [+0.017, +0.102] | 4 / 1 | ✓ | 0.539 vs 0.536 | +0.003 [-0.021, +0.025] | 3 / 2 |  |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.560 vs 0.523 | +0.037 [-0.009, +0.083] | 2 / 3 |  | 0.577 vs 0.540 | +0.037 [+0.002, +0.070] | 4 / 1 | ✓ |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.591 vs 0.512 | +0.079 [+0.031, +0.127] | 4 / 1 | ✓ | 0.584 vs 0.536 | +0.048 [+0.014, +0.080] | 5 / 0 | ✓ |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.590 vs 0.589 | +0.000 [-0.042, +0.041] | 2 / 3 |  | 0.559 vs 0.571 | -0.012 [-0.036, +0.011] | 1 / 4 |  |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.595 vs 0.542 | +0.053 [+0.018, +0.089] | 1 / 4 |  | 0.564 vs 0.543 | +0.020 [-0.001, +0.041] | 4 / 1 |  |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.572 vs 0.589 | -0.017 [-0.050, +0.015] | 3 / 2 |  | 0.559 vs 0.571 | -0.012 [-0.031, +0.007] | 3 / 2 |  |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.554 vs 0.542 | +0.012 [-0.025, +0.050] | 3 / 2 |  | 0.541 vs 0.543 | -0.002 [-0.029, +0.023] | 3 / 2 |  |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.512 vs 0.523 | -0.011 [-0.048, +0.025] | 1 / 4 |  | 0.536 vs 0.540 | -0.004 [-0.026, +0.016] | 2 / 3 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.572 vs 0.546 | +0.026 [-0.021, +0.070] | 5 / 0 |  | 0.539 vs 0.586 | -0.047 [-0.067, -0.028] | 0 / 5 | ✗ |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.591 vs 0.560 | +0.032 [-0.011, +0.071] | 2 / 3 |  | 0.584 vs 0.577 | +0.007 [-0.024, +0.038] | 4 / 1 |  |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.542 vs 0.589 | -0.047 [-0.089, -0.006] | 2 / 3 |  | 0.543 vs 0.571 | -0.028 [-0.056, +0.001] | 2 / 3 |  |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.595 vs 0.590 | +0.006 [-0.036, +0.044] | 3 / 2 |  | 0.564 vs 0.559 | +0.004 [-0.013, +0.022] | 4 / 1 |  |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.554 vs 0.572 | -0.018 [-0.056, +0.023] | 2 / 3 |  | 0.541 vs 0.559 | -0.018 [-0.038, +0.003] | 2 / 3 |  |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.589 vs 0.523 | +0.066 [+0.025, +0.110] | 3 / 2 |  | 0.571 vs 0.540 | +0.030 [+0.008, +0.054] | 5 / 0 | ✓ |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.542 vs 0.512 | +0.030 [-0.002, +0.059] | 4 / 1 |  | 0.543 vs 0.536 | +0.007 [-0.013, +0.028] | 3 / 2 |  |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.590 vs 0.546 | +0.044 [-0.000, +0.085] | 3 / 2 |  | 0.559 vs 0.586 | -0.027 [-0.049, -0.006] | 1 / 4 | ✗ |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.595 vs 0.572 | +0.023 [-0.014, +0.060] | 3 / 2 |  | 0.564 vs 0.539 | +0.024 [+0.004, +0.045] | 4 / 1 | ✓ |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.572 vs 0.560 | +0.012 [-0.032, +0.056] | 3 / 2 |  | 0.559 vs 0.577 | -0.018 [-0.055, +0.017] | 2 / 3 |  |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.554 vs 0.591 | -0.037 [-0.080, +0.008] | 1 / 4 |  | 0.541 vs 0.584 | -0.043 [-0.073, -0.013] | 1 / 4 | ✗ |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.597 vs 0.634 | -0.037 [-0.091, +0.016] | single fits |  | 0.566 vs 0.656 | -0.090 [-0.149, -0.030] | single fits | ✗ |
 
 Marked, of 33 comparisons: balanced accuracy 2 ✓ and 4 ✗; AUC 5 ✓ and 4 ✗. Chance alone would put about 1.6 intervals per score off 0 (fewer once the seeds must agree).
@@ -736,40 +736,40 @@ Marked, of 33 comparisons: balanced accuracy 2 ✓ and 4 ✗; AUC 5 ✓ and 4 �
 
 Comparisons (# column): **1** against logistic regression, same data; **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.518 vs 0.538 | -0.020 [-0.091, +0.048] | 1 of 5 |  | 0.542 vs 0.566 | -0.024 [-0.091, +0.043] | 2 of 5 |  |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.493 vs 0.538 | -0.045 [-0.109, +0.018] | 1 of 5 |  | 0.538 vs 0.566 | -0.027 [-0.088, +0.032] | 2 of 5 |  |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.486 vs 0.538 | -0.052 [-0.117, +0.010] | 1 of 5 |  | 0.559 vs 0.566 | -0.007 [-0.067, +0.051] | 1 of 5 |  |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.510 vs 0.538 | -0.028 [-0.093, +0.037] | 0 of 5 |  | 0.535 vs 0.566 | -0.031 [-0.090, +0.029] | 0 of 5 |  |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.549 vs 0.538 | +0.011 [-0.046, +0.071] | 1 of 5 |  | 0.574 vs 0.566 | +0.008 [-0.051, +0.069] | 2 of 5 |  |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.480 vs 0.538 | -0.058 [-0.121, +0.001] | 0 of 5 |  | 0.519 vs 0.566 | -0.047 [-0.107, +0.013] | 0 of 5 |  |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.546 vs 0.538 | +0.008 [-0.058, +0.074] | 2 of 5 |  | 0.577 vs 0.566 | +0.011 [-0.052, +0.077] | 3 of 5 |  |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.495 vs 0.538 | -0.043 [-0.110, +0.025] | 0 of 5 |  | 0.529 vs 0.566 | -0.037 [-0.099, +0.028] | 0 of 5 |  |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.561 vs 0.538 | +0.023 [-0.041, +0.087] | 3 of 5 |  | 0.587 vs 0.566 | +0.021 [-0.040, +0.084] | 3 of 5 |  |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.500 vs 0.538 | -0.038 [-0.100, +0.024] | 0 of 5 |  | 0.524 vs 0.566 | -0.042 [-0.100, +0.015] | 1 of 5 |  |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.528 vs 0.538 | -0.009 [-0.075, +0.053] | 1 of 5 |  | 0.543 vs 0.566 | -0.023 [-0.081, +0.035] | 1 of 5 |  |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.510 vs 0.538 | -0.028 [-0.092, +0.034] | 0 of 5 |  | 0.489 vs 0.566 | -0.077 [-0.135, -0.021] | 0 of 5 | ✗ |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.486 vs 0.518 | -0.032 [-0.074, +0.008] | 3 of 5 |  | 0.559 vs 0.542 | +0.016 [-0.009, +0.042] | 3 of 5 |  |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.510 vs 0.493 | +0.017 [-0.021, +0.053] | 3 of 5 |  | 0.535 vs 0.538 | -0.003 [-0.029, +0.023] | 3 of 5 |  |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.549 vs 0.518 | +0.032 [-0.018, +0.080] | 2 of 5 |  | 0.574 vs 0.542 | +0.031 [-0.008, +0.070] | 3 of 5 |  |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.480 vs 0.493 | -0.013 [-0.046, +0.019] | 3 of 5 |  | 0.519 vs 0.538 | -0.019 [-0.047, +0.007] | 2 of 5 |  |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.561 vs 0.546 | +0.015 [-0.016, +0.049] | 3 of 5 |  | 0.587 vs 0.577 | +0.010 [-0.014, +0.036] | 4 of 5 |  |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.500 vs 0.495 | +0.005 [-0.026, +0.037] | 1 of 5 |  | 0.524 vs 0.529 | -0.005 [-0.030, +0.019] | 2 of 5 |  |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.528 vs 0.546 | -0.017 [-0.061, +0.025] | 2 of 5 |  | 0.543 vs 0.577 | -0.034 [-0.067, +0.000] | 1 of 5 |  |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.510 vs 0.495 | +0.015 [-0.028, +0.058] | 0 of 5 |  | 0.489 vs 0.529 | -0.040 [-0.076, -0.004] | 1 of 5 | ✗ |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.493 vs 0.518 | -0.025 [-0.069, +0.017] | 3 of 5 |  | 0.538 vs 0.542 | -0.004 [-0.030, +0.023] | 3 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.510 vs 0.486 | +0.024 [-0.006, +0.056] | 1 of 5 |  | 0.535 vs 0.559 | -0.023 [-0.051, +0.002] | 1 of 5 |  |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.480 vs 0.549 | -0.069 [-0.117, -0.022] | 0 of 5 | ✗ | 0.519 vs 0.574 | -0.055 [-0.084, -0.026] | 0 of 5 | ✗ |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.495 vs 0.546 | -0.051 [-0.095, -0.003] | 2 of 5 |  | 0.529 vs 0.577 | -0.048 [-0.079, -0.018] | 0 of 5 | ✗ |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.500 vs 0.561 | -0.061 [-0.100, -0.024] | 1 of 5 | ✗ | 0.524 vs 0.587 | -0.063 [-0.094, -0.035] | 0 of 5 | ✗ |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.510 vs 0.528 | -0.018 [-0.059, +0.025] | 2 of 5 |  | 0.489 vs 0.543 | -0.055 [-0.084, -0.024] | 0 of 5 | ✗ |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.546 vs 0.518 | +0.028 [-0.016, +0.072] | 3 of 5 |  | 0.577 vs 0.542 | +0.035 [+0.003, +0.067] | 3 of 5 |  |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.495 vs 0.493 | +0.002 [-0.038, +0.043] | 3 of 5 |  | 0.529 vs 0.538 | -0.010 [-0.037, +0.017] | 2 of 5 |  |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.561 vs 0.486 | +0.075 [+0.032, +0.122] | 4 of 5 | ✓ | 0.587 vs 0.559 | +0.029 [-0.002, +0.058] | 4 of 5 |  |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.500 vs 0.510 | -0.009 [-0.046, +0.027] | 2 of 5 |  | 0.524 vs 0.535 | -0.011 [-0.036, +0.011] | 1 of 5 |  |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.528 vs 0.549 | -0.021 [-0.066, +0.022] | 2 of 5 |  | 0.543 vs 0.574 | -0.030 [-0.060, -0.002] | 1 of 5 | ✗ |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.510 vs 0.480 | +0.030 [-0.010, +0.071] | 3 of 5 |  | 0.489 vs 0.519 | -0.030 [-0.057, -0.002] | 2 of 5 |  |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.518 vs 0.538 | -0.020 [-0.091, +0.048] | 1 / 4 |  | 0.542 vs 0.566 | -0.024 [-0.091, +0.043] | 2 / 3 |  |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.493 vs 0.538 | -0.045 [-0.109, +0.018] | 1 / 4 |  | 0.538 vs 0.566 | -0.027 [-0.088, +0.032] | 2 / 3 |  |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.486 vs 0.538 | -0.052 [-0.117, +0.010] | 1 / 4 |  | 0.559 vs 0.566 | -0.007 [-0.067, +0.051] | 1 / 4 |  |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.510 vs 0.538 | -0.028 [-0.093, +0.037] | 0 / 5 |  | 0.535 vs 0.566 | -0.031 [-0.090, +0.029] | 0 / 5 |  |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.549 vs 0.538 | +0.011 [-0.046, +0.071] | 1 / 4 |  | 0.574 vs 0.566 | +0.008 [-0.051, +0.069] | 2 / 3 |  |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.480 vs 0.538 | -0.058 [-0.121, +0.001] | 0 / 5 |  | 0.519 vs 0.566 | -0.047 [-0.107, +0.013] | 0 / 5 |  |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.546 vs 0.538 | +0.008 [-0.058, +0.074] | 2 / 3 |  | 0.577 vs 0.566 | +0.011 [-0.052, +0.077] | 3 / 2 |  |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.495 vs 0.538 | -0.043 [-0.110, +0.025] | 0 / 5 |  | 0.529 vs 0.566 | -0.037 [-0.099, +0.028] | 0 / 5 |  |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.561 vs 0.538 | +0.023 [-0.041, +0.087] | 3 / 1 |  | 0.587 vs 0.566 | +0.021 [-0.040, +0.084] | 3 / 2 |  |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.500 vs 0.538 | -0.038 [-0.100, +0.024] | 0 / 5 |  | 0.524 vs 0.566 | -0.042 [-0.100, +0.015] | 1 / 4 |  |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.528 vs 0.538 | -0.009 [-0.075, +0.053] | 1 / 4 |  | 0.543 vs 0.566 | -0.023 [-0.081, +0.035] | 1 / 4 |  |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.510 vs 0.538 | -0.028 [-0.092, +0.034] | 0 / 5 |  | 0.489 vs 0.566 | -0.077 [-0.135, -0.021] | 0 / 5 | ✗ |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.486 vs 0.518 | -0.032 [-0.074, +0.008] | 3 / 2 |  | 0.559 vs 0.542 | +0.016 [-0.009, +0.042] | 3 / 2 |  |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.510 vs 0.493 | +0.017 [-0.021, +0.053] | 3 / 2 |  | 0.535 vs 0.538 | -0.003 [-0.029, +0.023] | 3 / 2 |  |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.549 vs 0.518 | +0.032 [-0.018, +0.080] | 2 / 3 |  | 0.574 vs 0.542 | +0.031 [-0.008, +0.070] | 3 / 2 |  |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.480 vs 0.493 | -0.013 [-0.046, +0.019] | 3 / 2 |  | 0.519 vs 0.538 | -0.019 [-0.047, +0.007] | 2 / 3 |  |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.561 vs 0.546 | +0.015 [-0.016, +0.049] | 3 / 2 |  | 0.587 vs 0.577 | +0.010 [-0.014, +0.036] | 4 / 1 |  |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.500 vs 0.495 | +0.005 [-0.026, +0.037] | 1 / 4 |  | 0.524 vs 0.529 | -0.005 [-0.030, +0.019] | 2 / 3 |  |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.528 vs 0.546 | -0.017 [-0.061, +0.025] | 2 / 3 |  | 0.543 vs 0.577 | -0.034 [-0.067, +0.000] | 1 / 4 |  |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.510 vs 0.495 | +0.015 [-0.028, +0.058] | 0 / 5 |  | 0.489 vs 0.529 | -0.040 [-0.076, -0.004] | 1 / 4 | ✗ |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.493 vs 0.518 | -0.025 [-0.069, +0.017] | 3 / 2 |  | 0.538 vs 0.542 | -0.004 [-0.030, +0.023] | 3 / 2 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.510 vs 0.486 | +0.024 [-0.006, +0.056] | 1 / 4 |  | 0.535 vs 0.559 | -0.023 [-0.051, +0.002] | 1 / 4 |  |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.480 vs 0.549 | -0.069 [-0.117, -0.022] | 0 / 5 | ✗ | 0.519 vs 0.574 | -0.055 [-0.084, -0.026] | 0 / 5 | ✗ |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.495 vs 0.546 | -0.051 [-0.095, -0.003] | 2 / 3 |  | 0.529 vs 0.577 | -0.048 [-0.079, -0.018] | 0 / 5 | ✗ |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.500 vs 0.561 | -0.061 [-0.100, -0.024] | 1 / 4 | ✗ | 0.524 vs 0.587 | -0.063 [-0.094, -0.035] | 0 / 5 | ✗ |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.510 vs 0.528 | -0.018 [-0.059, +0.025] | 2 / 3 |  | 0.489 vs 0.543 | -0.055 [-0.084, -0.024] | 0 / 5 | ✗ |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.546 vs 0.518 | +0.028 [-0.016, +0.072] | 3 / 2 |  | 0.577 vs 0.542 | +0.035 [+0.003, +0.067] | 3 / 2 |  |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.495 vs 0.493 | +0.002 [-0.038, +0.043] | 3 / 2 |  | 0.529 vs 0.538 | -0.010 [-0.037, +0.017] | 2 / 3 |  |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.561 vs 0.486 | +0.075 [+0.032, +0.122] | 4 / 1 | ✓ | 0.587 vs 0.559 | +0.029 [-0.002, +0.058] | 4 / 1 |  |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.500 vs 0.510 | -0.009 [-0.046, +0.027] | 2 / 3 |  | 0.524 vs 0.535 | -0.011 [-0.036, +0.011] | 1 / 4 |  |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.528 vs 0.549 | -0.021 [-0.066, +0.022] | 2 / 3 |  | 0.543 vs 0.574 | -0.030 [-0.060, -0.002] | 1 / 4 | ✗ |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.510 vs 0.480 | +0.030 [-0.010, +0.071] | 3 / 2 |  | 0.489 vs 0.519 | -0.030 [-0.057, -0.002] | 2 / 3 |  |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.538 vs 0.528 | +0.010 [-0.050, +0.074] | single fits |  | 0.566 vs 0.607 | -0.041 [-0.110, +0.034] | single fits |  |
 
 Marked, of 33 comparisons: balanced accuracy 1 ✓ and 2 ✗; AUC 0 ✓ and 7 ✗. Chance alone would put about 1.6 intervals per score off 0 (fewer once the seeds must agree).
@@ -795,54 +795,54 @@ Marked, of 33 comparisons: balanced accuracy 1 ✓ and 2 ✗; AUC 0 ✓ and 7 �
 
 Comparisons (# column): **1** against logistic regression, same data; **1b** against the variety-only rule (pooled sets); **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.693 vs 0.663 | +0.030 [+0.007, +0.052] | 5 of 5 | ✓ | 0.748 vs 0.724 | +0.025 [+0.011, +0.039] | 5 of 5 | ✓ |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.677 vs 0.663 | +0.014 [-0.009, +0.036] | 3 of 5 |  | 0.748 vs 0.724 | +0.024 [+0.009, +0.039] | 5 of 5 | ✓ |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.685 vs 0.663 | +0.022 [-0.000, +0.042] | 2 of 5 |  | 0.752 vs 0.724 | +0.028 [+0.014, +0.043] | 3 of 5 |  |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.683 vs 0.663 | +0.020 [-0.003, +0.042] | 2 of 5 |  | 0.741 vs 0.724 | +0.017 [+0.004, +0.031] | 3 of 5 |  |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.702 vs 0.663 | +0.039 [+0.016, +0.062] | 5 of 5 | ✓ | 0.763 vs 0.724 | +0.040 [+0.024, +0.056] | 5 of 5 | ✓ |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.699 vs 0.663 | +0.036 [+0.013, +0.057] | 5 of 5 | ✓ | 0.763 vs 0.724 | +0.039 [+0.025, +0.055] | 5 of 5 | ✓ |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.691 vs 0.663 | +0.028 [+0.005, +0.051] | 5 of 5 | ✓ | 0.755 vs 0.724 | +0.031 [+0.018, +0.045] | 5 of 5 | ✓ |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.686 vs 0.663 | +0.023 [-0.000, +0.045] | 2 of 5 |  | 0.752 vs 0.724 | +0.028 [+0.013, +0.043] | 3 of 5 |  |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.691 vs 0.663 | +0.027 [+0.003, +0.051] | 4 of 5 | ✓ | 0.755 vs 0.724 | +0.031 [+0.017, +0.046] | 4 of 5 | ✓ |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.668 vs 0.663 | +0.005 [-0.017, +0.027] | 3 of 5 |  | 0.747 vs 0.724 | +0.024 [+0.009, +0.037] | 4 of 5 | ✓ |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.690 vs 0.663 | +0.026 [+0.003, +0.048] | 4 of 5 | ✓ | 0.754 vs 0.724 | +0.031 [+0.016, +0.046] | 5 of 5 | ✓ |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.689 vs 0.663 | +0.026 [+0.001, +0.049] | 4 of 5 | ✓ | 0.760 vs 0.724 | +0.037 [+0.022, +0.051] | 5 of 5 | ✓ |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.693 vs 0.663 | +0.030 [+0.007, +0.052] | 5 / 0 | ✓ | 0.748 vs 0.724 | +0.025 [+0.011, +0.039] | 5 / 0 | ✓ |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.677 vs 0.663 | +0.014 [-0.009, +0.036] | 3 / 2 |  | 0.748 vs 0.724 | +0.024 [+0.009, +0.039] | 5 / 0 | ✓ |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.685 vs 0.663 | +0.022 [-0.000, +0.042] | 2 / 3 |  | 0.752 vs 0.724 | +0.028 [+0.014, +0.043] | 3 / 2 |  |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.683 vs 0.663 | +0.020 [-0.003, +0.042] | 2 / 3 |  | 0.741 vs 0.724 | +0.017 [+0.004, +0.031] | 3 / 2 |  |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.702 vs 0.663 | +0.039 [+0.016, +0.062] | 5 / 0 | ✓ | 0.763 vs 0.724 | +0.040 [+0.024, +0.056] | 5 / 0 | ✓ |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.699 vs 0.663 | +0.036 [+0.013, +0.057] | 5 / 0 | ✓ | 0.763 vs 0.724 | +0.039 [+0.025, +0.055] | 5 / 0 | ✓ |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.691 vs 0.663 | +0.028 [+0.005, +0.051] | 5 / 0 | ✓ | 0.755 vs 0.724 | +0.031 [+0.018, +0.045] | 5 / 0 | ✓ |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.686 vs 0.663 | +0.023 [-0.000, +0.045] | 2 / 3 |  | 0.752 vs 0.724 | +0.028 [+0.013, +0.043] | 3 / 2 |  |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.691 vs 0.663 | +0.027 [+0.003, +0.051] | 4 / 1 | ✓ | 0.755 vs 0.724 | +0.031 [+0.017, +0.046] | 4 / 1 | ✓ |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.668 vs 0.663 | +0.005 [-0.017, +0.027] | 3 / 2 |  | 0.747 vs 0.724 | +0.024 [+0.009, +0.037] | 4 / 1 | ✓ |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.690 vs 0.663 | +0.026 [+0.003, +0.048] | 4 / 1 | ✓ | 0.754 vs 0.724 | +0.031 [+0.016, +0.046] | 5 / 0 | ✓ |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.689 vs 0.663 | +0.026 [+0.001, +0.049] | 4 / 1 | ✓ | 0.760 vs 0.724 | +0.037 [+0.022, +0.051] | 5 / 0 | ✓ |
 | 1b | logistic regression − variety-only rule | 204 bands | 0.663 vs 0.706 | -0.043 [-0.063, -0.022] | single fits | ✗ | 0.724 vs 0.764 | -0.041 [-0.059, -0.022] | single fits | ✗ |
-| 1b | CNN, mean pool − variety-only rule | 204 bands | 0.693 vs 0.706 | -0.013 [-0.032, +0.004] | 0 of 5 |  | 0.748 vs 0.764 | -0.016 [-0.033, +0.000] | 0 of 5 |  |
-| 1b | CNN, attention pool − variety-only rule | 204 bands | 0.677 vs 0.706 | -0.028 [-0.046, -0.012] | 0 of 5 | ✗ | 0.748 vs 0.764 | -0.016 [-0.032, -0.001] | 0 of 5 | ✗ |
-| 1b | CNN + ECA, mean pool − variety-only rule | 204 bands | 0.685 vs 0.706 | -0.021 [-0.036, -0.005] | 0 of 5 | ✗ | 0.752 vs 0.764 | -0.012 [-0.027, +0.002] | 0 of 5 |  |
-| 1b | CNN + ECA, attention pool − variety-only rule | 204 bands | 0.683 vs 0.706 | -0.023 [-0.041, -0.005] | 0 of 5 | ✗ | 0.741 vs 0.764 | -0.023 [-0.038, -0.008] | 0 of 5 | ✗ |
-| 1b | CNN + CBAM, mean pool − variety-only rule | 204 bands | 0.702 vs 0.706 | -0.004 [-0.022, +0.014] | 0 of 5 |  | 0.763 vs 0.764 | -0.001 [-0.016, +0.014] | 0 of 5 |  |
-| 1b | CNN + CBAM, attention pool − variety-only rule | 204 bands | 0.699 vs 0.706 | -0.007 [-0.027, +0.013] | 0 of 5 |  | 0.763 vs 0.764 | -0.001 [-0.016, +0.013] | 0 of 5 |  |
-| 1b | small ResNet, mean pool − variety-only rule | 204 bands | 0.691 vs 0.706 | -0.015 [-0.033, +0.003] | 0 of 5 |  | 0.755 vs 0.764 | -0.009 [-0.026, +0.007] | 0 of 5 |  |
-| 1b | small ResNet, attention pool − variety-only rule | 204 bands | 0.686 vs 0.706 | -0.020 [-0.039, -0.002] | 0 of 5 | ✗ | 0.752 vs 0.764 | -0.012 [-0.027, +0.002] | 0 of 5 |  |
-| 1b | small ResNet + ECA, mean pool − variety-only rule | 204 bands | 0.691 vs 0.706 | -0.015 [-0.034, +0.002] | 0 of 5 |  | 0.755 vs 0.764 | -0.009 [-0.026, +0.007] | 0 of 5 |  |
-| 1b | small ResNet + ECA, attention pool − variety-only rule | 204 bands | 0.668 vs 0.706 | -0.037 [-0.055, -0.019] | 0 of 5 | ✗ | 0.747 vs 0.764 | -0.017 [-0.033, -0.002] | 0 of 5 | ✗ |
-| 1b | small ResNet + CBAM, mean pool − variety-only rule | 204 bands | 0.690 vs 0.706 | -0.016 [-0.035, +0.002] | 0 of 5 |  | 0.754 vs 0.764 | -0.010 [-0.026, +0.005] | 0 of 5 |  |
-| 1b | small ResNet + CBAM, attention pool − variety-only rule | 204 bands | 0.689 vs 0.706 | -0.017 [-0.036, +0.002] | 0 of 5 |  | 0.760 vs 0.764 | -0.004 [-0.018, +0.010] | 0 of 5 |  |
+| 1b | CNN, mean pool − variety-only rule | 204 bands | 0.693 vs 0.706 | -0.013 [-0.032, +0.004] | 0 / 5 |  | 0.748 vs 0.764 | -0.016 [-0.033, +0.000] | 0 / 5 |  |
+| 1b | CNN, attention pool − variety-only rule | 204 bands | 0.677 vs 0.706 | -0.028 [-0.046, -0.012] | 0 / 5 | ✗ | 0.748 vs 0.764 | -0.016 [-0.032, -0.001] | 0 / 5 | ✗ |
+| 1b | CNN + ECA, mean pool − variety-only rule | 204 bands | 0.685 vs 0.706 | -0.021 [-0.036, -0.005] | 0 / 5 | ✗ | 0.752 vs 0.764 | -0.012 [-0.027, +0.002] | 0 / 5 |  |
+| 1b | CNN + ECA, attention pool − variety-only rule | 204 bands | 0.683 vs 0.706 | -0.023 [-0.041, -0.005] | 0 / 5 | ✗ | 0.741 vs 0.764 | -0.023 [-0.038, -0.008] | 0 / 5 | ✗ |
+| 1b | CNN + CBAM, mean pool − variety-only rule | 204 bands | 0.702 vs 0.706 | -0.004 [-0.022, +0.014] | 0 / 5 |  | 0.763 vs 0.764 | -0.001 [-0.016, +0.014] | 0 / 5 |  |
+| 1b | CNN + CBAM, attention pool − variety-only rule | 204 bands | 0.699 vs 0.706 | -0.007 [-0.027, +0.013] | 0 / 5 |  | 0.763 vs 0.764 | -0.001 [-0.016, +0.013] | 0 / 5 |  |
+| 1b | small ResNet, mean pool − variety-only rule | 204 bands | 0.691 vs 0.706 | -0.015 [-0.033, +0.003] | 0 / 5 |  | 0.755 vs 0.764 | -0.009 [-0.026, +0.007] | 0 / 5 |  |
+| 1b | small ResNet, attention pool − variety-only rule | 204 bands | 0.686 vs 0.706 | -0.020 [-0.039, -0.002] | 0 / 5 | ✗ | 0.752 vs 0.764 | -0.012 [-0.027, +0.002] | 0 / 5 |  |
+| 1b | small ResNet + ECA, mean pool − variety-only rule | 204 bands | 0.691 vs 0.706 | -0.015 [-0.034, +0.002] | 0 / 5 |  | 0.755 vs 0.764 | -0.009 [-0.026, +0.007] | 0 / 5 |  |
+| 1b | small ResNet + ECA, attention pool − variety-only rule | 204 bands | 0.668 vs 0.706 | -0.037 [-0.055, -0.019] | 0 / 5 | ✗ | 0.747 vs 0.764 | -0.017 [-0.033, -0.002] | 0 / 5 | ✗ |
+| 1b | small ResNet + CBAM, mean pool − variety-only rule | 204 bands | 0.690 vs 0.706 | -0.016 [-0.035, +0.002] | 0 / 5 |  | 0.754 vs 0.764 | -0.010 [-0.026, +0.005] | 0 / 5 |  |
+| 1b | small ResNet + CBAM, attention pool − variety-only rule | 204 bands | 0.689 vs 0.706 | -0.017 [-0.036, +0.002] | 0 / 5 |  | 0.760 vs 0.764 | -0.004 [-0.018, +0.010] | 0 / 5 |  |
 | 1b | logistic regression − variety-only rule | RGB | 0.641 vs 0.706 | -0.065 [-0.087, -0.042] | single fits | ✗ | 0.683 vs 0.764 | -0.081 [-0.104, -0.058] | single fits | ✗ |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.685 vs 0.693 | -0.008 [-0.020, +0.005] | 1 of 5 |  | 0.752 vs 0.748 | +0.004 [-0.003, +0.011] | 2 of 5 |  |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.683 vs 0.677 | +0.006 [-0.010, +0.022] | 2 of 5 |  | 0.741 vs 0.748 | -0.007 [-0.015, +0.001] | 2 of 5 |  |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.702 vs 0.693 | +0.009 [-0.008, +0.027] | 3 of 5 |  | 0.763 vs 0.748 | +0.015 [+0.005, +0.025] | 4 of 5 | ✓ |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.699 vs 0.677 | +0.021 [+0.004, +0.040] | 4 of 5 | ✓ | 0.763 vs 0.748 | +0.015 [+0.005, +0.026] | 4 of 5 | ✓ |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.691 vs 0.691 | -0.001 [-0.016, +0.014] | 3 of 5 |  | 0.755 vs 0.755 | -0.000 [-0.007, +0.006] | 3 of 5 |  |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.668 vs 0.686 | -0.018 [-0.034, -0.001] | 3 of 5 |  | 0.747 vs 0.752 | -0.005 [-0.012, +0.003] | 2 of 5 |  |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.690 vs 0.691 | -0.002 [-0.016, +0.013] | 0 of 5 |  | 0.754 vs 0.755 | -0.001 [-0.008, +0.007] | 2 of 5 |  |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.689 vs 0.686 | +0.003 [-0.015, +0.021] | 4 of 5 |  | 0.760 vs 0.752 | +0.008 [+0.001, +0.016] | 4 of 5 | ✓ |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.677 vs 0.693 | -0.015 [-0.029, -0.002] | 0 of 5 | ✗ | 0.748 vs 0.748 | -0.000 [-0.008, +0.007] | 2 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.683 vs 0.685 | -0.002 [-0.016, +0.012] | 2 of 5 |  | 0.741 vs 0.752 | -0.011 [-0.017, -0.004] | 2 of 5 |  |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.699 vs 0.702 | -0.003 [-0.020, +0.014] | 2 of 5 |  | 0.763 vs 0.763 | -0.000 [-0.010, +0.008] | 3 of 5 |  |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.686 vs 0.691 | -0.005 [-0.021, +0.011] | 2 of 5 |  | 0.752 vs 0.755 | -0.003 [-0.011, +0.005] | 2 of 5 |  |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.668 vs 0.691 | -0.022 [-0.039, -0.006] | 0 of 5 | ✗ | 0.747 vs 0.755 | -0.007 [-0.015, +0.001] | 2 of 5 |  |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.689 vs 0.690 | -0.000 [-0.017, +0.017] | 3 of 5 |  | 0.760 vs 0.754 | +0.006 [-0.001, +0.013] | 3 of 5 |  |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.691 vs 0.693 | -0.002 [-0.015, +0.012] | 4 of 5 |  | 0.755 vs 0.748 | +0.007 [+0.001, +0.012] | 3 of 5 |  |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.686 vs 0.677 | +0.009 [-0.006, +0.024] | 2 of 5 |  | 0.752 vs 0.748 | +0.004 [-0.004, +0.012] | 2 of 5 |  |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.691 vs 0.685 | +0.005 [-0.009, +0.020] | 5 of 5 |  | 0.755 vs 0.752 | +0.003 [-0.005, +0.010] | 5 of 5 |  |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.668 vs 0.683 | -0.015 [-0.032, +0.002] | 3 of 5 |  | 0.747 vs 0.741 | +0.006 [-0.002, +0.015] | 4 of 5 |  |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.690 vs 0.702 | -0.013 [-0.030, +0.006] | 2 of 5 |  | 0.754 vs 0.763 | -0.009 [-0.019, +0.001] | 1 of 5 |  |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.689 vs 0.699 | -0.010 [-0.028, +0.008] | 1 of 5 |  | 0.760 vs 0.763 | -0.003 [-0.012, +0.006] | 2 of 5 |  |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.685 vs 0.693 | -0.008 [-0.020, +0.005] | 1 / 4 |  | 0.752 vs 0.748 | +0.004 [-0.003, +0.011] | 2 / 3 |  |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.683 vs 0.677 | +0.006 [-0.010, +0.022] | 2 / 3 |  | 0.741 vs 0.748 | -0.007 [-0.015, +0.001] | 2 / 3 |  |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.702 vs 0.693 | +0.009 [-0.008, +0.027] | 3 / 2 |  | 0.763 vs 0.748 | +0.015 [+0.005, +0.025] | 4 / 1 | ✓ |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.699 vs 0.677 | +0.021 [+0.004, +0.040] | 4 / 1 | ✓ | 0.763 vs 0.748 | +0.015 [+0.005, +0.026] | 4 / 1 | ✓ |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.691 vs 0.691 | -0.001 [-0.016, +0.014] | 3 / 2 |  | 0.755 vs 0.755 | -0.000 [-0.007, +0.006] | 3 / 2 |  |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.668 vs 0.686 | -0.018 [-0.034, -0.001] | 3 / 2 |  | 0.747 vs 0.752 | -0.005 [-0.012, +0.003] | 2 / 3 |  |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.690 vs 0.691 | -0.002 [-0.016, +0.013] | 0 / 5 |  | 0.754 vs 0.755 | -0.001 [-0.008, +0.007] | 2 / 3 |  |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.689 vs 0.686 | +0.003 [-0.015, +0.021] | 4 / 1 |  | 0.760 vs 0.752 | +0.008 [+0.001, +0.016] | 4 / 1 | ✓ |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.677 vs 0.693 | -0.015 [-0.029, -0.002] | 0 / 5 | ✗ | 0.748 vs 0.748 | -0.000 [-0.008, +0.007] | 2 / 3 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.683 vs 0.685 | -0.002 [-0.016, +0.012] | 2 / 3 |  | 0.741 vs 0.752 | -0.011 [-0.017, -0.004] | 2 / 3 |  |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.699 vs 0.702 | -0.003 [-0.020, +0.014] | 2 / 3 |  | 0.763 vs 0.763 | -0.000 [-0.010, +0.008] | 3 / 2 |  |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.686 vs 0.691 | -0.005 [-0.021, +0.011] | 2 / 3 |  | 0.752 vs 0.755 | -0.003 [-0.011, +0.005] | 2 / 3 |  |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.668 vs 0.691 | -0.022 [-0.039, -0.006] | 0 / 5 | ✗ | 0.747 vs 0.755 | -0.007 [-0.015, +0.001] | 2 / 3 |  |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.689 vs 0.690 | -0.000 [-0.017, +0.017] | 3 / 2 |  | 0.760 vs 0.754 | +0.006 [-0.001, +0.013] | 3 / 2 |  |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.691 vs 0.693 | -0.002 [-0.015, +0.012] | 4 / 1 |  | 0.755 vs 0.748 | +0.007 [+0.001, +0.012] | 3 / 2 |  |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.686 vs 0.677 | +0.009 [-0.006, +0.024] | 2 / 3 |  | 0.752 vs 0.748 | +0.004 [-0.004, +0.012] | 2 / 3 |  |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.691 vs 0.685 | +0.005 [-0.009, +0.020] | 5 / 0 |  | 0.755 vs 0.752 | +0.003 [-0.005, +0.010] | 5 / 0 |  |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.668 vs 0.683 | -0.015 [-0.032, +0.002] | 3 / 2 |  | 0.747 vs 0.741 | +0.006 [-0.002, +0.015] | 4 / 1 |  |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.690 vs 0.702 | -0.013 [-0.030, +0.006] | 2 / 3 |  | 0.754 vs 0.763 | -0.009 [-0.019, +0.001] | 1 / 4 |  |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.689 vs 0.699 | -0.010 [-0.028, +0.008] | 1 / 4 |  | 0.760 vs 0.763 | -0.003 [-0.012, +0.006] | 2 / 3 |  |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.663 vs 0.641 | +0.022 [-0.004, +0.049] | single fits |  | 0.724 vs 0.683 | +0.041 [+0.019, +0.064] | single fits | ✓ |
 
 Marked, of 47 comparisons: balanced accuracy 8 ✓ and 9 ✗; AUC 13 ✓ and 5 ✗. Chance alone would put about 2.4 intervals per score off 0 (fewer once the seeds must agree).
@@ -868,54 +868,54 @@ Marked, of 47 comparisons: balanced accuracy 8 ✓ and 9 ✗; AUC 13 ✓ and 5 �
 
 Comparisons (# column): **1** against logistic regression, same data; **1b** against the variety-only rule (pooled sets); **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.604 vs 0.580 | +0.025 [-0.000, +0.049] | 4 of 5 |  | 0.642 vs 0.638 | +0.004 [-0.013, +0.020] | 2 of 5 |  |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.608 vs 0.580 | +0.029 [+0.004, +0.051] | 5 of 5 | ✓ | 0.649 vs 0.638 | +0.011 [-0.005, +0.027] | 2 of 5 |  |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.596 vs 0.580 | +0.017 [-0.006, +0.039] | 5 of 5 |  | 0.622 vs 0.638 | -0.016 [-0.032, +0.001] | 0 of 5 |  |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.625 vs 0.580 | +0.045 [+0.020, +0.068] | 4 of 5 | ✓ | 0.647 vs 0.638 | +0.009 [-0.008, +0.026] | 2 of 5 |  |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.607 vs 0.580 | +0.028 [-0.000, +0.054] | 4 of 5 |  | 0.635 vs 0.638 | -0.003 [-0.022, +0.016] | 2 of 5 |  |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.590 vs 0.580 | +0.010 [-0.013, +0.032] | 3 of 5 |  | 0.633 vs 0.638 | -0.005 [-0.022, +0.012] | 1 of 5 |  |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.604 vs 0.580 | +0.024 [-0.002, +0.050] | 3 of 5 |  | 0.651 vs 0.638 | +0.012 [-0.005, +0.029] | 3 of 5 |  |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.587 vs 0.580 | +0.007 [-0.019, +0.032] | 4 of 5 |  | 0.641 vs 0.638 | +0.003 [-0.013, +0.021] | 2 of 5 |  |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.616 vs 0.580 | +0.036 [+0.008, +0.063] | 5 of 5 | ✓ | 0.652 vs 0.638 | +0.014 [-0.005, +0.033] | 4 of 5 |  |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.615 vs 0.580 | +0.035 [+0.007, +0.062] | 5 of 5 | ✓ | 0.652 vs 0.638 | +0.014 [-0.005, +0.032] | 2 of 5 |  |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.609 vs 0.580 | +0.029 [+0.003, +0.055] | 5 of 5 | ✓ | 0.648 vs 0.638 | +0.010 [-0.008, +0.029] | 3 of 5 |  |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.617 vs 0.580 | +0.037 [+0.009, +0.064] | 5 of 5 | ✓ | 0.651 vs 0.638 | +0.013 [-0.006, +0.030] | 4 of 5 |  |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.604 vs 0.580 | +0.025 [-0.000, +0.049] | 4 / 1 |  | 0.642 vs 0.638 | +0.004 [-0.013, +0.020] | 2 / 3 |  |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.608 vs 0.580 | +0.029 [+0.004, +0.051] | 5 / 0 | ✓ | 0.649 vs 0.638 | +0.011 [-0.005, +0.027] | 2 / 3 |  |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.596 vs 0.580 | +0.017 [-0.006, +0.039] | 5 / 0 |  | 0.622 vs 0.638 | -0.016 [-0.032, +0.001] | 0 / 5 |  |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.625 vs 0.580 | +0.045 [+0.020, +0.068] | 4 / 1 | ✓ | 0.647 vs 0.638 | +0.009 [-0.008, +0.026] | 2 / 3 |  |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.607 vs 0.580 | +0.028 [-0.000, +0.054] | 4 / 1 |  | 0.635 vs 0.638 | -0.003 [-0.022, +0.016] | 2 / 3 |  |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.590 vs 0.580 | +0.010 [-0.013, +0.032] | 3 / 2 |  | 0.633 vs 0.638 | -0.005 [-0.022, +0.012] | 1 / 4 |  |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.604 vs 0.580 | +0.024 [-0.002, +0.050] | 3 / 2 |  | 0.651 vs 0.638 | +0.012 [-0.005, +0.029] | 3 / 2 |  |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.587 vs 0.580 | +0.007 [-0.019, +0.032] | 4 / 1 |  | 0.641 vs 0.638 | +0.003 [-0.013, +0.021] | 2 / 3 |  |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.616 vs 0.580 | +0.036 [+0.008, +0.063] | 5 / 0 | ✓ | 0.652 vs 0.638 | +0.014 [-0.005, +0.033] | 4 / 1 |  |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.615 vs 0.580 | +0.035 [+0.007, +0.062] | 5 / 0 | ✓ | 0.652 vs 0.638 | +0.014 [-0.005, +0.032] | 2 / 3 |  |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.609 vs 0.580 | +0.029 [+0.003, +0.055] | 5 / 0 | ✓ | 0.648 vs 0.638 | +0.010 [-0.008, +0.029] | 3 / 2 |  |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.617 vs 0.580 | +0.037 [+0.009, +0.064] | 5 / 0 | ✓ | 0.651 vs 0.638 | +0.013 [-0.006, +0.030] | 4 / 1 |  |
 | 1b | logistic regression − variety-only rule | 204 bands | 0.580 vs 0.619 | -0.039 [-0.062, -0.014] | single fits | ✗ | 0.638 vs 0.650 | -0.012 [-0.035, +0.013] | single fits |  |
-| 1b | CNN, mean pool − variety-only rule | 204 bands | 0.604 vs 0.619 | -0.015 [-0.037, +0.007] | 0 of 5 |  | 0.642 vs 0.650 | -0.008 [-0.030, +0.013] | 0 of 5 |  |
-| 1b | CNN, attention pool − variety-only rule | 204 bands | 0.608 vs 0.619 | -0.011 [-0.034, +0.012] | 0 of 5 |  | 0.649 vs 0.650 | -0.000 [-0.021, +0.021] | 1 of 5 |  |
-| 1b | CNN + ECA, mean pool − variety-only rule | 204 bands | 0.596 vs 0.619 | -0.023 [-0.045, +0.001] | 0 of 5 |  | 0.622 vs 0.650 | -0.027 [-0.048, -0.007] | 0 of 5 | ✗ |
-| 1b | CNN + ECA, attention pool − variety-only rule | 204 bands | 0.625 vs 0.619 | +0.006 [-0.014, +0.024] | 0 of 5 |  | 0.647 vs 0.650 | -0.002 [-0.023, +0.018] | 0 of 5 |  |
-| 1b | CNN + CBAM, mean pool − variety-only rule | 204 bands | 0.607 vs 0.619 | -0.012 [-0.033, +0.009] | 0 of 5 |  | 0.635 vs 0.650 | -0.015 [-0.037, +0.007] | 2 of 5 |  |
-| 1b | CNN + CBAM, attention pool − variety-only rule | 204 bands | 0.590 vs 0.619 | -0.029 [-0.052, -0.007] | 1 of 5 | ✗ | 0.633 vs 0.650 | -0.017 [-0.039, +0.005] | 1 of 5 |  |
-| 1b | small ResNet, mean pool − variety-only rule | 204 bands | 0.604 vs 0.619 | -0.015 [-0.039, +0.007] | 1 of 5 |  | 0.651 vs 0.650 | +0.001 [-0.021, +0.024] | 2 of 5 |  |
-| 1b | small ResNet, attention pool − variety-only rule | 204 bands | 0.587 vs 0.619 | -0.032 [-0.055, -0.010] | 0 of 5 | ✗ | 0.641 vs 0.650 | -0.009 [-0.029, +0.012] | 1 of 5 |  |
-| 1b | small ResNet + ECA, mean pool − variety-only rule | 204 bands | 0.616 vs 0.619 | -0.003 [-0.026, +0.019] | 0 of 5 |  | 0.652 vs 0.650 | +0.002 [-0.021, +0.025] | 1 of 5 |  |
-| 1b | small ResNet + ECA, attention pool − variety-only rule | 204 bands | 0.615 vs 0.619 | -0.004 [-0.027, +0.018] | 2 of 5 |  | 0.652 vs 0.650 | +0.002 [-0.020, +0.024] | 2 of 5 |  |
-| 1b | small ResNet + CBAM, mean pool − variety-only rule | 204 bands | 0.609 vs 0.619 | -0.010 [-0.032, +0.011] | 1 of 5 |  | 0.648 vs 0.650 | -0.001 [-0.023, +0.021] | 2 of 5 |  |
-| 1b | small ResNet + CBAM, attention pool − variety-only rule | 204 bands | 0.617 vs 0.619 | -0.002 [-0.027, +0.024] | 1 of 5 |  | 0.651 vs 0.650 | +0.001 [-0.021, +0.023] | 1 of 5 |  |
+| 1b | CNN, mean pool − variety-only rule | 204 bands | 0.604 vs 0.619 | -0.015 [-0.037, +0.007] | 0 / 5 |  | 0.642 vs 0.650 | -0.008 [-0.030, +0.013] | 0 / 5 |  |
+| 1b | CNN, attention pool − variety-only rule | 204 bands | 0.608 vs 0.619 | -0.011 [-0.034, +0.012] | 0 / 5 |  | 0.649 vs 0.650 | -0.000 [-0.021, +0.021] | 1 / 4 |  |
+| 1b | CNN + ECA, mean pool − variety-only rule | 204 bands | 0.596 vs 0.619 | -0.023 [-0.045, +0.001] | 0 / 5 |  | 0.622 vs 0.650 | -0.027 [-0.048, -0.007] | 0 / 5 | ✗ |
+| 1b | CNN + ECA, attention pool − variety-only rule | 204 bands | 0.625 vs 0.619 | +0.006 [-0.014, +0.024] | 0 / 5 |  | 0.647 vs 0.650 | -0.002 [-0.023, +0.018] | 0 / 5 |  |
+| 1b | CNN + CBAM, mean pool − variety-only rule | 204 bands | 0.607 vs 0.619 | -0.012 [-0.033, +0.009] | 0 / 5 |  | 0.635 vs 0.650 | -0.015 [-0.037, +0.007] | 2 / 3 |  |
+| 1b | CNN + CBAM, attention pool − variety-only rule | 204 bands | 0.590 vs 0.619 | -0.029 [-0.052, -0.007] | 1 / 4 | ✗ | 0.633 vs 0.650 | -0.017 [-0.039, +0.005] | 1 / 4 |  |
+| 1b | small ResNet, mean pool − variety-only rule | 204 bands | 0.604 vs 0.619 | -0.015 [-0.039, +0.007] | 1 / 4 |  | 0.651 vs 0.650 | +0.001 [-0.021, +0.024] | 2 / 3 |  |
+| 1b | small ResNet, attention pool − variety-only rule | 204 bands | 0.587 vs 0.619 | -0.032 [-0.055, -0.010] | 0 / 5 | ✗ | 0.641 vs 0.650 | -0.009 [-0.029, +0.012] | 1 / 4 |  |
+| 1b | small ResNet + ECA, mean pool − variety-only rule | 204 bands | 0.616 vs 0.619 | -0.003 [-0.026, +0.019] | 0 / 5 |  | 0.652 vs 0.650 | +0.002 [-0.021, +0.025] | 1 / 4 |  |
+| 1b | small ResNet + ECA, attention pool − variety-only rule | 204 bands | 0.615 vs 0.619 | -0.004 [-0.027, +0.018] | 2 / 3 |  | 0.652 vs 0.650 | +0.002 [-0.020, +0.024] | 2 / 3 |  |
+| 1b | small ResNet + CBAM, mean pool − variety-only rule | 204 bands | 0.609 vs 0.619 | -0.010 [-0.032, +0.011] | 1 / 4 |  | 0.648 vs 0.650 | -0.001 [-0.023, +0.021] | 2 / 3 |  |
+| 1b | small ResNet + CBAM, attention pool − variety-only rule | 204 bands | 0.617 vs 0.619 | -0.002 [-0.027, +0.024] | 1 / 4 |  | 0.651 vs 0.650 | +0.001 [-0.021, +0.023] | 1 / 4 |  |
 | 1b | logistic regression − variety-only rule | RGB | 0.610 vs 0.619 | -0.009 [-0.031, +0.014] | single fits |  | 0.651 vs 0.650 | +0.001 [-0.022, +0.022] | single fits |  |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.596 vs 0.604 | -0.008 [-0.027, +0.012] | 2 of 5 |  | 0.622 vs 0.642 | -0.019 [-0.028, -0.011] | 0 of 5 | ✗ |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.625 vs 0.608 | +0.016 [-0.004, +0.037] | 3 of 5 |  | 0.647 vs 0.649 | -0.002 [-0.012, +0.008] | 3 of 5 |  |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.607 vs 0.604 | +0.003 [-0.018, +0.024] | 2 of 5 |  | 0.635 vs 0.642 | -0.007 [-0.018, +0.004] | 2 of 5 |  |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.590 vs 0.608 | -0.019 [-0.037, +0.001] | 1 of 5 |  | 0.633 vs 0.649 | -0.016 [-0.026, -0.007] | 1 of 5 | ✗ |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.616 vs 0.604 | +0.013 [-0.005, +0.030] | 2 of 5 |  | 0.652 vs 0.651 | +0.001 [-0.007, +0.010] | 3 of 5 |  |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.615 vs 0.587 | +0.028 [+0.010, +0.048] | 4 of 5 | ✓ | 0.652 vs 0.641 | +0.010 [+0.002, +0.019] | 4 of 5 | ✓ |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.609 vs 0.604 | +0.005 [-0.012, +0.022] | 2 of 5 |  | 0.648 vs 0.651 | -0.002 [-0.010, +0.005] | 2 of 5 |  |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.617 vs 0.587 | +0.030 [+0.012, +0.050] | 4 of 5 | ✓ | 0.651 vs 0.641 | +0.010 [+0.002, +0.017] | 3 of 5 |  |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.608 vs 0.604 | +0.004 [-0.011, +0.018] | 2 of 5 |  | 0.649 vs 0.642 | +0.008 [-0.001, +0.017] | 3 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.625 vs 0.596 | +0.028 [+0.008, +0.048] | 4 of 5 | ✓ | 0.647 vs 0.622 | +0.025 [+0.017, +0.034] | 5 of 5 | ✓ |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.590 vs 0.607 | -0.018 [-0.040, +0.003] | 3 of 5 |  | 0.633 vs 0.635 | -0.002 [-0.012, +0.008] | 4 of 5 |  |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.587 vs 0.604 | -0.017 [-0.036, +0.001] | 3 of 5 |  | 0.641 vs 0.651 | -0.009 [-0.018, -0.000] | 3 of 5 |  |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.615 vs 0.616 | -0.001 [-0.018, +0.015] | 3 of 5 |  | 0.652 vs 0.652 | -0.000 [-0.010, +0.010] | 2 of 5 |  |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.617 vs 0.609 | +0.008 [-0.010, +0.027] | 2 of 5 |  | 0.651 vs 0.648 | +0.002 [-0.004, +0.010] | 2 of 5 |  |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.604 vs 0.604 | -0.001 [-0.019, +0.017] | 3 of 5 |  | 0.651 vs 0.642 | +0.009 [-0.000, +0.017] | 3 of 5 |  |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.587 vs 0.608 | -0.021 [-0.042, -0.001] | 1 of 5 | ✗ | 0.641 vs 0.649 | -0.008 [-0.019, +0.002] | 3 of 5 |  |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.616 vs 0.596 | +0.020 [-0.002, +0.041] | 4 of 5 |  | 0.652 vs 0.622 | +0.030 [+0.017, +0.042] | 5 of 5 | ✓ |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.615 vs 0.625 | -0.010 [-0.027, +0.008] | 4 of 5 |  | 0.652 vs 0.647 | +0.004 [-0.005, +0.014] | 3 of 5 |  |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.609 vs 0.607 | +0.001 [-0.019, +0.022] | 4 of 5 |  | 0.648 vs 0.635 | +0.013 [+0.004, +0.023] | 4 of 5 | ✓ |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.617 vs 0.590 | +0.027 [+0.005, +0.049] | 4 of 5 | ✓ | 0.651 vs 0.633 | +0.018 [+0.009, +0.028] | 4 of 5 | ✓ |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.596 vs 0.604 | -0.008 [-0.027, +0.012] | 2 / 3 |  | 0.622 vs 0.642 | -0.019 [-0.028, -0.011] | 0 / 5 | ✗ |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.625 vs 0.608 | +0.016 [-0.004, +0.037] | 3 / 2 |  | 0.647 vs 0.649 | -0.002 [-0.012, +0.008] | 3 / 2 |  |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.607 vs 0.604 | +0.003 [-0.018, +0.024] | 2 / 3 |  | 0.635 vs 0.642 | -0.007 [-0.018, +0.004] | 2 / 3 |  |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.590 vs 0.608 | -0.019 [-0.037, +0.001] | 1 / 4 |  | 0.633 vs 0.649 | -0.016 [-0.026, -0.007] | 1 / 4 | ✗ |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.616 vs 0.604 | +0.013 [-0.005, +0.030] | 2 / 3 |  | 0.652 vs 0.651 | +0.001 [-0.007, +0.010] | 3 / 2 |  |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.615 vs 0.587 | +0.028 [+0.010, +0.048] | 4 / 1 | ✓ | 0.652 vs 0.641 | +0.010 [+0.002, +0.019] | 4 / 1 | ✓ |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.609 vs 0.604 | +0.005 [-0.012, +0.022] | 2 / 3 |  | 0.648 vs 0.651 | -0.002 [-0.010, +0.005] | 2 / 3 |  |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.617 vs 0.587 | +0.030 [+0.012, +0.050] | 4 / 1 | ✓ | 0.651 vs 0.641 | +0.010 [+0.002, +0.017] | 3 / 2 |  |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.608 vs 0.604 | +0.004 [-0.011, +0.018] | 2 / 3 |  | 0.649 vs 0.642 | +0.008 [-0.001, +0.017] | 3 / 2 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.625 vs 0.596 | +0.028 [+0.008, +0.048] | 4 / 1 | ✓ | 0.647 vs 0.622 | +0.025 [+0.017, +0.034] | 5 / 0 | ✓ |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.590 vs 0.607 | -0.018 [-0.040, +0.003] | 3 / 2 |  | 0.633 vs 0.635 | -0.002 [-0.012, +0.008] | 4 / 1 |  |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.587 vs 0.604 | -0.017 [-0.036, +0.001] | 3 / 2 |  | 0.641 vs 0.651 | -0.009 [-0.018, -0.000] | 3 / 2 |  |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.615 vs 0.616 | -0.001 [-0.018, +0.015] | 3 / 2 |  | 0.652 vs 0.652 | -0.000 [-0.010, +0.010] | 2 / 3 |  |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.617 vs 0.609 | +0.008 [-0.010, +0.027] | 2 / 3 |  | 0.651 vs 0.648 | +0.002 [-0.004, +0.010] | 2 / 3 |  |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.604 vs 0.604 | -0.001 [-0.019, +0.017] | 3 / 2 |  | 0.651 vs 0.642 | +0.009 [-0.000, +0.017] | 3 / 2 |  |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.587 vs 0.608 | -0.021 [-0.042, -0.001] | 1 / 4 | ✗ | 0.641 vs 0.649 | -0.008 [-0.019, +0.002] | 3 / 2 |  |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.616 vs 0.596 | +0.020 [-0.002, +0.041] | 4 / 1 |  | 0.652 vs 0.622 | +0.030 [+0.017, +0.042] | 5 / 0 | ✓ |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.615 vs 0.625 | -0.010 [-0.027, +0.008] | 4 / 1 |  | 0.652 vs 0.647 | +0.004 [-0.005, +0.014] | 3 / 2 |  |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.609 vs 0.607 | +0.001 [-0.019, +0.022] | 4 / 1 |  | 0.648 vs 0.635 | +0.013 [+0.004, +0.023] | 4 / 1 | ✓ |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.617 vs 0.590 | +0.027 [+0.005, +0.049] | 4 / 1 | ✓ | 0.651 vs 0.633 | +0.018 [+0.009, +0.028] | 4 / 1 | ✓ |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.580 vs 0.610 | -0.030 [-0.058, -0.001] | single fits | ✗ | 0.638 vs 0.651 | -0.013 [-0.037, +0.012] | single fits |  |
 
 Marked, of 47 comparisons: balanced accuracy 10 ✓ and 5 ✗; AUC 5 ✓ and 3 ✗. Chance alone would put about 2.4 intervals per score off 0 (fewer once the seeds must agree).
@@ -941,54 +941,54 @@ Marked, of 47 comparisons: balanced accuracy 10 ✓ and 5 ✗; AUC 5 ✓ and 3 �
 
 Comparisons (# column): **1** against logistic regression, same data; **1b** against the variety-only rule (pooled sets); **2a** ECA / CBAM against the same network and pooling without them; **2b** attention against mean pooling, same network; **3** small ResNet against CNN, same module and pooling; **4** 204 bands against RGB, same model.
 
-| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B |  | AUC A vs B | Δ [95% CI] | seeds A > B |  |
+| # | A − B | bands | bal. acc. A vs B | Δ [95% CI] | seeds A > B / A < B |  | AUC A vs B | Δ [95% CI] | seeds A > B / A < B |  |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | CNN, mean pool − logistic regression | 204 bands | 0.607 vs 0.590 | +0.017 [-0.010, +0.042] | 3 of 5 |  | 0.649 vs 0.634 | +0.015 [-0.003, +0.033] | 5 of 5 |  |
-| 1 | CNN, attention pool − logistic regression | 204 bands | 0.586 vs 0.590 | -0.004 [-0.031, +0.021] | 1 of 5 |  | 0.652 vs 0.634 | +0.018 [-0.002, +0.037] | 3 of 5 |  |
-| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.596 vs 0.590 | +0.006 [-0.019, +0.030] | 1 of 5 |  | 0.647 vs 0.634 | +0.013 [-0.006, +0.032] | 3 of 5 |  |
-| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.598 vs 0.590 | +0.008 [-0.018, +0.031] | 1 of 5 |  | 0.639 vs 0.634 | +0.005 [-0.012, +0.022] | 1 of 5 |  |
-| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.616 vs 0.590 | +0.025 [-0.002, +0.053] | 3 of 5 |  | 0.664 vs 0.634 | +0.030 [+0.009, +0.051] | 5 of 5 | ✓ |
-| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.601 vs 0.590 | +0.011 [-0.015, +0.037] | 1 of 5 |  | 0.657 vs 0.634 | +0.023 [+0.003, +0.043] | 3 of 5 |  |
-| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.601 vs 0.590 | +0.010 [-0.016, +0.036] | 3 of 5 |  | 0.660 vs 0.634 | +0.026 [+0.008, +0.044] | 5 of 5 | ✓ |
-| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.591 vs 0.590 | +0.001 [-0.027, +0.025] | 1 of 5 |  | 0.651 vs 0.634 | +0.017 [-0.002, +0.037] | 3 of 5 |  |
-| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.597 vs 0.590 | +0.007 [-0.019, +0.032] | 3 of 5 |  | 0.653 vs 0.634 | +0.019 [-0.000, +0.038] | 3 of 5 |  |
-| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.581 vs 0.590 | -0.009 [-0.037, +0.017] | 3 of 5 |  | 0.645 vs 0.634 | +0.011 [-0.008, +0.030] | 3 of 5 |  |
-| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.592 vs 0.590 | +0.002 [-0.024, +0.028] | 1 of 5 |  | 0.649 vs 0.634 | +0.015 [-0.005, +0.034] | 3 of 5 |  |
-| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.612 vs 0.590 | +0.022 [-0.006, +0.050] | 3 of 5 |  | 0.663 vs 0.634 | +0.029 [+0.009, +0.049] | 4 of 5 | ✓ |
+| 1 | CNN, mean pool − logistic regression | 204 bands | 0.607 vs 0.590 | +0.017 [-0.010, +0.042] | 3 / 2 |  | 0.649 vs 0.634 | +0.015 [-0.003, +0.033] | 5 / 0 |  |
+| 1 | CNN, attention pool − logistic regression | 204 bands | 0.586 vs 0.590 | -0.004 [-0.031, +0.021] | 1 / 4 |  | 0.652 vs 0.634 | +0.018 [-0.002, +0.037] | 3 / 2 |  |
+| 1 | CNN + ECA, mean pool − logistic regression | 204 bands | 0.596 vs 0.590 | +0.006 [-0.019, +0.030] | 1 / 4 |  | 0.647 vs 0.634 | +0.013 [-0.006, +0.032] | 3 / 2 |  |
+| 1 | CNN + ECA, attention pool − logistic regression | 204 bands | 0.598 vs 0.590 | +0.008 [-0.018, +0.031] | 1 / 4 |  | 0.639 vs 0.634 | +0.005 [-0.012, +0.022] | 1 / 4 |  |
+| 1 | CNN + CBAM, mean pool − logistic regression | 204 bands | 0.616 vs 0.590 | +0.025 [-0.002, +0.053] | 3 / 1 |  | 0.664 vs 0.634 | +0.030 [+0.009, +0.051] | 5 / 0 | ✓ |
+| 1 | CNN + CBAM, attention pool − logistic regression | 204 bands | 0.601 vs 0.590 | +0.011 [-0.015, +0.037] | 1 / 4 |  | 0.657 vs 0.634 | +0.023 [+0.003, +0.043] | 3 / 2 |  |
+| 1 | small ResNet, mean pool − logistic regression | 204 bands | 0.601 vs 0.590 | +0.010 [-0.016, +0.036] | 3 / 2 |  | 0.660 vs 0.634 | +0.026 [+0.008, +0.044] | 5 / 0 | ✓ |
+| 1 | small ResNet, attention pool − logistic regression | 204 bands | 0.591 vs 0.590 | +0.001 [-0.027, +0.025] | 1 / 4 |  | 0.651 vs 0.634 | +0.017 [-0.002, +0.037] | 3 / 2 |  |
+| 1 | small ResNet + ECA, mean pool − logistic regression | 204 bands | 0.597 vs 0.590 | +0.007 [-0.019, +0.032] | 3 / 2 |  | 0.653 vs 0.634 | +0.019 [-0.000, +0.038] | 3 / 2 |  |
+| 1 | small ResNet + ECA, attention pool − logistic regression | 204 bands | 0.581 vs 0.590 | -0.009 [-0.037, +0.017] | 3 / 2 |  | 0.645 vs 0.634 | +0.011 [-0.008, +0.030] | 3 / 2 |  |
+| 1 | small ResNet + CBAM, mean pool − logistic regression | 204 bands | 0.592 vs 0.590 | +0.002 [-0.024, +0.028] | 1 / 4 |  | 0.649 vs 0.634 | +0.015 [-0.005, +0.034] | 3 / 2 |  |
+| 1 | small ResNet + CBAM, attention pool − logistic regression | 204 bands | 0.612 vs 0.590 | +0.022 [-0.006, +0.050] | 3 / 2 |  | 0.663 vs 0.634 | +0.029 [+0.009, +0.049] | 4 / 1 | ✓ |
 | 1b | logistic regression − variety-only rule | 204 bands | 0.590 vs 0.609 | -0.019 [-0.043, +0.006] | single fits |  | 0.634 vs 0.645 | -0.012 [-0.034, +0.012] | single fits |  |
-| 1b | CNN, mean pool − variety-only rule | 204 bands | 0.607 vs 0.609 | -0.002 [-0.024, +0.020] | 0 of 5 |  | 0.649 vs 0.645 | +0.003 [-0.019, +0.027] | 0 of 5 |  |
-| 1b | CNN, attention pool − variety-only rule | 204 bands | 0.586 vs 0.609 | -0.023 [-0.042, -0.003] | 0 of 5 | ✗ | 0.652 vs 0.645 | +0.007 [-0.013, +0.028] | 1 of 5 |  |
-| 1b | CNN + ECA, mean pool − variety-only rule | 204 bands | 0.596 vs 0.609 | -0.013 [-0.032, +0.008] | 0 of 5 |  | 0.647 vs 0.645 | +0.001 [-0.019, +0.023] | 1 of 5 |  |
-| 1b | CNN + ECA, attention pool − variety-only rule | 204 bands | 0.598 vs 0.609 | -0.011 [-0.032, +0.009] | 0 of 5 |  | 0.639 vs 0.645 | -0.006 [-0.026, +0.015] | 0 of 5 |  |
-| 1b | CNN + CBAM, mean pool − variety-only rule | 204 bands | 0.616 vs 0.609 | +0.006 [-0.015, +0.029] | 0 of 5 |  | 0.664 vs 0.645 | +0.019 [-0.003, +0.041] | 4 of 5 |  |
-| 1b | CNN + CBAM, attention pool − variety-only rule | 204 bands | 0.601 vs 0.609 | -0.008 [-0.030, +0.015] | 0 of 5 |  | 0.657 vs 0.645 | +0.011 [-0.010, +0.034] | 2 of 5 |  |
-| 1b | small ResNet, mean pool − variety-only rule | 204 bands | 0.601 vs 0.609 | -0.009 [-0.031, +0.015] | 1 of 5 |  | 0.660 vs 0.645 | +0.015 [-0.007, +0.037] | 2 of 5 |  |
-| 1b | small ResNet, attention pool − variety-only rule | 204 bands | 0.591 vs 0.609 | -0.018 [-0.040, +0.003] | 0 of 5 |  | 0.651 vs 0.645 | +0.006 [-0.014, +0.026] | 1 of 5 |  |
-| 1b | small ResNet + ECA, mean pool − variety-only rule | 204 bands | 0.597 vs 0.609 | -0.012 [-0.034, +0.010] | 0 of 5 |  | 0.653 vs 0.645 | +0.008 [-0.015, +0.031] | 2 of 5 |  |
-| 1b | small ResNet + ECA, attention pool − variety-only rule | 204 bands | 0.581 vs 0.609 | -0.028 [-0.050, -0.005] | 0 of 5 | ✗ | 0.645 vs 0.645 | -0.000 [-0.021, +0.021] | 1 of 5 |  |
-| 1b | small ResNet + CBAM, mean pool − variety-only rule | 204 bands | 0.592 vs 0.609 | -0.017 [-0.038, +0.005] | 0 of 5 |  | 0.649 vs 0.645 | +0.004 [-0.019, +0.025] | 0 of 5 |  |
-| 1b | small ResNet + CBAM, attention pool − variety-only rule | 204 bands | 0.612 vs 0.609 | +0.003 [-0.020, +0.026] | 2 of 5 |  | 0.663 vs 0.645 | +0.018 [-0.002, +0.038] | 3 of 5 |  |
+| 1b | CNN, mean pool − variety-only rule | 204 bands | 0.607 vs 0.609 | -0.002 [-0.024, +0.020] | 0 / 5 |  | 0.649 vs 0.645 | +0.003 [-0.019, +0.027] | 0 / 5 |  |
+| 1b | CNN, attention pool − variety-only rule | 204 bands | 0.586 vs 0.609 | -0.023 [-0.042, -0.003] | 0 / 5 | ✗ | 0.652 vs 0.645 | +0.007 [-0.013, +0.028] | 1 / 4 |  |
+| 1b | CNN + ECA, mean pool − variety-only rule | 204 bands | 0.596 vs 0.609 | -0.013 [-0.032, +0.008] | 0 / 5 |  | 0.647 vs 0.645 | +0.001 [-0.019, +0.023] | 1 / 4 |  |
+| 1b | CNN + ECA, attention pool − variety-only rule | 204 bands | 0.598 vs 0.609 | -0.011 [-0.032, +0.009] | 0 / 5 |  | 0.639 vs 0.645 | -0.006 [-0.026, +0.015] | 0 / 5 |  |
+| 1b | CNN + CBAM, mean pool − variety-only rule | 204 bands | 0.616 vs 0.609 | +0.006 [-0.015, +0.029] | 0 / 5 |  | 0.664 vs 0.645 | +0.019 [-0.003, +0.041] | 4 / 1 |  |
+| 1b | CNN + CBAM, attention pool − variety-only rule | 204 bands | 0.601 vs 0.609 | -0.008 [-0.030, +0.015] | 0 / 5 |  | 0.657 vs 0.645 | +0.011 [-0.010, +0.034] | 2 / 3 |  |
+| 1b | small ResNet, mean pool − variety-only rule | 204 bands | 0.601 vs 0.609 | -0.009 [-0.031, +0.015] | 1 / 4 |  | 0.660 vs 0.645 | +0.015 [-0.007, +0.037] | 2 / 3 |  |
+| 1b | small ResNet, attention pool − variety-only rule | 204 bands | 0.591 vs 0.609 | -0.018 [-0.040, +0.003] | 0 / 5 |  | 0.651 vs 0.645 | +0.006 [-0.014, +0.026] | 1 / 4 |  |
+| 1b | small ResNet + ECA, mean pool − variety-only rule | 204 bands | 0.597 vs 0.609 | -0.012 [-0.034, +0.010] | 0 / 5 |  | 0.653 vs 0.645 | +0.008 [-0.015, +0.031] | 2 / 3 |  |
+| 1b | small ResNet + ECA, attention pool − variety-only rule | 204 bands | 0.581 vs 0.609 | -0.028 [-0.050, -0.005] | 0 / 5 | ✗ | 0.645 vs 0.645 | -0.000 [-0.021, +0.021] | 1 / 4 |  |
+| 1b | small ResNet + CBAM, mean pool − variety-only rule | 204 bands | 0.592 vs 0.609 | -0.017 [-0.038, +0.005] | 0 / 5 |  | 0.649 vs 0.645 | +0.004 [-0.019, +0.025] | 0 / 5 |  |
+| 1b | small ResNet + CBAM, attention pool − variety-only rule | 204 bands | 0.612 vs 0.609 | +0.003 [-0.020, +0.026] | 2 / 3 |  | 0.663 vs 0.645 | +0.018 [-0.002, +0.038] | 3 / 2 |  |
 | 1b | logistic regression − variety-only rule | RGB | 0.585 vs 0.609 | -0.024 [-0.050, +0.002] | single fits |  | 0.615 vs 0.645 | -0.031 [-0.058, -0.004] | single fits | ✗ |
-| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.596 vs 0.607 | -0.010 [-0.026, +0.006] | 1 of 5 |  | 0.647 vs 0.649 | -0.002 [-0.012, +0.008] | 2 of 5 |  |
-| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.598 vs 0.586 | +0.012 [-0.007, +0.030] | 1 of 5 |  | 0.639 vs 0.652 | -0.013 [-0.024, -0.003] | 1 of 5 | ✗ |
-| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.616 vs 0.607 | +0.009 [-0.010, +0.030] | 2 of 5 |  | 0.664 vs 0.649 | +0.015 [+0.002, +0.028] | 5 of 5 | ✓ |
-| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.601 vs 0.586 | +0.015 [-0.004, +0.035] | 3 of 5 |  | 0.657 vs 0.652 | +0.005 [-0.010, +0.019] | 3 of 5 |  |
-| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.597 vs 0.601 | -0.003 [-0.021, +0.014] | 2 of 5 |  | 0.653 vs 0.660 | -0.007 [-0.017, +0.003] | 2 of 5 |  |
-| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.581 vs 0.591 | -0.010 [-0.031, +0.010] | 4 of 5 |  | 0.645 vs 0.651 | -0.006 [-0.017, +0.005] | 3 of 5 |  |
-| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.592 vs 0.601 | -0.008 [-0.026, +0.009] | 0 of 5 |  | 0.649 vs 0.660 | -0.011 [-0.022, -0.001] | 0 of 5 | ✗ |
-| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.612 vs 0.591 | +0.021 [+0.001, +0.042] | 5 of 5 | ✓ | 0.663 vs 0.651 | +0.012 [+0.001, +0.022] | 4 of 5 | ✓ |
-| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.586 vs 0.607 | -0.020 [-0.036, -0.004] | 1 of 5 | ✗ | 0.652 vs 0.649 | +0.003 [-0.007, +0.014] | 3 of 5 |  |
-| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.598 vs 0.596 | +0.002 [-0.015, +0.018] | 1 of 5 |  | 0.639 vs 0.647 | -0.008 [-0.018, +0.002] | 2 of 5 |  |
-| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.601 vs 0.616 | -0.014 [-0.035, +0.006] | 2 of 5 |  | 0.657 vs 0.664 | -0.008 [-0.020, +0.005] | 1 of 5 |  |
-| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.591 vs 0.601 | -0.010 [-0.028, +0.011] | 1 of 5 |  | 0.651 vs 0.660 | -0.009 [-0.021, +0.003] | 1 of 5 |  |
-| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.581 vs 0.597 | -0.017 [-0.037, +0.004] | 1 of 5 |  | 0.645 vs 0.653 | -0.008 [-0.019, +0.004] | 3 of 5 |  |
-| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.612 vs 0.592 | +0.020 [-0.001, +0.041] | 4 of 5 |  | 0.663 vs 0.649 | +0.014 [+0.005, +0.024] | 4 of 5 | ✓ |
-| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.601 vs 0.607 | -0.006 [-0.022, +0.010] | 4 of 5 |  | 0.660 vs 0.649 | +0.011 [+0.003, +0.019] | 3 of 5 |  |
-| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.591 vs 0.586 | +0.004 [-0.013, +0.021] | 2 of 5 |  | 0.651 vs 0.652 | -0.001 [-0.012, +0.009] | 2 of 5 |  |
-| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.597 vs 0.596 | +0.001 [-0.016, +0.019] | 5 of 5 |  | 0.653 vs 0.647 | +0.006 [-0.005, +0.017] | 5 of 5 |  |
-| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.581 vs 0.598 | -0.017 [-0.038, +0.004] | 3 of 5 |  | 0.645 vs 0.639 | +0.006 [-0.005, +0.017] | 4 of 5 |  |
-| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.592 vs 0.616 | -0.023 [-0.047, -0.002] | 0 of 5 | ✗ | 0.649 vs 0.664 | -0.015 [-0.029, -0.002] | 0 of 5 | ✗ |
-| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.612 vs 0.601 | +0.011 [-0.012, +0.033] | 3 of 5 |  | 0.663 vs 0.657 | +0.006 [-0.006, +0.020] | 3 of 5 |  |
+| 2a | CNN + ECA, mean pool − CNN, mean pool | 204 bands | 0.596 vs 0.607 | -0.010 [-0.026, +0.006] | 1 / 4 |  | 0.647 vs 0.649 | -0.002 [-0.012, +0.008] | 2 / 3 |  |
+| 2a | CNN + ECA, attention pool − CNN, attention pool | 204 bands | 0.598 vs 0.586 | +0.012 [-0.007, +0.030] | 1 / 4 |  | 0.639 vs 0.652 | -0.013 [-0.024, -0.003] | 1 / 4 | ✗ |
+| 2a | CNN + CBAM, mean pool − CNN, mean pool | 204 bands | 0.616 vs 0.607 | +0.009 [-0.010, +0.030] | 2 / 3 |  | 0.664 vs 0.649 | +0.015 [+0.002, +0.028] | 5 / 0 | ✓ |
+| 2a | CNN + CBAM, attention pool − CNN, attention pool | 204 bands | 0.601 vs 0.586 | +0.015 [-0.004, +0.035] | 3 / 2 |  | 0.657 vs 0.652 | +0.005 [-0.010, +0.019] | 3 / 2 |  |
+| 2a | small ResNet + ECA, mean pool − small ResNet, mean pool | 204 bands | 0.597 vs 0.601 | -0.003 [-0.021, +0.014] | 2 / 3 |  | 0.653 vs 0.660 | -0.007 [-0.017, +0.003] | 2 / 3 |  |
+| 2a | small ResNet + ECA, attention pool − small ResNet, attention pool | 204 bands | 0.581 vs 0.591 | -0.010 [-0.031, +0.010] | 4 / 1 |  | 0.645 vs 0.651 | -0.006 [-0.017, +0.005] | 3 / 2 |  |
+| 2a | small ResNet + CBAM, mean pool − small ResNet, mean pool | 204 bands | 0.592 vs 0.601 | -0.008 [-0.026, +0.009] | 0 / 5 |  | 0.649 vs 0.660 | -0.011 [-0.022, -0.001] | 0 / 5 | ✗ |
+| 2a | small ResNet + CBAM, attention pool − small ResNet, attention pool | 204 bands | 0.612 vs 0.591 | +0.021 [+0.001, +0.042] | 5 / 0 | ✓ | 0.663 vs 0.651 | +0.012 [+0.001, +0.022] | 4 / 1 | ✓ |
+| 2b | CNN, attention pool − CNN, mean pool | 204 bands | 0.586 vs 0.607 | -0.020 [-0.036, -0.004] | 1 / 4 | ✗ | 0.652 vs 0.649 | +0.003 [-0.007, +0.014] | 3 / 2 |  |
+| 2b | CNN + ECA, attention pool − CNN + ECA, mean pool | 204 bands | 0.598 vs 0.596 | +0.002 [-0.015, +0.018] | 1 / 4 |  | 0.639 vs 0.647 | -0.008 [-0.018, +0.002] | 2 / 3 |  |
+| 2b | CNN + CBAM, attention pool − CNN + CBAM, mean pool | 204 bands | 0.601 vs 0.616 | -0.014 [-0.035, +0.006] | 2 / 3 |  | 0.657 vs 0.664 | -0.008 [-0.020, +0.005] | 1 / 4 |  |
+| 2b | small ResNet, attention pool − small ResNet, mean pool | 204 bands | 0.591 vs 0.601 | -0.010 [-0.028, +0.011] | 1 / 4 |  | 0.651 vs 0.660 | -0.009 [-0.021, +0.003] | 1 / 4 |  |
+| 2b | small ResNet + ECA, attention pool − small ResNet + ECA, mean pool | 204 bands | 0.581 vs 0.597 | -0.017 [-0.037, +0.004] | 1 / 4 |  | 0.645 vs 0.653 | -0.008 [-0.019, +0.004] | 3 / 2 |  |
+| 2b | small ResNet + CBAM, attention pool − small ResNet + CBAM, mean pool | 204 bands | 0.612 vs 0.592 | +0.020 [-0.001, +0.041] | 4 / 1 |  | 0.663 vs 0.649 | +0.014 [+0.005, +0.024] | 4 / 1 | ✓ |
+| 3 | small ResNet, mean pool − CNN, mean pool | 204 bands | 0.601 vs 0.607 | -0.006 [-0.022, +0.010] | 4 / 1 |  | 0.660 vs 0.649 | +0.011 [+0.003, +0.019] | 3 / 2 |  |
+| 3 | small ResNet, attention pool − CNN, attention pool | 204 bands | 0.591 vs 0.586 | +0.004 [-0.013, +0.021] | 2 / 3 |  | 0.651 vs 0.652 | -0.001 [-0.012, +0.009] | 2 / 3 |  |
+| 3 | small ResNet + ECA, mean pool − CNN + ECA, mean pool | 204 bands | 0.597 vs 0.596 | +0.001 [-0.016, +0.019] | 5 / 0 |  | 0.653 vs 0.647 | +0.006 [-0.005, +0.017] | 5 / 0 |  |
+| 3 | small ResNet + ECA, attention pool − CNN + ECA, attention pool | 204 bands | 0.581 vs 0.598 | -0.017 [-0.038, +0.004] | 3 / 2 |  | 0.645 vs 0.639 | +0.006 [-0.005, +0.017] | 4 / 1 |  |
+| 3 | small ResNet + CBAM, mean pool − CNN + CBAM, mean pool | 204 bands | 0.592 vs 0.616 | -0.023 [-0.047, -0.002] | 0 / 5 | ✗ | 0.649 vs 0.664 | -0.015 [-0.029, -0.002] | 0 / 5 | ✗ |
+| 3 | small ResNet + CBAM, attention pool − CNN + CBAM, attention pool | 204 bands | 0.612 vs 0.601 | +0.011 [-0.012, +0.033] | 3 / 2 |  | 0.663 vs 0.657 | +0.006 [-0.006, +0.020] | 3 / 2 |  |
 | 4 | logistic regression − logistic regression | 204 bands − RGB | 0.590 vs 0.585 | +0.005 [-0.025, +0.036] | single fits |  | 0.634 vs 0.615 | +0.019 [-0.008, +0.048] | single fits |  |
 
 Marked, of 47 comparisons: balanced accuracy 1 ✓ and 4 ✗; AUC 6 ✓ and 4 ✗. Chance alone would put about 2.4 intervals per score off 0 (fewer once the seeds must agree).

@@ -554,7 +554,7 @@ def score_table(block: Block) -> list[str]:
 
 def diff_cells(d: Diff) -> list[str]:
     """Δ [95% CI], the seed count and the mark of one score."""
-    seeds = f"{d.wins} of 5" if d.seeded else "single fits"
+    seeds = f"{d.wins} / {d.losses}" if d.seeded else "single fits"
     return [delta(d.value, d.ci), seeds, d.mark]
 
 
@@ -569,8 +569,8 @@ def count_line(rows: list[Row]) -> str:
 
 def comparison_table(rows: list[Row]) -> list[str]:
     """Every comparison of a block, in the plan's order: both models' scores, A − B, seeds, mark."""
-    header = ["#", "A − B", "bands", "bal. acc. A vs B", "Δ [95% CI]", "seeds A > B", "",
-              "AUC A vs B", "Δ [95% CI]", "seeds A > B", ""]
+    header = ["#", "A − B", "bands", "bal. acc. A vs B", "Δ [95% CI]", "seeds A > B / A < B", "",
+              "AUC A vs B", "Δ [95% CI]", "seeds A > B / A < B", ""]
     lines = [[r.family, f"{r.a} − {r.b}", r.bands, f"{r.score_a.ba:.3f} vs {r.score_b.ba:.3f}", *diff_cells(r.ba),
               f"{r.score_a.auc:.3f} vs {r.score_b.auc:.3f}", *diff_cells(r.auc)] for r in rows]
     return table(header, lines)
@@ -690,7 +690,10 @@ def to_markdown(r: dict) -> str:
         "Leafroll leaves out Cab Franc everywhere (1 of its 250 leaves has leafroll). Red blotch on all 998 is "
         "also scored without Cab Franc's leaves (241 of its 250 leaves have red blotch), with the same models. "
         "The **variety-only rule** predicts from the leaf's variety alone (each variety's disease rate on the "
-        "training rows); a pooled model has to beat it to show more than the varieties' different disease rates.",
+        "training rows); a pooled model has to beat it to show more than the varieties' different disease rates. "
+        "Its interval has zero width: it gives every leaf of one variety in one test row the same P, and the "
+        "resamples keep the number of positive and negative leaves in each variety × row, so every resample "
+        "gives it the same score.",
         "",
     ]
     for task in TASK_NAME:

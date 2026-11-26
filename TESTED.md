@@ -2,6 +2,8 @@
 
 Scores are balanced accuracy unless marked AUC. Chance is 0.25 for variety and 0.5 for disease. Disease is scored per disease (leafroll, red blotch), never averaged. Items marked *removed* are in git history at the commit given.
 
+**Current scores: [RESULTS.md](RESULTS.md)** (the plan of 2026-11-25: 5 seeds, one logistic-regression recipe, RGB as normalized rgb per pixel; runs still going). The "In the repo" rows below are from before that rebuild (3 seeds, the older recipe and RGB input), so their numbers differ; they are updated when the runs finish.
+
 ## In the repo
 
 ### Variety (4 classes)
