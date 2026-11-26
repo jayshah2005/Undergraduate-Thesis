@@ -32,7 +32,7 @@ from model import VarietyCNN  # noqa: E402
 from helpers.pca_common import VARIETIES, get_device, np_  # noqa: E402
 
 RESULTS, LOGS = HERE / "results", HERE / "logs"
-SEEDS = (0, 1, 2)
+SEEDS = (0, 1, 2, 3, 4)   # 5 seeds per model (seed 100 · s + fold); 0-2 were run first, 3-4 added
 
 
 @dataclass(frozen=True)

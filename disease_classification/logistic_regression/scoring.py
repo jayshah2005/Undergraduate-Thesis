@@ -6,7 +6,7 @@ import torch
 
 # One resampling for every report (helpers/scoring.py): within each variety × row × class cell.
 from helpers.scoring import BOOT_SEED, N_BOOT, auc, bootstrap_weights  # noqa: E402,F401
-METRICS = ("bal_acc", "accuracy", "sensitivity", "specificity", "precision", "f1")  # metrics.md columns
+METRICS = ("bal_acc", "auc", "accuracy", "sensitivity", "specificity", "precision", "f1")  # metrics.md columns
 THRESHOLD = 0.5  # a leaf is called positive when P(positive) >= 0.5; fixed in advance, never tuned
 
 
@@ -50,18 +50,19 @@ def binary_metrics(p: torch.Tensor, y: torch.Tensor, w: torch.Tensor | None = No
     :type y: torch.Tensor
     :param w: Optional resampling counts, shape (B, n).
     :type w: torch.Tensor | None
-    :return: {metric: tensor of shape () or (B,)}: bal_acc, accuracy, sensitivity, specificity,
-        precision, f1, and the counts tp, fn, fp, tn.
+    :return: {metric: tensor of shape () or (B,)}: bal_acc, auc (threshold-free: how well P ranks positive
+        leaves above negative ones), accuracy, sensitivity, specificity, precision, f1, and the counts tp, fn, fp, tn.
     :rtype: dict
     """
     pos = (y == 1).double()
     call = (p >= THRESHOLD).double()
+    roc = auc(p, pos, w)   # threshold-free; (B,) with resamples, () without
     if w is None:
         w = torch.ones_like(pos)
     tp, fn = (w * call * pos).sum(-1), (w * (1 - call) * pos).sum(-1)
     fp, tn = (w * call * (1 - pos)).sum(-1), (w * (1 - call) * (1 - pos)).sum(-1)
     sens, spec = tp / (tp + fn), tn / (tn + fp)
-    return {"bal_acc": (sens + spec) / 2, "accuracy": (tp + tn) / (tp + fn + fp + tn), "sensitivity": sens,
+    return {"bal_acc": (sens + spec) / 2, "auc": roc, "accuracy": (tp + tn) / (tp + fn + fp + tn), "sensitivity": sens,
             "specificity": spec, "precision": tp / (tp + fp), "f1": 2 * tp / (2 * tp + fp + fn),
             "tp": tp, "fn": fn, "fp": fp, "tn": tn}
 

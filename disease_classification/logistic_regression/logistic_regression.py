@@ -369,7 +369,7 @@ def final_report_markdown(variety: str, bands: str, scores: dict) -> str:
     return "\n".join(lines)
 
 
-METRIC_HEADER = {"bal_acc": "bal. acc.", "accuracy": "accuracy", "sensitivity": "sensitivity (recall)",
+METRIC_HEADER = {"bal_acc": "bal. acc.", "auc": "AUC", "accuracy": "accuracy", "sensitivity": "sensitivity (recall)",
                  "specificity": "specificity", "precision": "precision", "f1": "F1"}
 
 

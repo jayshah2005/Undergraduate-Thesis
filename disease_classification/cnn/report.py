@@ -156,7 +156,7 @@ def load_predictions(meta, root: Path, variety: str, bands: str, device: torch.d
 def compute_metrics(preds: dict, device: torch.device) -> dict:
     """Score every CNN model and the baseline for each task by balanced accuracy.
 
-    Seed ensemble = the mean probability over the 3 seeds, called positive at P >= 0.5.
+    Seed ensemble = the mean probability over the 5 seeds, called positive at P >= 0.5.
     Its 95% interval and the paired difference to the baseline come from the same 2000
     resamples.
 
@@ -246,7 +246,7 @@ def to_markdown(metrics: dict, labels: dict, variety: str, bands: str) -> str:
     lines = [f"# Disease: whole-leaf CNN on {variety_label(variety)}, {bands_label(bands)}", "",
              "Every model uses SNV and trains on the 3 training rows; the CNN picks its checkpoint on the validation "
              "row. Balanced accuracy (0.5 = chance); a leaf counts as positive at P ≥ 0.5; 95% bootstrap interval. "
-             f"CNN = mean probability of 3 seeds. Δ: paired difference to logistic regression.{note} "
+             f"CNN = mean probability of 5 seeds. Δ: paired difference to logistic regression.{note} "
              "Every metric: `metrics.md`.", ""]
     name = {"baseline": BASELINE}
     for task, res in metrics.items():
@@ -292,7 +292,7 @@ def metrics_markdown(metrics: dict, labels: dict, variety: str, bands: str) -> s
     :rtype: str
     """
     lines = [f"# Disease: whole-leaf CNN on {variety_label(variety)}, {bands_label(bands)}: all metrics", "",
-             "A leaf counts as positive (diseased) at P ≥ 0.5; CNN = mean probability of 3 seeds; 95% bootstrap "
+             "A leaf counts as positive (diseased) at P ≥ 0.5; CNN = mean probability of 5 seeds; 95% bootstrap "
              "intervals. " + METRICS_INTRO, ""]
     for task, res in metrics.items():
         models = {BASELINE if k == "baseline" else k: m for k, m in res.items()}

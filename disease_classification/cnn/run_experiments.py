@@ -37,7 +37,7 @@ from train import DEFAULT_POOLINGS, POOLINGS, TrainConfig, canvas_for, preproces
 
 DEFAULT_POOL = "all"
 DEFAULT_TASKS = ("leafroll", "red_blotch")
-SEEDS = (0, 1, 2)
+SEEDS = (0, 1, 2, 3, 4)   # 5 seeds per model (seed 100 · s + fold); 0-2 were run first, 3-4 added
 RESULTS, LOGS = HERE / "results", HERE / "logs"
 
 

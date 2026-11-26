@@ -193,7 +193,7 @@ def to_markdown(r: dict, b: str, augment: bool = True) -> str:
     lines = [f"# Variety: whole-leaf CNN, {BANDS_TITLE[b]}" + ("" if augment else ", trained without augmentation"),
              "", "Balanced accuracy = the mean of the 4 recalls (chance 0.25), with a 95% bootstrap interval. Every "
              "model uses SNV, trains on 3 rows and is selected on the validation row: the CNN its checkpoint, "
-             "logistic regression its C. CNN = mean probability of 3 seeds. Δ: paired difference to logistic "
+             "logistic regression its C. CNN = mean probability of 5 seeds. Δ: paired difference to logistic "
              "regression on the same input. Every metric: `metrics.md`.", "", f"## {BANDS_TITLE[b]}", ""]
     lines += main_table([model(BASELINE, lr)] + [model(name, c, r["vs_lr"][name][b]) for name, c in cnns.items()])
     lines += ["", fold_note(VARIETIES), ""]
@@ -229,7 +229,7 @@ def metrics_markdown(r: dict, b: str, augment: bool = True) -> str:
     """
     lines = [f"# Variety: whole-leaf CNN, {BANDS_TITLE[b]}: all metrics"
              + ("" if augment else ", trained without augmentation"), "",
-             "4 varieties; a leaf is called its most likely one; CNN = mean probability of 3 seeds; 95% bootstrap "
+             "4 varieties; a leaf is called its most likely one; CNN = mean probability of 5 seeds; 95% bootstrap "
              "intervals. " + METRICS_INTRO, "", f"## {BANDS_TITLE[b]}", ""]
     models = {BASELINE: r["lr"][b], **{name: c[b] for name, c in r["cnns"].items()}}
     return "\n".join(lines + metrics_section(models) + [""])
