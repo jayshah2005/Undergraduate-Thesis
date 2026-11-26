@@ -10,8 +10,8 @@ the row folds and the seed rule 100 · seed + fold. The data loading, normalizat
 are the disease code itself.
 
 Optimizer: AdamW (lr 1e-3, weight decay 1e-2, as every single-task CNN) or SGD (momentum 0.9, weight
-decay 5e-4, constant learning rate chosen on the validation rows with --select-lr). Every aggregator
-works on the gradients in float64.
+decay 5e-4, constant learning rate chosen for each method and network on the validation rows with
+--select-lr, on 204 bands; RGB reuses that rate). Every aggregator works on the gradients in float64.
 
 Checkpoints: test predictions are kept at four epochs, each the lowest validation loss of one choice
 of heads: the 4 variety heads summed, red blotch, leafroll, and all six. The first three give per-task
@@ -333,12 +333,14 @@ def setup(args) -> tuple[dict, torch.Tensor, torch.Tensor, np.ndarray]:
 
 
 def select_lr(args) -> None:
-    """Choose SGD's learning rate on the validation rows: seed 0, every fold, each rate in SGD_LR_GRID.
+    """Choose one method's SGD learning rate on the validation rows: seed 0, every fold, each rate in SGD_LR_GRID.
 
     The score is the lowest summed validation loss of the six heads reached in training, averaged over
-    the folds; the lowest wins. Writes <results>/sgd_lr_<method>.json. The test rows are not used.
+    the folds; the lowest wins. Chosen on 204 bands and reused for RGB; writes
+    results/<network>_sgd/sgd_lr_<method>.json. The test rows are not used.
     """
-    out = results_dir(args.network, "sgd", args.bands, args.smoke)
+    assert args.bands == "all", "SGD rates are chosen on 204 bands (RGB reuses them)"
+    out = results_dir(args.network, "sgd", "all", args.smoke)
     out.mkdir(parents=True, exist_ok=True)
     d, y, valid, fold_ids = setup(args)
     folds = range(1) if args.smoke else range(5)
@@ -363,7 +365,8 @@ def main() -> None:
     ap.add_argument("--method", choices=METHODS, required=True)
     ap.add_argument("--bands", choices=("all", "rgb"), default="all")
     ap.add_argument("--select-lr", action="store_true", help="choose SGD's learning rate on the validation rows")
-    ap.add_argument("--sgd-lr-from", default="ls", help="whose sgd_lr_<method>.json to use: ls (shared) or a method")
+    ap.add_argument("--sgd-lr-from", default="self",
+                    help="whose sgd_lr_<method>.json to use: self (this method's own, the default) or another method")
     ap.add_argument("--smoke", action="store_true", help="1 seed, fold 0, 2 epochs, into results/smoke/")
     args = ap.parse_args()
     if args.select_lr:
@@ -373,8 +376,9 @@ def main() -> None:
     out = results_dir(args.network, args.optimizer, args.bands, args.smoke)
     sgd_lr = None
     if args.optimizer == "sgd":
-        src = "ls" if args.sgd_lr_from == "ls" else args.method
-        sgd_lr = json.loads((out / f"sgd_lr_{src}.json").read_text())["chosen_lr"]
+        src = args.method if args.sgd_lr_from == "self" else args.sgd_lr_from
+        lr_file = results_dir(args.network, "sgd", "all", args.smoke) / f"sgd_lr_{src}.json"   # chosen on 204 bands
+        sgd_lr = json.loads(lr_file.read_text())["chosen_lr"]
     cfg = Config(backbone=args.network, optimizer=args.optimizer, sgd_lr=sgd_lr)
     seeds, folds = SEEDS, range(5)
     if args.smoke:

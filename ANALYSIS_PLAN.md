@@ -70,6 +70,8 @@ to beat it to show more than the varieties' different disease rates. Within one 
 
 ## SGD (MOO)
 
-Momentum 0.9, weight decay 5e-4, constant learning rate. The learning rate is chosen on the validation rows only
-(seed 0, every fold). How it is chosen (one rate from LS for every method, or one per method) is decided before the
-SGD runs and written here.
+Momentum 0.9, weight decay 5e-4, constant learning rate. Each method gets its own rate, chosen for each network on
+204 bands from {0.001, 0.003, 0.01, 0.03, 0.1}: seed 0 on every fold, scored by the lowest summed validation loss of
+the six heads reached in training, averaged over the folds (the test rows are not used). RGB reuses the 204-band
+rate. A rate per method keeps the comparison fair, because the methods' updates differ in size (LS sums six
+gradients, MGDA takes their shortest mix, PGA has a fixed length).
